@@ -51,7 +51,7 @@ function SCENE.atticRoom_update(dt)
 			--here is the epic flashback scene -_-
 			flashback_epic = true
 			epic_scene_update(dt)
-			lv = 255
+			lv = 1
 		end
 	end
 	if temp_clock ~= nil then

@@ -63,7 +63,7 @@ local _ads = require("ads")
 FC = require("libs.firstcrush.gui")
 
 if debug == false then
-	love.window.setFullscreen(true)
+	-- love.window.setFullscreen(true)
 	ty = height
 	-- ty = sh - (height * math.min(sw/width,sh/height))
 	if love.system.getOS() == "iOS" then

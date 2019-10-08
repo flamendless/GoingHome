@@ -277,7 +277,7 @@ function SCENE.secretRoom_update(dt)
 	elseif ghost_event == "limp" then
 		lightOn = false
 		enemy_exists = false
-		lv = 255
+		lv = 1
 		
 		if timer > 0 then
 			timer = timer - 1 * dt

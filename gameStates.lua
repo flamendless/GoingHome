@@ -1226,10 +1226,10 @@ function lightning(dt)
 	if fade.state == false then
 		if ending_leave_event ~= 2 then	
 			if (tell >= 6 and tell <= 7) then
-				lv = math.floor(lume.lerp(lv,0,amount))
+				lv = lume.lerp(lv,0,amount)
 				lStrike = true
 			else
-				lv = math.floor(lume.lerp(lv,1,amount))
+				lv = lume.lerp(lv,1,amount)
 				lStrike = false
 			end
 		end

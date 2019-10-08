@@ -33,7 +33,7 @@ function leave_event_update(dt)
 	if ending_leave_event == 1 then
 		player_color = true
 		lightOn = false
-		lv = 255
+		lv = 1
 		move = false
 		if c < #text1 then
 			if timer > 0 then
@@ -89,9 +89,9 @@ function leave_event_update(dt)
 			ending_final = -1
 		end
 		if player_ending_shot == true then
-			if va < 255 then
-				va = va + 1000 * dt
-			elseif va >= 255 then
+			if va < 1 then
+				va = va + 500 * dt
+			elseif va >= 1 then
 				if shotTimer > 0 then
 					shotTimer = shotTimer - 1 * dt
 					if shotTimer >0 and shotTimer <1 then

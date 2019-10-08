@@ -43,9 +43,9 @@ function storage_puzzle_update(dt)
 	end
 	if doodle_flag == true then
 		if a >= 0 then
-			a = a - 255/255 * dt
+			a = a - 1 * dt
 		elseif a <= 0 then
-			a = 255/255
+			a = 1
 		end
 
 		if rx >= width/2 + 22 and rx <= width/2 + 24 then

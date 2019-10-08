@@ -207,7 +207,7 @@ function Player:checkDoors()
 				doorTxt("I've just got home","and it's raining outside.")
 				sounds.locked:play()
 			else
-				lv = 255
+				lv = 1
 				player:moveRoom(8,images["endRoom"])
 				player.y = 22
 			end

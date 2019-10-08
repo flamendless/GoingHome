@@ -198,7 +198,7 @@ function rightroom_update(dt)
 		end
 	end
 	if fade_to_black == true then
-		if a < 255 then
+		if a < 1 then
 			a = lume.lerp(a, 1,0.01)
 			if a >= 200/255 then
 				credits_load()
