@@ -1,0 +1,58 @@
+## Thanks for these guys for the free sounds at [freesounds](https://freesounds.org)
+* **Nanashi**: [Trigger with hammer fall ](http://www.freesound.org/people/Nanashi/sounds/104412/)
+* **Peteguy**: [loud gunshot ](http://www.freesound.org/people/Peteguy/sounds/161475/)
+* **artifact**: [lightning_strike ](http://www.freesound.org/people/artifact/sounds/29675/)
+* **Dredile**: [Clean Revolver Reload ](http://www.freesound.org/people/Dredile/sounds/177863/)
+* **joedeshon**: [keys_inserted_into_ignition ](http://www.freesound.org/people/joedeshon/sounds/117039/)
+* **SmartWentCody**: [Soft Keystroke ](http://www.freesound.org/people/SmartWentCody/sounds/179017/)
+* **dersuperanton**: [Keyboard ](http://www.freesound.org/people/dersuperanton/sounds/166691/)
+* **Taira Komori**: [Pushing_Enter_key ](http://www.freesound.org/people/Taira%20Komori/sounds/212527/)
+* **pan14**: [tone beep ](http://www.freesound.org/people/pan14/sounds/263133/)
+* **IndigoRay**: [Beep Phone ](http://www.freesound.org/people/IndigoRay/sounds/339130/)
+* **nsstudios**: [page turn(1 and 2) ](http://www.freesound.org/people/nsstudios/sounds/321108/)
+* **ROFD**: [flip page ](http://www.freesound.org/people/ROFD/sounds/188485/)
+* **gynation**: [paper flip 2 ](http://www.freesound.org/people/gynation/sounds/82378/)
+* **Selulance**: [Perfect Matchstick ](http://www.freesound.org/people/Selulance/sounds/212448/)
+* **missozzy**: [Female scream 02 ](http://www.freesound.org/people/missozzy/sounds/169811/)
+* **Albaaa3**: [Moving_A_Chair ](http://www.freesound.org/people/Albaaa3/sounds/153098/)
+* **CastIronCarousel**: [Door falls to floor ](http://www.freesound.org/people/CastIronCarousel/sounds/216749/)
+* **Ephemereal_Rift**: [barefeet-walking-creaking-hardwood-floor ](http://www.freesound.org/people/Ephemeral_Rift/sounds/77604/)
+* **InspectorJ**: [Ticking Clock, A and Dropping, Wood, H and Door Squeak, Normal, D ](http://www.freesound.org/people/InspectorJ/sounds/343130/)
+* **D W**: [Footsteps-Step_Ladder-Metal-08-Up ](http://www.freesound.org/people/D%20W/sounds/152794/)
+* **raubana**: [Body Fall Over ](http://www.freesound.org/people/raubana/sounds/82027/)
+* **18hiltc**: [Loud TV Static ](http://www.freesound.org/people/18hiltc/sounds/198761/)
+* **yandroff**: [Toolbox ](http://www.freesound.org/people/yadronoff/sounds/320385/)
+* **LightYarn**: [Flashlight_0n ](http://www.freesound.org/people/LightYarn/sounds/173420/)
+* **mooncubedesign**: [Breath in ](http://www.freesound.org/people/mooncubedesign/sounds/319247/)
+* **kostasvomvolos**: [Breath 7 ](http://www.freesound.org/people/kostasvomvolos/sounds/19866/)
+* **The Baron**: [Breath 05 ](http://www.freesound.org/people/The%20Baron/sounds/98391/)
+* **xDimebagx**: [Monster Step Backleg 1/2 ](http://www.freesound.org/people/xDimebagx/sounds/253684/)
+* **estefaniabonnin**: [Scream ](http://www.freesound.org/people/estefaniabonnin/sounds/219867/)
+* **jhumbucker**: [Suspense Motif ](http://www.freesound.org/people/jhumbucker/sounds/250542/)
+* **lebcraftlp**: [Click ](http://www.freesound.org/people/lebcraftlp/sounds/192271/)
+* **SassyLaur**: [pumpingair ](http://www.freesound.org/people/SassyLaur/sounds/34937/)
+* **j1987**: [put_item ](http://www.freesound.org/people/j1987/sounds/335751/)
+* **Benagain**: [Door Locked ](http://www.freesound.org/people/Benagain/sounds/321087/)
+* **JarredGibb**: [Door- Cupboard 07 ](http://www.freesound.org/people/JarredGibb/sounds/219487/)
+* **fuzzpapi**: [unlock_door ](http://www.freesound.org/people/fuzzpapi/sounds/147347/)
+* **Ligidium**: [Door Knock - 41 ](http://www.freesound.org/people/Ligidium/sounds/193870/)
+* **director89**: [Rain-Atmo ](http://www.freesound.org/people/director89/sounds/265627/)
+* **netaj**: [thunder ](http://www.freesound.org/people/netaj/sounds/193170/)
+* **loopbasedmusic**: [rain_near_smooth ](http://www.freesound.org/people/loopbasedmusic/sounds/157487/)
+* **snaginneb**:  [gruntsound](http://www.freesound.org/people/snaginneb/sounds/90164/)
+* **pfranzen**: [smashing head on wall](http://www.freesound.org/people/pfranzen/sounds/377157/)
+
+## Thanks also for the following devs for their libraries/modules provided for free, and with awesome documentations
+
+* **Enrique Garcia Cota** [anim8](https://github.com/kikito/anim8)
+* **rxi** [classic](https://github.com/rxi/classic),[lume](https://github.com/rxi/lume), [lurker](https://github.com/rxi/lurker)
+* **Enrique Garcia Cota and Tanner Rogalsky** [love-loader](https://github.com/kikito/love-loader)
+* **airstruck** [knife](https://love2d.org/forums/viewtopic.php?t=80896)
+
+
+## Special thanks to the beta testers
+* **Ian Plaus** 
+* **Jillary Anne Miranda Bernardo**
+
+
+

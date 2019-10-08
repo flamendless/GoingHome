@@ -1,0 +1,15 @@
+[submodule "libs/LOVEDEBUG"]
+path = libs/LOVEDEBUG
+url = https://github.com/Ranguna/LOVEDEBUG.git
+[submodule "libs/anim8"]
+path = libs/anim8
+url = https://github.com/kikito/anim8.git
+[submodule "libs/gooi"]
+path = libs/gooi
+url = https://github.com/tavuntu/gooi.git
+[submodule "libs/hump"]
+path = libs/hump
+url = https://github.com/vrld/hump.git
+[submodule "libs/knife"]
+path = libs/knife
+url = https://github.com/airstruck/knife.git
