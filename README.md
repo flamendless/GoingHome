@@ -7,7 +7,7 @@ Made with [love](https://love2d.org)
 This is the source code of my game "Going Home"
 
 * [GameJolt](https://gamejolt.com/games/goinghome/237280)
-* [Itch](https://brbl.itch.io/goinghome)
+* [Itch](https://flamendless.itch.io/going-home)
 
 
 # DISCLAIMER
