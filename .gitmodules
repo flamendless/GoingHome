@@ -1,15 +1,15 @@
 [submodule "libs/LOVEDEBUG"]
-path = libs/LOVEDEBUG
+path = game/libs/LOVEDEBUG
 url = https://github.com/Ranguna/LOVEDEBUG.git
 [submodule "libs/anim8"]
-path = libs/anim8
+path = game/libs/anim8
 url = https://github.com/kikito/anim8.git
 [submodule "libs/gooi"]
-path = libs/gooi
+path = game/libs/gooi
 url = https://github.com/tavuntu/gooi.git
 [submodule "libs/hump"]
-path = libs/hump
+path = game/libs/hump
 url = https://github.com/vrld/hump.git
 [submodule "libs/knife"]
-path = libs/knife
+path = game/libs/knife
 url = https://github.com/airstruck/knife.git
