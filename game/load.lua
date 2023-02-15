@@ -106,7 +106,7 @@ function assets.load_images()
 	loader.newImage(images,"player_child_sheet","assets/images/player_child-sheet.png")
 	loader.newImage(images,"player_child_idle","assets/images/player_child_idle.png")
 	loader.newImage(images,"player_child_push","assets/images/player_child_push-sheet.png")
-	
+
 
 
 	loader.newImage(images,"player_sheet","assets/images/player-sheet.png")
@@ -138,7 +138,7 @@ function assets.load_images()
 	--upper right
 	loader.newImage(images,"hallwayRight","assets/images/hallwayRight.png")
 	loader.newImage(images,"daughterRoom","assets/images/daughterRoom.png")
-	--attic 
+	--attic
 	loader.newImage(images,"atticRoom","assets/images/atticRoom.png")
 	--basement
 	loader.newImage(images,"basementRoom","assets/images/basementRoom.png")
@@ -262,7 +262,7 @@ function assets.load_images()
 	loader.newImage(images,"attic_room_ladder","assets/images/atticRoom_ladder.png")
 	loader.newImage(images,"attic_room_ladder_glow","assets/images/atticRoom_ladder_glow.png")
 	loader.newImage(images,"chest","assets/images/atticRoom_chest.png")
-	loader.newImage(images,"chest_glow","assets/images/atticRoom_chest_glow.png")	
+	loader.newImage(images,"chest_glow","assets/images/atticRoom_chest_glow.png")
 	loader.newImage(images,"clock","assets/images/atticRoom_clock.png")
 	loader.newImage(images,"clock_glow","assets/images/atticRoom_clock_glow.png")
 	loader.newImage(images,"clock_base","assets/images/clock_base.png")
@@ -290,7 +290,7 @@ function assets.load_images()
 	loader.newImage(images,"storage_vault","assets/images/storage_vault.png")
 	loader.newImage(images,"storage_vault_glow","assets/images/storage_vault_glow.png")
 	loader.newImage(images,"input_base","assets/images/input_base.png")
-	
+
 	if love.system.getOS() ~= "Android" or love.system.getOS() ~= "iOS" then
 		loader.newImage(images,"basement_battery","assets/images/basement_battery.png")
 		loader.newImage(images,"basement_battery_glow","assets/images/basement_battery_glow.png")
@@ -428,12 +428,12 @@ function assets.item_set()
 
   	local storage_puzzle_item = Items(images.storage_vault,images["storageRoom"],40,30,"storage puzzle")
   	table.insert(obj,storage_puzzle_item)
-		
+
 		if love.system.getOS() ~= "Android" or love.system.getOS() ~= "iOS" then
   		local b_battery = Items(images.basement_battery,images["basementRoom"],30,38,"battery")
   		table.insert(obj,b_battery)
   	end
-  	
+
 
 
 
@@ -550,7 +550,7 @@ function assets.item_set()
 end
 
 function assets.dialogue_set()
-		
+
   	dialogue = {}
   	local shoerack = Interact(false,{"This is a shoerack","It's unattended for some time","Check inside?"},{"Yes","No"},"Just Worn Out Shoes","shoerack")
    --local shelf = Interact(false,{"this is a shelf","Look inside?"},{"Yes","No"},"just full of some items","shelf")
@@ -571,7 +571,7 @@ function assets.dialogue_set()
 	local crib = Interact(false,{"A child crib","There are barbie dolls,","teddy bears,and more stuff toys","There's a small paper with","drawings in it","Check it?"},{"yes","no"},"A child's art I guess.","crib")
 	local stuffs = Interact(false,{"More toys","Stuff toys,","Dolls,","dumbbell","a hoola hoop hook.","There's a box.","Look in it?"},{"Yes","no"},"Nothing more here.","toy")
 	local kTable = Interact(false,{"A kitchen table","Nothing special in it","Unless one is hungry","Sit down?"},{"Yes","No"},"I have nothing to do","kitchen table")
-	
+
 	local ref = Interact(false,{"A refrigerator","there are colorful","sticky notes and a picture","of me and my wife with","our child","What to do?"},{"Open it","Look at it"},"Just foods","refrigerator")
 	local trash = Interact(false,{"A trash bin","It's full.","And it smells terrible","Check inside?"},{"Maybe?","No way!"},"There's nothing more here","trash bin")
 	local sink = Interact(false,{"A large apparatus for kitchen","There are shelves on top,","Drawers at the bottom","Kitchen stuffs place holders","And a sink","Check the drawers?"},{"Yes","No"},"","sink")
@@ -591,7 +591,7 @@ function assets.dialogue_set()
 	local chest = Interact(false,{"It's a chest containing unused","stuffs and clothes","cobwebs and dust all over","Open it?"},{"Yes","No"},"There's nothing more here","chest")
 	table.insert(dialogue,chest)
 	local clock = Interact(false,{"It's Granpa's old clock..","I remember it's not working..","when Grandpa died last autumn","It's working now..","Something's not right..","Open it?"},{"Yes","No"},"There's nothing more here","clock")
-	table.insert(dialogue,clock) 
+	table.insert(dialogue,clock)
 
 	local storage_puzzle = Interact(false,{"It's a safe vault","I need a combination","to open it.","Input combination?"},{"Yes","No"},"There's nothing more here","storage puzzle")
 	table.insert(dialogue,storage_puzzle)
@@ -599,7 +599,7 @@ function assets.dialogue_set()
 		local b_battery_dial = Interact(false,{"It's a toolbox","It contains electronic parts","Search for items?"},{"Yes","No"},"","battery")
 		table.insert(dialogue,b_battery_dial)
 	end
-	
+
 
 
 	table.insert(dialogue,bed)
