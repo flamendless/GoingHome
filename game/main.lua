@@ -66,7 +66,7 @@ FC = require("libs.firstcrush.gui")
 
 if debug == false then
 	-- love.window.setFullscreen(true)
-	ty = height
+	ty = 0
 	-- ty = sh - (height * math.min(sw/width,sh/height))
 	if OS == "iOS" then
 		if pro_version then
@@ -330,7 +330,7 @@ function love.mousepressed(x,y,button,istouch)
 					end
 				end
 
-				if check_gui(width/2 + 12,gui_pos.q_y,8,8) then
+				if check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
 					gamestates.nextState("gallery")
 				end
 			end
@@ -490,13 +490,14 @@ function love.keypressed(key)
 				gamestates.load()
 			end
 		end
-		if state == "title" then
-		 if pro_version then
-			if key == "g" then
-				gamestates.nextState("gallery")
-			end
-		 end
-		end
+
+		-- if state == "title" then
+		--  if pro_version then
+		-- 	if key == "g" then
+		-- 		gamestates.nextState("gallery")
+		-- 	end
+		--  end
+		-- end
 
 		if state == "gallery" then
 			if pro_version then
@@ -510,10 +511,9 @@ function love.keypressed(key)
 
 		if key == "e" or key == "space" or key == "return" then
 			if state == "splash" then
-			gamestates.nextState("splash2")
-			end
-			if state == "splash2" then
-			gamestates.nextState("title")
+				gamestates.nextState("splash2")
+			elseif state == "splash2" then
+				gamestates.nextState("title")
 			end
 		end
 

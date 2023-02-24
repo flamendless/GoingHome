@@ -2,7 +2,7 @@ local Gallery = {}
 
 local music = {}
 local current = 1
-local title = 1 
+local title = 1
 local song = 2
 local stringWidth = 0
 local stringHeight = 0
@@ -80,7 +80,7 @@ end
 function Gallery.update(dt)
 	stringWidth = font:getWidth(music[current][title])/2
 	stringHeight = font:getHeight(music[current][tile])
-	
+
 	isPlaying = music[current][song]:isPlaying()
 	imgPlay = isPlaying == true and images.galleryPlay or images.galleryPause
 	gPlay.img = imgPlay

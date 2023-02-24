@@ -542,7 +542,12 @@ function assets.item_set()
 		webx = width - 12,
 		weby = height - 13,
 		webw = images.website_gui:getWidth(),
-		webh = images.website_gui:getHeight()
+		webh = images.website_gui:getHeight(),
+		--gallery
+		g_x = width/2 + 12,
+		g_y = height - 13,
+		g_w = images.gui_gallery:getWidth(),
+		g_h = images.gui_gallery:getHeight(),
 	}
 
 
