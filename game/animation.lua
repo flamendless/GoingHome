@@ -14,7 +14,7 @@ mother_x = 20
 mother_speed = 15
 
 
-function animation_set()	
+function animation_set()
 	--splash
 	local splash = anim8.newGrid(64,32,images.splash:getDimensions())
 	splash_anim = anim8.newAnimation(splash('1-5',1),0.25, function()
@@ -27,7 +27,7 @@ function animation_set()
 	idle = anim8.newAnimation(g('1-2',1),1)
 	walk_right = anim8.newAnimation(g('3-6',1), 0.25)
 	walk_left = anim8.newAnimation(g('3-6',1), 0.25):flipH()
-		
+
 	local _fs = anim8.newGrid(11,18,images.f_shot_sheet:getWidth(),images.f_shot_sheet:getHeight())
 	f_shot_anim = anim8.newAnimation(_fs('1-5',1),0.2,function()
 			f_shot_anim:pauseAtEnd()
@@ -53,7 +53,7 @@ function animation_set()
 
 	local _pk = anim8.newGrid(8,16,images.player_killed_sheet:getWidth(),images.player_killed_sheet:getHeight())
 	player_killed = anim8.newAnimation(_pk('1-14',1),0.2, function()
-			player_killed:pauseAtEnd()	
+			player_killed:pauseAtEnd()
 			en_anim = "mys"
 			fade_to_black = true
 		end)
@@ -124,7 +124,7 @@ function animation_set()
 				father_anim[2]:resume()
 				shout = true
 			end
-		end), 
+		end),
 
 		--push
 		anim8.newAnimation(_f('9-14',1),0.25, function()
@@ -181,7 +181,7 @@ function animation_set()
 		anim8.newAnimation(_m('9-14',1),0.25, function()
 			mother_gone = true
 		end),
-	}	
+	}
 
 
 	--child
@@ -241,7 +241,7 @@ function animation_set()
 	local _corpse = anim8.newGrid(17,24,images.corpse_anim:getWidth(),images.corpse_anim:getHeight())
 	corpse_fall_anim = anim8.newAnimation(_corpse('1-13',1),0.075, function()
 		sounds.body_fall:play()
-		sounds.body_fall:setLooping(false)		
+		sounds.body_fall:setLooping(false)
 		corpse_fall_anim:pauseAtEnd()
 		corpse_trigger = false
 		local corpse = Items(images.corpse,images["secretRoom"],90,40,"corpse")
