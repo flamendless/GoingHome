@@ -96,6 +96,22 @@ adTxt = {
 "or buy the adless version" }
 lightningVol = 0.3
 
+local intro_txt = {
+	"",
+	"...",
+	"Claire..",
+	"Alex..",
+	"I'm here..",
+	"Where are you two?",
+	"Why is it so dark in here?",
+	"The storm must have",
+	"caused the blackout",
+	"Good thing I've brought",
+	"my flashlight.",
+	""
+}
+
+
 function gamestates.load()
 
 	go_flag = 0
@@ -109,21 +125,6 @@ function gamestates.load()
 	doors_locked = true
 	action_flag = 0
 	tt_update = false
-
-	intro_txt = {
-		"",
-		"...",
-		"Claire..",
-		"Alex..",
-		"I'm here..",
-		"Where are you two?",
-		"Why is it so dark in here?",
-		"The storm must have",
-		"caused the blackout",
-		"Good thing I've brought",
-		"my flashlight.",
-		""
-	}
 
 	intro_count = 1
 	intro_timer = 2.5
@@ -139,6 +140,7 @@ function gamestates.load()
 		FC:init()
 		FC:GDPR_init()
 	end
+
 	if state == "splash" then
 		if pro_version then
 			assets.load()
@@ -195,6 +197,11 @@ function gamestates.load()
 	end
 
 	if state == "main" then
+		local str_save_data = love.filesystem.read(SaveData.out_filename)
+		if str_save_data then
+			local save_data = JSON.decode(str_save_data)
+			door_locked = save_data.door_locked
+		end
 
 		sounds.rain:setLooping(true)
 		sounds.rain:setVolume(0.8)

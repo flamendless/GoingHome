@@ -1,11 +1,15 @@
 --if love.system.getOS() ~= "Android" then debug = true end
 --load libraries
-loader = require("libs/love-loader")
-lume = require("libs/lume")
+
+local URLS = require("urls")
+
+JSON = require("libs.json.json")
+loader = require("libs.love-loader")
+lume = require("libs.lume")
 pause = require("pause")
-anim8 = require("libs/anim8")
-Timer = require("libs/knife.timer")
-Object = require("libs/classic")
+anim8 = require("libs.anim8")
+Timer = require("libs.knife.timer")
+Object = require("libs.classic")
 Player = require("player")
 Fade = require("fade")
 Enemy = require("enemy")
@@ -13,6 +17,7 @@ Chair = require("chair")
 
 Items = require("items")
 Interact = require("interact")
+SaveData = require("save_data")
 
 OS = love.system.getOS()
 
@@ -24,7 +29,7 @@ end
 Gallery = require("gallery")
 
 require("gameStates")
-require("load")
+assets = require("assets")
 
 font = love.graphics.newFont("assets/Jamboree.ttf",8)
 font:setFilter("nearest","nearest",1)
@@ -46,10 +51,9 @@ require("rightroom")
 require("leftroom")
 require("storagePuzzle")
 require("leave_event")
-require("colored_assets")
 require("credits_scene")
 
-hump_timer = require("libs/hump/timer")
+hump_timer = require("libs.hump.timer")
 splash_finished = false
 
 local utf8 = require("utf8")
@@ -318,13 +322,13 @@ function love.mousepressed(x,y,button,istouch)
 					end
 				else
 					if check_gui(gui_pos.t_x,gui_pos.t_y,gui_pos.t_w,gui_pos.t_h) then
-						love.system.openURL("https://twitter.com/flamendless")
+						love.system.openURL(URLS.twitter)
 					elseif check_gui(gui_pos.p_x,gui_pos.p_y,gui_pos.p_w,gui_pos.p_h) then
 						if love.system.getOS() ~= "iOS" then
-						love.system.openURL("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=K7QQSFGC2WXEA")
+						love.system.openURL(URLS.paypal)
 						end
 					elseif check_gui(gui_pos.e_x,gui_pos.e_y,gui_pos.e_w,gui_pos.e_h) then
-						love.system.openURL("mailto:flamendless8@gmail.com")
+						love.system.openURL(URLS.mailto)
 					elseif check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h)  then
 						questions = false
 					end
@@ -430,7 +434,7 @@ function love.keyreleased(key)
 						elseif cursor_pos == 5 then
 							instruction = true
 						elseif cursor_pos == 6 then
-							love.system.openURL("https://brbl.gamejolt.io")
+							love.system.openURL(URLS.game_page)
 						end
 					end
 				end
