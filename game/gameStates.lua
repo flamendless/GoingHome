@@ -278,9 +278,7 @@ function gamestates.update(dt)
 
 	if state == "gallery" then
 		Gallery.update(dt)
-	end
-
-	if state == "adshow" then
+	elseif state == "adshow" then
 		if love.system.getOS() == "Android" then
 			if adTimer > 0 then
 				adTimer = adTimer - 1 * dt
@@ -293,18 +291,14 @@ function gamestates.update(dt)
 			states = "splash"
 			gamestates.load()
 		end
-	end
-
-	if state == "splash" then
+	elseif state == "splash" then
 		splash_anim:update(dt)
 		if splash_finished then
 			splash_timer:update(dt)
 		end
-	end
-	if state == "splash2" then
+	elseif state == "splash2" then
 		logoTimer:update(dt)
-	end
-	if state == "title" then
+	elseif state == "title" then
 		if instruction == false and about == false and questions == false then
 			if check_gui(gui_pos.start_x,gui_pos.start_y,gui_pos.start_w,gui_pos.start_h) or
 				check_gui(gui_pos.quit_x,gui_pos.quit_y,gui_pos.quit_w,gui_pos.quit_h) or
@@ -651,8 +645,8 @@ function gamestates.draw()
 	local state = gamestates.getState()
 	if state == "adshow" then
 		if love.system.getOS() == "Android" or love.system.getOS() == "iOS" then
-				love.graphics.setColor(1, 1, 1, 1)
-				love.graphics.draw(images.adIntro,0,0)
+			love.graphics.setColor(1, 1, 1, 1)
+			love.graphics.draw(images.adIntro,0,0)
 		end
 	end
 	if state == "splash" then
