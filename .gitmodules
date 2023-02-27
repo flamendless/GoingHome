@@ -13,3 +13,6 @@ url = https://github.com/vrld/hump.git
 [submodule "libs/knife"]
 path = game/libs/knife
 url = https://github.com/airstruck/knife.git
+[submodule "game/libs/json"]
+	path = game/libs/json
+	url = https://github.com/rxi/json.lua
