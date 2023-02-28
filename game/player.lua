@@ -6,7 +6,7 @@ function Player:new(x,y,w,h)
 	self.w = w
 	self.h = h
 	self.grav = 1
-	self.xspd = 25
+	self.xspd = 20
 	self.moveLeft = true
 	self.moveRight = true
 	self.isMoving = false
@@ -64,16 +64,14 @@ function Player:update(dt)
 			player_killed:update(dt)
 		end
 	end
+
 	idle:update(dt)
 	walk_right:update(dt)
 	walk_left:update(dt)
 	child:update(dt)
 
-
-	if love.system.getOS() == "Android" or love.system.getOS() == "iOS" then
-		if self.android == 0 then
-			self.isMoving = false
-		end
+	if ((OS == "Android") or (OS == "iOS") and self.android == 0) then
+		self.isMoving = false
 	end
 end
 
@@ -489,8 +487,7 @@ function doorTxt(str1,str2)
 end
 
 function leaveRoom()
-
-	for k,v in pairs(dialogue) do
+	for _,v in ipairs(dialogue) do
 		if v.state == true then v.state = false end
 		if v.option == true then v.option = false end
 		if v.specialTxt == true then v.specialTxt = false end

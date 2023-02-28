@@ -26,4 +26,5 @@ function love.conf(t)
 	cheat = false
 	pro_version = true
 	apple_ver = false
+	shaders_test = true
 end

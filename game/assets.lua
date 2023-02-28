@@ -1,6 +1,8 @@
 local assets = {}
 
 local textures = {
+	-- {"tex_palette_ref","assets/palette_map.png"},
+
 	{"gallerySlider","assets/gallery/slider.png"},
 	{"galleryVolume","assets/gallery/volume.png"},
 	{"galleryPlay","assets/gallery/play.png"},
@@ -533,11 +535,11 @@ function assets.dialogue_set()
 	table.insert(dialogue,holes)
 	local hoop_ball = Interact(false,{"the ball is inside the hoop","take the ball again?"},{"yes","no"},"It's stucked","hoop_ball")
 	table.insert(dialogue,hoop_ball)
-  table.insert(dialogue,shoerack)
-  table.insert(dialogue,shelf)
-  table.insert(dialogue,portraits)
-  table.insert(dialogue,display)
-  table.insert(dialogue,landscape)
+	table.insert(dialogue,shoerack)
+	table.insert(dialogue,shelf)
+	table.insert(dialogue,portraits)
+	table.insert(dialogue,display)
+	table.insert(dialogue,landscape)
 	table.insert(dialogue,head)
 	table.insert(dialogue,stand)
 	table.insert(dialogue,bench)

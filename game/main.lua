@@ -2,6 +2,7 @@
 --load libraries
 
 local URLS = require("urls")
+local Shaders = require("shaders")
 
 JSON = require("libs.json.json")
 loader = require("libs.love-loader")
@@ -68,8 +69,20 @@ interact = false
 local _ads = require("ads")
 FC = require("libs.firstcrush.gui")
 
+MAIN_CANVAS = love.graphics.newCanvas(love.graphics.getDimensions())
+
+function toggle_fs()
+	love.window.setFullscreen(not love.window.getFullscreen())
+	local sWidth, sHeight = love.graphics.getDimensions()
+	ratio = math.min(sWidth/width, sHeight/height)
+	MAIN_CANVAS = love.graphics.newCanvas(love.graphics.getDimensions())
+end
+
 if debug == false then
-	-- love.window.setFullscreen(true)
+	if (OS ~= "iOS") and (OS ~= "Android") then
+		toggle_fs()
+	end
+
 	ty = 0
 	-- ty = sh - (height * math.min(sw/width,sh/height))
 	if OS == "iOS" then
@@ -84,17 +97,6 @@ if debug == false then
 		else
 			ty = sh - (height * math.min(sw/width,sh/height))
 		end
-	end
- else
-	love.window.setFullscreen(false)
-	if OS == "Android" then
-		if pro_version then
-			ty = height
-		else
-			ty = sh - (height * math.min(sw/width,sh/height))
-		end
-	else
-		ty = 0
 	end
 end
 
@@ -197,7 +199,12 @@ function love.update(dt)
 	if not finishedLoading then
 		loader.update()
 	else
-		if FC:getState() then FC:update(dt)
+		-- if shaders_test or enemy_exists then
+		-- 	Shaders.update(Shaders.palette_swap)
+		-- end
+
+		if FC:getState() then
+			FC:update(dt)
 		else
 			gamestates.update(dt)
 			if OS == "Android" or OS == "iOS" then
@@ -208,31 +215,48 @@ function love.update(dt)
 end
 
 function love.draw()
-	love.graphics.push()
-		if OS == "Android" or OS == "iOS" then
-			love.graphics.translate(0, ty)
-		end
-
-		love.graphics.scale(ratio, ratio)
-		if finishedLoading then
-			if pauseFlag == false then
-				gamestates.draw()
-			elseif pauseFlag == true then
-				pause.draw()
+	love.graphics.setCanvas(MAIN_CANVAS)
+		love.graphics.clear()
+		love.graphics.push()
+			if OS == "Android" or OS == "iOS" then
+				love.graphics.translate(0, ty)
 			end
-			if FC:getState() then FC:draw() end
-		else
-			local percent = 0
-			if loader.resourceCount ~= 0 then percent = loader.loadedCount / loader.resourceCount end
-			--love.graphics.setColor(percent*100,0,0,255)
-			love.graphics.setColor(1, 1, 1, 150/255)
-			love.graphics.setFont(font)
-			love.graphics.print("Loading",width - 34 -font:getWidth("Loading")/2, height - 12)
-			love.graphics.setFont(font)
-			love.graphics.setColor(1, 1, 1, 150/255)
-			love.graphics.print(("..%d%%"):format(percent*100), width - 20, height -12)
-		end
-	love.graphics.pop()
+
+			love.graphics.scale(ratio, ratio)
+			if finishedLoading then
+
+				-- if shaders_test or enemy_exists then
+				-- 	love.graphics.setShader(Shaders.palette_swap)
+				-- end
+
+				if pauseFlag == false then
+					gamestates.draw()
+				elseif pauseFlag == true then
+					pause.draw()
+				end
+
+				love.graphics.setShader()
+
+				if FC:getState() then FC:draw() end
+			else
+				local percent = 0
+				if loader.resourceCount ~= 0 then percent = loader.loadedCount / loader.resourceCount end
+				--love.graphics.setColor(percent*100,0,0,255)
+				love.graphics.setColor(1, 1, 1, 150/255)
+				love.graphics.setFont(font)
+				love.graphics.print("Loading",width - 34 -font:getWidth("Loading")/2, height - 12)
+				love.graphics.setFont(font)
+				love.graphics.setColor(1, 1, 1, 150/255)
+				love.graphics.print(("..%d%%"):format(percent*100), width - 20, height -12)
+			end
+		love.graphics.pop()
+	love.graphics.setCanvas()
+
+	love.graphics.setColor(1, 1, 1, 1)
+	--TODO: (Brandon) decide on WHEN to use grayscale. Maybe use Slab?
+	love.graphics.setShader(Shaders.grayscale)
+	love.graphics.draw(MAIN_CANVAS)
+	love.graphics.setShader()
 end
 
 function love.mousereleased(x,y,button,istouch)
@@ -362,9 +386,7 @@ end
 
 function love.keyreleased(key)
 	if key == "f6" then
-		love.window.setFullscreen(not love.window.getFullscreen())
-		local sWidth, sHeight = love.graphics.getDimensions()
-		ratio = math.min(sWidth/width, sHeight/height)
+		toggle_fs()
 	end
 
 	if load_complete == true then

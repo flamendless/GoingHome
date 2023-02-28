@@ -165,38 +165,17 @@ function gamestates.load()
 		sounds.fl_toggle:setLooping(false)
 		sounds.fl_toggle:setVolume(1)
 
-		if love.system.getOS() == "Android" then
-			if pro_version == false then
-				--love.system.createBanner("ca-app-pub-1904940380415570/7680044440", "top", "SMART_BANNER")
-				--love.system.createInterstitial("ca-app-pub-1904940380415570/4174848045")
-				--love.system.createBanner("ca-app-pub-8754873203122588/8539475757","top","SMART_BANNER")
-				--love.system.createInterstitial("ca-app-pub-8754873203122588/1016208959")
-				--love.system.createBanner("ca-app-pub-8754873203122588/6992910037","top","SMART_BANNER")
-				--love.system.createInterstitial("ca-app-pub-8754873203122588/1596101364")
-				show_ads()
-				--love.ads.createBanner(_ads.banner,"top")
-				--love.ads.requestInterstitial(_ads.inter)
-				--love.ads.showBanner()
-				--if love.ads.isInterstitialLoaded() then
-					--print("show interstitial ad")
-					--love.ads.showInterstitial()
-				--end
-			end
+		if (OS == "Android") and (not pro_version) then
+			show_ads()
 		end
-	end
-
-	if state == "rain_intro" then
+	elseif state == "rain_intro" then
 		sounds.ts_theme:stop()
 		intro_load()
-	end
-
-	if state == "intro" then
+	elseif state == "intro" then
 		sounds.knock:play()
 		sounds.enemy_scream:setLooping(false)
 		sounds.intro_soft:stop()
-	end
-
-	if state == "main" then
+	elseif state == "main" then
 		local str_save_data = love.filesystem.read(SaveData.out_filename)
 		if str_save_data then
 			local save_data = JSON.decode(str_save_data)
@@ -230,6 +209,10 @@ function gamestates.load()
 			"masterRoom_mid"
 		}
 
+		if not door_locked then
+			locked["mainRoom_right"] = false
+		end
+
 		obtainables = Set{
 			"cabinet", --where to get the toy hammer
 			"toy", --where to get the air pumper
@@ -254,11 +237,7 @@ function gamestates.load()
 	end
 end
 
-function gamestates.getState()
-	return states
-end
-
-
+function gamestates.getState() return states end
 
 function gamestates.update(dt)
 	local mx, my = love.mouse.getPosition()
@@ -381,7 +360,7 @@ function gamestates.update(dt)
 		skip_button:update(dt)
 
 			-----MAIN-------
-	elseif  state == "main" then
+	elseif state == "main" then
 
 		if move == true then
 			player:movement(dt)
