@@ -59,7 +59,8 @@ function Gallery.load()
 		x = 5,
 		y = 1,
 		w = images.gui_settings:getWidth(),
-		h = images.gui_settings:getHeight()
+		h = images.gui_settings:getHeight(),
+		is_button = true,
 	}
 
 
@@ -78,10 +79,12 @@ function Gallery.load()
 end
 
 function Gallery.update(dt)
-	stringWidth = font:getWidth(music[current][title])/2
-	stringHeight = font:getHeight(music[current][tile])
+	local cur = music[current]
+	local title = cur[title]
+	stringWidth = font:getWidth(title)/2
+	stringHeight = font:getHeight(title)
 
-	isPlaying = music[current][song]:isPlaying()
+	isPlaying = cur[song]:isPlaying()
 	imgPlay = isPlaying == true and images.galleryPlay or images.galleryPause
 	gPlay.img = imgPlay
 end
@@ -114,16 +117,19 @@ function Gallery.draw()
 	love.graphics.print(music[current][title],width/2 - stringWidth,height/2 - stringHeight)
 
 	for k,v in pairs(galleryGui) do
-		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.draw(galleryGui[k].img,
-			galleryGui[k].x, galleryGui[k].y,
-			0,1,1,
-			galleryGui[k].w/2, galleryGui[k].h/2)
+		local obj = galleryGui[k]
 
-		--if debug then
-			--love.graphics.setColor(1, 0, 0, 1)
-			--love.graphics.rectangle("line",galleryGui[k].x,galleryGui[k].y,galleryGui[k].w,galleryGui[k].h)
-		--end
+		if obj.is_button and check_gui(obj.x, obj.y, obj.w, obj.h) then
+			love.graphics.setColor(1, 0, 0, 1)
+		else
+			love.graphics.setColor(1, 1, 1, 1)
+		end
+
+		love.graphics.draw(obj.img,
+			obj.x, obj.y,
+			0, 1, 1,
+			obj.w/2, obj.h/2
+		)
 	end
 end
 

@@ -90,29 +90,31 @@ end
 
 function android.update(dt)
 	local state = gamestates.getState()
-	if state == "main" then
-		lx = player.x - images.lightOutline:getWidth()/2 + math.random(-0.05,0.05)
-		ly = player.y - images.lightOutline:getHeight()/2.5 + math.random(-0.05,0.05)
-		android.light_update(dt)
-		if move == false then
-			player.android = 0
-		end
+	if state ~= "main" then return end
 
-		if leftHold == true then
-			player.android = -1
-		elseif rightHold == true then
-			player.android = 1
-		elseif leftHold == false and rightHold == false then
-			player.android = 0
-		end
+	local lo_w, lo_h = images.lightOutline:getDimensions()
 
-		if move_chair then
-			local touches = love.touch.getTouches()
-			for i,id in ipairs(touches) do
-				local x,y = love.touch.getPosition(id)
-				if guiCheck_touch(id,x,y,gAct) then
-					mrChair:keypressed(dt,"e")
-				end
+	lx = player.x - lo_w/2 + math.random(-0.05,0.05)
+	ly = player.y - lo_h/2.5 + math.random(-0.05,0.05)
+	android.light_update(dt)
+	if move == false then
+		player.android = 0
+	end
+
+	if leftHold == true then
+		player.android = -1
+	elseif rightHold == true then
+		player.android = 1
+	elseif leftHold == false and rightHold == false then
+		player.android = 0
+	end
+
+	if move_chair then
+		local touches = love.touch.getTouches()
+		for i,id in ipairs(touches) do
+			local x,y = love.touch.getPosition(id)
+			if guiCheck_touch(id,x,y,gAct) then
+				mrChair:keypressed(dt,"e")
 			end
 		end
 	end

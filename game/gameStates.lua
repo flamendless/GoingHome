@@ -761,14 +761,14 @@ function gamestates.draw()
 			love.graphics.draw(images.question,gui_pos.q_x,gui_pos.q_y)
 		--end
 
-		if pro_version then
-			if mouse_select == true and check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
-				love.graphics.setColor(1, 0, 0, 1)
-			else
-				love.graphics.setColor(1, 1, 1, 1)
+			if pro_version then
+				if mouse_select == true and check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
+					love.graphics.setColor(1, 0, 0, 1)
+				else
+					love.graphics.setColor(1, 1, 1, 1)
+				end
+				love.graphics.draw(images.gui_gallery, gui_pos.g_x, gui_pos.g_y)
 			end
-			love.graphics.draw(images.gui_gallery, gui_pos.g_x, gui_pos.g_y)
-		end
 
 		elseif instruction == true and about == false and questions == false then
 			love.graphics.setColor(0,0,0,0)
@@ -888,6 +888,7 @@ function gamestates.draw()
 
 	elseif state == "gallery" then
 		Gallery.draw()
+
 	elseif state == "rain_intro" then
 		intro_draw()
 
