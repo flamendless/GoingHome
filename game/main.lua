@@ -127,7 +127,7 @@ function love.load()
 
 	clock = 0 --game timer
 
-	sWidth, sHeight = love.graphics.getDimensions()
+	local sWidth, sHeight = love.graphics.getDimensions()
 	ratio = math.min(sWidth/width, sHeight/height)
 	pressed = false
 	love.keyboard.setKeyRepeat(true)
@@ -209,35 +209,29 @@ end
 
 function love.draw()
 	love.graphics.push()
-
-	if OS == "Android" or OS == "iOS" then
-		love.graphics.translate(0, ty)
-	end
-
-	love.graphics.scale(ratio, ratio)
-	if finishedLoading then
-		if pauseFlag == false then
-			gamestates.draw()
-		elseif pauseFlag == true then
-			pause.draw()
+		if OS == "Android" or OS == "iOS" then
+			love.graphics.translate(0, ty)
 		end
-		if FC:getState() then FC:draw() end
-	else
-		local percent = 0
-		if loader.resourceCount ~= 0 then percent = loader.loadedCount / loader.resourceCount end
-		--love.graphics.setColor(percent*100,0,0,255)
-		love.graphics.setColor(1, 1, 1, 150/255)
-		love.graphics.setFont(font)
-		love.graphics.print("Loading",width - 34 -font:getWidth("Loading")/2, height - 12)
-		love.graphics.setFont(font)
-		love.graphics.setColor(1, 1, 1, 150/255)
-		love.graphics.print(("..%d%%"):format(percent*100), width - 20, height -12)
-	end
-	--dev_draw()
-	--if debug == true then
-		--love.graphics.setColor(255,0,0,255)
-		--love.graphics.rectangle("line",0,0,width,height)
-	--end
+
+		love.graphics.scale(ratio, ratio)
+		if finishedLoading then
+			if pauseFlag == false then
+				gamestates.draw()
+			elseif pauseFlag == true then
+				pause.draw()
+			end
+			if FC:getState() then FC:draw() end
+		else
+			local percent = 0
+			if loader.resourceCount ~= 0 then percent = loader.loadedCount / loader.resourceCount end
+			--love.graphics.setColor(percent*100,0,0,255)
+			love.graphics.setColor(1, 1, 1, 150/255)
+			love.graphics.setFont(font)
+			love.graphics.print("Loading",width - 34 -font:getWidth("Loading")/2, height - 12)
+			love.graphics.setFont(font)
+			love.graphics.setColor(1, 1, 1, 150/255)
+			love.graphics.print(("..%d%%"):format(percent*100), width - 20, height -12)
+		end
 	love.graphics.pop()
 end
 
@@ -274,32 +268,27 @@ function love.mousepressed(x,y,button,istouch)
 						gamestates.control()
 					elseif check_gui(gui_pos.quit_x,gui_pos.quit_y,gui_pos.quit_w,gui_pos.quit_h) then
 						--exit
-						if love.system.getOS() ~= "iOS" then
+						if OS ~= "iOS" then
 							love.event.quit()
 						end
 					elseif check_gui(gui_pos.webx,gui_pos.weby,gui_pos.webw,gui_pos.webh) then
-							--love.system.openURL("https://brbl.gamejolt.io")
-							if love.system.getOS() == "Android" then
-			love.system.createInterstitial(_ads.inter)
-			if love.system.isInterstitialLoaded() == true then
-				love.system.showInterstitial()
-			end
-								--print("clicked on gui")
-			--love.system.createInterstitial(_ads.inter)
-			--love.system.showBanner()
-			--if love.system.isInterstitialLoaded() == true then
-				--love.system.showInterstitial()
-			--end
-		end
+						if OS == "Android" then
+							love.system.createInterstitial(_ads.inter)
+							if love.system.isInterstitialLoaded() == true then
+								love.system.showInterstitial()
+							end
+						else
+							love.system.openURL(URLS.game_page)
+						end
 					end
 				end
 				if instruction == false then
 					if check_gui(gui_pos.i_x,gui_pos.i_y,gui_pos.i_w,gui_pos.i_h) then
-							instruction = true
+						instruction = true
 					end
 				else
 					if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h)  then
-							instruction = false
+						instruction = false
 					end
 				end
 
@@ -372,26 +361,31 @@ function love.mousepressed(x,y,button,istouch)
 end
 
 function love.keyreleased(key)
+	if key == "f6" then
+		love.window.setFullscreen(not love.window.getFullscreen())
+		local sWidth, sHeight = love.graphics.getDimensions()
+		ratio = math.min(sWidth/width, sHeight/height)
+	end
+
 	if load_complete == true then
 		if key == "f5" then
 			love.event.quit()
 		end
+
 		local state = gamestates.getState()
-		if love.system.getOS() == "Android" then
+		if OS == "Android" then
 			android.setKey(key)
 		end
+
 		if state == "main" then
 			if key == "a" or key == "d" then
 				player.isMoving = false
 			end
-		end
-		if state == "intro" or state == "rain_intro" then
+		elseif state == "intro" or state == "rain_intro" then
 			if key == "return" or key == "e"     then
 				pressed = false
 			end
-		end
-
-		if state == "title" then
+		elseif state == "title" then
 			if instruction == false and about == false and questions == false then
 				if cursor_select == true then
 					if key == "w" or key == "up" then
@@ -452,28 +446,28 @@ function love.keyreleased(key)
 			end
 		end
 
-		if lr_event == 3 then
-			if key == "a" then
-				e_c = 1
-			elseif key == "d" then
-				e_c = 2
-			elseif key == "e"  then
-				if route == 1 then
-					if e_c == 1 then
-						event_route = him_convo
-					elseif e_c == 2 then
-						event_route = wait_convo
-					end
-				elseif route == 2 then
-					if e_c == 1 then
-						event_route = leave_convo
-					elseif e_c == 2 then
-						event_route = wait_convo
-					end
+		if lr_event ~= 3 then return end
+
+		if key == "a" then
+			e_c = 1
+		elseif key == "d" then
+			e_c = 2
+		elseif key == "e"  then
+			if route == 1 then
+				if e_c == 1 then
+					event_route = him_convo
+				elseif e_c == 2 then
+					event_route = wait_convo
 				end
-				if event_route ~= nil then
-					lr_event = 4
+			elseif route == 2 then
+				if e_c == 1 then
+					event_route = leave_convo
+				elseif e_c == 2 then
+					event_route = wait_convo
 				end
+			end
+			if event_route ~= nil then
+				lr_event = 4
 			end
 		end
 	end
