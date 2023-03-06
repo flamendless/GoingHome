@@ -76,8 +76,8 @@ end
 function pause.draw()
 	love.graphics.setColor(1, 1, 1, 1)
 	love.graphics.print(pauseTxt,width/2 - font:getWidth(pauseTxt)/2,8)
-	love.graphics.draw(images.gui_sBack,gSettingsBack.x,gSettingsBack.y)
-	if love.system.getOS() ~= "iOS" then
+	if (OS == "Android") or (OS == "iOS") then
+		love.graphics.draw(images.gui_sBack,gSettingsBack.x,gSettingsBack.y)
 		love.graphics.draw(images.gui_quit,gQuit.x,gQuit.y)
 	end
 	love.graphics.draw(gSound.img,gSound.x,gSound.y)

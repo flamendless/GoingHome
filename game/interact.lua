@@ -57,7 +57,7 @@ function Interact:update(dt)
 	end
 
 	if self.state == true then
-		if self.n > #self.txt then 
+		if self.n > #self.txt then
 			self.option = true
 		end
 
@@ -170,7 +170,7 @@ function Interact:draw()
 end
 
 function Interact:returnChoices(choice)
-	local choice = choice 
+	local choice = choice
 	if choice == 1 then
 		for k,v in pairs(obj_properties.static) do
 			if self.tag == v then
@@ -189,7 +189,7 @@ function Interact:returnChoices(choice)
 		end
 
 		self:checkItem()
-	else 
+	else
 		if self.tag == "refrigerator" then
 			self:special_text("There's a note:","'Ephesians 2:8'")
 
@@ -266,7 +266,7 @@ function Interact:checkItem()
 						self.toRemove = "sink"
 						if obtainables["crowbar"] == false then
 							if sink_trigger == 0 then
-								sink_trigger = 1 
+								sink_trigger = 1
 								do return end
 							elseif sink_trigger == 1 then
 								m:special_text("","Nothing more here")
@@ -308,7 +308,7 @@ function Interact:checkItem()
 							rope_trigger = 1
 							do return end
 						end
-					else 
+					else
 						if rope_trigger == 1 then
 							m:special_text("It's stucked","It's already pulled")
 						end
@@ -328,7 +328,7 @@ function Interact:checkItem()
 						sounds.climb:setLooping(false)
 						fade.state = true
 						currentRoom = images["secretRoom"]
-						
+
 				elseif o.tag and self.tag == "chair_final" then
 					sounds.climb:play()
 					sounds.climb:setLooping(false)

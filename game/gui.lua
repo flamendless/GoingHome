@@ -90,29 +90,31 @@ end
 
 function android.update(dt)
 	local state = gamestates.getState()
-	if state == "main" then
-		lx = player.x - images.lightOutline:getWidth()/2 + math.random(-0.05,0.05)
-		ly = player.y - images.lightOutline:getHeight()/2.5 + math.random(-0.05,0.05)
-		android.light_update(dt)
-		if move == false then
-			player.android = 0
-		end
+	if state ~= "main" then return end
 
-		if leftHold == true then
-			player.android = -1
-		elseif rightHold == true then
-			player.android = 1
-		elseif leftHold == false and rightHold == false then
-			player.android = 0
-		end
+	local lo_w, lo_h = images.lightOutline:getDimensions()
 
-		if move_chair then
-			local touches = love.touch.getTouches()
-			for i,id in ipairs(touches) do
-				local x,y = love.touch.getPosition(id)
-				if guiCheck_touch(id,x,y,gAct) then
-					mrChair:keypressed(dt,"e")
-				end
+	lx = player.x - lo_w/2 + math.random(-0.05,0.05)
+	ly = player.y - lo_h/2.5 + math.random(-0.05,0.05)
+	android.light_update(dt)
+	if move == false then
+		player.android = 0
+	end
+
+	if leftHold == true then
+		player.android = -1
+	elseif rightHold == true then
+		player.android = 1
+	elseif leftHold == false and rightHold == false then
+		player.android = 0
+	end
+
+	if move_chair then
+		local touches = love.touch.getTouches()
+		for i,id in ipairs(touches) do
+			local x,y = love.touch.getPosition(id)
+			if guiCheck_touch(id,x,y,gAct) then
+				mrChair:keypressed(dt,"e")
 			end
 		end
 	end
@@ -122,37 +124,37 @@ function android.draw()
 	local state = gamestates.getState()
 	love.graphics.setColor(1, 1, 1, 1)
 	if state == "main" then
-		--android.light_draw()
-	 if move == true then
-	   love.graphics.setColor(1, 1, 1, 1)
-	   love.graphics.draw(images.gui_left,gLeft.x,gLeft.y)
-	   love.graphics.draw(images.gui_right,gRight.x,gRight.y)
-	   love.graphics.draw(images.gui_light,gLight.x,gLight.y)
-	   love.graphics.draw(images.gui_act,gAct.x,gAct.y)
-	   love.graphics.draw(images.gui_settings,gSettings.x,gSettings.y)
-	 else
-	   love.graphics.setColor(1, 1, 1, 50/255)
-	   love.graphics.draw(images.gui_left,gLeft.x,gLeft.y)
-	   love.graphics.draw(images.gui_right,gRight.x,gRight.y)
-	   love.graphics.draw(images.gui_act,gAct.x,gAct.y)
-	 end
-	 	if word_puzzle then
+			--android.light_draw()
+		 if move == true then
+			love.graphics.setColor(1, 1, 1, 1)
+			love.graphics.draw(images.gui_left,gLeft.x,gLeft.y)
+			love.graphics.draw(images.gui_right,gRight.x,gRight.y)
+			love.graphics.draw(images.gui_light,gLight.x,gLight.y)
+			love.graphics.draw(images.gui_act,gAct.x,gAct.y)
+			love.graphics.draw(images.gui_settings,gSettings.x,gSettings.y)
+		 else
+			love.graphics.setColor(1, 1, 1, 50/255)
+			love.graphics.draw(images.gui_left,gLeft.x,gLeft.y)
+			love.graphics.draw(images.gui_right,gRight.x,gRight.y)
+			love.graphics.draw(images.gui_act,gAct.x,gAct.y)
+		 end
+		if word_puzzle then
 			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.draw(images.gui_esc,gEsc.x,gEsc.y)
-	 	end
-	  if clock_puzzle == true then
-	  	love.graphics.setColor(1, 1, 1, 1)
-	  	love.graphics.draw(images.gui_left,gLeft2.x,gLeft2.y)
-	 	  love.graphics.draw(images.gui_right,gRight2.x,gRight2.y)
-	  	love.graphics.draw(images.gui_up,gUp.x,gUp.y)
-	  	love.graphics.draw(images.gui_down,gDown.x,gDown.y)
-	  	love.graphics.draw(images.gui_enter,gEnter.x,gEnter.y)
-	  	love.graphics.draw(images.gui_esc,gEsc.x,gEsc.y)
-	  end
-	  if doodle_flag == true then
+		end
+		  if clock_puzzle == true then
 			love.graphics.setColor(1, 1, 1, 1)
-	  	love.graphics.draw(images.gui_esc,gEsc.x,gEsc.y)
-	  end
+			love.graphics.draw(images.gui_left,gLeft2.x,gLeft2.y)
+			love.graphics.draw(images.gui_right,gRight2.x,gRight2.y)
+			love.graphics.draw(images.gui_up,gUp.x,gUp.y)
+			love.graphics.draw(images.gui_down,gDown.x,gDown.y)
+			love.graphics.draw(images.gui_enter,gEnter.x,gEnter.y)
+			love.graphics.draw(images.gui_esc,gEsc.x,gEsc.y)
+		end
+		if doodle_flag == true then
+			love.graphics.setColor(1, 1, 1, 1)
+			love.graphics.draw(images.gui_esc,gEsc.x,gEsc.y)
+		end
 	end
 end
 
@@ -270,21 +272,19 @@ function android.dialogue()
 	local key = android.getKey()
 	for k,v in pairs(dialogue) do
 		for j,k in pairs(obj) do
-			if v.tag == k.tag then
-				if v.state == true then
-					if key == "e" then
-						if v.n <= #v.txt then
-							v.n = v.n + 1
-						end
+			if (v.tag == k.tag) and v.state then
+				if key == "e" then
+					if v.n <= #v.txt then
+						v.n = v.n + 1
 					end
-					if v.option == true then
-						if key == "a" then
-							v.cursor = 1
-						elseif key == "d" then
-							v.cursor = 2
-						elseif key == "e"  then
-							v:returnChoices(v.cursor)
-						end
+				end
+				if v.option == true then
+					if key == "a" then
+						v.cursor = 1
+					elseif key == "d" then
+						v.cursor = 2
+					elseif key == "e"  then
+						v:returnChoices(v.cursor)
 					end
 				end
 			end
@@ -402,7 +402,7 @@ if love.system.getOS() == "Android" or love.system.getOS() == "iOS" then
 	local state = gamestates.getState()
 	local mx= x/ratio
 	local my = (y-ty)/ratio
-	
+
 	if button == 1 then
 		if state == "title" then
 			if instruction == false and about == false and questions == false then

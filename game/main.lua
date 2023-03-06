@@ -1,11 +1,16 @@
 --if love.system.getOS() ~= "Android" then debug = true end
 --load libraries
-loader = require("libs/love-loader")
-lume = require("libs/lume")
+
+local URLS = require("urls")
+local Shaders = require("shaders")
+
+JSON = require("libs.json.json")
+loader = require("libs.love-loader")
+lume = require("libs.lume")
 pause = require("pause")
-anim8 = require("libs/anim8")
-Timer = require("libs/knife.timer")
-Object = require("libs/classic")
+anim8 = require("libs.anim8")
+Timer = require("libs.knife.timer")
+Object = require("libs.classic")
 Player = require("player")
 Fade = require("fade")
 Enemy = require("enemy")
@@ -13,6 +18,7 @@ Chair = require("chair")
 
 Items = require("items")
 Interact = require("interact")
+SaveData = require("save_data")
 
 OS = love.system.getOS()
 
@@ -24,7 +30,7 @@ end
 Gallery = require("gallery")
 
 require("gameStates")
-require("load")
+assets = require("assets")
 
 font = love.graphics.newFont("assets/Jamboree.ttf",8)
 font:setFilter("nearest","nearest",1)
@@ -46,10 +52,9 @@ require("rightroom")
 require("leftroom")
 require("storagePuzzle")
 require("leave_event")
-require("colored_assets")
 require("credits_scene")
 
-hump_timer = require("libs/hump/timer")
+hump_timer = require("libs.hump.timer")
 splash_finished = false
 
 local utf8 = require("utf8")
@@ -64,9 +69,21 @@ interact = false
 local _ads = require("ads")
 FC = require("libs.firstcrush.gui")
 
+MAIN_CANVAS = love.graphics.newCanvas(love.graphics.getDimensions())
+
+function toggle_fs()
+	love.window.setFullscreen(not love.window.getFullscreen())
+	local sWidth, sHeight = love.graphics.getDimensions()
+	ratio = math.min(sWidth/width, sHeight/height)
+	MAIN_CANVAS = love.graphics.newCanvas(love.graphics.getDimensions())
+end
+
 if debug == false then
-	-- love.window.setFullscreen(true)
-	ty = height
+	if (OS ~= "iOS") and (OS ~= "Android") then
+		toggle_fs()
+	end
+
+	ty = 0
 	-- ty = sh - (height * math.min(sw/width,sh/height))
 	if OS == "iOS" then
 		if pro_version then
@@ -80,17 +97,6 @@ if debug == false then
 		else
 			ty = sh - (height * math.min(sw/width,sh/height))
 		end
-	end
- else
-	love.window.setFullscreen(false)
-	if OS == "Android" then
-		if pro_version then
-			ty = height
-		else
-			ty = sh - (height * math.min(sw/width,sh/height))
-		end
-	else
-		ty = 0
 	end
 end
 
@@ -123,7 +129,7 @@ function love.load()
 
 	clock = 0 --game timer
 
-	sWidth, sHeight = love.graphics.getDimensions()
+	local sWidth, sHeight = love.graphics.getDimensions()
 	ratio = math.min(sWidth/width, sHeight/height)
 	pressed = false
 	love.keyboard.setKeyRepeat(true)
@@ -193,7 +199,12 @@ function love.update(dt)
 	if not finishedLoading then
 		loader.update()
 	else
-		if FC:getState() then FC:update(dt)
+		-- if shaders_test or enemy_exists then
+		-- 	Shaders.update(Shaders.palette_swap)
+		-- end
+
+		if FC:getState() then
+			FC:update(dt)
 		else
 			gamestates.update(dt)
 			if OS == "Android" or OS == "iOS" then
@@ -204,37 +215,48 @@ function love.update(dt)
 end
 
 function love.draw()
-	love.graphics.push()
+	love.graphics.setCanvas(MAIN_CANVAS)
+		love.graphics.clear()
+		love.graphics.push()
+			if OS == "Android" or OS == "iOS" then
+				love.graphics.translate(0, ty)
+			end
 
-	if OS == "Android" or OS == "iOS" then
-		love.graphics.translate(0, ty)
-	end
+			love.graphics.scale(ratio, ratio)
+			if finishedLoading then
 
-	love.graphics.scale(ratio, ratio)
-	if finishedLoading then
-		if pauseFlag == false then
-			gamestates.draw()
-		elseif pauseFlag == true then
-			pause.draw()
-		end
-		if FC:getState() then FC:draw() end
-	else
-		local percent = 0
-		if loader.resourceCount ~= 0 then percent = loader.loadedCount / loader.resourceCount end
-		--love.graphics.setColor(percent*100,0,0,255)
-		love.graphics.setColor(1, 1, 1, 150/255)
-		love.graphics.setFont(font)
-		love.graphics.print("Loading",width - 34 -font:getWidth("Loading")/2, height - 12)
-		love.graphics.setFont(font)
-		love.graphics.setColor(1, 1, 1, 150/255)
-		love.graphics.print(("..%d%%"):format(percent*100), width - 20, height -12)
-	end
-	--dev_draw()
-	--if debug == true then
-		--love.graphics.setColor(255,0,0,255)
-		--love.graphics.rectangle("line",0,0,width,height)
-	--end
-	love.graphics.pop()
+				-- if shaders_test or enemy_exists then
+				-- 	love.graphics.setShader(Shaders.palette_swap)
+				-- end
+
+				if pauseFlag == false then
+					gamestates.draw()
+				elseif pauseFlag == true then
+					pause.draw()
+				end
+
+				love.graphics.setShader()
+
+				if FC:getState() then FC:draw() end
+			else
+				local percent = 0
+				if loader.resourceCount ~= 0 then percent = loader.loadedCount / loader.resourceCount end
+				--love.graphics.setColor(percent*100,0,0,255)
+				love.graphics.setColor(1, 1, 1, 150/255)
+				love.graphics.setFont(font)
+				love.graphics.print("Loading",width - 34 -font:getWidth("Loading")/2, height - 12)
+				love.graphics.setFont(font)
+				love.graphics.setColor(1, 1, 1, 150/255)
+				love.graphics.print(("..%d%%"):format(percent*100), width - 20, height -12)
+			end
+		love.graphics.pop()
+	love.graphics.setCanvas()
+
+	love.graphics.setColor(1, 1, 1, 1)
+	--TODO: (Brandon) decide on WHEN to use grayscale. Maybe use Slab?
+	love.graphics.setShader(Shaders.grayscale)
+	love.graphics.draw(MAIN_CANVAS)
+	love.graphics.setShader()
 end
 
 function love.mousereleased(x,y,button,istouch)
@@ -270,32 +292,27 @@ function love.mousepressed(x,y,button,istouch)
 						gamestates.control()
 					elseif check_gui(gui_pos.quit_x,gui_pos.quit_y,gui_pos.quit_w,gui_pos.quit_h) then
 						--exit
-						if love.system.getOS() ~= "iOS" then
+						if OS ~= "iOS" then
 							love.event.quit()
 						end
 					elseif check_gui(gui_pos.webx,gui_pos.weby,gui_pos.webw,gui_pos.webh) then
-							--love.system.openURL("https://brbl.gamejolt.io")
-							if love.system.getOS() == "Android" then
-			love.system.createInterstitial(_ads.inter)
-			if love.system.isInterstitialLoaded() == true then
-				love.system.showInterstitial()
-			end
-								--print("clicked on gui")
-			--love.system.createInterstitial(_ads.inter)
-			--love.system.showBanner()
-			--if love.system.isInterstitialLoaded() == true then
-				--love.system.showInterstitial()
-			--end
-		end
+						if OS == "Android" then
+							love.system.createInterstitial(_ads.inter)
+							if love.system.isInterstitialLoaded() == true then
+								love.system.showInterstitial()
+							end
+						else
+							love.system.openURL(URLS.game_page)
+						end
 					end
 				end
 				if instruction == false then
 					if check_gui(gui_pos.i_x,gui_pos.i_y,gui_pos.i_w,gui_pos.i_h) then
-							instruction = true
+						instruction = true
 					end
 				else
 					if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h)  then
-							instruction = false
+						instruction = false
 					end
 				end
 
@@ -318,19 +335,19 @@ function love.mousepressed(x,y,button,istouch)
 					end
 				else
 					if check_gui(gui_pos.t_x,gui_pos.t_y,gui_pos.t_w,gui_pos.t_h) then
-						love.system.openURL("https://twitter.com/flamendless")
+						love.system.openURL(URLS.twitter)
 					elseif check_gui(gui_pos.p_x,gui_pos.p_y,gui_pos.p_w,gui_pos.p_h) then
 						if love.system.getOS() ~= "iOS" then
-						love.system.openURL("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=K7QQSFGC2WXEA")
+						love.system.openURL(URLS.paypal)
 						end
 					elseif check_gui(gui_pos.e_x,gui_pos.e_y,gui_pos.e_w,gui_pos.e_h) then
-						love.system.openURL("mailto:flamendless8@gmail.com")
+						love.system.openURL(URLS.mailto)
 					elseif check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h)  then
 						questions = false
 					end
 				end
 
-				if check_gui(width/2 + 12,gui_pos.q_y,8,8) then
+				if check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
 					gamestates.nextState("gallery")
 				end
 			end
@@ -368,26 +385,29 @@ function love.mousepressed(x,y,button,istouch)
 end
 
 function love.keyreleased(key)
+	if key == "f6" then
+		toggle_fs()
+	end
+
 	if load_complete == true then
 		if key == "f5" then
 			love.event.quit()
 		end
+
 		local state = gamestates.getState()
-		if love.system.getOS() == "Android" then
+		if OS == "Android" then
 			android.setKey(key)
 		end
+
 		if state == "main" then
 			if key == "a" or key == "d" then
 				player.isMoving = false
 			end
-		end
-		if state == "intro" or state == "rain_intro" then
+		elseif state == "intro" or state == "rain_intro" then
 			if key == "return" or key == "e"     then
 				pressed = false
 			end
-		end
-
-		if state == "title" then
+		elseif state == "title" then
 			if instruction == false and about == false and questions == false then
 				if cursor_select == true then
 					if key == "w" or key == "up" then
@@ -430,7 +450,7 @@ function love.keyreleased(key)
 						elseif cursor_pos == 5 then
 							instruction = true
 						elseif cursor_pos == 6 then
-							love.system.openURL("https://brbl.gamejolt.io")
+							love.system.openURL(URLS.game_page)
 						end
 					end
 				end
@@ -448,28 +468,28 @@ function love.keyreleased(key)
 			end
 		end
 
-		if lr_event == 3 then
-			if key == "a" then
-				e_c = 1
-			elseif key == "d" then
-				e_c = 2
-			elseif key == "e"  then
-				if route == 1 then
-					if e_c == 1 then
-						event_route = him_convo
-					elseif e_c == 2 then
-						event_route = wait_convo
-					end
-				elseif route == 2 then
-					if e_c == 1 then
-						event_route = leave_convo
-					elseif e_c == 2 then
-						event_route = wait_convo
-					end
+		if lr_event ~= 3 then return end
+
+		if key == "a" then
+			e_c = 1
+		elseif key == "d" then
+			e_c = 2
+		elseif key == "e"  then
+			if route == 1 then
+				if e_c == 1 then
+					event_route = him_convo
+				elseif e_c == 2 then
+					event_route = wait_convo
 				end
-				if event_route ~= nil then
-					lr_event = 4
+			elseif route == 2 then
+				if e_c == 1 then
+					event_route = leave_convo
+				elseif e_c == 2 then
+					event_route = wait_convo
 				end
+			end
+			if event_route ~= nil then
+				lr_event = 4
 			end
 		end
 	end
@@ -490,13 +510,14 @@ function love.keypressed(key)
 				gamestates.load()
 			end
 		end
-		if state == "title" then
-		 if pro_version then
-			if key == "g" then
-				gamestates.nextState("gallery")
-			end
-		 end
-		end
+
+		-- if state == "title" then
+		--  if pro_version then
+		-- 	if key == "g" then
+		-- 		gamestates.nextState("gallery")
+		-- 	end
+		--  end
+		-- end
 
 		if state == "gallery" then
 			if pro_version then
@@ -510,10 +531,9 @@ function love.keypressed(key)
 
 		if key == "e" or key == "space" or key == "return" then
 			if state == "splash" then
-			gamestates.nextState("splash2")
-			end
-			if state == "splash2" then
-			gamestates.nextState("title")
+				gamestates.nextState("splash2")
+			elseif state == "splash2" then
+				gamestates.nextState("title")
 			end
 		end
 

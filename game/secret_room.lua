@@ -62,7 +62,7 @@ function SCENE.secretRoom_update(dt)
 
 		if _timer > 0 then
 			_timer = _timer - 1 * dt
-			
+
 			local _t = math.floor(math.random(-4,4))
 			if _t == 1 then
 				_flag = true
@@ -71,7 +71,7 @@ function SCENE.secretRoom_update(dt)
 				_flag = false
 				sounds.fl_toggle:play()
 			end
-		
+
 
 			--play sounds on breaking flashlight
 			lightOn = _flag
@@ -96,12 +96,12 @@ function SCENE.secretRoom_update(dt)
 			elseif _timer >= 4 and _timer <= 6 then
 				txt1 = "The flashlight won't last..."
 				txt1_y = height/2 - font:getHeight(txt1)/2
-				
+
 			elseif _timer >= 1 and _timer <= 3 then
 				txt1_x = width/2 + font:getWidth(txt1)/2
 				txt1 = "Alex..."
 				txt1_y = height - 8  - font:getHeight(txt1)/2
-				
+
 			elseif _timer <= 0 then
 				txt1 = ""
 
@@ -110,7 +110,7 @@ function SCENE.secretRoom_update(dt)
 				--sounds.they_are_gone:play()
 				--sounds.they_are_gone:setLooping(true)
 				--sounds.they_are_gone:setVolume(0.25)
-				
+
 			end
 		end
 	elseif event == "after_dialogue" then
@@ -121,7 +121,7 @@ function SCENE.secretRoom_update(dt)
 				sounds.tv_loud:setLooping(true)
 				tv_trigger = -1
 				tv_light_flag = true
-				for k,v in pairs(dialogue) do 
+				for k,v in pairs(dialogue) do
 					if v.tag == "tv" then
 						table.remove(dialogue,k)
 						local tv_open = Interact(false,{"It's just showing random pixels","H...How?","There's no electricity","Turn it off?"},{"Yes","Leave it be"},"It won't turn off","tv")
@@ -132,7 +132,7 @@ function SCENE.secretRoom_update(dt)
 				end
 			end
 		end
-		
+
 		if dust_trigger == true then
 			particle_update(dt)
 		end
@@ -197,7 +197,7 @@ function SCENE.secretRoom_update(dt)
 		sounds.main_theme:setLooping(false)
 		sounds.main_theme:setVolume(0.3)
 		player.xspd = 25
-		
+
 		player.visible = true
 		if parent_found == false then
 			--texts intro
@@ -221,7 +221,7 @@ function SCENE.secretRoom_update(dt)
 				end
 			elseif event_find == true then
 				if move_chair == false then
-				    --finding parents	
+				    --finding parents
 				    if screamed == 0 then
 				    	if player.x >= 77 and player.x <= 80 then
 				    		sounds.floor_squeak:play()
@@ -278,7 +278,7 @@ function SCENE.secretRoom_update(dt)
 		lightOn = false
 		enemy_exists = false
 		lv = 1
-		
+
 		if timer > 0 then
 			timer = timer - 1 * dt
 			txt = true
@@ -293,7 +293,7 @@ function SCENE.secretRoom_update(dt)
 					ghost_event = "after limp"
 				end
 			end
-		end 
+		end
 	elseif ghost_event == "after limp" then
 		txt = false
 		move = true

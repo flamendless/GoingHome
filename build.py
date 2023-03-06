@@ -6,14 +6,15 @@ from enum import Enum
 from zipfile import ZipFile
 from typing import Dict, Callable, List
 
-GAME_NAME: str = "GoingHome"
-IDENTITY: str = "goinghome"
+GAME_NAME: str = "GoingHomeRevisited"
+IDENTITY: str = "GoingHomeRevisited"
 WSL_DRIVE: str = "Z:"
 GAME_DIR: str = "game/"
 RELEASE_DIR: str = "release/"
 ROOT_DIR: str = os.path.join(os.getcwd())
 
 EXCLUDE: List[str] = [
+    "*.ase",
     ".git",
     ".test",
     ".gitignore",
@@ -29,6 +30,7 @@ EXCLUDE: List[str] = [
     "CHANGELOG.md",
     "changelog.txt",
     "Makefile",
+    "assets_old",
 ]
 
 class Mode(Enum):
@@ -54,6 +56,11 @@ def zip_files():
                     subdirs.remove(ex)
                 if ex in files:
                     files.remove(ex)
+
+                if ex.startswith("*."):
+                    for file in list(files):
+                        if file.endswith(ex[1:]):
+                            files.remove(file)
 
             for file in files:
                 f: str = os.path.join(path, file)

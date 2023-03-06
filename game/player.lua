@@ -6,13 +6,13 @@ function Player:new(x,y,w,h)
 	self.w = w
 	self.h = h
 	self.grav = 1
-	self.xspd = 25
+	self.xspd = 20
 	self.moveLeft = true
 	self.moveRight = true
 	self.isMoving = false
 	self.dir = 1
 	self.txt = ""
-	self.maxT = 2 
+	self.maxT = 2
 	self.t = self.maxT
 	self.dead = false
 	self.img = images.player_idle
@@ -64,16 +64,14 @@ function Player:update(dt)
 			player_killed:update(dt)
 		end
 	end
+
 	idle:update(dt)
 	walk_right:update(dt)
 	walk_left:update(dt)
 	child:update(dt)
 
-
-	if love.system.getOS() == "Android" or love.system.getOS() == "iOS" then
-		if self.android == 0 then
-			self.isMoving = false
-		end
+	if ((OS == "Android") or (OS == "iOS") and self.android == 0) then
+		self.isMoving = false
 	end
 end
 
@@ -89,7 +87,7 @@ function Player:draw()
 						if self.isMoving == false then
 							-- idle:pauseAtStart()
 							idle:draw(images.player_sheet,self.x,self.y)
-						else 
+						else
 							if self.right == true then
 								walk_right:resume()
 								walk_right:draw(images.player_sheet,self.x,self.y)
@@ -102,7 +100,7 @@ function Player:draw()
 						if self.isMoving == false then
 							-- idle:pauseAtStart()
 							idle:draw(images.player_sheet_color,self.x,self.y)
-						else 
+						else
 							if self.right == true then
 								walk_right:resume()
 								walk_right:draw(images.player_sheet_color,self.x,self.y)
@@ -285,16 +283,16 @@ function Player:checkDoors()
 			end
 		elseif checkLeft then
 			if ending_leave == false and ending_shoot == false then
-				player:moveRoom(right,images["leftRoom"])		
+				player:moveRoom(right,images["leftRoom"])
 			elseif ending_shoot == true then
-				player:moveRoom(right,images["leftRoom"])		
+				player:moveRoom(right,images["leftRoom"])
 			elseif ending_leave == true then
 				doorTxt("I must not go there","I have to go to work")
 			end
-			
+
 			if lr_event == 0 then
 				lr_event = 1
-			end	
+			end
 		elseif checkRight then
 			if ending_leave == false and ending_shoot == false and ending_wait == false then
 				if rightroom_unlocked == true then
@@ -410,8 +408,10 @@ function Player:checkDoors()
 				move = false
 			end
 			locked["mainRoom_right"] = false
-			
+
 			door_locked = false
+
+			love.filesystem.write(SaveData.out_filename, JSON.encode(SaveData.data))
 
 			for k,v in pairs(dialogue) do
 				v.maxT = 2.5
@@ -428,9 +428,19 @@ function Player:checkItems()
 		if self.x >= v.x and self.x + self.w <= v.x + v.w or
 			self.x + self.w >= v.x + v.w/6 and self.x + self.w <= v.x + v.w or
 			self.x >= v.x and self.x <= v.x + v.w - v.w/6
-			then
-			if self.state == "normal" then
-				if v.visible == true then
+		then
+			if self.state == "normal" and v.visible then
+				if event_find == false then
+					if door_locked == false then
+						v:returnTag()
+					else
+						v:stillLocked()
+					end
+				else
+					v:specialTag()
+				end
+			else
+				if (v.tag == "chair" or v.tag == "chair_final") and v.visible then
 					if event_find == false then
 						if door_locked == false then
 							v:returnTag()
@@ -439,20 +449,6 @@ function Player:checkItems()
 						end
 					else
 						v:specialTag()
-					end
-				end
-			else
-				if v.tag == "chair" or v.tag == "chair_final" then
-					if v.visible == true then
-						if event_find == false then
-							if door_locked == false then
-								v:returnTag()
-							else
-								v:stillLocked()
-							end
-						else
-							v:specialTag()
-						end
 					end
 				end
 			end
@@ -491,8 +487,7 @@ function doorTxt(str1,str2)
 end
 
 function leaveRoom()
-
-	for k,v in pairs(dialogue) do
+	for _,v in ipairs(dialogue) do
 		if v.state == true then v.state = false end
 		if v.option == true then v.option = false end
 		if v.specialTxt == true then v.specialTxt = false end
