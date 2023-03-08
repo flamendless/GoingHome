@@ -11,7 +11,7 @@ local textures = {
 	{"galleryPause","assets/gallery/pause.png"},
 	{"gui_gallery","assets/android/gui_gallery.png"},
 	{"lightOutlineSmall","assets/android/lightOutlineSmall.png"},
-	{"gigadrill","assets/images/gigadrill.png"}, --TODO: (Brandon) to replace
+	{"wits","assets/images/wits.png"},
 	{"splash","assets/images/splash-anim-sheet.png"},
 	{"light3","assets/android/light3.png"},
 	{"gui_sound","assets/android/gui_sound.png"},
