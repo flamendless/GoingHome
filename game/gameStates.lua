@@ -258,7 +258,7 @@ function gamestates.update(dt)
 	if state == "gallery" then
 		Gallery.update(dt)
 	elseif state == "adshow" then
-		if love.system.getOS() == "Android" then
+		if OS == "Android" then
 			if adTimer > 0 then
 				adTimer = adTimer - 1 * dt
 				if adTimer <= 0 then
@@ -439,9 +439,9 @@ function gamestates.update(dt)
 		end
 		---------------------------
 		if gameover == false then
-			if love.system.getOS() == "Android" or love.system.getOS() == "iOS" or debug == true then
+			if OS == "Android" or OS == "iOS" or debug == true then
 				--android.lightCircle()
-			elseif love.system.getOS() ~= "Android" or love.system.getOS() == "iOS" and debug == false then
+			elseif OS ~= "Android" or OS == "iOS" and debug == false then
 				if event_trigger_light == -1 then
 					_lightX = mx - images.light_small:getWidth()/2 + math.random(-0.05,0.05)
 					_lightY = my - images.light_small:getHeight()/2 + math.random(-0.05,0.05)
@@ -623,7 +623,7 @@ function gamestates.draw()
 
 	local state = gamestates.getState()
 	if state == "adshow" then
-		if love.system.getOS() == "Android" or love.system.getOS() == "iOS" then
+		if OS == "Android" or OS == "iOS" then
 			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.draw(images.adIntro,0,0)
 		end
@@ -658,7 +658,7 @@ function gamestates.draw()
 			end
 			love.graphics.draw(images.start,gui_pos.start_x,gui_pos.start_y)
 			--exit
-			if love.system.getOS() ~= "iOS" then
+			if OS ~= "iOS" then
 				if cursor_pos == 2 then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
@@ -675,7 +675,7 @@ function gamestates.draw()
 				love.graphics.draw(images.exit, gui_pos.quit_x , gui_pos.quit_y)
 			end
 
-			--if love.system.getOS() == "Android" or debug == true then
+			--if OS == "Android" or debug == true then
 --
 			--else
 
@@ -943,7 +943,7 @@ function gamestates.draw()
 		end
 
 		player:draw()
-		if love.system.getOS() == "Android" or love.system.getOS() == "iOS" or debug == true then
+		if OS == "Android" or OS == "iOS" or debug == true then
 			android.light_draw()
 		end
 
@@ -973,7 +973,7 @@ function gamestates.draw()
 			love.graphics.rectangle("fill",0,0,images.bg:getWidth(),images.bg:getHeight()/2)
 		end
 
-		if love.system.getOS() ~= "Android" or love.system.getOS() ~= "iOS" and debug == false then
+		if OS ~= "Android" or OS ~= "iOS" and debug == false then
 		if currentRoom == images["secretRoom"] then
 			if tv_light_flag == true then
 				love.graphics.draw(tv_flash)
@@ -1032,7 +1032,7 @@ function gamestates.draw()
 			end
 		end
 
-		if love.system.getOS() == "Android" or love.system.getOS() == "iOS" then
+		if OS == "Android" or OS == "iOS" then
 			if gameplay_record == false then
 				android.draw()
 			end
@@ -1066,7 +1066,7 @@ function gamestates.nextState(state)
 end
 
 function light_check()
-	if love.system.getOS() == "Android" or love.system.getOS() == "iOS" or debug == true then
+	if OS == "Android" or OS == "iOS" or debug == true then
 		android.light_check()
 	else
 		local mx = love.mouse.getX()/ratio
@@ -1186,9 +1186,9 @@ function light_etc(dt,img_table,img_var,canvas)
 	love.graphics.clear(0,0,0,lv)
 	love.graphics.setBlendMode("multiply", "premultiplied")
 	love.graphics.draw(img_table[img_var],x,y)
-	if love.system.getOS() == "Android" or love.system.getOS() == "iOS" or debug then
+	if OS == "Android" or OS == "iOS" or debug then
 		love.graphics.draw(mainLight,lx,ly)
-	elseif love.system.getOS() ~= "Android" or love.system.getOS() ~= "iOS" and debug == false then
+	elseif OS ~= "Android" or OS ~= "iOS" and debug == false then
 		love.graphics.draw(light,lightX,lightY)
 	end
 	love.graphics.setBlendMode("alpha")

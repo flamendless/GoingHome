@@ -347,7 +347,7 @@ function assets.item_set()
   	local storage_puzzle_item = Items(images.storage_vault,images["storageRoom"],40,30,"storage puzzle")
   	table.insert(obj,storage_puzzle_item)
 
-		if love.system.getOS() ~= "Android" or love.system.getOS() ~= "iOS" then
+		if OS ~= "Android" or OS ~= "iOS" then
   		local b_battery = Items(images.basement_battery,images["basementRoom"],30,38,"battery")
   		table.insert(obj,b_battery)
   	end
@@ -512,7 +512,7 @@ function assets.dialogue_set()
 
 	local storage_puzzle = Interact(false,{"It's a safe vault","I need a combination","to open it.","Input combination?"},{"Yes","No"},"There's nothing more here","storage puzzle")
 	table.insert(dialogue,storage_puzzle)
-	if love.system.getOS() ~= "Android" or love.system.getOS() ~= "iOS" then
+	if OS ~= "Android" or OS ~= "iOS" then
 		local b_battery_dial = Interact(false,{"It's a toolbox","It contains electronic parts","Search for items?"},{"Yes","No"},"","battery")
 		table.insert(dialogue,b_battery_dial)
 	end
@@ -638,7 +638,7 @@ function assets.dialogue_set()
   			"battery",
   			"ammo"	}
   	}
-  	if love.system.getOS() == "Android" or love.system.getOS() == "iOS" then
+  	if OS == "Android" or OS == "iOS" then
 			for k,v in pairs(obj_properties) do
 				for n,m in pairs(obj_properties[k]) do
 					if m == "battery" then

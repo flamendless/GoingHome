@@ -1,4 +1,4 @@
---if love.system.getOS() ~= "Android" then debug = true end
+--if OS ~= "Android" then debug = true end
 --load libraries
 
 local URLS = require("urls")
@@ -32,8 +32,8 @@ Gallery = require("gallery")
 require("gameStates")
 assets = require("assets")
 
-font = love.graphics.newFont("assets/Jamboree.ttf",8)
-font:setFilter("nearest","nearest",1)
+font = love.graphics.newFont("assets/Jamboree.ttf", 8)
+font:setFilter("nearest","nearest", 1)
 
 images = {}
 sounds = {}
@@ -254,7 +254,9 @@ function love.draw()
 
 	love.graphics.setColor(1, 1, 1, 1)
 	--TODO: (Brandon) decide on WHEN to use grayscale. Maybe use Slab?
-	love.graphics.setShader(Shaders.grayscale)
+	if SaveData.data.use_grayscale then
+		love.graphics.setShader(Shaders.grayscale)
+	end
 	love.graphics.draw(MAIN_CANVAS)
 	love.graphics.setShader()
 end
@@ -337,7 +339,7 @@ function love.mousepressed(x,y,button,istouch)
 					if check_gui(gui_pos.t_x,gui_pos.t_y,gui_pos.t_w,gui_pos.t_h) then
 						love.system.openURL(URLS.twitter)
 					elseif check_gui(gui_pos.p_x,gui_pos.p_y,gui_pos.p_w,gui_pos.p_h) then
-						if love.system.getOS() ~= "iOS" then
+						if OS ~= "iOS" then
 						love.system.openURL(URLS.paypal)
 						end
 					elseif check_gui(gui_pos.e_x,gui_pos.e_y,gui_pos.e_w,gui_pos.e_h) then
@@ -499,7 +501,7 @@ function love.keypressed(key)
 	if load_complete == true then
 		local dt = love.timer.getDelta( )
 		local state = gamestates.getState()
-		if love.system.getOS() == "Android" then
+		if OS == "Android" then
 			android.setKey(key)
 		end
 		if state == "intro" then
@@ -568,7 +570,7 @@ function love.keypressed(key)
 				end
 			end
 
-			if love.system.getOS() ~= "Android" or love.system.getOS() ~= "iOS" then
+			if OS ~= "Android" or OS ~= "iOS" then
 				if key == "p" then
 					if pauseFlag == true then
 						pause.exit()
@@ -692,14 +694,14 @@ function love.keypressed(key)
 
 		if word_puzzle == true then
 			move = false
-			if love.system.getOS() == "Android" then
+			if OS == "Android" then
 				android.lightChange(true)
 			end
 			if key == "escape" then
 				word_puzzle = false
 				move = true
 				storage_puzzle = false
-				if love.system.getOS() == "Android" then
+				if OS == "Android" then
 					android.lightChange(false)
 				end
 			else
@@ -717,14 +719,14 @@ function love.keypressed(key)
 
 		if doodle_flag == true then
 			move = false
-			if love.system.getOS() == "Android" then
+			if OS == "Android" then
 				android.lightChange(true)
 			end
 			if key == "escape" then
 				doodle_flag = false
 				move = true
 				storage_puzzle = false
-				if love.system.getOS() == "Android" then
+				if OS == "Android" then
 					android.lightChange(false)
 				end
 			elseif key == "a" then
@@ -745,13 +747,13 @@ function love.keypressed(key)
 		end
 
 		if clock_puzzle == true then
-			if love.system.getOS() == "Android" then
+			if OS == "Android" then
 				android.lightChange(true)
 			end
 			if key == "escape" then
 				clock_puzzle = false
 				move = true
-				if love.system.getOS() == "Android" then
+				if OS == "Android" then
 					android.lightChange(false)
 				end
 			elseif key == "w" then
@@ -825,7 +827,7 @@ function love.keypressed(key)
 			elseif key == "return" then
 				clock_puzzle = false
 				move = true
-				if love.system.getOS() == "Android" or love.system.getOS() == "iOS" or debug == true then
+				if OS == "Android" or OS == "iOS" or debug == true then
 					android.lightChange(false)
 				end
 				if hour == 10 and minute == 2 and second == 8 and ampm == "pm" then

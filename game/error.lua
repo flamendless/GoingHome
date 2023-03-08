@@ -3,7 +3,7 @@ function love.errhand(error_message)
   local version = "Android-0.1"
   local github_url = "https://github.com/flamendless/goinghome-issues"
   local email = "flamendless8@gmail.com"
-  local edition = love.system.getOS()
+  local edition = OS
 	local dialog_message = ""
 	if edition == "Android" then
 		dialog_message = [[
@@ -20,9 +20,9 @@ function love.errhand(error_message)
 %s
 
 Would you like to report this crash so that it can be fixed?
-	
+
 THANK YOU SO MUCH FOR HELPING THE DEVELOPER
-	
+
 ]]
 
 	end
@@ -56,10 +56,10 @@ THANK YOU SO MUCH FOR HELPING THE DEVELOPER
 ---
 Affects: %s
 Edition: %s
-	
+
 THANK YOU SO MUCH FOR HELPING THE DEVELOPER
 ]]
-	
+
 
   if pressedbutton == 1 then
     -- Surround traceback in ``` to get a Markdown code block

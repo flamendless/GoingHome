@@ -233,7 +233,7 @@ function android.touchpressed(id,x,y)
 			elseif guiCheck_touch(id,x,y,gSettingsBack) then
 				pause.exit()
 			elseif guiCheck_touch(id,x,y,gQuit) then
-				if love.system.getOS() ~= "iOS" then
+				if OS ~= "iOS" then
 					love.event.quit()
 				end
 			end
@@ -339,7 +339,7 @@ function android.light_update(dt)
 		mainLight = images.light3
 	end
 
-	if love.system.getOS() == "Android" or love.system.getOS() == "iOS" or debug == true then
+	if OS == "Android" or OS == "iOS" or debug == true then
 		love.graphics.setCanvas(custom_mask)
 		love.graphics.clear(0,0,0,lv)
 		love.graphics.setBlendMode("multiply", "premultiplied")
@@ -370,7 +370,7 @@ function android.light_update(dt)
 end
 
 function android.light_draw()
-	if love.system.getOS() == "Android" or love.system.getOS() == "iOS" or debug == true then
+	if OS == "Android" or OS == "iOS" or debug == true then
 		love.graphics.draw(custom_mask)
 	end
 end
@@ -398,7 +398,7 @@ function android.lightChange(bool)
 end
 
 function android.mouse_gui(x,y,button,istouch)
-if love.system.getOS() == "Android" or love.system.getOS() == "iOS" then
+if OS == "Android" or OS == "iOS" then
 	local state = gamestates.getState()
 	local mx= x/ratio
 	local my = (y-ty)/ratio

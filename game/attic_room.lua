@@ -57,7 +57,7 @@ function SCENE.atticRoom_update(dt)
 	if temp_clock ~= nil then
 		if temp_clock < clock - 3 then
 			if event_trigger_light == 0 then
-				if love.system.getOS() ~= "Android" or love.system.getOS() ~= "iOS" then
+				if OS ~= "Android" or OS ~= "iOS" then
 					event_trigger_light = 1
 				end
 			end
