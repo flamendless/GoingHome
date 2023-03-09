@@ -258,7 +258,7 @@ function gamestates.update(dt)
 	if state == "gallery" then
 		Gallery.update(dt)
 	elseif state == "adshow" then
-		if love.system.getOS() == "Android" then
+		if OS == "Android" then
 			if adTimer > 0 then
 				adTimer = adTimer - 1 * dt
 				if adTimer <= 0 then
@@ -439,9 +439,9 @@ function gamestates.update(dt)
 		end
 		---------------------------
 		if gameover == false then
-			if love.system.getOS() == "Android" or love.system.getOS() == "iOS" or debug == true then
+			if OS == "Android" or OS == "iOS" or debug == true then
 				--android.lightCircle()
-			elseif love.system.getOS() ~= "Android" or love.system.getOS() == "iOS" and debug == false then
+			elseif OS ~= "Android" or OS == "iOS" and debug == false then
 				if event_trigger_light == -1 then
 					_lightX = mx - images.light_small:getWidth()/2 + math.random(-0.05,0.05)
 					_lightY = my - images.light_small:getHeight()/2 + math.random(-0.05,0.05)
@@ -623,7 +623,7 @@ function gamestates.draw()
 
 	local state = gamestates.getState()
 	if state == "adshow" then
-		if love.system.getOS() == "Android" or love.system.getOS() == "iOS" then
+		if OS == "Android" or OS == "iOS" then
 			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.draw(images.adIntro,0,0)
 		end
@@ -634,7 +634,7 @@ function gamestates.draw()
 	end
 	if state == "splash2" then
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.draw(images.gigadrill, width/2 - 64,height/2 - 32)
+		love.graphics.draw(images.wits, width/2 - 64,height/2 - 32)
 	end
 	if state == "title" then
 		if instruction == false and about == false and questions == false then
@@ -658,7 +658,7 @@ function gamestates.draw()
 			end
 			love.graphics.draw(images.start,gui_pos.start_x,gui_pos.start_y)
 			--exit
-			if love.system.getOS() ~= "iOS" then
+			if OS ~= "iOS" then
 				if cursor_pos == 2 then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
@@ -675,7 +675,7 @@ function gamestates.draw()
 				love.graphics.draw(images.exit, gui_pos.quit_x , gui_pos.quit_y)
 			end
 
-			--if love.system.getOS() == "Android" or debug == true then
+			--if OS == "Android" or debug == true then
 --
 			--else
 
@@ -754,22 +754,32 @@ function gamestates.draw()
 			love.graphics.rectangle("fill",0,0,width,height)
 			love.graphics.setFont(font)
 			love.graphics.setColor(1, 1, 1)
-			if love.system.getOS() == "Android" or love.system.getOS() == "iOS" or debug == true then
-				love.graphics.print("Navigate through the house",width/2 - font:getWidth("Navigate through the house")/2,0+font:getHeight("Navigate through the house")/2)
-				love.graphics.print("using but a little light.",width/2 - font:getWidth("using but a little light.")/2,10+font:getHeight("using but a little light.")/2)
+
+			if OS == "Android" or OS == "iOS" or debug == true then
+				local str1 = "Navigate through the house"
+				local str2 = "using but a little light."
+				local str3 = "Avoid the fear that haunts."
+				local str4 = "It must not be exposed to light."
+				love.graphics.print(str1, width/2 - font:getWidth(str1)/2,0+font:getHeight()/2)
+				love.graphics.print(str2 ,width/2 - font:getWidth(str2)/2,10+font:getHeight()/2)
 				-- love.graphics.print("Avoid the fear that haunts.", width/2 - font:getWidth("Avoid the fear that haunts.")/2,height - 8 - font:getHeight("Avoid the fear that haunts.")/2)
 				love.graphics.setColor(1, 1, 1)
-				love.graphics.print("Avoid the fear that haunts.",width/2 - font:getWidth("Avoid the fear that haunts.")/2,22+font:getHeight("Avoid the fear that haunts.")/2)
+				love.graphics.print(str3, width/2 - font:getWidth(str3)/2,22+font:getHeight()/2)
 				love.graphics.setColor(1, 0, 0)
-				love.graphics.print("It must not be exposed to light.",width/2-font:getWidth("It must not be exposed to light.")/2,34+font:getHeight("It must not be exposed to light.")/2)
+				love.graphics.print(str4, width/2-font:getWidth(str4)/2,34+font:getHeight()/2)
 			else
-				love.graphics.print("F to toggle flashlight",width/2 - font:getWidth("F to toggle flashlight")/2,0+font:getHeight("F to toggle flashlight")/2)
-				love.graphics.print("E to perform actions",width/2 - font:getWidth("E to perform actions")/2,10+font:getHeight("E to perform actions")/2)
-				love.graphics.print("P to pause", width/2 - font:getWidth("P to pause")/2,height - 8 - font:getHeight("P to return")/2)
+				local str1 = "F to toggle flashlight"
+				local str2 = "E to perform actions"
+				local str3 = "P to pause"
+				local str4 = "A and D to move"
+				local str5 = "ENTER/ESC on Puzzle Events"
+				love.graphics.print(str1, width/2 - font:getWidth(str1)/2,0+font:getHeight()/2)
+				love.graphics.print(str2, width/2 - font:getWidth(str2)/2,10+font:getHeight()/2)
+				love.graphics.print(str3, width/2 - font:getWidth(str3)/2,height - 8 - font:getHeight()/2)
 				love.graphics.setColor(1, 1, 1)
-				love.graphics.print("A and D to move",width/2 - font:getWidth("W and D to move")/2,22+font:getHeight("W and D to move")/2)
+				love.graphics.print(str4, width/2 - font:getWidth(str4)/2,22+font:getHeight()/2)
 				love.graphics.setColor(1, 0, 0)
-				love.graphics.print("ENTER/ESC on Puzzle Events",width/2-font:getWidth("ENTER/ESC on Puzzle Events")/2,34+font:getHeight("ENTER/ESC on Puzzle Events")/2)
+				love.graphics.print(str5, width/2-font:getWidth(str5)/2,34+font:getHeight()/2)
 			end
 			--back gui
 			if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h) then
@@ -786,20 +796,29 @@ function gamestates.draw()
 			love.graphics.rectangle("fill",0,0,width,height)
 			love.graphics.setFont(font)
 			love.graphics.setColor(1, 1, 1)
-			love.graphics.print("Contact me on the following:",width/2 - font:getWidth("Contact me on the following:")/2,font:getHeight("Contact me on the following:")/2 - 4)
+
+			local str_contact = "Contact us:"
+			love.graphics.print(str_contact, width/2 - font:getWidth(str_contact)/2, font:getHeight()/2 - 4)
 
 			love.graphics.setColor(1, 0, 0)
-			love.graphics.print("Twitter: @flamendless",20,15)
-			if love.system.getOS() ~= 'iOS' then
-				love.graphics.print("Donate: Paypal",36,32)
+			local str_twitter = "@flamendless"
+			love.graphics.print(str_twitter, width/2 - font:getWidth(str_twitter)/2, 10 + font:getHeight()/2)
+
+			if OS ~= "iOS" then
+				local str_donate = "Donate"
+				love.graphics.print(str_donate, width/2 - font:getWidth(str_donate)/2, 27 + font:getHeight()/2)
 			end
-			love.graphics.print("E-Mail: google mail",25,49)
+
+			local str_email = "E-Mail"
+			love.graphics.print(str_email, width/2 - font:getWidth(str_email)/2, 44 + font:getHeight()/2)
+
 			--questions
 			if cursor_pos == 3 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
 			end
+
 			--twitter
 			if mouse_select == true then
 				if check_gui(gui_pos.t_x,gui_pos.t_y,gui_pos.t_w,gui_pos.t_h) then
@@ -809,16 +828,17 @@ function gamestates.draw()
 				end
 			end
 			love.graphics.draw(images.twitter,gui_pos.t_x,gui_pos.t_y)
+
 			--paypal
-			if love.system.getOS() ~= "iOS" then
-			if mouse_select == true then
-				if check_gui(gui_pos.p_x,gui_pos.p_y,gui_pos.p_w,gui_pos.p_h) then
-					love.graphics.setColor(1, 0, 0, 1)
-				else
-					love.graphics.setColor(1, 1, 1, 1)
+			if OS ~= "iOS" then
+				if mouse_select == true then
+					if check_gui(gui_pos.p_x,gui_pos.p_y,gui_pos.p_w,gui_pos.p_h) then
+						love.graphics.setColor(1, 0, 0, 1)
+					else
+						love.graphics.setColor(1, 1, 1, 1)
+					end
 				end
-			end
-			love.graphics.draw(images.paypal,gui_pos.p_x,gui_pos.p_y)
+				love.graphics.draw(images.paypal,gui_pos.p_x,gui_pos.p_y)
 			end
 			--email
 			if mouse_select == true then
@@ -943,7 +963,7 @@ function gamestates.draw()
 		end
 
 		player:draw()
-		if love.system.getOS() == "Android" or love.system.getOS() == "iOS" or debug == true then
+		if OS == "Android" or OS == "iOS" or debug == true then
 			android.light_draw()
 		end
 
@@ -973,7 +993,7 @@ function gamestates.draw()
 			love.graphics.rectangle("fill",0,0,images.bg:getWidth(),images.bg:getHeight()/2)
 		end
 
-		if love.system.getOS() ~= "Android" or love.system.getOS() ~= "iOS" and debug == false then
+		if OS ~= "Android" or OS ~= "iOS" and debug == false then
 		if currentRoom == images["secretRoom"] then
 			if tv_light_flag == true then
 				love.graphics.draw(tv_flash)
@@ -1032,7 +1052,7 @@ function gamestates.draw()
 			end
 		end
 
-		if love.system.getOS() == "Android" or love.system.getOS() == "iOS" then
+		if OS == "Android" or OS == "iOS" then
 			if gameplay_record == false then
 				android.draw()
 			end
@@ -1066,7 +1086,7 @@ function gamestates.nextState(state)
 end
 
 function light_check()
-	if love.system.getOS() == "Android" or love.system.getOS() == "iOS" or debug == true then
+	if OS == "Android" or OS == "iOS" or debug == true then
 		android.light_check()
 	else
 		local mx = love.mouse.getX()/ratio
@@ -1186,9 +1206,9 @@ function light_etc(dt,img_table,img_var,canvas)
 	love.graphics.clear(0,0,0,lv)
 	love.graphics.setBlendMode("multiply", "premultiplied")
 	love.graphics.draw(img_table[img_var],x,y)
-	if love.system.getOS() == "Android" or love.system.getOS() == "iOS" or debug then
+	if OS == "Android" or OS == "iOS" or debug then
 		love.graphics.draw(mainLight,lx,ly)
-	elseif love.system.getOS() ~= "Android" or love.system.getOS() ~= "iOS" and debug == false then
+	elseif OS ~= "Android" or OS ~= "iOS" and debug == false then
 		love.graphics.draw(light,lightX,lightY)
 	end
 	love.graphics.setBlendMode("alpha")

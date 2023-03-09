@@ -42,12 +42,12 @@ end
 function pause.exit()
 	move = temp_move
 	pauseFlag = false
-	sounds.thunder:resume()
+	sounds.thunder:play()
 	random_breathe_flag = true
 	sounds.ts_theme:stop()
 	lightningVol = 0.3
 
-	if love.system.getOS() == "Android" or love.system.getOS() == "iOS" then
+	if OS == "Android" or OS == "iOS" then
 		if debug then
 
 			door_locked = false

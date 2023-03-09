@@ -5,7 +5,7 @@ local fc = {
 }
 
 local dpi = love.window.getDPIScale()
-if love.system.getOS() == "Android" then
+if OS == "Android" then
 	dpi = dpi/1.5
 end
 local count = 1

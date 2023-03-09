@@ -410,7 +410,7 @@ function android.light_update(dt)
 	end
 	local lx = player.x - images.lightOutline:getWidth()/2 + math.random(-0.05,0.05)
 	local ly = player.y - images.lightOutline:getHeight()/2.5 + math.random(-0.05,0.05)
-	if love.system.getOS() == "Android" or love.system.getOS() == "iOS" or debug == true then
+	if OS == "Android" or OS == "iOS" or debug == true then
 		love.graphics.setCanvas(custom_mask)
 		love.graphics.clear(0,0,0,lv)
 		love.graphics.setBlendMode("multiply", "premultiplied")
@@ -421,7 +421,7 @@ function android.light_update(dt)
 end
 
 function android.light_draw()
-	if love.system.getOS() == "Android" or love.system.getOS() == "iOS" or debug == true then
+	if OS == "Android" or OS == "iOS" or debug == true then
 		love.graphics.draw(custom_mask)
 	end
 end
