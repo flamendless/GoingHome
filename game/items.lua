@@ -105,7 +105,7 @@ end
 
 function Items:checkFunction()
 	for k,v in ipairs(obj) do
-		for i,o in pairs(dialogue) do
+		for i,o in ipairs(dialogue) do
 			if o.tag == v.tag then
 				if v.tag and o.tag == "head" then
 					if obtainables["cabinet"] == false then

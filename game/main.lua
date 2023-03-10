@@ -1,5 +1,7 @@
---if OS ~= "Android" then debug = true end
---load libraries
+
+--project by Brandon Blanker Lim-it
+--@flamendless
+--@flam8studio
 
 local URLS = require("urls")
 local Shaders = require("shaders")
@@ -506,7 +508,7 @@ function love.keypressed(key)
 			android.setKey(key)
 		end
 		if state == "intro" then
-			if key == "return" or key == "e"     then
+			if key == "e" then
 				pressed = true
 				fade.state = true
 				states = "main"
@@ -541,7 +543,7 @@ function love.keypressed(key)
 		end
 
 		if state == "rain_intro" then
-			if key == "return" or key == "e"     then
+			if key == "e" then
 				pressed = true
 				fade.state = true
 				states = "intro"
@@ -551,22 +553,21 @@ function love.keypressed(key)
 
 		if state == "main" then
 			if key == "f" then
-				if currentRoom ~= images["rightRoom"] and currentRoom ~= images["leftRoom"] and ending_leave ~= true then
-					if word_puzzle == false then
-						if lightOn == true then
-							lightOn = false
-						elseif lightOn == false then
-							lightOn = true
-						end
-						if ghost_event == "limp" or
-							ghost_event == "flashback" or
-							currentRoom == images["leftRoom"] or
-							currentRoom == images["rightRoom"] or
-							ending_leave == true then
-							sounds.fl_toggle:stop()
-						else
-							sounds.fl_toggle:play()
-						end
+				if currentRoom ~= images["rightRoom"] and
+					currentRoom ~= images["leftRoom"] and
+					ending_leave ~= true and
+					word_puzzle == false
+				then
+					lightOn = not lightOn
+
+					if ghost_event == "limp" or
+						ghost_event == "flashback" or
+						currentRoom == images["leftRoom"] or
+						currentRoom == images["rightRoom"] or
+						ending_leave == true then
+						sounds.fl_toggle:stop()
+					else
+						sounds.fl_toggle:play()
 					end
 				end
 			end
@@ -977,7 +978,3 @@ function love.touchmoved(id,x,y)
 		--end
 	--end
 end
-
---project by Brandon Blanker Lim-it
---flamendless8@gmail.com
---@flamendless

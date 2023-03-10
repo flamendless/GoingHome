@@ -415,14 +415,14 @@ if OS == "Android" or OS == "iOS" then
 				end
 			end
 		elseif state == "rain_intro" then
-			if check_gui(gui_pos.skip_x,gui_pos.skip_y,gui_pos.skip_w,gui_pos.skip_h) then
+			if check_gui(gui_pos.skip_x, gui_pos.skip_y, gui_pos.skip_w, gui_pos.skip_h) then
 				pressed = true
 				fade.state = true
 				states = "intro"
 				gamestates.load()
 			end
 		elseif state == "intro" then
-			if check_gui(gui_pos.skip_x,gui_pos.skip_y,gui_pos.skip_w,gui_pos.skip_h) then
+			if check_gui(gui_pos.skip_x, gui_pos.skip_y, gui_pos.skip_w, gui_pos.skip_h) then
 				pressed = true
 				fade.state = true
 				states = "main"

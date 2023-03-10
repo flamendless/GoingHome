@@ -272,7 +272,6 @@ function SCENE.secretRoom_update(dt)
 			c = 1
 			timer = 3
 
-
 			move = false
 			ghost_event = "limp"
 		end

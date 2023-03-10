@@ -410,6 +410,10 @@ function assets.item_set()
 		images.pic4
 	}
 
+	local ox, oy = images.skip:getDimensions()
+	ox = (ox/9)/2
+	oy = oy/2
+
 	gui_pos = {
 		start_x = 4,
 		start_y = height-15,
@@ -431,8 +435,8 @@ function assets.item_set()
 		b_y = height - 15,
 		b_w = images.return_gui:getWidth(),
 		b_h = images.return_gui:getHeight(),
-		skip_x = width-10,
-		skip_y = height-10,
+		skip_x = width/2 - ox,
+		skip_y = height/2 - oy,
 		skip_w = 8,
 		skip_h = 8,
 		q_x = width - 42,

@@ -113,7 +113,6 @@ local intro_txt = {
 
 
 function gamestates.load()
-
 	go_flag = 0
 	mid_dial = 0
 
@@ -1112,12 +1111,9 @@ function light_check()
 	end
 end
 
-function enemy_pos()
-	local gx,gy = ghost.x, ghost.y
-	local left = width/2 - 8 - math.floor(math.random(width/4))
-	local right = width - width/6 - math.floor(math.random(width/2))
-	local mid_left = math.floor(math.random(12,32))
-	local mid_right = math.floor(math.random(width-32,width-12))
+function determine_enemy_pos()
+	local left = 14
+	local right = width - 14
 
 	if ghost.chaseOn == false then
 		if player.x <= width/2 - l + 1 then --player is in the left
@@ -1126,22 +1122,22 @@ function enemy_pos()
 		elseif player.x >= width/2 + r + 1 then --player is in the right
 			ghost.x = left
 			ghost.xscale = 1
-		-- elseif player.x >= width/2 - l then --player in mid
-		-- 	if player.x <= width/2 + r then
-		-- 		ghost.x = mid_left or mid_right
-		-- 		ghost.xscale = 1
-		-- 	end
+		elseif player.x >= width/2 - l then --player in mid
+			if player.x <= width/2 + r then
+				ghost.x = lume.randomchoice({left, right})
+				ghost.xscale = 1
+			end
 		end
-	elseif ghost.chaseOn == true then --if enemy is chasing
+	else
 		if player.x <= width/2 - l + 1 then
-			ghost.x = mid_right
+			ghost.x = right
 		elseif player.x >= width/2 + r + 1 then
-			ghost.x = mid_left
-		-- elseif player.x >= width/2 - l then --player in mid
-		-- 	if player.x <= width/2 + r then
-		-- 		ghost.x = mid_left or mid_right
-		-- 		ghost.xscale = 1
-		-- 	end
+			ghost.x = left
+		elseif player.x >= width/2 - l then --player in mid
+			if player.x <= width/2 + r then
+				ghost.x = lume.randomchoice({left, right})
+				ghost.xscale = 1
+			end
 		end
 	end
 end
@@ -1156,30 +1152,52 @@ function enemy_check()
 			ghost.count = true
 			ghost.chaseOn = false
 		else
-			enemy_pos()
+			determine_enemy_pos()
 		end
 	else --enemy does not exists
 		if event_trigger_light == -1 and random <= 60 then
 			--enemy appears
 			enemy_exists = true
 			--move enemy
-			enemy_pos()
+			determine_enemy_pos()
 		elseif random <= 50 then
 			--enemy appears
 			enemy_exists = true
 			--move enemy
-			enemy_pos()
+			determine_enemy_pos()
 		end
 	end
 end
 
+local skip_alpha = 1
+local skip_dir = 1
 function skip_draw()
 	if pressed == false then
 		love.graphics.setColor(1, 1, 1, 1)
 	else
 		love.graphics.setColor(1, 0, 0, 1)
 	end
-	skip_button:draw(images.skip ,gui_pos.skip_x,gui_pos.skip_y )
+	skip_button:draw(images.skip, gui_pos.skip_x, gui_pos.skip_y)
+
+	if skip_alpha >= 1 then
+		skip_dir = -1
+	elseif skip_alpha <= 0 then
+		skip_dir = 1
+	end
+	skip_alpha = skip_alpha + love.timer.getDelta() * 0.75 * skip_dir
+	skip_alpha = math.clamp(skip_alpha, 0, 1)
+	love.graphics.setColor(1, 1, 1, skip_alpha)
+	local skip_text
+	if OS == "Android" or OS == "iOS" then
+		skip_text = "tap to skip"
+	else
+		skip_text = "press e to skip"
+	end
+	love.graphics.print(
+		skip_text,
+		width/2 - font:getWidth(skip_text)/2,
+		height/2 + font:getHeight() * 1.5
+	)
 end
 
 function random_page()
