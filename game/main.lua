@@ -121,6 +121,8 @@ function show_ads()
 end
 
 function love.load()
+	SaveData.load()
+
 	if pro_version then
 		states = "splash"
 	else
@@ -253,7 +255,6 @@ function love.draw()
 	love.graphics.setCanvas()
 
 	love.graphics.setColor(1, 1, 1, 1)
-	--TODO: (Brandon) decide on WHEN to use grayscale. Maybe use Slab?
 	if SaveData.data.use_grayscale then
 		love.graphics.setShader(Shaders.grayscale)
 	end

@@ -176,11 +176,7 @@ function gamestates.load()
 		sounds.enemy_scream:setLooping(false)
 		sounds.intro_soft:stop()
 	elseif state == "main" then
-		local str_save_data = love.filesystem.read(SaveData.out_filename)
-		if str_save_data then
-			local save_data = JSON.decode(str_save_data)
-			door_locked = save_data.door_locked
-		end
+		SaveData.load()
 
 		sounds.rain:setLooping(true)
 		sounds.rain:setVolume(0.8)
@@ -754,32 +750,33 @@ function gamestates.draw()
 			love.graphics.rectangle("fill",0,0,width,height)
 			love.graphics.setFont(font)
 			love.graphics.setColor(1, 1, 1)
+			local fh = font:getHeight()
 
-			if OS == "Android" or OS == "iOS" or debug == true then
+			if OS == "Android" or OS == "iOS" then
 				local str1 = "Navigate through the house"
 				local str2 = "using but a little light."
 				local str3 = "Avoid the fear that haunts."
 				local str4 = "It must not be exposed to light."
-				love.graphics.print(str1, width/2 - font:getWidth(str1)/2,0+font:getHeight()/2)
-				love.graphics.print(str2 ,width/2 - font:getWidth(str2)/2,10+font:getHeight()/2)
+				love.graphics.print(str1, width/2 - font:getWidth(str1)/2,0+fh/2)
+				love.graphics.print(str2 ,width/2 - font:getWidth(str2)/2,10+fh/2)
 				-- love.graphics.print("Avoid the fear that haunts.", width/2 - font:getWidth("Avoid the fear that haunts.")/2,height - 8 - font:getHeight("Avoid the fear that haunts.")/2)
 				love.graphics.setColor(1, 1, 1)
-				love.graphics.print(str3, width/2 - font:getWidth(str3)/2,22+font:getHeight()/2)
+				love.graphics.print(str3, width/2 - font:getWidth(str3)/2,22+fh/2)
 				love.graphics.setColor(1, 0, 0)
-				love.graphics.print(str4, width/2-font:getWidth(str4)/2,34+font:getHeight()/2)
+				love.graphics.print(str4, width/2-font:getWidth(str4)/2,34+fh/2)
 			else
 				local str1 = "F to toggle flashlight"
 				local str2 = "E to perform actions"
 				local str3 = "P to pause"
 				local str4 = "A and D to move"
 				local str5 = "ENTER/ESC on Puzzle Events"
-				love.graphics.print(str1, width/2 - font:getWidth(str1)/2,0+font:getHeight()/2)
-				love.graphics.print(str2, width/2 - font:getWidth(str2)/2,10+font:getHeight()/2)
-				love.graphics.print(str3, width/2 - font:getWidth(str3)/2,height - 8 - font:getHeight()/2)
+				love.graphics.print(str1, width/2 - font:getWidth(str1)/2,fh/2)
+				love.graphics.print(str2, width/2 - font:getWidth(str2)/2,10 + fh/2)
+				love.graphics.print(str3, width/2 - font:getWidth(str3)/2,height - 8 - fh/2)
 				love.graphics.setColor(1, 1, 1)
-				love.graphics.print(str4, width/2 - font:getWidth(str4)/2,22+font:getHeight()/2)
+				love.graphics.print(str4, width/2 - font:getWidth(str4)/2,22+fh/2)
 				love.graphics.setColor(1, 0, 0)
-				love.graphics.print(str5, width/2-font:getWidth(str5)/2,34+font:getHeight()/2)
+				love.graphics.print(str5, width/2-font:getWidth(str5)/2,34+fh/2)
 			end
 			--back gui
 			if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h) then
@@ -1122,7 +1119,6 @@ function enemy_pos()
 	local mid_left = math.floor(math.random(12,32))
 	local mid_right = math.floor(math.random(width-32,width-12))
 
-
 	if ghost.chaseOn == false then
 		if player.x <= width/2 - l + 1 then --player is in the left
 			ghost.x = right
@@ -1130,28 +1126,28 @@ function enemy_pos()
 		elseif player.x >= width/2 + r + 1 then --player is in the right
 			ghost.x = left
 			ghost.xscale = 1
-		elseif player.x >= width/2 - l then --player in mid
-			if player.x <= width/2 + r then
-				ghost.x = mid_left or mid_right
-				ghost.xscale = 1
-			end
+		-- elseif player.x >= width/2 - l then --player in mid
+		-- 	if player.x <= width/2 + r then
+		-- 		ghost.x = mid_left or mid_right
+		-- 		ghost.xscale = 1
+		-- 	end
 		end
 	elseif ghost.chaseOn == true then --if enemy is chasing
 		if player.x <= width/2 - l + 1 then
 			ghost.x = mid_right
 		elseif player.x >= width/2 + r + 1 then
 			ghost.x = mid_left
-		elseif player.x >= width/2 - l then --player in mid
-			if player.x <= width/2 + r then
-				ghost.x = mid_left or mid_right
-				ghost.xscale = 1
-			end
+		-- elseif player.x >= width/2 - l then --player in mid
+		-- 	if player.x <= width/2 + r then
+		-- 		ghost.x = mid_left or mid_right
+		-- 		ghost.xscale = 1
+		-- 	end
 		end
 	end
 end
 
 function enemy_check()
-	local random = math.floor(math.random(0,100))
+	local random = math.floor(math.random(0, 100))
 	if enemy_exists == true then
 		if random <= 40 then
 			--enemy disappears
@@ -1163,23 +1159,18 @@ function enemy_check()
 			enemy_pos()
 		end
 	else --enemy does not exists
-		if event_trigger_light == -1 then
-			if random <= 60 then
-				--enemy appears
-				enemy_exists = true
-				--move enemy
-				enemy_pos()
-			end
-		else
-			if random <= 50 then
-				--enemy appears
-				enemy_exists = true
-				--move enemy
-				enemy_pos()
-			end
+		if event_trigger_light == -1 and random <= 60 then
+			--enemy appears
+			enemy_exists = true
+			--move enemy
+			enemy_pos()
+		elseif random <= 50 then
+			--enemy appears
+			enemy_exists = true
+			--move enemy
+			enemy_pos()
 		end
 	end
-
 end
 
 function skip_draw()

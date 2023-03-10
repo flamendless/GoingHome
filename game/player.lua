@@ -414,7 +414,7 @@ function Player:checkDoors()
 			door_locked = false
 
 			SaveData.data.door_locked = door_locked
-			love.filesystem.write(SaveData.out_filename, JSON.encode(SaveData.data))
+			SaveData.save()
 
 			for k,v in pairs(dialogue) do
 				v.maxT = 2.5

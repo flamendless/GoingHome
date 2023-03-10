@@ -344,9 +344,9 @@ function Interact:checkItem()
 					sounds.main_theme:stop()
 					child:flipH()
 
-					for _,v in ipairs(obj) do
-						if v.tag == "chair_final" then
-							table.remove(obj,k)
+					for i,v2 in ipairs(obj) do
+						if v2.tag == "chair_final" then
+							table.remove(obj,i)
 							break
 						end
 					end
