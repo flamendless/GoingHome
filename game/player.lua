@@ -411,9 +411,9 @@ function Player:checkDoors()
 				move = false
 			end
 			locked["mainRoom_right"] = false
-
 			door_locked = false
 
+			SaveData.data.door_locked = door_locked
 			love.filesystem.write(SaveData.out_filename, JSON.encode(SaveData.data))
 
 			for k,v in pairs(dialogue) do
