@@ -511,10 +511,10 @@ function gamestates.update(dt)
 			sounds.clock_tick:stop()
 		end
 
-		for k,v in pairs(obj) do
+		for _,v in ipairs(obj) do
 			v:update(dt)
 		end
-		for k,v in pairs(dialogue) do
+		for _,v in ipairs(dialogue) do
 			v:update(dt)
 		end
 
@@ -928,7 +928,7 @@ function gamestates.draw()
 			enemy_draw()
 		end
 
-		for k,v in pairs(obj) do
+		for _,v in ipairs(obj) do
 			v:draw()
 		end
 

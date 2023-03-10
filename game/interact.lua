@@ -164,9 +164,7 @@ function Interact:draw()
 
 	if self._door == true then
 		love.graphics.print(self._dt, width/2 - self.font:getWidth(self._dt)/2,0+self.font:getHeight(self._dt)/4)
-
 	end
-
 end
 
 function Interact:returnChoices(choice)
@@ -180,9 +178,10 @@ function Interact:returnChoices(choice)
 
 		for k,v in pairs(obj_properties.dynamic) do
 			if self.tag == v then
-				for n,m in pairs(obj) do
+				for _,m in ipairs(obj) do
 					if self.tag == m.tag then
 						m:checkFunction()
+						break
 					end
 				end
 			end
@@ -196,9 +195,10 @@ function Interact:returnChoices(choice)
 		elseif self.tag == "chair" then
 			self:special_text("I will just push it","")
 
-			for k,v in pairs(obj) do
+			for _,v in ipairs(obj) do
 				if v.tag == "chair" then
 					v.visible = false
+					break
 				end
 			end
 
@@ -228,7 +228,7 @@ end
 function Interact:checkItem()
 	for k,v in pairs(obtainables) do
 		for n,m in pairs(dialogue) do
-			for i,o in pairs(obj) do
+			for _,o in ipairs(obj) do
 				if o.tag and self.tag == "cabinet" and obtainables["cabinet"] == true then
 					m:special_text("There's a toy hammer","You've got a toy hammer")
 					self.toRemove = "cabinet"
@@ -344,9 +344,10 @@ function Interact:checkItem()
 					sounds.main_theme:stop()
 					child:flipH()
 
-					for k,v in pairs(obj) do
+					for _,v in ipairs(obj) do
 						if v.tag == "chair_final" then
 							table.remove(obj,k)
+							break
 						end
 					end
 				end

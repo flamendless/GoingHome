@@ -180,13 +180,14 @@ function SCENE.secretRoom_update(dt)
 	elseif ghost_event == "flashback" then
 		--set previous rooms to false
 		--things to hide while in flashback
-		for k,v in pairs(obj) do
-    		for n,m in pairs(hide) do
-    			if v.tag == m then
-    				v.visible = false
-    			end
-    		end
-    	end
+		for _,v in ipairs(obj) do
+			for _,m in ipairs(hide) do
+				if v.tag == m then
+					v.visible = false
+					break
+				end
+			end
+		end
 
 
 		tv_light_flag = false
@@ -254,13 +255,14 @@ function SCENE.secretRoom_update(dt)
 			end
 		else
 			--set previous rooms configs to true
-			for k,v in pairs(obj) do
-	    		for n,m in pairs(hide) do
-	    			if v.tag == m then
-	    				v.visible = true
-	    			end
-	    		end
-	    	end
+			for _,v in ipairs(obj) do
+				for _,m in ipairs(hide) do
+					if v.tag == m then
+						v.visible = true
+						break
+					end
+				end
+			end
 
 			sounds.rain:play()
 			sounds.thunder:play()
@@ -301,15 +303,13 @@ function SCENE.secretRoom_update(dt)
 		tv_light_flag = true
 
 		--remove corpse
-		for k,v in pairs(obj) do
+		for _,v in ipairs(obj) do
 			if v.tag == "corpse" then
 				--table.remove(obj,k)
 				v.visible = false
-			end
-			if v.tag == "st_hole" then
+			elseif v.tag == "st_hole" then
 				v.visible = false
-			end
-			if v.tag == "store_hoop_ball" then
+			elseif v.tag == "store_hoop_ball" then
 				v.visible = false
 			end
 		end

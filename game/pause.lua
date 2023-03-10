@@ -46,30 +46,6 @@ function pause.exit()
 	random_breathe_flag = true
 	sounds.ts_theme:stop()
 	lightningVol = 0.3
-
-	if OS == "Android" or OS == "iOS" then
-		if debug then
-
-			door_locked = false
-			mid_dial = 1
-			event = "after_dialogue"
-			obtainables["match"] = false
-			obtainables["chest"] = false
-
-			if c == 1 then
-				obtainables["gun1"] = false
-				obtainables["gun2"] = false
-				obtainables["gun3"] = false
-				check_gun()
-				currentRoom = images["kitchen"]
-				c = c + 1
-			elseif c == 2 then
-				currentRoom = images["livingRoom"]
-				c = 1
-			end
-
-		end
-	end
 end
 
 

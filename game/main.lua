@@ -640,8 +640,8 @@ function love.keypressed(key)
 				end
 			elseif move == false then
 				love.keyboard.setKeyRepeat(false)
-				for k,v in pairs(dialogue) do
-					for j,k in pairs(obj) do
+				for _,v in ipairs(dialogue) do
+					for _,k in ipairs(obj) do
 						if v.tag == k.tag then
 							if v.state == true then
 								if key == "e"     then
