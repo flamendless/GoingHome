@@ -68,7 +68,7 @@ local textures = {
 	{"light2","assets/images/light2.png"},
 	{"light_small","assets/images/light_small.png"},
 	{"title_text","assets/images/title.png"},
-	{"player_idle","assets/images/player.png"},
+	{"player_idle","assets/images/player_idle.png"},
 	{"player_red_eyes","assets/images/player_red_eyes.png"},
 	{"player_eyes_bleed","assets/images/player_eyes_bleed.png"},
 	{"player_dead","assets/images/player_dead.png"},
