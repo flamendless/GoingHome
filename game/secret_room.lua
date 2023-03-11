@@ -173,6 +173,15 @@ function SCENE.secretRoom_update(dt)
 				ghost_event = "flashback"
 				move = false
 				lightOn = false
+
+				for i, v in ipairs(obj) do
+					if v.tag == "hole" then
+						table.remove(obj, i)
+						break
+					end
+				end
+				local head = Items(images.st_head,images["stairRoom"],80,22,"head")
+				table.insert(obj, head)
 			end
 		end
 
@@ -315,6 +324,15 @@ function SCENE.secretRoom_update(dt)
 	elseif ghost_event == "finished" then
 		player.state = "normal"
 		flashback_epic = false
+
+		for i, v in ipairs(obj) do
+			if v.tag == "head" then
+				table.remove(obj, i)
+				break
+			end
+		end
+		local holes = Items(images.st_hole,images["stairRoom"], 80, 22, "hole")
+		table.insert(obj, holes)
 	end
 	--tv illum
 	if tv_light_flag == true then

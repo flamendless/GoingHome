@@ -112,11 +112,10 @@ function Items:checkFunction()
 						if self.tag == v.tag then
 							--sound
 							sounds.wood_drop:play()
-
 							o:special_text("You've used the hammer","the painting fell")
-							table.remove(obj,k)
-							local holes = Items(images.st_hole,images["stairRoom"],80,22,"hole")
-							table.insert(obj,holes)
+							table.remove(obj, k)
+							local holes = Items(images.st_hole,images["stairRoom"], 80, 22, "hole")
+							table.insert(obj, holes)
 						end
 					end
 				elseif v.tag and o.tag == "ball" then
