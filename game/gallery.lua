@@ -17,7 +17,7 @@ function Gallery.load()
 	music[2] = {"Peaceful Home", sounds.finding_home }
 	music[3] = {"A Home's Melody", sounds.ts_theme }
 	music[4] = {"Finding Home",sounds.main_theme}
-	music[5] = {"Alone Home",sounds.they_are_gone}
+	music[5] = {"Alone Home", sounds.they_are_gone}
 
 	gPlay = {
 		img = images.galleryPlay,
@@ -57,7 +57,7 @@ function Gallery.load()
 	gExit = {
 		img = images.return_gui,
 		x = 5,
-		y = 1,
+		y = 2,
 		w = images.gui_settings:getWidth(),
 		h = images.gui_settings:getHeight(),
 		is_button = true,
@@ -71,7 +71,7 @@ function Gallery.load()
 	--table.insert(galleryGui,gSlider)
 	--table.insert(galleryGui,gVolume)
 
-	for k,v in pairs(music) do
+	for k,v in ipairs(music) do
 		music[k][song]:setVolume(1)
 	end
 
@@ -82,7 +82,7 @@ function Gallery.update(dt)
 	local cur = music[current]
 	local title = cur[title]
 	stringWidth = font:getWidth(title)/2
-	stringHeight = font:getHeight(title)
+	stringHeight = font:getHeight()
 
 	isPlaying = cur[song]:isPlaying()
 	imgPlay = isPlaying == true and images.galleryPlay or images.galleryPause
@@ -116,9 +116,7 @@ function Gallery.draw()
 	love.graphics.setColor(1, 1, 1, 1)
 	love.graphics.print(music[current][title],width/2 - stringWidth,height/2 - stringHeight)
 
-	for k,v in pairs(galleryGui) do
-		local obj = galleryGui[k]
-
+	for _, obj in ipairs(galleryGui) do
 		if obj.is_button and check_gui(obj.x, obj.y, obj.w, obj.h) then
 			love.graphics.setColor(1, 0, 0, 1)
 		else

@@ -166,6 +166,7 @@ else
   end
 
   -----------------------------------------------------
+  function loader.getPending() return pending end
 
   function loader.newImage(holder, key, path)
     newResource('image', holder, key, path)

@@ -2,7 +2,7 @@ local timer = 2
 
 function particle_set()
 	local img = images.dust
- 
+
 	psystem = love.graphics.newParticleSystem(img, 10)
 	psystem:setParticleLifetime(2, 5) -- Particles live at least 2s and at most 5s.
 	psystem:setEmissionRate(10)

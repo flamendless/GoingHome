@@ -4,49 +4,64 @@ function Items:new(image,room,x,y,tag)
 	self.x = x -- w/2
 	self.y =  y -- h/2
 	self.image = image
-	self.w = self.image:getWidth()
-	self.h = self.image:getHeight()
+	self.w, self.h = self.image:getDimensions()
 	self.room = room
 	self.tag = tag
 	self.visible = true
 end
 
 function Items:update(dt)
-		
+
 end
 
 function Items:draw()
-	if self.visible == true then
-		if ending_leave == false then
-			love.graphics.setColor(1, 1, 1, 1)
-			if currentRoom == self.room then
-				love.graphics.draw(self.image,self.x,self.y)
-			end
-		else
-			if self.image == images["m_shoerack"] then
-				img_color = images["m_shoerack_color"]
-			elseif self.image == images["m_shelf"] then
-				img_color = images["m_shelf_color"]
-			elseif self.image == images["lr_display"] then
-				img_color = images["lr_display_color"]
-			elseif self.image == images["lr_portraits"] then
-				img_color = images["lr_portraits_color"]
-			elseif self.image == images["basement_battery"] then
-				img_color = images["basement_battery_color"]
-			end
+	if not self.visible then return end
+	if currentRoom ~= self.room then return end
 
-			love.graphics.setColor(1, 1, 1, 1)
-			if currentRoom == self.room then
-				love.graphics.draw(img_color,self.x,self.y)
+	if ending_leave == false then
+		love.graphics.setColor(1, 1, 1, 1)
+		if currentRoom == self.room then
+			love.graphics.draw(self.image,self.x,self.y)
+		end
+	else
+		if self.image == images["m_shoerack"] then
+			img_color = images["m_shoerack_color"]
+		elseif self.image == images["m_shelf"] then
+			img_color = images["m_shelf_color"]
+		elseif self.image == images["lr_display"] then
+			img_color = images["lr_display_color"]
+		elseif self.image == images["lr_portraits"] then
+			img_color = images["lr_portraits_color"]
+		elseif self.image == images["basement_battery"] then
+			img_color = images["basement_battery_color"]
+		end
+
+		love.graphics.setColor(1, 1, 1, 1)
+		love.graphics.draw(img_color,self.x,self.y)
+	end
+
+	-- love.graphics.setColor(1, 0, 0, 1)
+	-- love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
+end
+
+function Items:returnTag()
+	if currentRoom ~= self.room then return end
+	for k,v in pairs(dialogue) do
+		if v.tag == self.tag then
+			if v.state == false then v.state = true end
+			-- if v.simpleMessage == true then v.simpleMessage = false end
+			if v.simpleMessage == false then
+				move = false
 			end
 		end
 	end
 end
 
-function Items:returnTag()
-	if currentRoom == self.room then
-		for k,v in pairs(dialogue) do 
-			if v.tag == self.tag then
+function Items:specialTag()
+	if currentRoom ~= self.room then return end
+	for k,v in pairs(dialogue) do
+		if v.tag == self.tag then
+			if v.tag == "chair" then
 				if v.state == false then v.state = true end
 				-- if v.simpleMessage == true then v.simpleMessage = false end
 				if v.simpleMessage == false then
@@ -57,31 +72,14 @@ function Items:returnTag()
 	end
 end
 
-function Items:specialTag()
-	if currentRoom == self.room then
-		for k,v in pairs(dialogue) do
-			if v.tag == self.tag then
-				if v.tag == "chair" then
-					if v.state == false then v.state = true end
-					-- if v.simpleMessage == true then v.simpleMessage = false end
-					if v.simpleMessage == false then
-						move = false
-					end
-				end
-			end
-		end
-	end
-end
-
 function Items:stillLocked()
-	if currentRoom == self.room then
-		for k,v in pairs(dialogue) do
-			if v.tag == self.tag then
-				--if v.state == false then v.state = true end
-				--if v.simpleMessage == true then v.simpleMessage = false end
-				move = false
-				v._door = true
-			end
+	if currentRoom ~= self.room then return end
+	for _,v in pairs(dialogue) do
+		if v.tag == self.tag then
+			--if v.state == false then v.state = true end
+			--if v.simpleMessage == true then v.simpleMessage = false end
+			move = false
+			v._door = true
 		end
 	end
 end
@@ -106,19 +104,18 @@ function Items:glow()
 end
 
 function Items:checkFunction()
-	for k,v in pairs(obj) do
-		for i,o in pairs(dialogue) do
+	for k,v in ipairs(obj) do
+		for i,o in ipairs(dialogue) do
 			if o.tag == v.tag then
 				if v.tag and o.tag == "head" then
 					if obtainables["cabinet"] == false then
-						if self.tag == v.tag then					
+						if self.tag == v.tag then
 							--sound
 							sounds.wood_drop:play()
-
 							o:special_text("You've used the hammer","the painting fell")
-							table.remove(obj,k)
-							local holes = Items(images.st_hole,images["stairRoom"],80,22,"hole")
-							table.insert(obj,holes)
+							table.remove(obj, k)
+							local holes = Items(images.st_hole,images["stairRoom"], 80, 22, "hole")
+							table.insert(obj, holes)
 						end
 					end
 				elseif v.tag and o.tag == "ball" then
@@ -145,7 +142,7 @@ function Items:checkFunction()
 							local hoop_ball = Items(images.store_hoop_ball,images["storageRoom"],115,22,"hoop_ball")
 							table.insert(obj,hoop_ball)
 
-							for k,v in pairs(dialogue) do 
+							for k,v in ipairs(dialogue) do
 								if v.tag == "hole" then
 									table.remove(dialogue,k)
 									local holes_box_open = Interact(false,{"The holes look like slashes","The box is open","Check inside?"},{"Check","Leave it"},"","hole")
@@ -156,7 +153,7 @@ function Items:checkFunction()
 						end
 					end
 				elseif v.tag and o.tag == "sink" then
-					if self.tag == v.tag then 
+					if self.tag == v.tag then
 						if obtainables["kitchen key"] == false and obtainables["crowbar"] == true then
 							sounds.item_got:play()
 							if tv_trigger == 0 then
@@ -192,7 +189,7 @@ function Items:checkFunction()
 							table.insert(obj,ladder)
 							local lad = Interact(false,{"It leads to the attic","Climb up?"},{"Yes","No"},"","ladder")
 							table.insert(dialogue,lad)
-							
+
 						end
 					end
 				elseif v.tag and o.tag == "chest" then
@@ -206,7 +203,7 @@ function Items:checkFunction()
 
 								o:special_text("You've got a key","It's for the basement")
 								chest_open = true
-								
+
 								--event_trigger_light = 1
 								move = false
 								temp_clock = math.floor(clock)
@@ -240,7 +237,7 @@ function Items:checkFunction()
 								o:special_text("there's a key inside","you've got a clock key")
 								obtainables["clock"] = false
 								sounds.item_got:play()
-								
+
 								enemy_exists = true
 								ghost.trigger = true
 								ghost.x = width + 10
@@ -308,7 +305,7 @@ function Items:checkFunction()
 							sounds.re_sound:setLooping(false)
 							obtainables["match"] = false
 							o:special_text("There's a matchstick","You've picked it up")
-						else 
+						else
 							o:special_text("","There's nothing more here")
 						end
 					end
@@ -353,7 +350,7 @@ function Items:checkFunction()
 				elseif v.tag and o.tag == "kitchen table" then
 					if self.tag == v.tag then
 						if gun_rebuild == false then
-							if obtainables["gun1"] == false and 
+							if obtainables["gun1"] == false and
 								obtainables["gun2"] == false and
 								obtainables["gun3"] == false then
 								o:special_text("","I can rebuild the gun here")
@@ -387,7 +384,7 @@ function Items:checkFunction()
 					if self.tag == v.tag then
 						if ammo_picked == false then
 							sounds.reload:play()
-							sounds.reload:setLooping(false)	
+							sounds.reload:setLooping(false)
 							o:special_text("","You've loaded the ammo")
 							ending_animate = true
 							reload_animate = true

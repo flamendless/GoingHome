@@ -1,6 +1,7 @@
 gamestates = {}
 
 about = false
+options = false
 questions = false
 door_locked = true
 --
@@ -113,7 +114,6 @@ local intro_txt = {
 
 
 function gamestates.load()
-
 	go_flag = 0
 	mid_dial = 0
 
@@ -130,20 +130,20 @@ function gamestates.load()
 	intro_timer = 2.5
 	intro_finished = false
 
+	assets.load()
+end
+
+function gamestates.init()
 	local state = gamestates.getState()
 	if state == "gallery" then
 		sounds.ts_theme:stop()
-	end
-
-	if state == "adshow" then
-		assets.load()
+	elseif state == "adshow" then
+		-- assets.load()
 		FC:init()
 		FC:GDPR_init()
-	end
-
-	if state == "splash" then
+	elseif state == "splash" then
 		if pro_version then
-			assets.load()
+			-- assets.load()
 		end
 		splash_timer = hump_timer:new()
 		splash_timer:after(3, function()
@@ -155,15 +155,11 @@ function gamestates.load()
 			--states = "title"
 			gamestates.nextState("title")
 		end)
-	end
-
-	if state == "title" then
+	elseif state == "title" then
 		--set music
 		sounds.ts_theme:setLooping(true)
 		sounds.ts_theme:play()
 		sounds.ts_theme:setVolume(0.5)
-		sounds.fl_toggle:setLooping(false)
-		sounds.fl_toggle:setVolume(1)
 
 		if (OS == "Android") and (not pro_version) then
 			show_ads()
@@ -176,11 +172,10 @@ function gamestates.load()
 		sounds.enemy_scream:setLooping(false)
 		sounds.intro_soft:stop()
 	elseif state == "main" then
-		local str_save_data = love.filesystem.read(SaveData.out_filename)
-		if str_save_data then
-			local save_data = JSON.decode(str_save_data)
-			door_locked = save_data.door_locked
-		end
+		sounds.fl_toggle:setLooping(false)
+		sounds.fl_toggle:setVolume(1)
+
+		SaveData.load()
 
 		sounds.rain:setLooping(true)
 		sounds.rain:setVolume(0.8)
@@ -278,14 +273,15 @@ function gamestates.update(dt)
 	elseif state == "splash2" then
 		logoTimer:update(dt)
 	elseif state == "title" then
-		if instruction == false and about == false and questions == false then
+		if instruction == false and about == false and questions == false and options == false then
 			if check_gui(gui_pos.start_x,gui_pos.start_y,gui_pos.start_w,gui_pos.start_h) or
 				check_gui(gui_pos.quit_x,gui_pos.quit_y,gui_pos.quit_w,gui_pos.quit_h) or
 				check_gui(gui_pos.i_x,gui_pos.i_y,gui_pos.i_w,gui_pos.i_h) or
 				check_gui(gui_pos.a_x,gui_pos.a_y,gui_pos.a_w,gui_pos.a_h) or
 				check_gui(gui_pos.q_x,gui_pos.q_y,gui_pos.q_w,gui_pos.q_h) or
 				check_gui(gui_pos.webx,gui_pos.weby,gui_pos.webw,gui_pos.webh) or
-				check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h)
+				check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) or
+				check_gui(gui_pos.options_x, gui_pos.options_y, gui_pos.options_w, gui_pos.options_h)
 			then
 				mouse_select = true
 			else
@@ -297,18 +293,6 @@ function gamestates.update(dt)
 			cursor_select = false
 		else
 			cursor_select = true
-		end
-
-		--windows
-		win_left_anim:update(dt)
-		win_right_anim:update(dt)
-		Timer.update(dt)
-
-		if win_move_l == false then
-			Timer.after(10, function() win_move_l = true  win_left_anim:resume() end)
-		end
-		if win_move_r == false then
-			Timer.after(9, function() win_move_r = true win_right_anim:resume() end)
 		end
 
 	elseif state == "rain_intro" then
@@ -361,6 +345,18 @@ function gamestates.update(dt)
 
 			-----MAIN-------
 	elseif state == "main" then
+		--windows
+		win_left_anim:update(dt)
+		win_right_anim:update(dt)
+		Timer.update(dt)
+
+		if win_move_l == false then
+			Timer.after(10, function() win_move_l = true  win_left_anim:resume() end)
+		end
+		if win_move_r == false then
+			Timer.after(9, function() win_move_r = true win_right_anim:resume() end)
+		end
+
 
 		if move == true then
 			player:movement(dt)
@@ -511,10 +507,10 @@ function gamestates.update(dt)
 			sounds.clock_tick:stop()
 		end
 
-		for k,v in pairs(obj) do
+		for _,v in ipairs(obj) do
 			v:update(dt)
 		end
-		for k,v in pairs(dialogue) do
+		for _,v in ipairs(dialogue) do
 			v:update(dt)
 		end
 
@@ -616,6 +612,16 @@ function gamestates.update(dt)
 	end
 end
 
+local function draw_back_gui()
+	--back gui
+	if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h) then
+		love.graphics.setColor(1, 0, 0, 1)
+	else
+		love.graphics.setColor(1, 1, 1, 1)
+	end
+	love.graphics.draw(images.return_gui,gui_pos.b_x,gui_pos.b_y)
+end
+
 function gamestates.draw()
 	local mx, my = love.mouse.getPosition()
 	mx = mx/ratio
@@ -637,11 +643,11 @@ function gamestates.draw()
 		love.graphics.draw(images.wits, width/2 - 64,height/2 - 32)
 	end
 	if state == "title" then
-		if instruction == false and about == false and questions == false then
+		if instruction == false and about == false and questions == false and options == false then
 			--main title screen art
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(images.bg,width/2 - images.bg:getWidth()/2,height/2 - images.bg:getHeight()/2)
-
+			local bgw, bgh = images.bg:getDimensions()
+			love.graphics.draw(images.bg, width/2 - bgw/2, height/2 - bgh/2)
 
 			--start
 			if cursor_pos == 1 then
@@ -657,6 +663,7 @@ function gamestates.draw()
 				end
 			end
 			love.graphics.draw(images.start,gui_pos.start_x,gui_pos.start_y)
+
 			--exit
 			if OS ~= "iOS" then
 				if cursor_pos == 2 then
@@ -675,12 +682,8 @@ function gamestates.draw()
 				love.graphics.draw(images.exit, gui_pos.quit_x , gui_pos.quit_y)
 			end
 
-			--if OS == "Android" or debug == true then
---
-			--else
-
 			--website
-			if cursor_pos == 6 then
+			if cursor_pos == 8 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
@@ -695,12 +698,12 @@ function gamestates.draw()
 			love.graphics.draw(images.website_gui,gui_pos.webx,gui_pos.weby)
 
 			--instruction
-			if cursor_pos == 5 then
+			if cursor_pos == 7 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
 			end
-			if mouse_select == true then
+			if mouse_select == true  then
 				if check_gui(gui_pos.i_x,gui_pos.i_y,gui_pos.i_w,gui_pos.i_h) then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
@@ -710,13 +713,13 @@ function gamestates.draw()
 			love.graphics.draw(images.instruction_gui,gui_pos.i_x, gui_pos.i_y)
 
 			--about
-			if cursor_pos == 4 then
+			if cursor_pos == 6 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
 			end
 			if mouse_select == true then
-				if check_gui(gui_pos.a_x,gui_pos.a_y,gui_pos.a_w,gui_pos.a_h)then
+				if check_gui(gui_pos.a_x,gui_pos.a_y,gui_pos.a_w,gui_pos.a_h) then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
 					love.graphics.setColor(1, 1, 1, 1)
@@ -725,7 +728,7 @@ function gamestates.draw()
 			love.graphics.draw(images.about,gui_pos.a_x , gui_pos.a_y)
 
 			--questions
-			if cursor_pos == 3 then
+			if cursor_pos == 5 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
@@ -738,56 +741,74 @@ function gamestates.draw()
 				end
 			end
 			love.graphics.draw(images.question,gui_pos.q_x,gui_pos.q_y)
-		--end
 
-			if pro_version then
-				if mouse_select == true and check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
+			--gallery
+			if cursor_pos == 4 then
+				love.graphics.setColor(1, 0, 0, 1)
+			else
+				love.graphics.setColor(1, 1, 1, 1)
+			end
+			if mouse_select == true then
+				if check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
 					love.graphics.setColor(1, 1, 1, 1)
 				end
-				love.graphics.draw(images.gui_gallery, gui_pos.g_x, gui_pos.g_y)
 			end
+			love.graphics.draw(images.gui_gallery, gui_pos.g_x, gui_pos.g_y)
+
+			--options
+			if cursor_pos == 3 then
+				love.graphics.setColor(1, 0, 0, 1)
+			else
+				love.graphics.setColor(1, 1, 1, 1)
+			end
+			if mouse_select == true then
+				if check_gui(gui_pos.options_x,gui_pos.options_y,gui_pos.options_w,gui_pos.options_h) then
+					love.graphics.setColor(1, 0, 0, 1)
+				else
+					love.graphics.setColor(1, 1, 1, 1)
+				end
+			end
+			love.graphics.draw(images.options, gui_pos.options_x, gui_pos.options_y)
 
 		elseif instruction == true and about == false and questions == false then
 			love.graphics.setColor(0,0,0,0)
 			love.graphics.rectangle("fill",0,0,width,height)
 			love.graphics.setFont(font)
 			love.graphics.setColor(1, 1, 1)
+			local fh = font:getHeight()
 
-			if OS == "Android" or OS == "iOS" or debug == true then
+			if OS == "Android" or OS == "iOS" then
 				local str1 = "Navigate through the house"
 				local str2 = "using but a little light."
 				local str3 = "Avoid the fear that haunts."
 				local str4 = "It must not be exposed to light."
-				love.graphics.print(str1, width/2 - font:getWidth(str1)/2,0+font:getHeight()/2)
-				love.graphics.print(str2 ,width/2 - font:getWidth(str2)/2,10+font:getHeight()/2)
+				love.graphics.print(str1, width/2 - font:getWidth(str1)/2,0+fh/2)
+				love.graphics.print(str2 ,width/2 - font:getWidth(str2)/2,10+fh/2)
 				-- love.graphics.print("Avoid the fear that haunts.", width/2 - font:getWidth("Avoid the fear that haunts.")/2,height - 8 - font:getHeight("Avoid the fear that haunts.")/2)
 				love.graphics.setColor(1, 1, 1)
-				love.graphics.print(str3, width/2 - font:getWidth(str3)/2,22+font:getHeight()/2)
+				love.graphics.print(str3, width/2 - font:getWidth(str3)/2,22+fh/2)
 				love.graphics.setColor(1, 0, 0)
-				love.graphics.print(str4, width/2-font:getWidth(str4)/2,34+font:getHeight()/2)
+				love.graphics.print(str4, width/2-font:getWidth(str4)/2,34+fh/2)
 			else
 				local str1 = "F to toggle flashlight"
 				local str2 = "E to perform actions"
 				local str3 = "P to pause"
 				local str4 = "A and D to move"
 				local str5 = "ENTER/ESC on Puzzle Events"
-				love.graphics.print(str1, width/2 - font:getWidth(str1)/2,0+font:getHeight()/2)
-				love.graphics.print(str2, width/2 - font:getWidth(str2)/2,10+font:getHeight()/2)
-				love.graphics.print(str3, width/2 - font:getWidth(str3)/2,height - 8 - font:getHeight()/2)
+				love.graphics.print(str1, width/2 - font:getWidth(str1)/2,fh/2)
+				love.graphics.print(str2, width/2 - font:getWidth(str2)/2,10 + fh/2)
+				love.graphics.print(str3, width/2 - font:getWidth(str3)/2,height - 8 - fh/2)
 				love.graphics.setColor(1, 1, 1)
-				love.graphics.print(str4, width/2 - font:getWidth(str4)/2,22+font:getHeight()/2)
+				love.graphics.print(str4, width/2 - font:getWidth(str4)/2,22+fh/2)
 				love.graphics.setColor(1, 0, 0)
-				love.graphics.print(str5, width/2-font:getWidth(str5)/2,34+font:getHeight()/2)
+				love.graphics.print(str5, width/2-font:getWidth(str5)/2,34+fh/2)
 			end
-			--back gui
-			if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h) then
-				love.graphics.setColor(1, 0, 0, 1)
-			else
-				love.graphics.setColor(1, 1, 1, 1)
-			end
-			love.graphics.draw(images.return_gui,gui_pos.b_x,gui_pos.b_y)
+			draw_back_gui()
+
+		elseif options then
+			draw_back_gui()
 
 		elseif instruction == false and questions == true and about == false then
 
@@ -849,32 +870,21 @@ function gamestates.draw()
 				end
 			end
 			love.graphics.draw(images.email,gui_pos.e_x,gui_pos.e_y)
-			--back gui
-			if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h) then
-				love.graphics.setColor(1, 0, 0, 1)
-			else
-				love.graphics.setColor(1, 1, 1, 1)
-			end
-			love.graphics.draw(images.return_gui,gui_pos.b_x,gui_pos.b_y)
+			draw_back_gui()
 		end
 		if about == true then
 			love.graphics.setColor(0,0,0,0)
 			love.graphics.rectangle("fill",0,0,width,height)
 			love.graphics.setFont(font)
 			love.graphics.setColor(1, 1, 1)
-			love.graphics.print("Softwares Used:",width/2 - font:getWidth("Softwares Used:")/2,font:getHeight("Softwares Used:")/2 - 4)
-			love.graphics.print("ide: sublime text 3",width/2 - font:getWidth("ide: sublime text 3")/2,font:getHeight("ide: sublime text 3") + 20)
-			love.graphics.print("pixel art: aseprite",width/2 - font:getWidth("pixel art: aseprite")/2,font:getHeight("pixel art: aseprite") + 28)
-			love.graphics.print("source control: git",width/2 - font:getWidth("source control: git")/2,font:getHeight("source control: git") + 36)
-			love.graphics.print("os: xubuntu xenial xerxus",width/2 - font:getWidth("os: xubuntu xenial xerxus")/2,font:getHeight("os: xubuntu xenial xerxus") + 12)
-			love.graphics.print("sounds: musescore & audacity",width/2 - font:getWidth("sounds: musescore & audacity")/2,font:getHeight("sounds: musescore & audacity") + 4)
-			--back gui
-			if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h) then
-				love.graphics.setColor(1, 0, 0, 1)
-			else
-				love.graphics.setColor(1, 1, 1, 1)
-			end
-			love.graphics.draw(images.return_gui,gui_pos.b_x,gui_pos.b_y)
+
+			love.graphics.print("Softwares Used:",width/2 - font:getWidth("Softwares Used:")/2,font:getHeight()/2 - 4)
+			love.graphics.print("ide: sublime text 3",width/2 - font:getWidth("ide: sublime text 3")/2,font:getHeight() + 20)
+			love.graphics.print("pixel art: aseprite",width/2 - font:getWidth("pixel art: aseprite")/2,font:getHeight() + 28)
+			love.graphics.print("source control: git",width/2 - font:getWidth("source control: git")/2,font:getHeight() + 36)
+			love.graphics.print("os: xubuntu xenial xerxus",width/2 - font:getWidth("os: xubuntu xenial xerxus")/2,font:getHeight() + 12)
+			love.graphics.print("sounds: musescore & audacity",width/2 - font:getWidth("sounds: musescore & audacity")/2,font:getHeight() + 4)
+			draw_back_gui()
 		end
 	elseif state == "intro" then
 
@@ -928,7 +938,7 @@ function gamestates.draw()
 			enemy_draw()
 		end
 
-		for k,v in pairs(obj) do
+		for _,v in ipairs(obj) do
 			v:draw()
 		end
 
@@ -1074,7 +1084,7 @@ function gamestates.draw()
 end
 
 function gamestates.control()
-	if instruction == false and about == false then
+	if instruction == false and about == false and questions == false and options == false then
 		states = "rain_intro"
 		gamestates.load()
 	end
@@ -1115,13 +1125,9 @@ function light_check()
 	end
 end
 
-function enemy_pos()
-	local gx,gy = ghost.x, ghost.y
-	local left = width/2 - 8 - math.floor(math.random(width/4))
-	local right = width - width/6 - math.floor(math.random(width/2))
-	local mid_left = math.floor(math.random(12,32))
-	local mid_right = math.floor(math.random(width-32,width-12))
-
+function determine_enemy_pos()
+	local left = 14
+	local right = width - 14
 
 	if ghost.chaseOn == false then
 		if player.x <= width/2 - l + 1 then --player is in the left
@@ -1132,18 +1138,18 @@ function enemy_pos()
 			ghost.xscale = 1
 		elseif player.x >= width/2 - l then --player in mid
 			if player.x <= width/2 + r then
-				ghost.x = mid_left or mid_right
+				ghost.x = lume.randomchoice({left, right})
 				ghost.xscale = 1
 			end
 		end
-	elseif ghost.chaseOn == true then --if enemy is chasing
+	else
 		if player.x <= width/2 - l + 1 then
-			ghost.x = mid_right
+			ghost.x = right
 		elseif player.x >= width/2 + r + 1 then
-			ghost.x = mid_left
+			ghost.x = left
 		elseif player.x >= width/2 - l then --player in mid
 			if player.x <= width/2 + r then
-				ghost.x = mid_left or mid_right
+				ghost.x = lume.randomchoice({left, right})
 				ghost.xscale = 1
 			end
 		end
@@ -1151,7 +1157,7 @@ function enemy_pos()
 end
 
 function enemy_check()
-	local random = math.floor(math.random(0,100))
+	local random = math.floor(math.random(0, 100))
 	if enemy_exists == true then
 		if random <= 40 then
 			--enemy disappears
@@ -1160,35 +1166,52 @@ function enemy_check()
 			ghost.count = true
 			ghost.chaseOn = false
 		else
-			enemy_pos()
+			determine_enemy_pos()
 		end
 	else --enemy does not exists
-		if event_trigger_light == -1 then
-			if random <= 60 then
-				--enemy appears
-				enemy_exists = true
-				--move enemy
-				enemy_pos()
-			end
-		else
-			if random <= 50 then
-				--enemy appears
-				enemy_exists = true
-				--move enemy
-				enemy_pos()
-			end
+		if event_trigger_light == -1 and random <= 60 then
+			--enemy appears
+			enemy_exists = true
+			--move enemy
+			determine_enemy_pos()
+		elseif random <= 50 then
+			--enemy appears
+			enemy_exists = true
+			--move enemy
+			determine_enemy_pos()
 		end
 	end
-
 end
 
+local skip_alpha = 1
+local skip_dir = 1
 function skip_draw()
 	if pressed == false then
 		love.graphics.setColor(1, 1, 1, 1)
 	else
 		love.graphics.setColor(1, 0, 0, 1)
 	end
-	skip_button:draw(images.skip ,gui_pos.skip_x,gui_pos.skip_y )
+	skip_button:draw(images.skip, gui_pos.skip_x, gui_pos.skip_y)
+
+	if skip_alpha >= 1 then
+		skip_dir = -1
+	elseif skip_alpha <= 0 then
+		skip_dir = 1
+	end
+	skip_alpha = skip_alpha + love.timer.getDelta() * 0.75 * skip_dir
+	skip_alpha = math.clamp(skip_alpha, 0, 1)
+	love.graphics.setColor(1, 1, 1, skip_alpha)
+	local skip_text
+	if OS == "Android" or OS == "iOS" then
+		skip_text = "tap to skip"
+	else
+		skip_text = "press e to skip"
+	end
+	love.graphics.print(
+		skip_text,
+		width/2 - font:getWidth(skip_text)/2,
+		height/2 + font:getHeight() * 1.5
+	)
 end
 
 function random_page()

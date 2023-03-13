@@ -130,7 +130,7 @@ local wait_ev = 0
 
 
 function left_room_update(dt)
-	
+
 	function getLeftRoom()
 		return ll_img
 	end
@@ -180,7 +180,7 @@ function left_room_update(dt)
 			left_light_flag = true
 		end
 	elseif lr_event == 3 then
-		
+
 		if ammo_available == true then
 			--route 1
 			ending_animate = true
@@ -214,7 +214,7 @@ function left_room_update(dt)
 				if (event_route[c+1] == "S-stop! Leave me alone!") then
 					ending_animate = false
 				elseif event_route[c] == "" then
-					f_leave2_flag = true	
+					f_leave2_flag = true
 					lr_event = 5
 					move = true
 				end
@@ -233,7 +233,7 @@ function left_room_update(dt)
 					ending_animate = true
 					wait_animate = false
 					leave_animate = true
-					f_leave2_flag = true	
+					f_leave2_flag = true
 				elseif event_route[c+1] == "..." then
 					if leave_scream == false then
 						sounds.enemy_scream:play()
@@ -255,7 +255,7 @@ function left_room_update(dt)
 			basement_lock = false
 			ending_shoot = true
 			ending_shoot_event = 1
-			
+
 			if timer > 0 then
 				timer = timer - 1 * dt
 				if timer <= 0 then
@@ -297,7 +297,7 @@ function left_room_draw()
 		end
 
 		love.graphics.setColor(1, 1, 1, 1)
-		
+
 
 	elseif lr_event == 3 then
 		if e_c == 1 then
@@ -327,7 +327,7 @@ function left_room_draw()
 	elseif lr_event == 5 then
 		if event_route == him_convo then
 
-		end 
+		end
 	elseif lr_event == 6 then
 
 	end
@@ -390,7 +390,7 @@ function father_anim_draw()
 				f_leave:draw(images.f_leave,8,25)
 			end
 		end
-	end	
+	end
 	love.graphics.setColor(1, 1, 1, 1)
 	love.graphics.draw(images.jail,0,16)
 end

@@ -156,6 +156,9 @@ function Player:draw()
 		love.graphics.setColor(1, 1, 1, 1)
 		love.graphics.draw(self.img,self.x,self.y)
 	end
+
+	-- love.graphics.setColor(1, 0, 0, 1)
+	-- love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
 end
 
 function Player:moveRoom(posX,nextRoom)
@@ -408,10 +411,10 @@ function Player:checkDoors()
 				move = false
 			end
 			locked["mainRoom_right"] = false
-
 			door_locked = false
 
-			love.filesystem.write(SaveData.out_filename, JSON.encode(SaveData.data))
+			SaveData.data.door_locked = door_locked
+			SaveData.save()
 
 			for k,v in pairs(dialogue) do
 				v.maxT = 2.5
@@ -424,7 +427,7 @@ function Player:checkDoors()
 end
 
 function Player:checkItems()
-	for k,v in pairs(obj) do
+	for _,v in ipairs(obj) do
 		if self.x >= v.x and self.x + self.w <= v.x + v.w or
 			self.x + self.w >= v.x + v.w/6 and self.x + self.w <= v.x + v.w or
 			self.x >= v.x and self.x <= v.x + v.w - v.w/6
@@ -457,7 +460,7 @@ function Player:checkItems()
 end
 
 function Player:checkGlow()
-	for k,v in pairs(obj) do
+	for _,v in ipairs(obj) do
 		if self.x >= v.x and self.x + self.w <= v.x + v.w or
 			self.x + self.w >= v.x + v.w/6 and self.x + self.w <= v.x + v.w or
 			self.x >= v.x and self.x <= v.x + v.w - v.w/6

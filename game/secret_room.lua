@@ -173,6 +173,15 @@ function SCENE.secretRoom_update(dt)
 				ghost_event = "flashback"
 				move = false
 				lightOn = false
+
+				for i, v in ipairs(obj) do
+					if v.tag == "hole" then
+						table.remove(obj, i)
+						break
+					end
+				end
+				local head = Items(images.st_head,images["stairRoom"],80,22,"head")
+				table.insert(obj, head)
 			end
 		end
 
@@ -180,13 +189,14 @@ function SCENE.secretRoom_update(dt)
 	elseif ghost_event == "flashback" then
 		--set previous rooms to false
 		--things to hide while in flashback
-		for k,v in pairs(obj) do
-    		for n,m in pairs(hide) do
-    			if v.tag == m then
-    				v.visible = false
-    			end
-    		end
-    	end
+		for _,v in ipairs(obj) do
+			for _,m in ipairs(hide) do
+				if v.tag == m then
+					v.visible = false
+					break
+				end
+			end
+		end
 
 
 		tv_light_flag = false
@@ -254,13 +264,14 @@ function SCENE.secretRoom_update(dt)
 			end
 		else
 			--set previous rooms configs to true
-			for k,v in pairs(obj) do
-	    		for n,m in pairs(hide) do
-	    			if v.tag == m then
-	    				v.visible = true
-	    			end
-	    		end
-	    	end
+			for _,v in ipairs(obj) do
+				for _,m in ipairs(hide) do
+					if v.tag == m then
+						v.visible = true
+						break
+					end
+				end
+			end
 
 			sounds.rain:play()
 			sounds.thunder:play()
@@ -269,7 +280,6 @@ function SCENE.secretRoom_update(dt)
 			player.xspd = 25
 			c = 1
 			timer = 3
-
 
 			move = false
 			ghost_event = "limp"
@@ -301,21 +311,28 @@ function SCENE.secretRoom_update(dt)
 		tv_light_flag = true
 
 		--remove corpse
-		for k,v in pairs(obj) do
+		for _,v in ipairs(obj) do
 			if v.tag == "corpse" then
 				--table.remove(obj,k)
 				v.visible = false
-			end
-			if v.tag == "st_hole" then
+			elseif v.tag == "st_hole" then
 				v.visible = false
-			end
-			if v.tag == "store_hoop_ball" then
+			elseif v.tag == "store_hoop_ball" then
 				v.visible = false
 			end
 		end
 	elseif ghost_event == "finished" then
 		player.state = "normal"
 		flashback_epic = false
+
+		for i, v in ipairs(obj) do
+			if v.tag == "head" then
+				table.remove(obj, i)
+				break
+			end
+		end
+		local holes = Items(images.st_hole,images["stairRoom"], 80, 22, "hole")
+		table.insert(obj, holes)
 	end
 	--tv illum
 	if tv_light_flag == true then

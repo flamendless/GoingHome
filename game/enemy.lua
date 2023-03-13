@@ -32,7 +32,7 @@ function Enemy:update(dt)
 			self.chaseOn = true
 		end
 	end
-	
+
 	--special events
 	if ghost_event == "no escape" then
 		--collision
@@ -75,7 +75,7 @@ function Enemy:update(dt)
 	if self.y < height - 20 - self.h then
 		self.y = self.y + self.grav
 	end
-	
+
 	self.image:update(dt)
 
 	if enemy_exists == true then
@@ -87,20 +87,18 @@ function Enemy:update(dt)
 			else self.xscale = -1 end
 		end
 
-		if move == true then
-			if seen == true then
-				if self.count == true then
-					self.timer = self.timer - dt
-					if self.timer <= 0 then
-						self:chase(dt)
-						self.count = false
-						self.chaseOn = true
-					end
+		if move == true and seen == true and self.count == true then
+			self.timer = self.timer - dt
+			if self.timer <= 0 then
+				self:chase(dt)
+				self.count = false
+				self.chaseOn = true
+			end
 
-					if self.chaseOn == false then
-						sounds.enemy_mys_sound:play() 
-					else sounds.enemy_mys_sound:stop() end
-				end
+			if self.chaseOn == false then
+				sounds.enemy_mys_sound:play()
+			else
+				sounds.enemy_mys_sound:stop()
 			end
 		end
 	end
@@ -155,7 +153,7 @@ function Enemy:action_inside()
 end
 
 function Enemy:action_near()
-	self.image = enemy_mys	
+	self.image = enemy_mys
 	self.count = true
 	seen = true
 end
