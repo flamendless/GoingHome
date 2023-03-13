@@ -35,6 +35,7 @@ local textures = {
 		{"instruction_gui","assets/instruction_gui.png"},
 		{"return_gui","assets/return_gui.png"},
 		{"about","assets/about.png"},
+		{"options","assets/options.png"},
 		{"start","assets/start.png"},
 		{"exit","assets/exit.png"},
 		{"bg","assets/images/bg.png"},
@@ -302,6 +303,7 @@ function assets.load()
 		sources_to_load = sources.main
 	end
 
+
 	if loaded[textures_to_load] then
 		local p = loader.getPending()
 		for i = #p, 1, -1 do
@@ -311,7 +313,6 @@ function assets.load()
 		return
 	end
 
-	print("will load", gamestates.getState())
 	finishedLoading = false
 	for _, texture_data in ipairs(textures_to_load) do
 		local key, path = unpack(texture_data)
@@ -321,6 +322,7 @@ function assets.load()
 		local key, path, kind = unpack(source_data)
 		loader.newSource(sounds, key, path, kind)
 	end
+	print("will load", gamestates.getState(), "with", #loader.getPending())
 	loader.start(function()
 		print("loaded", state)
 		light = images.light
@@ -485,14 +487,6 @@ function assets.init_gui_pos()
 		quit_y = height-8,
 		quit_w = images.exit:getWidth(),
 		quit_h = images.exit:getHeight(),
-		i_x = width - 22,
-		i_y =  height - 13,
-		i_w = images.instruction_gui:getWidth(),
-		i_h = images.instruction_gui:getHeight(),
-		a_x = width - 32,
-		a_y = height - 13,
-		a_w = images.about:getWidth(),
-		a_h = images.about:getHeight(),
 		b_x = 4,
 		b_y = height - 15,
 		b_w = images.return_gui:getWidth(),
@@ -501,11 +495,6 @@ function assets.init_gui_pos()
 		skip_y = height/2 - oy,
 		skip_w = 8,
 		skip_h = 8,
-		q_x = width - 42,
-		q_y = height - 13,
-		q_w = images.question:getWidth(),
-		q_h = images.question:getHeight(),
-		--about
 		t_x = width/2 - images.twitter:getWidth()/2 + 50,
 		t_y = 13,
 		t_w = images.twitter:getWidth(),
@@ -518,19 +507,30 @@ function assets.init_gui_pos()
 		e_y = height - 17,
 		e_w = images.email:getWidth(),
 		e_h = images.email:getHeight(),
-		webx = width - 12,
-		weby = height - 13,
-		webw = images.website_gui:getWidth(),
-		webh = images.website_gui:getHeight(),
-		--gallery
-		g_x = width/2 + 12,
-		g_y = height - 13,
-		g_w = images.gui_gallery:getWidth(),
-		g_h = images.gui_gallery:getHeight(),
 	}
 
+	local icon_size = 8
+	local items = {
+		{"options_", images.options},
+		{"g_", images.gui_gallery},
+		{"q_", images.question},
+		{"i_", images.instruction_gui},
+		{"a_", images.about},
+		{"web", images.website_gui}
+	}
 
-
+	local base_x = width/2 + icon_size * 1.5
+	local base_y = height - 13
+	local pad = 2
+	local i = 0
+	for _, item in ipairs(items) do
+		local id, image = unpack(item)
+		gui_pos[id .. "x"] = base_x + icon_size * (i - 1) + pad * (i - 1)
+		gui_pos[id .. "y"] = base_y
+		gui_pos[id .. "w"] = image:getWidth()
+		gui_pos[id .. "h"] = image:getHeight()
+		i = i + 1
+	end
 end
 
 function assets.dialogue_set()

@@ -37,7 +37,6 @@ require("gameStates")
 assets = require("assets")
 
 font = love.graphics.newFont("assets/Jamboree.ttf", 8)
-font:setFilter("nearest","nearest", 1)
 
 images = {}
 sounds = {}
@@ -69,6 +68,8 @@ love.keyboard.setTextInput(false)
 width, height = 128, 64
 sw, sh = love.window.getDesktopDimensions()
 interact = false
+
+-- local recording = false
 
 local _ads = require("ads")
 FC = require("libs.firstcrush.gui")
@@ -187,6 +188,7 @@ function love.load()
 end
 
 function love.update(dt)
+	-- if recording then return end
 	clock = clock + 1 * dt
 	if not finishedLoading then
 		loader.update()
@@ -297,34 +299,29 @@ function love.mousepressed(x,y,button,istouch)
 					end
 				end
 			end
-			if instruction == false then
-				if check_gui(gui_pos.i_x,gui_pos.i_y,gui_pos.i_w,gui_pos.i_h) then
-					instruction = true
-				end
-			else
-				if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h)  then
+
+			if instruction or about or questions or options then
+				if check_gui(gui_pos.b_x, gui_pos.b_y, gui_pos.b_w, gui_pos.b_h) then
 					instruction = false
+					about = false
+					questions = false
+					options = false
 				end
 			end
 
-			if about == false then
-				if  check_gui(gui_pos.a_x,gui_pos.a_y,gui_pos.a_w,gui_pos.a_h) then
-
-						about = true
-				end
-			else
-				if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h)  then
-
-						about = false
-				end
+			if check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
+				gamestates.nextState("gallery")
 			end
 
-			if questions == false then
-				if check_gui(gui_pos.q_x,gui_pos.q_y,gui_pos.q_w,gui_pos.q_h) then
+			if check_gui(gui_pos.options_x, gui_pos.options_y, gui_pos.options_w, gui_pos.options_h) then
+				options = not options
+			end
 
-						questions = true
-				end
-			else
+			if check_gui(gui_pos.q_x,gui_pos.q_y,gui_pos.q_w,gui_pos.q_h) then
+				questions = not questions
+			end
+
+			if questions then
 				if check_gui(gui_pos.t_x,gui_pos.t_y,gui_pos.t_w,gui_pos.t_h) then
 					love.system.openURL(URLS.twitter)
 				elseif check_gui(gui_pos.p_x,gui_pos.p_y,gui_pos.p_w,gui_pos.p_h) then
@@ -333,13 +330,15 @@ function love.mousepressed(x,y,button,istouch)
 					end
 				elseif check_gui(gui_pos.e_x,gui_pos.e_y,gui_pos.e_w,gui_pos.e_h) then
 					love.system.openURL(URLS.mailto)
-				elseif check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h)  then
-					questions = false
 				end
 			end
 
-			if check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
-				gamestates.nextState("gallery")
+			if check_gui(gui_pos.a_x,gui_pos.a_y,gui_pos.a_w,gui_pos.a_h) then
+				about = not about
+			end
+
+			if check_gui(gui_pos.i_x,gui_pos.i_y,gui_pos.i_w,gui_pos.i_h) then
+				instruction = not instruction
 			end
 		end
 
@@ -395,52 +394,45 @@ function love.keyreleased(key)
 			pressed = false
 		end
 	elseif state == "title" then
-		if instruction == false and about == false and questions == false then
-			if cursor_select == true then
-				if key == "w" or key == "up" then
-					cursor_pos = 1
-				elseif key == "s" or key == "down" then
-					cursor_pos = 2
-				elseif key == "d" or key == "right" then
-					if cursor_pos == 1 or cursor_pos == 2 or cursor_pos == 0 then
-						cursor_pos = 3
-					elseif cursor_pos == 3 then
-						cursor_pos = 4
-					elseif cursor_pos == 4 then
-						cursor_pos = 5
-					elseif cursor_pos == 5 then
-						cursor_pos = 6
-					elseif cursor_pos == 6 then
-						cursor_pos = 1
-					end
-				elseif key == "a" or key == "left" then
-					if cursor_pos == 1 or cursor_pos == 2 or cursor_pos == 0 then
-						cursor_pos = 6
-					elseif cursor_pos == 3 then
-						cursor_pos = 1
-					elseif cursor_pos == 4 then
-						cursor_pos = 3
-					elseif cursor_pos == 5 then
-						cursor_pos = 4
-					elseif cursor_pos == 6 then
-						cursor_pos = 5
-					end
-				elseif key == "return" or key == "e" then
-					if cursor_pos == 1 then
-						gamestates.control()
-					elseif cursor_pos == 2 then
-						love.event.quit()
-					elseif cursor_pos == 3 then
-						questions = true
-					elseif cursor_pos == 4 then
-						about = true
-					elseif cursor_pos == 5 then
-						instruction = true
-					elseif cursor_pos == 6 then
-						love.system.openURL(URLS.game_page)
-					end
+		if (instruction == false and about == false and questions == false and options == false) and cursor_select then
+			--1 start
+			--2 quit
+			--3 options
+			--4 gallery
+			--5 questions
+			--6 about
+			--7 instructions
+			--8 website
+			if key == "w" or key == "up" then
+				cursor_pos = 1
+			elseif key == "s" or key == "down" then
+				cursor_pos = 2
+			elseif key == "d" or key == "right" then
+				cursor_pos = cursor_pos + 1
+			elseif key == "a" or key == "left" then
+				cursor_pos = cursor_pos - 1
+			elseif key == "return" or key == "e" then
+				if cursor_pos == 1 then
+					gamestates.control()
+				elseif cursor_pos == 2 then
+					love.event.quit()
+				elseif cursor_pos == 3 then
+					options = true
+				elseif cursor_pos == 4 then
+					gamestates.nextState("gallery")
+				elseif cursor_pos == 5 then
+					questions = true
+				elseif cursor_pos == 6 then
+					about = true
+				elseif cursor_pos == 7 then
+					instruction = true
+				elseif cursor_pos == 8 then
+					love.system.openURL(URLS.game_page)
 				end
 			end
+
+			if cursor_pos > 8 then cursor_pos = 8
+			elseif cursor_pos < 0 then cursor_pos = 0 end
 		end
 		if key == "escape" then
 			if instruction == true then
@@ -482,6 +474,7 @@ function love.keyreleased(key)
 end
 
 function love.keypressed(key)
+	-- if key == "f9" then recording = not recording end
 	if not finishedLoading then return end
 	local dt = love.timer.getDelta( )
 	local state = gamestates.getState()

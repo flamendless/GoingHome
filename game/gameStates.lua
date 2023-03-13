@@ -1,6 +1,7 @@
 gamestates = {}
 
 about = false
+options = false
 questions = false
 door_locked = true
 --
@@ -272,14 +273,15 @@ function gamestates.update(dt)
 	elseif state == "splash2" then
 		logoTimer:update(dt)
 	elseif state == "title" then
-		if instruction == false and about == false and questions == false then
+		if instruction == false and about == false and questions == false and options == false then
 			if check_gui(gui_pos.start_x,gui_pos.start_y,gui_pos.start_w,gui_pos.start_h) or
 				check_gui(gui_pos.quit_x,gui_pos.quit_y,gui_pos.quit_w,gui_pos.quit_h) or
 				check_gui(gui_pos.i_x,gui_pos.i_y,gui_pos.i_w,gui_pos.i_h) or
 				check_gui(gui_pos.a_x,gui_pos.a_y,gui_pos.a_w,gui_pos.a_h) or
 				check_gui(gui_pos.q_x,gui_pos.q_y,gui_pos.q_w,gui_pos.q_h) or
 				check_gui(gui_pos.webx,gui_pos.weby,gui_pos.webw,gui_pos.webh) or
-				check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h)
+				check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) or
+				check_gui(gui_pos.options_x, gui_pos.options_y, gui_pos.options_w, gui_pos.options_h)
 			then
 				mouse_select = true
 			else
@@ -610,6 +612,16 @@ function gamestates.update(dt)
 	end
 end
 
+local function draw_back_gui()
+	--back gui
+	if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h) then
+		love.graphics.setColor(1, 0, 0, 1)
+	else
+		love.graphics.setColor(1, 1, 1, 1)
+	end
+	love.graphics.draw(images.return_gui,gui_pos.b_x,gui_pos.b_y)
+end
+
 function gamestates.draw()
 	local mx, my = love.mouse.getPosition()
 	mx = mx/ratio
@@ -631,11 +643,11 @@ function gamestates.draw()
 		love.graphics.draw(images.wits, width/2 - 64,height/2 - 32)
 	end
 	if state == "title" then
-		if instruction == false and about == false and questions == false then
+		if instruction == false and about == false and questions == false and options == false then
 			--main title screen art
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(images.bg,width/2 - images.bg:getWidth()/2,height/2 - images.bg:getHeight()/2)
-
+			local bgw, bgh = images.bg:getDimensions()
+			love.graphics.draw(images.bg, width/2 - bgw/2, height/2 - bgh/2)
 
 			--start
 			if cursor_pos == 1 then
@@ -651,6 +663,7 @@ function gamestates.draw()
 				end
 			end
 			love.graphics.draw(images.start,gui_pos.start_x,gui_pos.start_y)
+
 			--exit
 			if OS ~= "iOS" then
 				if cursor_pos == 2 then
@@ -669,12 +682,8 @@ function gamestates.draw()
 				love.graphics.draw(images.exit, gui_pos.quit_x , gui_pos.quit_y)
 			end
 
-			--if OS == "Android" or debug == true then
---
-			--else
-
 			--website
-			if cursor_pos == 6 then
+			if cursor_pos == 8 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
@@ -689,12 +698,12 @@ function gamestates.draw()
 			love.graphics.draw(images.website_gui,gui_pos.webx,gui_pos.weby)
 
 			--instruction
-			if cursor_pos == 5 then
+			if cursor_pos == 7 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
 			end
-			if mouse_select == true then
+			if mouse_select == true  then
 				if check_gui(gui_pos.i_x,gui_pos.i_y,gui_pos.i_w,gui_pos.i_h) then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
@@ -704,13 +713,13 @@ function gamestates.draw()
 			love.graphics.draw(images.instruction_gui,gui_pos.i_x, gui_pos.i_y)
 
 			--about
-			if cursor_pos == 4 then
+			if cursor_pos == 6 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
 			end
 			if mouse_select == true then
-				if check_gui(gui_pos.a_x,gui_pos.a_y,gui_pos.a_w,gui_pos.a_h)then
+				if check_gui(gui_pos.a_x,gui_pos.a_y,gui_pos.a_w,gui_pos.a_h) then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
 					love.graphics.setColor(1, 1, 1, 1)
@@ -719,7 +728,7 @@ function gamestates.draw()
 			love.graphics.draw(images.about,gui_pos.a_x , gui_pos.a_y)
 
 			--questions
-			if cursor_pos == 3 then
+			if cursor_pos == 5 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
@@ -732,16 +741,36 @@ function gamestates.draw()
 				end
 			end
 			love.graphics.draw(images.question,gui_pos.q_x,gui_pos.q_y)
-		--end
 
-			if pro_version then
-				if mouse_select == true and check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
+			--gallery
+			if cursor_pos == 4 then
+				love.graphics.setColor(1, 0, 0, 1)
+			else
+				love.graphics.setColor(1, 1, 1, 1)
+			end
+			if mouse_select == true then
+				if check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
 					love.graphics.setColor(1, 1, 1, 1)
 				end
-				love.graphics.draw(images.gui_gallery, gui_pos.g_x, gui_pos.g_y)
 			end
+			love.graphics.draw(images.gui_gallery, gui_pos.g_x, gui_pos.g_y)
+
+			--options
+			if cursor_pos == 3 then
+				love.graphics.setColor(1, 0, 0, 1)
+			else
+				love.graphics.setColor(1, 1, 1, 1)
+			end
+			if mouse_select == true then
+				if check_gui(gui_pos.options_x,gui_pos.options_y,gui_pos.options_w,gui_pos.options_h) then
+					love.graphics.setColor(1, 0, 0, 1)
+				else
+					love.graphics.setColor(1, 1, 1, 1)
+				end
+			end
+			love.graphics.draw(images.options, gui_pos.options_x, gui_pos.options_y)
 
 		elseif instruction == true and about == false and questions == false then
 			love.graphics.setColor(0,0,0,0)
@@ -776,13 +805,10 @@ function gamestates.draw()
 				love.graphics.setColor(1, 0, 0)
 				love.graphics.print(str5, width/2-font:getWidth(str5)/2,34+fh/2)
 			end
-			--back gui
-			if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h) then
-				love.graphics.setColor(1, 0, 0, 1)
-			else
-				love.graphics.setColor(1, 1, 1, 1)
-			end
-			love.graphics.draw(images.return_gui,gui_pos.b_x,gui_pos.b_y)
+			draw_back_gui()
+
+		elseif options then
+			draw_back_gui()
 
 		elseif instruction == false and questions == true and about == false then
 
@@ -844,32 +870,21 @@ function gamestates.draw()
 				end
 			end
 			love.graphics.draw(images.email,gui_pos.e_x,gui_pos.e_y)
-			--back gui
-			if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h) then
-				love.graphics.setColor(1, 0, 0, 1)
-			else
-				love.graphics.setColor(1, 1, 1, 1)
-			end
-			love.graphics.draw(images.return_gui,gui_pos.b_x,gui_pos.b_y)
+			draw_back_gui()
 		end
 		if about == true then
 			love.graphics.setColor(0,0,0,0)
 			love.graphics.rectangle("fill",0,0,width,height)
 			love.graphics.setFont(font)
 			love.graphics.setColor(1, 1, 1)
-			love.graphics.print("Softwares Used:",width/2 - font:getWidth("Softwares Used:")/2,font:getHeight("Softwares Used:")/2 - 4)
-			love.graphics.print("ide: sublime text 3",width/2 - font:getWidth("ide: sublime text 3")/2,font:getHeight("ide: sublime text 3") + 20)
-			love.graphics.print("pixel art: aseprite",width/2 - font:getWidth("pixel art: aseprite")/2,font:getHeight("pixel art: aseprite") + 28)
-			love.graphics.print("source control: git",width/2 - font:getWidth("source control: git")/2,font:getHeight("source control: git") + 36)
-			love.graphics.print("os: xubuntu xenial xerxus",width/2 - font:getWidth("os: xubuntu xenial xerxus")/2,font:getHeight("os: xubuntu xenial xerxus") + 12)
-			love.graphics.print("sounds: musescore & audacity",width/2 - font:getWidth("sounds: musescore & audacity")/2,font:getHeight("sounds: musescore & audacity") + 4)
-			--back gui
-			if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h) then
-				love.graphics.setColor(1, 0, 0, 1)
-			else
-				love.graphics.setColor(1, 1, 1, 1)
-			end
-			love.graphics.draw(images.return_gui,gui_pos.b_x,gui_pos.b_y)
+
+			love.graphics.print("Softwares Used:",width/2 - font:getWidth("Softwares Used:")/2,font:getHeight()/2 - 4)
+			love.graphics.print("ide: sublime text 3",width/2 - font:getWidth("ide: sublime text 3")/2,font:getHeight() + 20)
+			love.graphics.print("pixel art: aseprite",width/2 - font:getWidth("pixel art: aseprite")/2,font:getHeight() + 28)
+			love.graphics.print("source control: git",width/2 - font:getWidth("source control: git")/2,font:getHeight() + 36)
+			love.graphics.print("os: xubuntu xenial xerxus",width/2 - font:getWidth("os: xubuntu xenial xerxus")/2,font:getHeight() + 12)
+			love.graphics.print("sounds: musescore & audacity",width/2 - font:getWidth("sounds: musescore & audacity")/2,font:getHeight() + 4)
+			draw_back_gui()
 		end
 	elseif state == "intro" then
 
@@ -1069,7 +1084,7 @@ function gamestates.draw()
 end
 
 function gamestates.control()
-	if instruction == false and about == false then
+	if instruction == false and about == false and questions == false and options == false then
 		states = "rain_intro"
 		gamestates.load()
 	end

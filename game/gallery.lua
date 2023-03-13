@@ -57,7 +57,7 @@ function Gallery.load()
 	gExit = {
 		img = images.return_gui,
 		x = 5,
-		y = 1,
+		y = 2,
 		w = images.gui_settings:getWidth(),
 		h = images.gui_settings:getHeight(),
 		is_button = true,
