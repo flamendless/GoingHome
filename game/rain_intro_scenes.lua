@@ -1,3 +1,5 @@
+local has_played = false
+
 function intro_load()
 	_timer = 2 --seconds
 
@@ -20,22 +22,24 @@ function intro_load()
 	car_show = true
 	pd_show = false
 	in_house_show = false
-
-	sounds.intro_soft:play()
-	sounds.intro_soft:setLooping(false)
 end
 
 function intro_update(dt)
+	if not has_played then
+		sounds.intro_soft:play()
+		sounds.intro_soft:setLooping(false)
+		has_played = true
+	end
 
 	skip_button:update(dt)
-	if pressed == true then
-		skip_button_glow:update(dt)
-	end
+	-- if pressed == true then
+	-- 	skip_button_glow:update(dt)
+	-- end
 
 	--car moving
 	if car_show == true then
-		if car_alpha < 1 then 
-			car_alpha = car_alpha + 40/255 * dt 
+		if car_alpha < 1 then
+			car_alpha = car_alpha + 40/255 * dt
 		end
 		if car_alpha >= 1 then
 			text_flag = true
@@ -60,7 +64,7 @@ function intro_update(dt)
 		end
 		if pd_alpha >= 40/255 then
 			text_flag = true
-		end 
+		end
 		if pd_alpha >= 200/255 then
 			in_house_show = true
 		end
@@ -71,8 +75,8 @@ function intro_update(dt)
 
 		current_text = ih_text
 		current_text_x = width/2 + 10- font:getWidth(current_text)/2
-		current_text_y = height/2 + 12 - font:getHeight(current_text)/2
-		
+		current_text_y = height/2 + 12 - font:getHeight()/2
+
 		ih_anim:update(dt)
 
 		if ih_alpha < 1 then
@@ -94,13 +98,12 @@ function intro_update(dt)
 		sounds.intro_soft:stop()
 	end
 
-
 	if text_flag == true then
 		if _timer <= 2 then
 			_timer = _timer - 1 * dt
 		end
 		if _timer <= 0 then
-		 	text_flag = false 
+		 	text_flag = false
 		 	_timer = 2
 		end
 	end

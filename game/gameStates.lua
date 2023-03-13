@@ -129,20 +129,20 @@ function gamestates.load()
 	intro_timer = 2.5
 	intro_finished = false
 
+	assets.load()
+end
+
+function gamestates.init()
 	local state = gamestates.getState()
 	if state == "gallery" then
 		sounds.ts_theme:stop()
-	end
-
-	if state == "adshow" then
-		assets.load()
+	elseif state == "adshow" then
+		-- assets.load()
 		FC:init()
 		FC:GDPR_init()
-	end
-
-	if state == "splash" then
+	elseif state == "splash" then
 		if pro_version then
-			assets.load()
+			-- assets.load()
 		end
 		splash_timer = hump_timer:new()
 		splash_timer:after(3, function()
@@ -154,15 +154,11 @@ function gamestates.load()
 			--states = "title"
 			gamestates.nextState("title")
 		end)
-	end
-
-	if state == "title" then
+	elseif state == "title" then
 		--set music
 		sounds.ts_theme:setLooping(true)
 		sounds.ts_theme:play()
 		sounds.ts_theme:setVolume(0.5)
-		sounds.fl_toggle:setLooping(false)
-		sounds.fl_toggle:setVolume(1)
 
 		if (OS == "Android") and (not pro_version) then
 			show_ads()
@@ -175,6 +171,9 @@ function gamestates.load()
 		sounds.enemy_scream:setLooping(false)
 		sounds.intro_soft:stop()
 	elseif state == "main" then
+		sounds.fl_toggle:setLooping(false)
+		sounds.fl_toggle:setVolume(1)
+
 		SaveData.load()
 
 		sounds.rain:setLooping(true)
@@ -294,18 +293,6 @@ function gamestates.update(dt)
 			cursor_select = true
 		end
 
-		--windows
-		win_left_anim:update(dt)
-		win_right_anim:update(dt)
-		Timer.update(dt)
-
-		if win_move_l == false then
-			Timer.after(10, function() win_move_l = true  win_left_anim:resume() end)
-		end
-		if win_move_r == false then
-			Timer.after(9, function() win_move_r = true win_right_anim:resume() end)
-		end
-
 	elseif state == "rain_intro" then
 		intro_update(dt)
 
@@ -356,6 +343,18 @@ function gamestates.update(dt)
 
 			-----MAIN-------
 	elseif state == "main" then
+		--windows
+		win_left_anim:update(dt)
+		win_right_anim:update(dt)
+		Timer.update(dt)
+
+		if win_move_l == false then
+			Timer.after(10, function() win_move_l = true  win_left_anim:resume() end)
+		end
+		if win_move_r == false then
+			Timer.after(9, function() win_move_r = true win_right_anim:resume() end)
+		end
+
 
 		if move == true then
 			player:movement(dt)
