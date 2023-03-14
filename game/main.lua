@@ -302,6 +302,10 @@ function love.mousepressed(x,y,button,istouch)
 
 			if instruction or about or questions or options then
 				if check_gui(gui_pos.b_x, gui_pos.b_y, gui_pos.b_w, gui_pos.b_h) then
+					if options then
+						SaveData.save()
+					end
+
 					instruction = false
 					about = false
 					questions = false
@@ -315,6 +319,24 @@ function love.mousepressed(x,y,button,istouch)
 
 			if check_gui(gui_pos.options_x, gui_pos.options_y, gui_pos.options_w, gui_pos.options_h) then
 				options = not options
+			end
+
+			if options and button == 1 then
+				local fh = font:getHeight()
+				local base_y = 1 + fh
+				local rw = 8
+				for i, item in ipairs(SaveData.get_opts()) do
+					local str, value = item.str, item.value
+					local y = base_y + fh * (i - 1)
+					local rx = width - 16 - rw/2
+					local ry = y + rw/4
+
+					if check_gui(16, y, font:getWidth(str), fh) or
+						check_gui(rx, ry, rw, rw)
+					then
+						SaveData.toggle_opts(i)
+					end
+				end
 			end
 
 			if check_gui(gui_pos.q_x,gui_pos.q_y,gui_pos.q_w,gui_pos.q_h) then

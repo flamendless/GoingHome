@@ -134,6 +134,8 @@ function gamestates.load()
 end
 
 function gamestates.init()
+	SaveData.load()
+
 	local state = gamestates.getState()
 	if state == "gallery" then
 		sounds.ts_theme:stop()
@@ -174,8 +176,6 @@ function gamestates.init()
 	elseif state == "main" then
 		sounds.fl_toggle:setLooping(false)
 		sounds.fl_toggle:setVolume(1)
-
-		SaveData.load()
 
 		sounds.rain:setLooping(true)
 		sounds.rain:setVolume(0.8)
@@ -288,6 +288,7 @@ function gamestates.update(dt)
 				mouse_select = false
 			end
 		end
+
 		if mouse_select == true then
 			cursor_pos = 0
 			cursor_select = false
@@ -808,12 +809,51 @@ function gamestates.draw()
 			draw_back_gui()
 
 		elseif options then
+			love.graphics.setColor(0, 0, 0, 0)
+			love.graphics.rectangle("fill",0,0,width,height)
+			love.graphics.setFont(font)
+
+			local str_options = "Options"
+			love.graphics.setColor(1, 0, 0, 1)
+			love.graphics.print(str_options, width/2 - font:getWidth(str_options)/2)
+
+			love.graphics.setColor(1, 1, 1, 1)
+
+			love.graphics.setLineWidth(1)
+			love.graphics.setLineStyle("rough")
+
+			local fh = font:getHeight()
+			local base_y = 1 + fh
+			local rw = 8
+			for i, item in ipairs(SaveData.get_opts()) do
+				local str, value = item.str, item.value
+				local y = base_y + fh * (i - 1)
+				local rx = width - 16 - rw/2
+				local ry = y + rw/4
+
+				if check_gui(16, y, font:getWidth(str), fh) or
+					check_gui(rx, ry, rw, rw)
+				then
+					love.graphics.setColor(1, 0, 0, 1)
+				else
+					love.graphics.setColor(1, 1, 1, 1)
+				end
+
+				love.graphics.print(str, 16, base_y + fh * (i - 1))
+				love.graphics.rectangle("line", rx, ry, rw, rw)
+
+				if value then
+					love.graphics.line(rx, ry, rx + rw, ry + rw)
+					love.graphics.line(rx, ry + rw, rx + rw, ry)
+				end
+			end
+
 			draw_back_gui()
 
 		elseif instruction == false and questions == true and about == false then
 
 			--questions/support/contacts
-			love.graphics.setColor(0,0,0,0)
+			love.graphics.setColor(0, 0, 0, 0)
 			love.graphics.rectangle("fill",0,0,width,height)
 			love.graphics.setFont(font)
 			love.graphics.setColor(1, 1, 1)
@@ -861,6 +901,7 @@ function gamestates.draw()
 				end
 				love.graphics.draw(images.paypal,gui_pos.p_x,gui_pos.p_y)
 			end
+
 			--email
 			if mouse_select == true then
 				if check_gui(gui_pos.e_x,gui_pos.e_y,gui_pos.e_w,gui_pos.e_h) then

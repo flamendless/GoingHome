@@ -310,6 +310,7 @@ function assets.load()
 			table.remove(p, i)
 		end
 
+		gamestates.init()
 		return
 	end
 
@@ -522,14 +523,12 @@ function assets.init_gui_pos()
 	local base_x = width/2 + icon_size * 1.5
 	local base_y = height - 13
 	local pad = 2
-	local i = 0
-	for _, item in ipairs(items) do
+	for i, item in ipairs(items) do
 		local id, image = unpack(item)
-		gui_pos[id .. "x"] = base_x + icon_size * (i - 1) + pad * (i - 1)
+		gui_pos[id .. "x"] = base_x + icon_size * (i - 2) + pad * (i - 2)
 		gui_pos[id .. "y"] = base_y
 		gui_pos[id .. "w"] = image:getWidth()
 		gui_pos[id .. "h"] = image:getHeight()
-		i = i + 1
 	end
 end
 
