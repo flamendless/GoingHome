@@ -1227,12 +1227,12 @@ end
 local skip_alpha = 1
 local skip_dir = 1
 function skip_draw()
-	if pressed == false then
-		love.graphics.setColor(1, 1, 1, 1)
-	else
-		love.graphics.setColor(1, 0, 0, 1)
-	end
-	skip_button:draw(images.skip, gui_pos.skip_x, gui_pos.skip_y)
+	-- if pressed == false then
+	-- 	love.graphics.setColor(1, 1, 1, 1)
+	-- else
+	-- 	love.graphics.setColor(1, 0, 0, 1)
+	-- end
+	-- skip_button:draw(images.skip, gui_pos.skip_x, gui_pos.skip_y)
 
 	if skip_alpha >= 1 then
 		skip_dir = -1
@@ -1251,7 +1251,7 @@ function skip_draw()
 	love.graphics.print(
 		skip_text,
 		width/2 - font:getWidth(skip_text)/2,
-		height/2 + font:getHeight() * 1.5
+		height - font:getHeight()
 	)
 end
 

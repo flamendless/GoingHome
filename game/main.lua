@@ -4,6 +4,8 @@
 --@flam8studio
 
 love.graphics.setDefaultFilter("nearest", "nearest", 1)
+local img_loading = love.graphics.newImage("assets/loading.png")
+local lsw, lsh = img_loading:getDimensions()
 
 local URLS = require("urls")
 local Shaders = require("shaders")
@@ -235,13 +237,14 @@ function love.draw()
 			else
 				local percent = 0
 				if loader.resourceCount ~= 0 then percent = loader.loadedCount / loader.resourceCount end
-				--love.graphics.setColor(percent*100,0,0,255)
 				love.graphics.setColor(1, 1, 1, 150/255)
 				love.graphics.setFont(font)
-				love.graphics.print("Loading",width - 34 -font:getWidth("Loading")/2, height - 12)
-				love.graphics.setFont(font)
-				love.graphics.setColor(1, 1, 1, 150/255)
-				love.graphics.print(("..%d%%"):format(percent*100), width - 20, height -12)
+				local str_loading = ("Loading..%d%%"):format(percent * 100)
+				local fh = font:getHeight()
+				love.graphics.print(str_loading, width/2 - font:getWidth(str_loading)/2, height - fh)
+
+				local scale = 0.4
+				love.graphics.draw(img_loading, width/2, height/2, 0, scale, scale, lsw/2, lsh/2)
 			end
 		love.graphics.pop()
 	love.graphics.setCanvas()

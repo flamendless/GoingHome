@@ -27,8 +27,8 @@ function animation_set()
 		--moving car
 		local _car = anim8.newGrid(32,48,images.car_moving:getWidth(),images.car_moving:getHeight())
 		car_anim = anim8.newAnimation(_car('1-17',1),0.1,"pauseAtEnd")
-		local _skip = anim8.newGrid(8,8,images.skip:getWidth(),images.skip:getHeight())
-		skip_button = anim8.newAnimation(_skip('1-9',1),0.1)
+		local _skip = anim8.newGrid(8, 8, images.skip:getDimensions())
+		skip_button = anim8.newAnimation(_skip("1-1",1),0.1)
 	elseif state == "main" then
 		--window left
 		local wl = anim8.newGrid(128,32,images.window_left:getWidth(),images.window_left:getHeight())
@@ -43,7 +43,6 @@ function animation_set()
 			Timer.after(2,function() win_right_anim:pauseAtStart() win_move_r = false end)
 
 		end)
-		print(win_left_anim, win_right_anim)
 
 		local g = anim8.newGrid(8,16, images.player_sheet:getWidth(), images.player_sheet:getHeight())
 		idle = anim8.newAnimation(g('1-2',1),1)

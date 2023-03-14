@@ -31,7 +31,7 @@ local textures = {
 		{"twitter","assets/twitter.png"},
 		{"paypal","assets/paypal.png"},
 		{"question","assets/question.png"},
-		{"skip","assets/skip-sheet.png"},
+		{"skip","assets/skip.png"},
 		{"instruction_gui","assets/instruction_gui.png"},
 		{"return_gui","assets/return_gui.png"},
 		{"about","assets/about.png"},
