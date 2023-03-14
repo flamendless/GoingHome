@@ -50,9 +50,10 @@
 * **airstruck** [knife](https://love2d.org/forums/viewtopic.php?t=80896)
 
 
-## Special thanks to the beta testers
-* **Ian Plaus** 
-* **Jillary Anne Miranda Bernardo**
+## Special thanks to the following:
+* **Ian Plaus** - Beta tester
+* **Conrad Reyes** - Pixel artist
+* **Hannah Eunice Tamyo** - Game Trailer
 
 
 

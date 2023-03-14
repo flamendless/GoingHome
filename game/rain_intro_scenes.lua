@@ -8,7 +8,7 @@ function intro_load()
 	ih_alpha = -200/255
 
 	ih_text = "A Game By: \n Brandon"
-	pd_text = "Art by: \n Brandon"
+	pd_text = "Art by: \n Wits"
 	car_moving_text = "Music by: \n Brandon"
 
 

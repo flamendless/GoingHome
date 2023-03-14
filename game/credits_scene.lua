@@ -37,77 +37,34 @@ function credits_load()
 		"Total Play time: ",
 		tostring(final_clock),
 		"",
-		"'Going Home'",
+
+		"'Going Home: Revisited'",
 		"a game by:",
+		"flamendless",
+
+		"Programmer:",
 		"Brandon Blanker Lim-it",
-		"and Mat Ilustre",
+
+		"Arts:",
+		"Conrad Reyes",
+
+		"Tester:",
+		"Ian Plaus",
+
+		"Trailer:",
+		"Hannah Eunice Tamyo",
+
+		"Dedicated to:",
+		"Hannah Daniella Tamayo",
+
 		"",
 		"Special Thanks to",
-		"The Beta Testers:",
-		"Ian Plaus,",
-		"Jillary Anne Bernardo",
-		"", --16th
-		"Credits to the devs",
-		"for their libraries:",--18th
-		"Enrique García Cota:anim8",
-		"rxi:classic,lume,lurker",
-		"Enrique García Cota and",
-		"Tanner Rogalsky:love-loader",
-		"airstruck:knife",
-		"Credits also the following", --24th
-		"For the free sounds:",
-		"(Check the CREDITS file",
-		"In the game directory",
-		"To check them out with links)",
-		"",
-		"Nanashi", --30th
-		"Peteguy",
-		"artifact",
-		"Dredile",
-		"joedeshon",
-		"SmartWentCody", --35th,
-		"dersuperanton",
-		"Taira Komori",
-		"pan14",
-		"IndigoRay",
-		"nsstudios", --40th
-		"ROFD",
-		"gynation",
-		"Selulance",
-		"missozzy",
-		"Albaaa3",
-		"CastIronCarousel",
-		"Ephemereal_Rift",
-		"InspectorJ",
-		"D W",
-		"raubana", --50th
-		"18hiltc",
-		"yandroff",
-		"LightYarn",
-		"mooncubedesign",
-		"kostasvomvolos", --
-		"The Baron",
-		"xDimebagx",
-		"estefaniabonnin",
-		"jhumbucker",
-		"lebcraftlp", --
-		"SassyLaur",
-		"j1987",
-		"Benagain",
-		"JarredGibb",
-		"fuzzpapi", --
-		"Ligidium",
-		"director89",
-		"netaj",
-		"loopbasedmusic", --69
-		"pfranzen",
-		"snaginneb",
+		"LOVE community",
+		"Open-source community",
 		"",
 		"",
-		"",
-		"",
-		"Going Home",
-		"flamendless studio", --73rd FINAL
+		"Going Home: Revisited",
+		"flamendless",
 		"Thank you for playing",
 		""
 	}
