@@ -779,32 +779,33 @@ function gamestates.draw()
 			love.graphics.setFont(font)
 			love.graphics.setColor(1, 1, 1)
 			local fh = font:getHeight()
+			local hw = width/2
 
 			if OS == "Android" or OS == "iOS" then
 				local str1 = "Navigate through the house"
 				local str2 = "using but a little light."
 				local str3 = "Avoid the fear that haunts."
 				local str4 = "It must not be exposed to light."
-				love.graphics.print(str1, width/2 - font:getWidth(str1)/2,0+fh/2)
-				love.graphics.print(str2 ,width/2 - font:getWidth(str2)/2,10+fh/2)
-				-- love.graphics.print("Avoid the fear that haunts.", width/2 - font:getWidth("Avoid the fear that haunts.")/2,height - 8 - font:getHeight("Avoid the fear that haunts.")/2)
+				love.graphics.print(str1, hw - font:getWidth(str1)/2,0+fh/2)
+				love.graphics.print(str2 ,hw - font:getWidth(str2)/2,10+fh/2)
+				-- love.graphics.print("Avoid the fear that haunts.", hw - font:getWidth("Avoid the fear that haunts.")/2,height - 8 - font:getHeight("Avoid the fear that haunts.")/2)
 				love.graphics.setColor(1, 1, 1)
-				love.graphics.print(str3, width/2 - font:getWidth(str3)/2,22+fh/2)
+				love.graphics.print(str3, hw - font:getWidth(str3)/2,22+fh/2)
 				love.graphics.setColor(1, 0, 0)
-				love.graphics.print(str4, width/2-font:getWidth(str4)/2,34+fh/2)
+				love.graphics.print(str4, hw-font:getWidth(str4)/2,34+fh/2)
 			else
-				local str1 = "F to toggle flashlight"
-				local str2 = "E to perform actions"
-				local str3 = "P to pause"
-				local str4 = "A and D to move"
-				local str5 = "ENTER/ESC on Puzzle Events"
-				love.graphics.print(str1, width/2 - font:getWidth(str1)/2,fh/2)
-				love.graphics.print(str2, width/2 - font:getWidth(str2)/2,10 + fh/2)
-				love.graphics.print(str3, width/2 - font:getWidth(str3)/2,height - 8 - fh/2)
+				local str1 = "F6 to toggle fullscreen"
+				local str2 = "A and D to move"
+				local str3 = "E to perform actions"
+				local str4 = "F to toggle flashlight"
+				local str5 = "ENTER/ESC on puzzle"
+				love.graphics.print(str1, hw - font:getWidth(str1)/2,fh/2)
+				love.graphics.print(str2, hw - font:getWidth(str2)/2,10 + fh/2)
+				love.graphics.print(str3, hw - font:getWidth(str3)/2,height - 8 - fh/2)
 				love.graphics.setColor(1, 1, 1)
-				love.graphics.print(str4, width/2 - font:getWidth(str4)/2,22+fh/2)
+				love.graphics.print(str4, hw - font:getWidth(str4)/2,22+fh/2)
 				love.graphics.setColor(1, 0, 0)
-				love.graphics.print(str5, width/2-font:getWidth(str5)/2,34+fh/2)
+				love.graphics.print(str5, hw-font:getWidth(str5)/2,34+fh/2)
 			end
 			draw_back_gui()
 
