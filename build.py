@@ -31,6 +31,7 @@ EXCLUDE: List[str] = [
     "changelog.txt",
     "Makefile",
     "assets_old",
+    "new_assets",
 ]
 
 class Mode(Enum):
