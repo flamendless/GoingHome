@@ -94,8 +94,10 @@ function Items:glow()
 			end
 
 			local glow = _glow .. "_glow"
-			local offY = images[glow]:getHeight()-self.image:getHeight()
-			local offX = images[glow]:getWidth()-self.image:getWidth()
+
+			local iw, ih = self.image:getDimensions()
+			local gw, gh = images[glow]:getDimensions()
+			local offX, offY = gw - iw, gh - ih
 			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.draw(images[glow],self.x,self.y,0,1,1,offX/2,offY/2)
 			--love.graphics.rectangle("line",self.x,self.y,self.w,self.h)

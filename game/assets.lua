@@ -31,7 +31,7 @@ local textures = {
 		{"twitter","assets/twitter.png"},
 		{"paypal","assets/paypal.png"},
 		{"question","assets/question.png"},
-		{"skip","assets/skip-sheet.png"},
+		{"skip","assets/skip.png"},
 		{"instruction_gui","assets/instruction_gui.png"},
 		{"return_gui","assets/return_gui.png"},
 		{"about","assets/about.png"},
@@ -43,6 +43,8 @@ local textures = {
 	},
 	intro = {
 		{"car_moving","assets/images/intro_1-sheet.png"},
+		{"player_door","assets/images/intro_2-sheet.png"},
+		{"in_house","assets/images/intro_3-sheet.png"},
 	},
 
 	main = {
@@ -85,8 +87,6 @@ local textures = {
 		{"player_sheet","assets/images/player-sheet.png"},
 		{"window_left","assets/images/window_left-sheet.png"},
 		{"window_right","assets/images/window_right-sheet.png"},
-		{"player_door","assets/images/intro_2-sheet.png"},
-		{"in_house","assets/images/intro_3-sheet.png"},
 		{"endRoom","assets/images/endRoom.png"},
 		{"mainRoom","assets/images/mainRoom.png"},
 		{"kitchen","assets/images/kitchen.png"},
@@ -237,6 +237,7 @@ local sources = {
 		{"knock", "assets/audio/knock.ogg", "static"},
 		{"enemy_scream", "assets/audio/enemy_scream.ogg", "static"},
 		{"rain", "assets/audio/rain.ogg", "stream"},
+		{"thunder", "assets/audio/thunder.ogg", "static"},
 	},
 	main = {
 		{"smash_head","assets/audio/smash_head.ogg","static"},
@@ -245,7 +246,6 @@ local sources = {
 		{"gunshot","assets/audio/gunshot.ogg","static"},
 		{"lightning","assets/audio/lightning.ogg","static"},
 		{"reload","assets/audio/reload.ogg","static"},
-		{"thunder", "assets/audio/thunder.ogg", "static"},
 		{"unlock", "assets/audio/unlock.ogg", "static"},
 		{"door", "assets/audio/door.ogg", "static"},
 		{"squeak", "assets/audio/squeak.ogg", "static"},
@@ -295,7 +295,7 @@ function assets.load()
 	if (state == "adshow") or (state == "splash") or (state == "splash2") or (state == "title") or (state == "gallery") then
 		textures_to_load = textures.init
 		sources_to_load = sources.init
-	elseif (state == "rain_intro") or (state == "intro") then
+	elseif (state == "rain_intro") or (state == "intro") or (state == "tutorial") then
 		textures_to_load = textures.intro
 		sources_to_load = sources.intro
 	else
@@ -310,6 +310,7 @@ function assets.load()
 			table.remove(p, i)
 		end
 
+		gamestates.init()
 		return
 	end
 
@@ -322,7 +323,7 @@ function assets.load()
 		local key, path, kind = unpack(source_data)
 		loader.newSource(sounds, key, path, kind)
 	end
-	print("will load", gamestates.getState(), "with", #loader.getPending())
+	print("will load", gamestates.getState(), "with # of assets:", #loader.getPending())
 	loader.start(function()
 		print("loaded", state)
 		light = images.light
@@ -334,6 +335,7 @@ function assets.load()
 		if state == "main" then
 			particle_set()
 			assets.set()
+
 		end
 
 		assets.init_gui_pos()
@@ -522,14 +524,12 @@ function assets.init_gui_pos()
 	local base_x = width/2 + icon_size * 1.5
 	local base_y = height - 13
 	local pad = 2
-	local i = 0
-	for _, item in ipairs(items) do
+	for i, item in ipairs(items) do
 		local id, image = unpack(item)
-		gui_pos[id .. "x"] = base_x + icon_size * (i - 1) + pad * (i - 1)
+		gui_pos[id .. "x"] = base_x + icon_size * (i - 2) + pad * (i - 2)
 		gui_pos[id .. "y"] = base_y
 		gui_pos[id .. "w"] = image:getWidth()
 		gui_pos[id .. "h"] = image:getHeight()
-		i = i + 1
 	end
 end
 
@@ -714,5 +714,48 @@ function assets.dialogue_set()
 			end
   	end
 end
+
+function assets.find_unused()
+	local all = {}
+
+	local fs = love.filesystem.getDirectoryItems("assets")
+	for _, f in ipairs(fs) do
+		local data = love.filesystem.getInfo("assets/" .. f)
+		if data.type == "file" then
+			all["assets/" .. f] = 1
+		elseif data.type == "directory" then
+			for _, f2 in ipairs(love.filesystem.getDirectoryItems("assets/" .. f)) do
+				all["assets/" .. f .. "/" .. f2] = 1
+			end
+		end
+	end
+
+	print("UNUSED ASSETS:")
+	for _, v in pairs(textures) do
+		for _, data in ipairs(v) do
+			local name = data[2]
+			if all[name] then
+				all[name] = all[name] + 1
+			end
+		end
+	end
+	for _, v in pairs(sources) do
+		for _, data in ipairs(v) do
+			local name = data[2]
+			if all[name] then
+				all[name] = all[name] + 1
+			end
+		end
+	end
+
+	for k, v in pairs(all) do
+		if v == 1 then
+			print(k)
+		end
+	end
+
+	error("find_unused is done. do not include this in release")
+end
+-- assets.find_unused()
 
 return assets

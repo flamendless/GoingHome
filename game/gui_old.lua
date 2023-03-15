@@ -149,18 +149,18 @@ function android.mousepressed(x,y,button,istouch)
 				androidEsc = 1
 			end
 		end
-		if pauseFlag == false then
-			if guiCheck(gSettings) then
-				pause.load()
-				if debug == true then
-					door_locked = false
-				end
-			end
-		else
-			if guiCheck(gSettingsBack) then
-				pause.exit()
-			end
-		end
+		-- if pauseFlag == false then
+		-- 	if guiCheck(gSettings) then
+		-- 		pause.load()
+		-- 		if debug == true then
+		-- 			door_locked = false
+		-- 		end
+		-- 	end
+		-- else
+		-- 	if guiCheck(gSettingsBack) then
+		-- 		pause.exit()
+		-- 	end
+		-- end
 	end
 end
 end
@@ -473,7 +473,7 @@ end
 
 function android.touchpressed(id,x,y)
 	local state = gamestates.getState()
-	if state == "main" and pauseFlag == false then
+	if state == "main" and not pauseFlag then
 		if move == true then
 			if guiCheck_touch(id,x,y,gLeft) then
 				player.android = -1

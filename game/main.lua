@@ -4,6 +4,11 @@
 --@flam8studio
 
 love.graphics.setDefaultFilter("nearest", "nearest", 1)
+local img_loading = love.graphics.newImage("assets/loading.png")
+local lsw, lsh = img_loading:getDimensions()
+
+local cursor = love.mouse.newCursor("assets/cursor.png")
+love.mouse.setCursor(cursor)
 
 local URLS = require("urls")
 local Shaders = require("shaders")
@@ -11,7 +16,7 @@ local Shaders = require("shaders")
 JSON = require("libs.json.json")
 loader = require("libs.love-loader")
 lume = require("libs.lume")
-pause = require("pause")
+-- pause = require("pause")
 anim8 = require("libs.anim8")
 Timer = require("libs.knife.timer")
 Object = require("libs.classic")
@@ -110,7 +115,7 @@ if gameplay_record then
 end
 
 progress = {}
-pauseFlag = false
+-- pauseFlag = false
 temp_move = false
 
 function show_ads()
@@ -223,31 +228,34 @@ function love.draw()
 				-- 	love.graphics.setShader(Shaders.palette_swap)
 				-- end
 
-				if pauseFlag == false then
+				-- if pauseFlag == false then
 					gamestates.draw()
-				elseif pauseFlag == true then
-					pause.draw()
-				end
+				-- elseif pauseFlag == true then
+				-- 	pause.draw()
+				-- end
 
 				love.graphics.setShader()
 
 				if FC:getState() then FC:draw() end
 			else
 				local percent = 0
-				if loader.resourceCount ~= 0 then percent = loader.loadedCount / loader.resourceCount end
-				--love.graphics.setColor(percent*100,0,0,255)
+				if loader.resourceCount ~= 0 then
+					percent = loader.loadedCount / loader.resourceCount
+				end
 				love.graphics.setColor(1, 1, 1, 150/255)
 				love.graphics.setFont(font)
-				love.graphics.print("Loading",width - 34 -font:getWidth("Loading")/2, height - 12)
-				love.graphics.setFont(font)
-				love.graphics.setColor(1, 1, 1, 150/255)
-				love.graphics.print(("..%d%%"):format(percent*100), width - 20, height -12)
+				local str_loading = ("Loading..%d%%"):format(percent * 100)
+				local fh = font:getHeight()
+				love.graphics.print(str_loading, width/2 - font:getWidth(str_loading)/2, height - fh)
+
+				local scale = 0.4
+				love.graphics.draw(img_loading, width/2, height/2, 0, scale, scale, lsw/2, lsh/2)
 			end
 		love.graphics.pop()
 	love.graphics.setCanvas()
 
 	love.graphics.setColor(1, 1, 1, 1)
-	if SaveData.data.use_grayscale then
+	if not ending_leave and SaveData.data.use_grayscale then
 		love.graphics.setShader(Shaders.grayscale)
 	end
 	love.graphics.draw(MAIN_CANVAS)
@@ -302,6 +310,10 @@ function love.mousepressed(x,y,button,istouch)
 
 			if instruction or about or questions or options then
 				if check_gui(gui_pos.b_x, gui_pos.b_y, gui_pos.b_w, gui_pos.b_h) then
+					if options then
+						SaveData.save()
+					end
+
 					instruction = false
 					about = false
 					questions = false
@@ -315,6 +327,24 @@ function love.mousepressed(x,y,button,istouch)
 
 			if check_gui(gui_pos.options_x, gui_pos.options_y, gui_pos.options_w, gui_pos.options_h) then
 				options = not options
+			end
+
+			if options and button == 1 then
+				local fh = font:getHeight()
+				local base_y = 1 + fh
+				local rw = 8
+				for i, item in ipairs(SaveData.get_opts()) do
+					local str, value = item.str, item.value
+					local y = base_y + fh * (i - 1)
+					local rx = width - 16 - rw/2
+					local ry = y + rw/4
+
+					if check_gui(16, y, font:getWidth(str), fh) or
+						check_gui(rx, ry, rw, rw)
+					then
+						SaveData.toggle_opts(i)
+					end
+				end
 			end
 
 			if check_gui(gui_pos.q_x,gui_pos.q_y,gui_pos.q_w,gui_pos.q_h) then
@@ -356,20 +386,18 @@ function love.mousepressed(x,y,button,istouch)
 			states = "main"
 			gamestates.load()
 		end
-	elseif state == "main" then
-		if pauseFlag == true then
-			if check_gui(gSound.x,gSound.y,gSound.w,gSound.h) then
-				if gSound.img == images.gui_sound then
-					pause.sound("off")
-				else
-					pause.sound("on")
-				end
-			elseif check_gui(gSettingsBack.x,gSettingsBack.y,gSettingsBack.w,gSettingsBack.h) then
-				pause.exit()
-			elseif check_gui(gQuit.x,gQuit.y,gQuit.w,gQuit.h) then
-				love.event.quit()
-			end
-		end
+	-- elseif state == "main" and pauseFlag == true then
+	-- 	if check_gui(gSound.x,gSound.y,gSound.w,gSound.h) then
+	-- 		if gSound.img == images.gui_sound then
+	-- 			pause.sound("off")
+	-- 		else
+	-- 			pause.sound("on")
+	-- 		end
+	-- 	elseif check_gui(gSettingsBack.x,gSettingsBack.y,gSettingsBack.w,gSettingsBack.h) then
+	-- 		pause.exit()
+	-- 	elseif check_gui(gQuit.x,gQuit.y,gQuit.w,gQuit.h) then
+	-- 		love.event.quit()
+	-- 	end
 	end
 end
 
@@ -516,13 +544,16 @@ function love.keypressed(key)
 		end
 	end
 
-	if state == "rain_intro" then
-		if key == "e" then
-			pressed = true
-			fade.state = true
-			states = "intro"
-			gamestates.load()
-		end
+	if key == "e" and state == "rain_intro" then
+		pressed = true
+		fade.state = true
+		states = "tutorial"
+		gamestates.load()
+	elseif key == "e" and state == "tutorial" then
+		pressed = true
+		fade.state = true
+		states = "intro"
+		gamestates.load()
 	elseif state == "main" then
 		if key == "f" then
 			if currentRoom ~= images["rightRoom"] and
@@ -544,15 +575,15 @@ function love.keypressed(key)
 			end
 		end
 
-		if OS ~= "Android" or OS ~= "iOS" then
-			if key == "p" then
-				if pauseFlag == true then
-					pause.exit()
-				else
-					pause.load()
-				end
-			end
-		end
+		-- if OS ~= "Android" or OS ~= "iOS" then
+		-- 	if key == "p" then
+		-- 		if pauseFlag == true then
+		-- 			pause.exit()
+		-- 		else
+		-- 			pause.load()
+		-- 		end
+		-- 	end
+		-- end
 
 		if move == true then
 			love.keyboard.setKeyRepeat(true)
