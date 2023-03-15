@@ -115,10 +115,10 @@ local intro_txt = {
 }
 
 local instruction_texts = {
-	"F6 to toggle fullscreen",
 	"A and D to move",
 	"E to perform actions",
 	"F to toggle flashlight",
+	"F6 to toggle fullscreen",
 	"ENTER/ESC on puzzle",
 }
 local instruction_texts_mobile = {
@@ -142,7 +142,7 @@ local function draw_instructions()
 	if state == "tutorial" then
 		by = 0
 	else
-		by = 8
+		by = 4
 	end
 
 	local texts, last_str
@@ -331,7 +331,7 @@ function gamestates.update(dt)
 		tutorial_timer = tutorial_timer - dt
 		if tutorial_timer < 0 then
 			fade.state = true
-			states = "intro"
+			states = "main"
 			gamestates.load()
 		end
 	elseif state == "title" then

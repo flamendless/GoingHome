@@ -383,7 +383,7 @@ function love.mousepressed(x,y,button,istouch)
 		if check_gui(gui_pos.skip_x,gui_pos.skip_y,gui_pos.skip_w,gui_pos.skip_h) then
 			pressed = true
 			fade.state = true
-			states = "main"
+			states = "tutorial"
 			gamestates.load()
 		end
 	-- elseif state == "main" and pauseFlag == true then
@@ -509,14 +509,6 @@ function love.keypressed(key)
 	if OS == "Android" then
 		android.setKey(key)
 	end
-	if state == "intro" then
-		if key == "e" then
-			pressed = true
-			fade.state = true
-			states = "main"
-			gamestates.load()
-		end
-	end
 
 	-- if state == "title" then
 	--  if pro_version then
@@ -547,12 +539,17 @@ function love.keypressed(key)
 	if key == "e" and state == "rain_intro" then
 		pressed = true
 		fade.state = true
+		states = "intro"
+		gamestates.load()
+	elseif key == "e" and state == "intro" then
+		pressed = true
+		fade.state = true
 		states = "tutorial"
 		gamestates.load()
 	elseif key == "e" and state == "tutorial" then
 		pressed = true
 		fade.state = true
-		states = "intro"
+		states = "main"
 		gamestates.load()
 	elseif state == "main" then
 		if key == "f" then

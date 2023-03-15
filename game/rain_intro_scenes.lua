@@ -135,8 +135,7 @@ function intro_update(dt)
 
 	if not sounds.intro_soft:isPlaying() then
 		fade.state = true
-		states = "tutorial"
-		-- states = "intro"
+		states = "intro"
 		gamestates.load()
 		sounds.intro_soft:stop()
 	end
