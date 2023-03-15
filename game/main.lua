@@ -239,7 +239,9 @@ function love.draw()
 				if FC:getState() then FC:draw() end
 			else
 				local percent = 0
-				if loader.resourceCount ~= 0 then percent = loader.loadedCount / loader.resourceCount end
+				if loader.resourceCount ~= 0 then
+					percent = loader.loadedCount / loader.resourceCount
+				end
 				love.graphics.setColor(1, 1, 1, 150/255)
 				love.graphics.setFont(font)
 				local str_loading = ("Loading..%d%%"):format(percent * 100)
@@ -542,13 +544,16 @@ function love.keypressed(key)
 		end
 	end
 
-	if state == "rain_intro" then
-		if key == "e" then
-			pressed = true
-			fade.state = true
-			states = "intro"
-			gamestates.load()
-		end
+	if key == "e" and state == "rain_intro" then
+		pressed = true
+		fade.state = true
+		states = "tutorial"
+		gamestates.load()
+	elseif key == "e" and state == "tutorial" then
+		pressed = true
+		fade.state = true
+		states = "intro"
+		gamestates.load()
 	elseif state == "main" then
 		if key == "f" then
 			if currentRoom ~= images["rightRoom"] and

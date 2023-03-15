@@ -26,9 +26,20 @@ function animation_set()
 	elseif state == "intro" or state == "rain_intro" then
 		--moving car
 		local _car = anim8.newGrid(32,48,images.car_moving:getWidth(),images.car_moving:getHeight())
-		car_anim = anim8.newAnimation(_car('1-17',1),0.1,"pauseAtEnd")
+		car_anim = anim8.newAnimation(_car('1-17',1),0.1, function()
+			car_anim:pauseAtEnd()
+			intro_next()
+		end)
 		local _skip = anim8.newGrid(8, 8, images.skip:getDimensions())
 		skip_button = anim8.newAnimation(_skip("1-1",1),0.1)
+
+		--player door
+		local _pd = anim8.newGrid(16,24,images.player_door:getWidth(),images.player_door:getHeight())
+		pd_anim = anim8.newAnimation(_pd('1-14',1),0.1, "pauseAtEnd")
+		--in house
+		local _ih = anim8.newGrid(128,32,images.in_house:getWidth(),images.in_house:getHeight())
+		ih_anim = anim8.newAnimation(_ih('1-10',1),0.1,"pauseAtEnd")
+
 	elseif state == "main" then
 		--window left
 		local wl = anim8.newGrid(128,32,images.window_left:getWidth(),images.window_left:getHeight())
@@ -226,16 +237,6 @@ function animation_set()
 				fade_to_black = true
 			end)
 
-
-		--player door
-		local _pd = anim8.newGrid(16,24,images.player_door:getWidth(),images.player_door:getHeight())
-		pd_anim = anim8.newAnimation(_pd('1-14',1),0.1,function()
-		pd_anim:pauseAtEnd()
-		end)
-
-		--in house
-		local _ih = anim8.newGrid(128,32,images.in_house:getWidth(),images.in_house:getHeight())
-		ih_anim = anim8.newAnimation(_ih('1-10',1),0.1,"pauseAtEnd")
 
 		--tv
 		local _tv = anim8.newGrid(8,17,images.tv_anim:getWidth(),images.tv_anim:getHeight())

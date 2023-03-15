@@ -43,6 +43,8 @@ local textures = {
 	},
 	intro = {
 		{"car_moving","assets/images/intro_1-sheet.png"},
+		{"player_door","assets/images/intro_2-sheet.png"},
+		{"in_house","assets/images/intro_3-sheet.png"},
 	},
 
 	main = {
@@ -85,8 +87,6 @@ local textures = {
 		{"player_sheet","assets/images/player-sheet.png"},
 		{"window_left","assets/images/window_left-sheet.png"},
 		{"window_right","assets/images/window_right-sheet.png"},
-		{"player_door","assets/images/intro_2-sheet.png"},
-		{"in_house","assets/images/intro_3-sheet.png"},
 		{"endRoom","assets/images/endRoom.png"},
 		{"mainRoom","assets/images/mainRoom.png"},
 		{"kitchen","assets/images/kitchen.png"},
@@ -237,6 +237,7 @@ local sources = {
 		{"knock", "assets/audio/knock.ogg", "static"},
 		{"enemy_scream", "assets/audio/enemy_scream.ogg", "static"},
 		{"rain", "assets/audio/rain.ogg", "stream"},
+		{"thunder", "assets/audio/thunder.ogg", "static"},
 	},
 	main = {
 		{"smash_head","assets/audio/smash_head.ogg","static"},
@@ -245,7 +246,6 @@ local sources = {
 		{"gunshot","assets/audio/gunshot.ogg","static"},
 		{"lightning","assets/audio/lightning.ogg","static"},
 		{"reload","assets/audio/reload.ogg","static"},
-		{"thunder", "assets/audio/thunder.ogg", "static"},
 		{"unlock", "assets/audio/unlock.ogg", "static"},
 		{"door", "assets/audio/door.ogg", "static"},
 		{"squeak", "assets/audio/squeak.ogg", "static"},
@@ -295,7 +295,7 @@ function assets.load()
 	if (state == "adshow") or (state == "splash") or (state == "splash2") or (state == "title") or (state == "gallery") then
 		textures_to_load = textures.init
 		sources_to_load = sources.init
-	elseif (state == "rain_intro") or (state == "intro") then
+	elseif (state == "rain_intro") or (state == "intro") or (state == "tutorial") then
 		textures_to_load = textures.intro
 		sources_to_load = sources.intro
 	else
@@ -323,7 +323,7 @@ function assets.load()
 		local key, path, kind = unpack(source_data)
 		loader.newSource(sounds, key, path, kind)
 	end
-	print("will load", gamestates.getState(), "with", #loader.getPending())
+	print("will load", gamestates.getState(), "with # of assets:", #loader.getPending())
 	loader.start(function()
 		print("loaded", state)
 		light = images.light
@@ -335,6 +335,7 @@ function assets.load()
 		if state == "main" then
 			particle_set()
 			assets.set()
+
 		end
 
 		assets.init_gui_pos()

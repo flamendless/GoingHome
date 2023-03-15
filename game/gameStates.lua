@@ -97,6 +97,8 @@ adTxt = {
 "or buy the adless version" }
 lightningVol = 0.3
 
+local tutorial_timer = 5
+
 local intro_txt = {
 	"",
 	"...",
@@ -112,8 +114,61 @@ local intro_txt = {
 	""
 }
 
+local instruction_texts = {
+	"F6 to toggle fullscreen",
+	"A and D to move",
+	"E to perform actions",
+	"F to toggle flashlight",
+	"ENTER/ESC on puzzle",
+}
+local instruction_texts_mobile = {
+	"Navigate through the house",
+	"using but a little light.",
+	"Avoid the fear that haunts.",
+	"It must not be exposed to light.",
+}
+
+local function draw_instructions()
+	love.graphics.setColor(0,0,0,0)
+	love.graphics.rectangle("fill",0,0,width,height)
+	love.graphics.setFont(font)
+	love.graphics.setColor(1, 1, 1)
+	local fh = font:getHeight()
+	local hw = width/2
+
+	local state = gamestates.getState()
+
+	local by = 0
+	if state == "tutorial" then
+		by = 0
+	else
+		by = 8
+	end
+
+	local texts, last_str
+	if OS == "Android" or OS == "iOS" then
+		texts = instruction_texts_mobile
+		last_str = "tap to continue"
+	else
+		texts = instruction_texts
+		last_str = "press E to continue"
+	end
+
+	local y
+	for i, str in ipairs(texts) do
+		y = by + fh * (i - 1)
+		love.graphics.print(str, hw - font:getWidth(str)/2, y)
+	end
+
+	if state == "tutorial" then
+		love.graphics.setColor(1, 0, 0, 1)
+		love.graphics.print(last_str, hw - font:getWidth(last_str)/2, y + fh)
+		love.graphics.setColor(1, 1, 1, 1)
+	end
+end
 
 function gamestates.load()
+	tutorial_timer = 5
 	go_flag = 0
 	mid_dial = 0
 
@@ -272,6 +327,13 @@ function gamestates.update(dt)
 		end
 	elseif state == "splash2" then
 		logoTimer:update(dt)
+	elseif state == "tutorial" then
+		tutorial_timer = tutorial_timer - dt
+		if tutorial_timer < 0 then
+			fade.state = true
+			states = "intro"
+			gamestates.load()
+		end
 	elseif state == "title" then
 		if instruction == false and about == false and questions == false and options == false then
 			if check_gui(gui_pos.start_x,gui_pos.start_y,gui_pos.start_w,gui_pos.start_h) or
@@ -634,16 +696,13 @@ function gamestates.draw()
 			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.draw(images.adIntro,0,0)
 		end
-	end
-	if state == "splash" then
+	elseif state == "splash" then
 		love.graphics.setColor(1, 1, 1, 1)
 		splash_anim:draw(images.splash,width/2 - 32,height/2 - 16 )
-	end
-	if state == "splash2" then
+	elseif state == "splash2" then
 		love.graphics.setColor(1, 1, 1, 1)
 		love.graphics.draw(images.wits, width/2 - 64,height/2 - 32)
-	end
-	if state == "title" then
+	elseif state == "title" then
 		if instruction == false and about == false and questions == false and options == false then
 			--main title screen art
 			love.graphics.setColor(1, 1, 1, 1)
@@ -774,39 +833,7 @@ function gamestates.draw()
 			love.graphics.draw(images.options, gui_pos.options_x, gui_pos.options_y)
 
 		elseif instruction == true and about == false and questions == false then
-			love.graphics.setColor(0,0,0,0)
-			love.graphics.rectangle("fill",0,0,width,height)
-			love.graphics.setFont(font)
-			love.graphics.setColor(1, 1, 1)
-			local fh = font:getHeight()
-			local hw = width/2
-
-			if OS == "Android" or OS == "iOS" then
-				local str1 = "Navigate through the house"
-				local str2 = "using but a little light."
-				local str3 = "Avoid the fear that haunts."
-				local str4 = "It must not be exposed to light."
-				love.graphics.print(str1, hw - font:getWidth(str1)/2,0+fh/2)
-				love.graphics.print(str2 ,hw - font:getWidth(str2)/2,10+fh/2)
-				-- love.graphics.print("Avoid the fear that haunts.", hw - font:getWidth("Avoid the fear that haunts.")/2,height - 8 - font:getHeight("Avoid the fear that haunts.")/2)
-				love.graphics.setColor(1, 1, 1)
-				love.graphics.print(str3, hw - font:getWidth(str3)/2,22+fh/2)
-				love.graphics.setColor(1, 0, 0)
-				love.graphics.print(str4, hw-font:getWidth(str4)/2,34+fh/2)
-			else
-				local str1 = "F6 to toggle fullscreen"
-				local str2 = "A and D to move"
-				local str3 = "E to perform actions"
-				local str4 = "F to toggle flashlight"
-				local str5 = "ENTER/ESC on puzzle"
-				love.graphics.print(str1, hw - font:getWidth(str1)/2,fh/2)
-				love.graphics.print(str2, hw - font:getWidth(str2)/2,10 + fh/2)
-				love.graphics.print(str3, hw - font:getWidth(str3)/2,height - 8 - fh/2)
-				love.graphics.setColor(1, 1, 1)
-				love.graphics.print(str4, hw - font:getWidth(str4)/2,22+fh/2)
-				love.graphics.setColor(1, 0, 0)
-				love.graphics.print(str5, hw-font:getWidth(str5)/2,34+fh/2)
-			end
+			draw_instructions()
 			draw_back_gui()
 
 		elseif options then
@@ -943,8 +970,10 @@ function gamestates.draw()
 	elseif state == "rain_intro" then
 		intro_draw()
 
-	elseif state == "main" then
+	elseif state == "tutorial" then
+		draw_instructions()
 
+	elseif state == "main" then
 		if currentRoom == images["mainRoom"] then
 			newRoom = images["mainRoom_color"]
 		elseif currentRoom == images["livingRoom"] then
@@ -958,21 +987,22 @@ function gamestates.draw()
 		end
 
 		love.graphics.setColor(1, 1, 1, 1)
+		local bgw, bgh = images.bg:getDimensions()
 		if ending_leave == false then
-			love.graphics.draw(currentRoom,width/2 - images.bg:getWidth()/2,height/2 - images.bg:getHeight()/2)
+			love.graphics.draw(currentRoom,width/2 - bgw/2,height/2 - bgh/2)
 		else
-			love.graphics.draw(newRoom,width/2 - images.bg:getWidth()/2,height/2 - images.bg:getHeight()/2)
+			love.graphics.draw(newRoom,width/2 - bgw/2,height/2 - bgh/2)
 		end
 
 		if currentRoom == images["mainRoom"] then
 			if ending_leave == false then
 				love.graphics.setColor(1, 1, 1, 1)
-				win_left_anim:draw(images.window_left,width/2 - images.bg:getWidth()/2,height/2 - images.bg:getHeight()/2)
-				win_right_anim:draw(images.window_right,width/2 - images.bg:getWidth()/2,height/2 - images.bg:getHeight()/2)
+				win_left_anim:draw(images.window_left,width/2 - bgw/2,height/2 - bgh()/2)
+				win_right_anim:draw(images.window_right,width/2 - bgw/2,height/2 - bgh()/2)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
-				win_left_anim:draw(images.window_left_color,width/2 - images.bg:getWidth()/2,height/2 - images.bg:getHeight()/2)
-				win_right_anim:draw(images.window_right_color,width/2 - images.bg:getWidth()/2,height/2 - images.bg:getHeight()/2)
+				win_left_anim:draw(images.window_left_color,width/2 - bgw/2,height/2 - bgh()/2)
+				win_right_anim:draw(images.window_right_color,width/2 - bgw/2,height/2 - bgh()/2)
 			end
 		elseif currentRoom == images["leftRoom"] then
 			father_anim_draw()
@@ -988,18 +1018,17 @@ function gamestates.draw()
 			player:checkGlow()
 		end
 
-		if currentRoom == images["secretRoom"] then
-			if event == "after_dialogue" then
-				if tv_light_flag == true then
-					love.graphics.setColor(1, 1, 1, 1)
-			    	tv_anim:draw(images.tv_anim,113,27)
-			    end
-			    if corpse_trigger == true then
-					love.graphics.setColor(1, 1, 1, 1)
-					corpse_fall_anim:draw(images.corpse_anim,90,20)
-				end
+		if currentRoom == images["secretRoom"] and event == "after_dialogue" then
+			if tv_light_flag == true then
+				love.graphics.setColor(1, 1, 1, 1)
+				tv_anim:draw(images.tv_anim,113,27)
+			end
+			if corpse_trigger == true then
+				love.graphics.setColor(1, 1, 1, 1)
+				corpse_fall_anim:draw(images.corpse_anim,90,20)
 			end
 		end
+
 		if currentRoom == images["atticRoom"] then
 			SCENE.atticRoom_draw()
 		end
