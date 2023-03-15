@@ -174,7 +174,7 @@ function android.touchpressed(id,x,y)
 			love.keypressed("escape")
 		end
 	end
-	if state == "main" and pauseFlag == false then
+	if state == "main" and not pauseFlag then
 		if move == true then
 			if guiCheck_touch(id,x,y,gLeft) then
 				love.keypressed("a")
@@ -222,32 +222,32 @@ function android.touchpressed(id,x,y)
 			love.keypressed("f")
 		end
 	end
-	if move then
-		if pauseFlag == true then
-			if guiCheck_touch(id,x,y,gSound) then
-				if gSound.img == images.gui_sound then
-					pause.sound("off")
-				else
-					pause.sound("on")
-				end
-			elseif guiCheck_touch(id,x,y,gSettingsBack) then
-				pause.exit()
-			elseif guiCheck_touch(id,x,y,gQuit) then
-				if OS ~= "iOS" then
-					love.event.quit()
-				end
-			end
-		else
-			if guiCheck_touch(id,x,y,gSettings) then
-				pause.load()
-			end
-		end
-	end
+	-- if move then
+	-- 	if pauseFlag == true then
+	-- 		if guiCheck_touch(id,x,y,gSound) then
+	-- 			if gSound.img == images.gui_sound then
+	-- 				pause.sound("off")
+	-- 			else
+	-- 				pause.sound("on")
+	-- 			end
+	-- 		elseif guiCheck_touch(id,x,y,gSettingsBack) then
+	-- 			pause.exit()
+	-- 		elseif guiCheck_touch(id,x,y,gQuit) then
+	-- 			if OS ~= "iOS" then
+	-- 				love.event.quit()
+	-- 			end
+	-- 		end
+	-- 	else
+	-- 		if guiCheck_touch(id,x,y,gSettings) then
+	-- 			pause.load()
+	-- 		end
+	-- 	end
+	-- end
 end
 
 function android.touchreleased(id,x,y)
 	local state = gamestates.getState()
-	if state == "main" and pauseFlag == false then
+	if state == "main" and not pauseFlag then
 		if guiCheck_touch(id,x,y,gLight) then
 
 		else

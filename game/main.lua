@@ -16,7 +16,7 @@ local Shaders = require("shaders")
 JSON = require("libs.json.json")
 loader = require("libs.love-loader")
 lume = require("libs.lume")
-pause = require("pause")
+-- pause = require("pause")
 anim8 = require("libs.anim8")
 Timer = require("libs.knife.timer")
 Object = require("libs.classic")
@@ -115,7 +115,7 @@ if gameplay_record then
 end
 
 progress = {}
-pauseFlag = false
+-- pauseFlag = false
 temp_move = false
 
 function show_ads()
@@ -228,11 +228,11 @@ function love.draw()
 				-- 	love.graphics.setShader(Shaders.palette_swap)
 				-- end
 
-				if pauseFlag == false then
+				-- if pauseFlag == false then
 					gamestates.draw()
-				elseif pauseFlag == true then
-					pause.draw()
-				end
+				-- elseif pauseFlag == true then
+				-- 	pause.draw()
+				-- end
 
 				love.graphics.setShader()
 
@@ -384,20 +384,18 @@ function love.mousepressed(x,y,button,istouch)
 			states = "main"
 			gamestates.load()
 		end
-	elseif state == "main" then
-		if pauseFlag == true then
-			if check_gui(gSound.x,gSound.y,gSound.w,gSound.h) then
-				if gSound.img == images.gui_sound then
-					pause.sound("off")
-				else
-					pause.sound("on")
-				end
-			elseif check_gui(gSettingsBack.x,gSettingsBack.y,gSettingsBack.w,gSettingsBack.h) then
-				pause.exit()
-			elseif check_gui(gQuit.x,gQuit.y,gQuit.w,gQuit.h) then
-				love.event.quit()
-			end
-		end
+	-- elseif state == "main" and pauseFlag == true then
+	-- 	if check_gui(gSound.x,gSound.y,gSound.w,gSound.h) then
+	-- 		if gSound.img == images.gui_sound then
+	-- 			pause.sound("off")
+	-- 		else
+	-- 			pause.sound("on")
+	-- 		end
+	-- 	elseif check_gui(gSettingsBack.x,gSettingsBack.y,gSettingsBack.w,gSettingsBack.h) then
+	-- 		pause.exit()
+	-- 	elseif check_gui(gQuit.x,gQuit.y,gQuit.w,gQuit.h) then
+	-- 		love.event.quit()
+	-- 	end
 	end
 end
 
@@ -572,15 +570,15 @@ function love.keypressed(key)
 			end
 		end
 
-		if OS ~= "Android" or OS ~= "iOS" then
-			if key == "p" then
-				if pauseFlag == true then
-					pause.exit()
-				else
-					pause.load()
-				end
-			end
-		end
+		-- if OS ~= "Android" or OS ~= "iOS" then
+		-- 	if key == "p" then
+		-- 		if pauseFlag == true then
+		-- 			pause.exit()
+		-- 		else
+		-- 			pause.load()
+		-- 		end
+		-- 	end
+		-- end
 
 		if move == true then
 			love.keyboard.setKeyRepeat(true)
