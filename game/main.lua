@@ -7,6 +7,9 @@ love.graphics.setDefaultFilter("nearest", "nearest", 1)
 local img_loading = love.graphics.newImage("assets/loading.png")
 local lsw, lsh = img_loading:getDimensions()
 
+local cursor = love.mouse.newCursor("assets/cursor.png")
+love.mouse.setCursor(cursor)
+
 local URLS = require("urls")
 local Shaders = require("shaders")
 
@@ -250,7 +253,7 @@ function love.draw()
 	love.graphics.setCanvas()
 
 	love.graphics.setColor(1, 1, 1, 1)
-	if SaveData.data.use_grayscale then
+	if not ending_leave and SaveData.data.use_grayscale then
 		love.graphics.setShader(Shaders.grayscale)
 	end
 	love.graphics.draw(MAIN_CANVAS)
