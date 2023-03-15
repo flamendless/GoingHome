@@ -714,4 +714,47 @@ function assets.dialogue_set()
   	end
 end
 
+function assets.find_unused()
+	local all = {}
+
+	local fs = love.filesystem.getDirectoryItems("assets")
+	for _, f in ipairs(fs) do
+		local data = love.filesystem.getInfo("assets/" .. f)
+		if data.type == "file" then
+			all["assets/" .. f] = 1
+		elseif data.type == "directory" then
+			for _, f2 in ipairs(love.filesystem.getDirectoryItems("assets/" .. f)) do
+				all["assets/" .. f .. "/" .. f2] = 1
+			end
+		end
+	end
+
+	print("UNUSED ASSETS:")
+	for _, v in pairs(textures) do
+		for _, data in ipairs(v) do
+			local name = data[2]
+			if all[name] then
+				all[name] = all[name] + 1
+			end
+		end
+	end
+	for _, v in pairs(sources) do
+		for _, data in ipairs(v) do
+			local name = data[2]
+			if all[name] then
+				all[name] = all[name] + 1
+			end
+		end
+	end
+
+	for k, v in pairs(all) do
+		if v == 1 then
+			print(k)
+		end
+	end
+
+	error("find_unused is done. do not include this in release")
+end
+-- assets.find_unused()
+
 return assets
