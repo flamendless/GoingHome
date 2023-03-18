@@ -238,6 +238,7 @@ local sources = {
 		{"enemy_scream", "assets/audio/enemy_scream.ogg", "static"},
 		{"rain", "assets/audio/rain.ogg", "stream"},
 		{"thunder", "assets/audio/thunder.ogg", "static"},
+		{"unlock", "assets/audio/unlock.ogg", "static"},
 	},
 	main = {
 		{"smash_head","assets/audio/smash_head.ogg","static"},
@@ -246,7 +247,6 @@ local sources = {
 		{"gunshot","assets/audio/gunshot.ogg","static"},
 		{"lightning","assets/audio/lightning.ogg","static"},
 		{"reload","assets/audio/reload.ogg","static"},
-		{"unlock", "assets/audio/unlock.ogg", "static"},
 		{"door", "assets/audio/door.ogg", "static"},
 		{"squeak", "assets/audio/squeak.ogg", "static"},
 		{"door_fast", "assets/audio/door_fast.ogg", "static"},
@@ -335,7 +335,6 @@ function assets.load()
 		if state == "main" then
 			particle_set()
 			assets.set()
-
 		end
 
 		assets.init_gui_pos()

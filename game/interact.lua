@@ -1,7 +1,10 @@
 local Interact = Object:extend()
 
 local trigger = 0
-sink_trigger = 0
+local sink_trigger = 0
+local white = {1, 1, 1, 1}
+local red = {1, 0, 0, 1}
+
 
 function Interact:new(state,txt,opt_txt,sm,tag)
 	self.sm = sm
@@ -21,7 +24,7 @@ function Interact:new(state,txt,opt_txt,sm,tag)
 	self.y = {}
 	for i = 1, #self.txt do
 		self.x[i] = width/2 - self.font:getWidth(self.txt[i])/2
-		self.y[i] = 0 + self.font:getHeight(self.txt[i])/4
+		self.y[i] = 0 + self.font:getHeight()/4
 	end
 
 	self.tag = tag
@@ -30,9 +33,6 @@ function Interact:new(state,txt,opt_txt,sm,tag)
 
 	self.opt_txt = opt_txt or {}
 	self.option = false
-
-	white = {1, 1, 1, 1}
-	red = {1, 0, 0, 1}
 
 	self.cursor = 1
 	self.opt1 = white
@@ -47,13 +47,8 @@ function Interact:new(state,txt,opt_txt,sm,tag)
 end
 
 function Interact:update(dt)
-
 	if gameover == true then
 		self.state = false
-	end
-
-	if self.state == false then
-
 	end
 
 	if self.state == true then
@@ -87,9 +82,7 @@ function Interact:update(dt)
 			self.option = false
 			move = true
 		end
-	end
-
-	if self.specialTxt == true then
+	elseif self.specialTxt == true then
 		if self.sp_2_show == true then
 			self.timer = self.timer - 1 * dt
 			if self.timer <= 0 then
@@ -127,6 +120,7 @@ end
 function Interact:draw()
 	love.graphics.setColor(1, 1, 1, 1)
 	love.graphics.setFont(self.font)
+	local fh = self.font:getHeight()
 	if self.state == true then
 		if self.option == false then
 			love.graphics.print(self.txt[self.n],self.x[self.n],self.y[self.n])
@@ -135,10 +129,10 @@ function Interact:draw()
 			love.graphics.print(self.txt[#self.txt],self.x[#self.txt],self.y[#self.txt])
 
 			love.graphics.setColor(self.opt1)
-			love.graphics.print(self.opt_txt[1],width/4 - self.font:getWidth(self.opt_txt[1])/2, height - self.font:getHeight(self.opt_txt[1])/2 - 8)
+			love.graphics.print(self.opt_txt[1],width/4 - self.font:getWidth(self.opt_txt[1])/2, height - fh/2 - 8)
 
 			love.graphics.setColor(self.opt2)
-			love.graphics.print(self.opt_txt[2],width - self.font:getWidth(self.opt_txt[2])/2 - width/4, height - self.font:getHeight(self.opt_txt[2])/2 - 8)
+			love.graphics.print(self.opt_txt[2],width - self.font:getWidth(self.opt_txt[2])/2 - width/4, height - fh/2 - 8)
 		end
 	end
 	if self.simpleMessage == true then
@@ -147,23 +141,21 @@ function Interact:draw()
 			local s1 = string.sub(self.sm,1,sw/2)
 			local s2 =	string.sub(self.sm,sw/2+1)
 
-			love.graphics.print(s1,width/2 - self.font:getWidth(s1)/2,0 + self.font:getHeight(s1)/4)
-			love.graphics.print(s2,width/2 - self.font:getWidth(s2)/2,height - self.font:getHeight(s2)/2 - 8)
+			love.graphics.print(s1,width/2 - self.font:getWidth(s1)/2,0 + fh/4)
+			love.graphics.print(s2,width/2 - self.font:getWidth(s2)/2,height - fh/2 - 8)
 		else
-			love.graphics.print(self.sm,width/2 - self.font:getWidth(self.sm)/2,height - self.font:getHeight(self.sm)/2 - 8)
+			love.graphics.print(self.sm,width/2 - self.font:getWidth(self.sm)/2,height - fh/2 - 8)
 		end
-	end
-
-	if self.specialTxt == true then
-		love.graphics.print(self.sp_1,width/2 - self.font:getWidth(self.sp_1)/2,0 + self.font:getHeight(self.sp_1)/4)
+	elseif self.specialTxt == true then
+		love.graphics.print(self.sp_1,width/2 - self.font:getWidth(self.sp_1)/2,0 + fh/4)
 
 		if self.sp_2_show == true then
-			love.graphics.print(self.sp_2,width/2 - self.font:getWidth(self.sp_2)/2,height - self.font:getHeight(self.sp_2)/2 - 8)
+			love.graphics.print(self.sp_2,width/2 - self.font:getWidth(self.sp_2)/2,height - fh/2 - 8)
 		end
 	end
 
 	if self._door == true then
-		love.graphics.print(self._dt, width/2 - self.font:getWidth(self._dt)/2,0+self.font:getHeight(self._dt)/4)
+		love.graphics.print(self._dt, width/2 - self.font:getWidth(self._dt)/2,0+fh/4)
 	end
 end
 

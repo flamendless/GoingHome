@@ -34,7 +34,7 @@ function animation_set()
 		skip_button = anim8.newAnimation(_skip("1-1",1),0.1)
 
 		--player door
-		local _pd = anim8.newGrid(16,24,images.player_door:getWidth(),images.player_door:getHeight())
+		local _pd = anim8.newGrid(16,24,images.player_door:getDimensions())
 		pd_anim = anim8.newAnimation(_pd('1-14',1),0.1, "pauseAtEnd")
 		--in house
 		local _ih = anim8.newGrid(128,32,images.in_house:getWidth(),images.in_house:getHeight())

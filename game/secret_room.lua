@@ -47,7 +47,19 @@ local insert_chair = false
 screamed = 0
 event_find = false
 
+local static_fade = false
+
 function SCENE.secretRoom_update(dt)
+	if static_fade and sounds.tv_loud:isPlaying() then
+		local v = sounds.tv_loud:getVolume()
+		if v <= 0 then
+			sounds.tv_loud:stop()
+			static_fade = false
+		end
+		sounds.tv_loud:setVolume(v - 0.2 * dt)
+	end
+
+
 	if event == "secret_room_first" then
 		enemy_exists = false
 		lightOn = false
@@ -121,9 +133,11 @@ function SCENE.secretRoom_update(dt)
 				sounds.tv_loud:setLooping(true)
 				tv_trigger = -1
 				tv_light_flag = true
-				for k,v in pairs(dialogue) do
+				static_fade = true
+
+				for i,v in ipairs(dialogue) do
 					if v.tag == "tv" then
-						table.remove(dialogue,k)
+						table.remove(dialogue, i)
 						local tv_open = Interact(false,{"It's just showing random pixels","H...How?","There's no electricity","Turn it off?"},{"Yes","Leave it be"},"It won't turn off","tv")
 						table.insert(dialogue,tv_open)
 						tv_open_volume = true
@@ -174,14 +188,14 @@ function SCENE.secretRoom_update(dt)
 				move = false
 				lightOn = false
 
-				for i, v in ipairs(obj) do
-					if v.tag == "hole" then
-						table.remove(obj, i)
-						break
-					end
-				end
-				local head = Items(images.st_head,images["stairRoom"],80,22,"head")
-				table.insert(obj, head)
+				-- for i, v in ipairs(obj) do
+				-- 	if v.tag == "hole" then
+				-- 		table.remove(obj, i)
+				-- 		break
+				-- 	end
+				-- end
+				-- local head = Items(images.st_head,images["stairRoom"],80,22,"head")
+				-- table.insert(obj, head)
 			end
 		end
 
@@ -263,6 +277,15 @@ function SCENE.secretRoom_update(dt)
 				lightOn = true
 			end
 		else
+			-- for i, v in ipairs(obj) do
+			-- 	if v.tag == "head" then
+			-- 		table.remove(obj, i)
+			-- 		break
+			-- 	end
+			-- end
+			-- local holes = Items(images.st_hole,images["stairRoom"], 80, 22, "hole")
+			-- table.insert(obj, holes)
+
 			--set previous rooms configs to true
 			for _,v in ipairs(obj) do
 				for _,m in ipairs(hide) do
@@ -325,14 +348,14 @@ function SCENE.secretRoom_update(dt)
 		player.state = "normal"
 		flashback_epic = false
 
-		for i, v in ipairs(obj) do
-			if v.tag == "head" then
-				table.remove(obj, i)
-				break
-			end
-		end
-		local holes = Items(images.st_hole,images["stairRoom"], 80, 22, "hole")
-		table.insert(obj, holes)
+		-- for i, v in ipairs(obj) do
+		-- 	if v.tag == "head" then
+		-- 		table.remove(obj, i)
+		-- 		break
+		-- 	end
+		-- end
+		-- local holes = Items(images.st_hole,images["stairRoom"], 80, 22, "hole")
+		-- table.insert(obj, holes)
 	end
 	--tv illum
 	if tv_light_flag == true then

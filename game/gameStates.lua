@@ -420,6 +420,9 @@ function gamestates.update(dt)
 			Timer.after(9, function() win_move_r = true win_right_anim:resume() end)
 		end
 
+		if ghost_event == "flashback" and sounds.tv_loud and sounds.tv_loud:isPlaying() then
+			sounds.tv_loud:stop()
+		end
 
 		if move == true then
 			player:movement(dt)
@@ -997,12 +1000,12 @@ function gamestates.draw()
 		if currentRoom == images["mainRoom"] then
 			if ending_leave == false then
 				love.graphics.setColor(1, 1, 1, 1)
-				win_left_anim:draw(images.window_left,width/2 - bgw/2,height/2 - bgh()/2)
-				win_right_anim:draw(images.window_right,width/2 - bgw/2,height/2 - bgh()/2)
+				win_left_anim:draw(images.window_left,width/2 - bgw/2,height/2 - bgh/2)
+				win_right_anim:draw(images.window_right,width/2 - bgw/2,height/2 - bgh/2)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
-				win_left_anim:draw(images.window_left_color,width/2 - bgw/2,height/2 - bgh()/2)
-				win_right_anim:draw(images.window_right_color,width/2 - bgw/2,height/2 - bgh()/2)
+				win_left_anim:draw(images.window_left_color,width/2 - bgw/2,height/2 - bgh/2)
+				win_right_anim:draw(images.window_right_color,width/2 - bgw/2,height/2 - bgh/2)
 			end
 		elseif currentRoom == images["leftRoom"] then
 			father_anim_draw()
@@ -1254,29 +1257,23 @@ function enemy_check()
 	end
 end
 
-local skip_alpha = 1
+local skip_alpha = 0
 local skip_dir = 1
 function skip_draw()
-	-- if pressed == false then
-	-- 	love.graphics.setColor(1, 1, 1, 1)
-	-- else
-	-- 	love.graphics.setColor(1, 0, 0, 1)
-	-- end
-	-- skip_button:draw(images.skip, gui_pos.skip_x, gui_pos.skip_y)
-
 	if skip_alpha >= 1 then
 		skip_dir = -1
-	elseif skip_alpha <= 0 then
+	elseif skip_alpha < 0 then
 		skip_dir = 1
+		return
 	end
-	skip_alpha = skip_alpha + love.timer.getDelta() * 0.75 * skip_dir
+	skip_alpha = skip_alpha + love.timer.getDelta() * 0.5 * skip_dir
 	skip_alpha = math.clamp(skip_alpha, 0, 1)
 	love.graphics.setColor(1, 1, 1, skip_alpha)
 	local skip_text
 	if OS == "Android" or OS == "iOS" then
 		skip_text = "tap to skip"
 	else
-		skip_text = "press e to skip"
+		skip_text = "press any key to skip"
 	end
 	love.graphics.print(
 		skip_text,

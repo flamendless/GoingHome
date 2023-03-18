@@ -205,7 +205,11 @@ function Player:checkDoors()
 			end
 		elseif checkMid then
 			if ending_leave == false then
-				doorTxt("I've just got home","and it's raining outside.")
+				if ghost_event == "flashback" then
+					doorTxt("I've just got home","I have to find mom and dad")
+				else
+					doorTxt("I've just got home","and it's raining outside.")
+				end
 				sounds.locked:play()
 			else
 				lv = 1

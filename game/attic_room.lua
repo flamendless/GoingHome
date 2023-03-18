@@ -17,18 +17,18 @@ function SCENE.atticRoom_update(dt)
 	else
 		squeak = true
 	end
-	
+
 	if ghost_event == "no escape" then
 		--if player goes to the far left do some falling
 		--print(player.x) --22.86
 
 		player.state = "child"
 
-		if ghost.x >= 19 then 
-			ghost.chaseOn = true 
+		if ghost.x >= 19 then
+			ghost.chaseOn = true
 		else
 			if gameover == false then
-				ghost.chaseOn = false 
+				ghost.chaseOn = false
 				sounds.floor_hole:play()
 				sounds.floor_hole:setLooping(false)
 
@@ -38,7 +38,7 @@ function SCENE.atticRoom_update(dt)
 				player.y = -32
 				player.grav = 1
 				currentRoom = images["secretRoom"]
-				
+
 				player.visible = false
 				player.img = images.player_down
 			end
@@ -124,6 +124,18 @@ solved = false
 --PUZZLE!
 function puzzle_update(dt)
 	move = false
+	if clock_puzzle then
+		if hour == 10 and minute == 2 and second == 8 and ampm == "pm" then
+			clock_puzzle = false
+			sounds.item_got:play()
+			solved = true
+			move = true
+			sounds.main_theme:stop()
+			sounds.intro_soft:stop()
+			sounds.finding_home:stop()
+			sounds.ts_theme:stop()
+		end
+	end
 end
 
 function puzzle_draw()
@@ -134,18 +146,18 @@ function puzzle_draw()
 	if selected == "hour" then
 		c_x = width/2 - 27.5
 		c_y = height/2 - 7
-		c_xs = 1 
+		c_xs = 1
 		c_ys = 1
 	elseif selected == "minute" then
 		c_x = width/2 - 13.5
 		c_y = height/2 - 7
-		c_xs = 1 
+		c_xs = 1
 		c_ys = 1
 
 	elseif selected == "second" then
 		c_x = width/2 + 0.5
 		c_y = height/2 - 7
-		c_xs = 1 
+		c_xs = 1
 		c_ys = 1
 
 	elseif selected == "ampm" then

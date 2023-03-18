@@ -536,17 +536,25 @@ function love.keypressed(key)
 		end
 	end
 
-	if key == "e" and state == "rain_intro" then
+	-- local to_skip = (
+	-- 	(key == "e") or
+	-- 	(key == "return") or
+	-- 	(key == "escape") or
+	-- 	(key == "space")
+	-- )
+	local to_skip = key ~= nil
+
+	if to_skip and state == "rain_intro" then
 		pressed = true
 		fade.state = true
 		states = "intro"
 		gamestates.load()
-	elseif key == "e" and state == "intro" then
+	elseif to_skip and state == "intro" then
 		pressed = true
 		fade.state = true
 		states = "tutorial"
 		gamestates.load()
-	elseif key == "e" and state == "tutorial" then
+	elseif to_skip and state == "tutorial" then
 		pressed = true
 		fade.state = true
 		states = "main"
@@ -620,7 +628,7 @@ function love.keypressed(key)
 							ghost_chase = true
 						end
 					end
-				elseif key == "e"     then
+				elseif key == "e" then
 					if currentRoom == images["leftRoom"] or currentRoom == images["rightRoom"] then
 						if lightOn == false then
 							player:checkItems()
@@ -628,11 +636,9 @@ function love.keypressed(key)
 						end
 					end
 					if move_chair == false then
-						if event_find == false then
-							if lightOn == true then
-								player:checkItems()
-								player:checkDoors()
-							end
+						if (event_find == false) and (lightOn == true) then
+							player:checkItems()
+							player:checkDoors()
 						else
 							player:checkItems()
 							player:checkDoors()
