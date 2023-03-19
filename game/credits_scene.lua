@@ -51,9 +51,6 @@ function credits_load()
 		"Tester:",
 		"Ian Plaus",
 
-		"Trailer:",
-		"Hannah Eunice Tamyo",
-
 		"Dedicated to:",
 		"Hannah Daniella Tamayo",
 

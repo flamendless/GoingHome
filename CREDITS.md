@@ -53,7 +53,6 @@
 ## Special thanks to the following:
 * **Ian Plaus** - Beta tester
 * **Conrad Reyes** - Pixel artist
-* **Hannah Eunice Tamyo** - Game Trailer
 
 
 
