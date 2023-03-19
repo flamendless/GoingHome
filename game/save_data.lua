@@ -39,6 +39,10 @@ function SaveData.load()
 		end
 	end
 	SaveData.get_opts()
+
+	if SaveData.data.door_locked == false then
+		door_locked = false
+	end
 	print("SaveData loaded")
 end
 
