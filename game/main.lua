@@ -637,7 +637,14 @@ function love.keypressed(key)
 							ghost_chase = true
 						end
 					end
-				elseif key == "e" then
+				elseif key == "e" and move then
+					--try fix for overlapping texts
+					for _, obj in ipairs(dialogue) do
+						if obj.simpleMessage or obj.specialTxt then
+							return
+						end
+					end
+
 					if currentRoom == images["leftRoom"] or currentRoom == images["rightRoom"] then
 						if lightOn == false then
 							player:checkItems()

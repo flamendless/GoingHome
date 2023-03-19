@@ -487,7 +487,7 @@ end
 function doorTxt(str1,str2)
 	local str1 = str1
 	local str2 = str2
-	for k,v in pairs(dialogue) do
+	for _,v in ipairs(dialogue) do
 		v:special_text(str1,str2)
 		move = false
 	end
