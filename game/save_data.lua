@@ -4,6 +4,7 @@ local SaveData = {
 		use_grayscale = false,
 		door_locked = true,
 		music_sounds = true,
+		hide_cursor = false,
 	},
 }
 
@@ -15,6 +16,10 @@ local opts = {
 	{
 		str = "sound/music",
 		value = true,
+	},
+	{
+		str = "hide cursor",
+		value = false,
 	},
 }
 
@@ -40,6 +45,7 @@ end
 function SaveData.get_opts()
 	opts[1].value = SaveData.data.use_grayscale
 	opts[2].value = SaveData.data.music_sounds
+	opts[3].value = SaveData.data.hide_cursor
 	return opts
 end
 
@@ -48,6 +54,7 @@ function SaveData.toggle_opts(i)
 	o.value = not o.value
 	SaveData.data.use_grayscale = opts[1].value
 	SaveData.data.music_sounds = opts[2].value
+	SaveData.data.hide_cursor = opts[3].value
 
 	if SaveData.data.music_sounds then
 		love.audio.setVolume(1)

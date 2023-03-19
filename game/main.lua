@@ -205,6 +205,15 @@ function love.update(dt)
 		if FC:getState() then
 			FC:update(dt)
 		else
+			local state = gamestates.getState()
+			if state == "main" then
+				if SaveData.data.hide_cursor then
+					love.mouse.setVisible(false)
+				else
+					love.mouse.setVisible(true)
+				end
+			end
+
 			gamestates.update(dt)
 			if OS == "Android" or OS == "iOS" then
 				android.update(dt)
@@ -418,7 +427,7 @@ function love.keyreleased(key)
 			player.isMoving = false
 		end
 	elseif state == "intro" or state == "rain_intro" then
-		if key == "return" or key == "e"     then
+		if key == "return" or key == "e" then
 			pressed = false
 		end
 	elseif state == "title" then
