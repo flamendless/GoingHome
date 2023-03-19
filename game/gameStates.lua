@@ -128,6 +128,14 @@ local instruction_texts_mobile = {
 	"It must not be exposed to light.",
 }
 
+local str_about = {
+	"About:",
+	"Game By: @flamendless",
+	"Programmer: Brandon Lim-it",
+	"Artist: Conrad Reyes",
+	"Tester: Ian Plaus",
+}
+
 local function draw_instructions()
 	love.graphics.setColor(0,0,0,0)
 	love.graphics.rectangle("fill",0,0,width,height)
@@ -950,12 +958,15 @@ function gamestates.draw()
 			love.graphics.setFont(font)
 			love.graphics.setColor(1, 1, 1)
 
-			love.graphics.print("Softwares Used:",width/2 - font:getWidth("Softwares Used:")/2,font:getHeight()/2 - 4)
-			love.graphics.print("ide: sublime text 3",width/2 - font:getWidth("ide: sublime text 3")/2,font:getHeight() + 20)
-			love.graphics.print("pixel art: aseprite",width/2 - font:getWidth("pixel art: aseprite")/2,font:getHeight() + 28)
-			love.graphics.print("source control: git",width/2 - font:getWidth("source control: git")/2,font:getHeight() + 36)
-			love.graphics.print("os: xubuntu xenial xerxus",width/2 - font:getWidth("os: xubuntu xenial xerxus")/2,font:getHeight() + 12)
-			love.graphics.print("sounds: musescore & audacity",width/2 - font:getWidth("sounds: musescore & audacity")/2,font:getHeight() + 4)
+			local fh = font:getHeight()
+			for i, str in ipairs(str_about) do
+				if i == 1 then
+					love.graphics.setColor(1, 0, 0, 1)
+				else
+					love.graphics.setColor(1, 1, 1, 1)
+				end
+				love.graphics.print(str, width/2 - font:getWidth(str)/2, fh * (i - 1))
+			end
 			draw_back_gui()
 		end
 	elseif state == "intro" then
@@ -964,7 +975,7 @@ function gamestates.draw()
 		love.graphics.rectangle("fill",0,0,width,height)
 		love.graphics.setFont(font)
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.print(intro_txt[intro_count],width/2 - font:getWidth(intro_txt[intro_count])/2,height/2 - font:getHeight(intro_txt[intro_count])/2)
+		love.graphics.print(intro_txt[intro_count],width/2 - font:getWidth(intro_txt[intro_count])/2,height/2 - font:getHeight()/2)
 		skip_draw()
 
 	elseif state == "gallery" then
