@@ -188,14 +188,14 @@ function SCENE.secretRoom_update(dt)
 				move = false
 				lightOn = false
 
-				-- for i, v in ipairs(obj) do
-				-- 	if v.tag == "hole" then
-				-- 		table.remove(obj, i)
-				-- 		break
-				-- 	end
-				-- end
-				-- local head = Items(images.st_head,images["stairRoom"],80,22,"head")
-				-- table.insert(obj, head)
+				for i, v in ipairs(obj) do
+					if v.tag == "hole" then
+						table.remove(obj, i)
+						break
+					end
+				end
+				local head = Items(images.st_head,images["stairRoom"],80,22,"head")
+				table.insert(obj, head)
 			end
 		end
 
@@ -277,14 +277,14 @@ function SCENE.secretRoom_update(dt)
 				lightOn = true
 			end
 		else
-			-- for i, v in ipairs(obj) do
-			-- 	if v.tag == "head" then
-			-- 		table.remove(obj, i)
-			-- 		break
-			-- 	end
-			-- end
-			-- local holes = Items(images.st_hole,images["stairRoom"], 80, 22, "hole")
-			-- table.insert(obj, holes)
+			for i, v in ipairs(obj) do
+				if v.tag == "head" then
+					table.remove(obj, i)
+					break
+				end
+			end
+			local holes = Items(images.st_hole,images["stairRoom"], 80, 22, "hole")
+			table.insert(obj, holes)
 
 			--set previous rooms configs to true
 			for _,v in ipairs(obj) do
