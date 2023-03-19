@@ -7,7 +7,7 @@ local lx = 128/2 - 22
 
 
 function validate_input()
-	if user_input == correct then
+	if string.lower(user_input) == string.lower(correct) then
 		--correct
 		sounds.vault_unlock:play()
 		sounds.vault_unlock:setLooping(false)
@@ -32,14 +32,14 @@ end
 
 
 
-function storage_puzzle_update(dt) 
+function storage_puzzle_update(dt)
 	--main update
 	if final_puzzle_solved == false then
 		if word_puzzle == true then
-			if string.len(user_input) == string.len(correct) or love.keyboard.isDown("return") then
+			if (string.len(user_input) == string.len(correct)) or love.keyboard.isDown("return") then
 				validate_input()
 			end
-		end	
+		end
 	end
 	if doodle_flag == true then
 		if a >= 0 then
@@ -62,7 +62,7 @@ function storage_puzzle_update(dt)
 	end
 end
 
-function storage_puzzle_draw() 
+function storage_puzzle_draw()
 	if doodle_flag == true then
 		if pic_number > 0 and pic_number < #puzzle_pics then
 			love.graphics.setColor(1, 1, 1, a)
@@ -78,9 +78,9 @@ function storage_puzzle_draw()
 		love.graphics.draw(puzzle_pics[pic_number],width/2,height/2,0,1.25,1.25,16.5,12)
 	end
 	if word_puzzle == true then
-		love.graphics.setColor(1, 1, 1, 1)		
+		love.graphics.setColor(1, 1, 1, 1)
 		love.graphics.draw(images.input_base,width/2 - images.input_base:getWidth()/2,height/2 - images.input_base:getHeight()/2)
 		love.graphics.setColor(1, 1, 1, 1)
 		love.graphics.print(user_input,28,height/2 - 10)
-	end	
+	end
 end
