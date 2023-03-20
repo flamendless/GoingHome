@@ -1,15 +1,7 @@
-Played by Markiplier! See the video [here](https://youtu.be/ECCJMudSf00)
+# Going Home: Revisited
 
 Made with [love](https://love2d.org)
 
-# LINKS
+* [itch](https://flamendless.itch.io/going-home-revisited)
 
-This is the source code of my game "Going Home"
-
-* [GameJolt](https://gamejolt.com/games/goinghome/237280)
-* [Itch](https://flamendless.itch.io/going-home)
-
-
-# DISCLAIMER
-
-This is reuploaded to GitHub as I migrate to Bitbucket. (No git history from there because of too large file in the history)
+Repo of the original [Going Home](https://github.com/flamendless/GoingHome/blob/master/README_GH.md)
