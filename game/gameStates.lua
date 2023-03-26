@@ -720,6 +720,10 @@ function gamestates.draw()
 			local bgw, bgh = images.bg:getDimensions()
 			love.graphics.draw(images.bg, width/2 - bgw/2, height/2 - bgh/2)
 
+			local ttw, tth = images.title_text:getDimensions()
+			local scale = 0.4
+			love.graphics.draw(images.title_text, width/4, height/2 - 2, 0, scale, scale, ttw/2, tth/2)
+
 			--start
 			if cursor_pos == 1 then
 				love.graphics.setColor(1, 0, 0, 1)

@@ -39,7 +39,7 @@ local textures = {
 		{"start","assets/start.png"},
 		{"exit","assets/exit.png"},
 		{"bg","assets/images/bg.png"},
-		{"title_text","assets/images/title.png"},
+		{"title_text","assets/images/title_text.png"},
 	},
 	intro = {
 		{"car_moving","assets/images/intro_1-sheet.png"},
