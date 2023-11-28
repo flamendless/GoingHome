@@ -5,56 +5,56 @@ local c = 1
 
 function pause.gui()
 	gSound = {
-		img = images.gui_sound,
-		w = images.gui_sound:getWidth(),
-		h = images.gui_sound:getHeight(),
-		x = width - 24,
-		y = height - 7 - 2
+		img = Images.gui_sound,
+		w = Images.gui_sound:getWidth(),
+		h = Images.gui_sound:getHeight(),
+		x = WIDTH - 24,
+		y = HEIGHT - 7 - 2
 	}
 end
 
 function pause.sound(state)
 	local state = state
 	if state == "off" then
-		gSound.img = images.gui_sound_off
+		gSound.img = Images.gui_sound_off
 		love.audio.setVolume(0)
 	elseif state == "on" then
 		love.audio.setVolume(1)
-		gSound.img = images.gui_sound
+		gSound.img = Images.gui_sound
 	end
 end
 
 function pause.load()
 	pause.gui()
 
-	temp_move = move
+	TEMP_MOVE = move
 	move = false
 	pauseFlag = true
 
-	sounds.thunder:pause()
+	Sounds.thunder:pause()
 	random_breathe_flag = false
-	sounds.ts_theme:play()
-	sounds.ts_theme:setVolume(0.3)
+	Sounds.ts_theme:play()
+	Sounds.ts_theme:setVolume(0.3)
 	lightningVol = 0
 end
 
 
 function pause.exit()
-	move = temp_move
+	move = TEMP_MOVE
 	pauseFlag = false
-	sounds.thunder:play()
+	Sounds.thunder:play()
 	random_breathe_flag = true
-	sounds.ts_theme:stop()
+	Sounds.ts_theme:stop()
 	lightningVol = 0.3
 end
 
 
 function pause.draw()
 	love.graphics.setColor(1, 1, 1, 1)
-	love.graphics.print(pauseTxt,width/2 - font:getWidth(pauseTxt)/2,8)
+	love.graphics.print(pauseTxt,WIDTH/2 - DEF_FONT:getWidth(pauseTxt)/2,8)
 	if (OS == "Android") or (OS == "iOS") then
-		love.graphics.draw(images.gui_sBack,gSettingsBack.x,gSettingsBack.y)
-		love.graphics.draw(images.gui_quit,gQuit.x,gQuit.y)
+		love.graphics.draw(Images.gui_sBack,gSettingsBack.x,gSettingsBack.y)
+		love.graphics.draw(Images.gui_quit,gQuit.x,gQuit.y)
 	end
 	love.graphics.draw(gSound.img,gSound.x,gSound.y)
 end

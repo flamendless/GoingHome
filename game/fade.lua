@@ -24,7 +24,7 @@ end
 function Fade:draw()
 	if self.state == true then
 		love.graphics.setColor(0,0,0,self.a)
-		love.graphics.rectangle("fill", 0, 0, width, height)
+		love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 	end
 end
 

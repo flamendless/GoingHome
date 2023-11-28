@@ -50,27 +50,27 @@ event_find = false
 local static_fade = false
 
 function SCENE.secretRoom_update(dt)
-	if static_fade and sounds.tv_loud:isPlaying() then
-		local v = sounds.tv_loud:getVolume()
+	if static_fade and Sounds.tv_loud:isPlaying() then
+		local v = Sounds.tv_loud:getVolume()
 		if v <= 0 then
-			sounds.tv_loud:stop()
+			Sounds.tv_loud:stop()
 			static_fade = false
 		end
-		sounds.tv_loud:setVolume(v - 0.2 * dt)
+		Sounds.tv_loud:setVolume(v - 0.2 * dt)
 	end
 
 
 	if event == "secret_room_first" then
 		enemy_exists = false
-		lightOn = false
+		LIGHT_ON = false
 		random_breathe = false
 		move = false
-		sounds.rain:setVolume(0.3)
-		sounds.main_theme:setVolume(0)
-		sounds.finding_home:setVolume(0)
-		sounds.main_theme:stop()
-		sounds.finding_home:stop()
-		sounds.rain:stop()
+		Sounds.rain:setVolume(0.3)
+		Sounds.main_theme:setVolume(0)
+		Sounds.finding_home:setVolume(0)
+		Sounds.main_theme:stop()
+		Sounds.finding_home:stop()
+		Sounds.rain:stop()
 
 		if _timer > 0 then
 			_timer = _timer - 1 * dt
@@ -78,15 +78,15 @@ function SCENE.secretRoom_update(dt)
 			local _t = math.floor(math.random(-4,4))
 			if _t == 1 then
 				_flag = true
-				sounds.fl_toggle:play()
+				Sounds.fl_toggle:play()
 			elseif _t == -1 then
 				_flag = false
-				sounds.fl_toggle:play()
+				Sounds.fl_toggle:play()
 			end
 
 
 			--play sounds on breaking flashlight
-			lightOn = _flag
+			LIGHT_ON = _flag
 		elseif _timer <= 0 then
 			event = "after_secret_room"
 			random_breathe = true
@@ -96,23 +96,23 @@ function SCENE.secretRoom_update(dt)
 		--sounds.rain:setVolume(0.1)
 		--sounds.finding_home:setVolume(0.40)
 
-		lightOn = false
+		LIGHT_ON = false
 
 		if _timer > 0 then
 			_timer = _timer - 1 * dt
 			if _timer >= 7 and _timer <= 9 then
 				txt1 = "I have to find them quick..."
-				txt1_x = width/2 - font:getWidth(txt1)/2
-				txt1_y = height/4  - font:getHeight(txt1)/2
+				txt1_x = WIDTH/2 - DEF_FONT:getWidth(txt1)/2
+				txt1_y = HEIGHT/4  - DEF_FONT_HALF
 				text1_flag = true
 			elseif _timer >= 4 and _timer <= 6 then
 				txt1 = "The flashlight won't last..."
-				txt1_y = height/2 - font:getHeight(txt1)/2
+				txt1_y = HEIGHT_HALF - DEF_FONT_HALF
 
 			elseif _timer >= 1 and _timer <= 3 then
-				txt1_x = width/2 + font:getWidth(txt1)/2
+				txt1_x = WIDTH/2 + DEF_FONT:getWidth(txt1)/2
 				txt1 = "Alex..."
-				txt1_y = height - 8  - font:getHeight(txt1)/2
+				txt1_y = HEIGHT - 8  - DEF_FONT_HALF
 
 			elseif _timer <= 0 then
 				txt1 = ""
@@ -129,8 +129,8 @@ function SCENE.secretRoom_update(dt)
 		if fade.state == false then
 			if tv_trigger == 1 then
 				--tv jumpscare
-				sounds.tv_loud:play()
-				sounds.tv_loud:setLooping(true)
+				Sounds.tv_loud:play()
+				Sounds.tv_loud:setLooping(true)
 				tv_trigger = -1
 				tv_light_flag = true
 				static_fade = true
@@ -172,21 +172,21 @@ function SCENE.secretRoom_update(dt)
 	if ghost_event == "fall down" then
 		particle_update(dt)
 		enemy_exists = false
-		lightOn = false
+		LIGHT_ON = false
 		random_breathe_flag = false
 
 	elseif ghost_event == "lying down" then
 
 		love.mouse.setPosition(131,326)
 
-		lightOn = true
+		LIGHT_ON = true
 		if timer > 0 then
 			timer = timer - 1 * dt
 			if timer <= 0 then
 				timer = 3
 				ghost_event = "flashback"
 				move = false
-				lightOn = false
+				LIGHT_ON = false
 
 				for i, v in ipairs(obj) do
 					if v.tag == "hole" then
@@ -194,7 +194,7 @@ function SCENE.secretRoom_update(dt)
 						break
 					end
 				end
-				local head = Items(images.st_head,images["stairRoom"],80,22,"head")
+				local head = Items(Images.st_head,Images["stairRoom"],80,22,"head")
 				table.insert(obj, head)
 			end
 		end
@@ -214,12 +214,12 @@ function SCENE.secretRoom_update(dt)
 
 
 		tv_light_flag = false
-		sounds.rain:stop()
-		sounds.thunder:stop()
-		player.img = images.player_child_idle
-		sounds.main_theme:play()
-		sounds.main_theme:setLooping(false)
-		sounds.main_theme:setVolume(0.3)
+		Sounds.rain:stop()
+		Sounds.thunder:stop()
+		player.img = Images.player_child_idle
+		Sounds.main_theme:play()
+		Sounds.main_theme:setLooping(false)
+		Sounds.main_theme:setVolume(0.3)
 		player.xspd = 25
 
 		player.visible = true
@@ -227,7 +227,7 @@ function SCENE.secretRoom_update(dt)
 			--texts intro
 			if event_find == false then
 				if timer > 0 then
-					lightOn = false
+					LIGHT_ON = false
 					if c < #_txt_2 then
 						txt = true
 						timer = timer - 1 * dt
@@ -239,7 +239,7 @@ function SCENE.secretRoom_update(dt)
 						flash_text_finished = true
 						txt = false
 						move = true
-						lv = 0
+						LIGHT_VALUE = 0
 						event_find = true
 					end
 				end
@@ -248,7 +248,7 @@ function SCENE.secretRoom_update(dt)
 				    --finding parents
 				    if screamed == 0 then
 				    	if player.x >= 77 and player.x <= 80 then
-				    		sounds.floor_squeak:play()
+				    		Sounds.floor_squeak:play()
 				    		move = false
 				    		screamed = 1
 				    		timer = 3
@@ -264,9 +264,9 @@ function SCENE.secretRoom_update(dt)
 				    elseif screamed == -1 then
 				    	--here is the part where we are going to find a chair
 				    	--create the chair
-				    	lightOn = true
+				    	LIGHT_ON = true
 				    	if insert_chair == false then
-					    	local chair = Items(images.store_chair,images["storageRoom"],37,34,"chair")
+					    	local chair = Items(Images.store_chair,Images["storageRoom"],37,34,"chair")
 					    	table.insert(obj,chair)
 					    	local cd = Interact(false,{"It's a chair","What to do?"},{"Take it","Push it"},"It's too big","chair")
 							table.insert(dialogue,cd)
@@ -274,7 +274,7 @@ function SCENE.secretRoom_update(dt)
 						end
 				    end
 				end
-				lightOn = true
+				LIGHT_ON = true
 			end
 		else
 			for i, v in ipairs(obj) do
@@ -283,7 +283,7 @@ function SCENE.secretRoom_update(dt)
 					break
 				end
 			end
-			local holes = Items(images.st_hole,images["stairRoom"], 80, 22, "hole")
+			local holes = Items(Images.st_hole,Images["stairRoom"], 80, 22, "hole")
 			table.insert(obj, holes)
 
 			--set previous rooms configs to true
@@ -296,10 +296,10 @@ function SCENE.secretRoom_update(dt)
 				end
 			end
 
-			sounds.rain:play()
-			sounds.thunder:play()
-			player.img = images.player_idle
-			sounds.main_theme:stop()
+			Sounds.rain:play()
+			Sounds.thunder:play()
+			player.img = Images.player_idle
+			Sounds.main_theme:stop()
 			player.xspd = 25
 			c = 1
 			timer = 3
@@ -308,9 +308,9 @@ function SCENE.secretRoom_update(dt)
 			ghost_event = "limp"
 		end
 	elseif ghost_event == "limp" then
-		lightOn = false
+		LIGHT_ON = false
 		enemy_exists = false
-		lv = 1
+		LIGHT_VALUE = 1
 
 		if timer > 0 then
 			timer = timer - 1 * dt
@@ -359,10 +359,10 @@ function SCENE.secretRoom_update(dt)
 	end
 	--tv illum
 	if tv_light_flag == true then
-		love.graphics.setCanvas(tv_flash)
-		love.graphics.clear(0,0,0,lv)
+		love.graphics.setCanvas(CANVAS_TV_FLASH)
+		love.graphics.clear(0,0,0,LIGHT_VALUE)
 		love.graphics.setBlendMode("multiply", "premultiplied")
-		love.graphics.draw(images.tv_light,104,11)
+		love.graphics.draw(Images.tv_light,104,11)
 		love.graphics.draw(light,lightX,lightY)
 		love.graphics.setBlendMode("alpha")
 		love.graphics.setCanvas()
@@ -377,19 +377,19 @@ function SCENE.secretRoom_draw()
 	if ghost_event == "flashback" then
 		if txt == true then
 			love.graphics.setColor(180/255,180/255,180/255,1)
-			love.graphics.print(_txt_2[c],width/2 - font:getWidth(_txt_2[c])/2, height/2 - font:getHeight(_txt_2[c])/2)
+			love.graphics.print(_txt_2[c],WIDTH/2 - DEF_FONT:getWidth(_txt_2[c])/2, HEIGHT_HALF - DEF_FONT_HALF)
 		end
 
 		if screamed == 1 then
 			love.graphics.setColor(180/255,180/255,180/255,1)
-			love.graphics.print(t1, width/2 - font:getWidth(t1)/2, 0 + font:getHeight(t1)/4)
-			love.graphics.print(t2, width/2 - font:getWidth(t2)/2, height - font:getHeight(t2))
+			love.graphics.print(t1, WIDTH/2 - DEF_FONT:getWidth(t1)/2, 0 + DEF_FONT_HEIGHT/4)
+			love.graphics.print(t2, WIDTH/2 - DEF_FONT:getWidth(t2)/2, HEIGHT - DEF_FONT_HEIGHT)
 
 		end
 	elseif ghost_event == "limp" then
 		if txt == true then
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.print(_txt[c],width/2 - font:getWidth(_txt[c])/2, height/2 - font:getHeight(_txt[c])/2)
+			love.graphics.print(_txt[c],WIDTH/2 - DEF_FONT:getWidth(_txt[c])/2, HEIGHT_HALF - DEF_FONT_HALF)
 		end
 	end
 end

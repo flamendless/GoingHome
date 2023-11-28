@@ -305,7 +305,7 @@ function assets.load()
 
 
 	if loaded[textures_to_load] then
-		local p = loader.getPending()
+		local p = LOADER.getPending()
 		for i = #p, 1, -1 do
 			table.remove(p, i)
 		end
@@ -314,19 +314,19 @@ function assets.load()
 		return
 	end
 
-	finishedLoading = false
+	FINISHED_LOADING = false
 	for _, texture_data in ipairs(textures_to_load) do
 		local key, path = unpack(texture_data)
-		loader.newImage(images, key, path)
+		LOADER.newImage(Images, key, path)
 	end
 	for _, source_data in ipairs(sources_to_load) do
 		local key, path, kind = unpack(source_data)
-		loader.newSource(sounds, key, path, kind)
+		LOADER.newSource(Sounds, key, path, kind)
 	end
-	print("will load", gamestates.getState(), "with # of assets:", #loader.getPending())
-	loader.start(function()
+	print("will load", gamestates.getState(), "with # of assets:", #LOADER.getPending())
+	LOADER.start(function()
 		print("loaded", state)
-		light = images.light
+		light = Images.light
 
 		Gallery.load()
 		animation_set()
@@ -343,7 +343,7 @@ function assets.load()
 
 		gamestates.init()
 
-		finishedLoading = true
+		FINISHED_LOADING = true
 	end)
 end
 
@@ -351,7 +351,7 @@ function assets.set()
 	assets.item_set()
 	assets.dialogue_set()
 	if OS == "Android" then
-		android.load()
+		Android.load()
 	end
 end
 
@@ -360,57 +360,57 @@ function assets.item_set()
 	--set objects
   	obj = {}
   	--main room
-  	local shoerack = Items(images.m_shoerack,images["mainRoom"],26,36,"shoerack")
-  	local shelf = Items(images.m_shelf,images["mainRoom"],90,30,"shelf")
+  	local shoerack = Items(Images.m_shoerack,Images["mainRoom"],26,36,"shoerack")
+  	local shelf = Items(Images.m_shelf,Images["mainRoom"],90,30,"shelf")
   	--living room
-  	local display = Items(images.lr_display,images["livingRoom"],22,24,"displays")
-  	local portraits = Items(images.lr_portraits,images["livingRoom"],80,26,"portraits")
+  	local display = Items(Images.lr_display,Images["livingRoom"],22,24,"displays")
+  	local portraits = Items(Images.lr_portraits,Images["livingRoom"],80,26,"portraits")
   	--stair room
-  	local land = Items(images.st_landscape,images["stairRoom"],26,22,"landscape")
-  	local head = Items(images.st_head,images["stairRoom"],80,22,"head")
+  	local land = Items(Images.st_landscape,Images["stairRoom"],26,22,"landscape")
+  	local head = Items(Images.st_head,Images["stairRoom"],80,22,"head")
   	--hallway left
-  	local stand = Items(images.hl_stand,images["hallwayLeft"],40, 27,"stand")
-  	local bench = Items(images.hl_bench,images["hallwayLeft"],74,34, "bench")
-  	local ball = Items(images.hl_ball,images["hallwayLeft"],100, 39,"ball")
+  	local stand = Items(Images.hl_stand,Images["hallwayLeft"],40, 27,"stand")
+  	local bench = Items(Images.hl_bench,Images["hallwayLeft"],74,34, "bench")
+  	local ball = Items(Images.hl_ball,Images["hallwayLeft"],100, 39,"ball")
   	--storage room
-  	local storage = Items(images.store_cabinet,images["storageRoom"],7,27,"storage")
-  	local toolbox = Items(images.store_toolbox,images["storageRoom"],76,38,"toolbox")
-  	local store_bench = Items(images.store_bench,images["storageRoom"],94,37,"store_bench")
-  	local hoop = Items(images.store_hoop,images["storageRoom"],115,22,"hoop")
+  	local storage = Items(Images.store_cabinet,Images["storageRoom"],7,27,"storage")
+  	local toolbox = Items(Images.store_toolbox,Images["storageRoom"],76,38,"toolbox")
+  	local store_bench = Items(Images.store_bench,Images["storageRoom"],94,37,"store_bench")
+  	local hoop = Items(Images.store_hoop,Images["storageRoom"],115,22,"hoop")
   	--master room
-  	local candle_left = Items(images.mast_candles,images["masterRoom"],20,28,"candles left")
-  	local candle_right = Items(images.mast_candles,images["masterRoom"],80,28,"candles right")
+  	local candle_left = Items(Images.mast_candles,Images["masterRoom"],20,28,"candles left")
+  	local candle_right = Items(Images.mast_candles,Images["masterRoom"],80,28,"candles right")
   	--hallway right
-  	local abstract = Items(images.hr_abstract,images["hallwayRight"],26,22,"abstract")
-  	local surreal = Items(images.hr_surreal,images["hallwayRight"],84,26,"surreal")
+  	local abstract = Items(Images.hr_abstract,Images["hallwayRight"],26,22,"abstract")
+  	local surreal = Items(Images.hr_surreal,Images["hallwayRight"],84,26,"surreal")
   	--daughter room
-  	local cabinet = Items(images.dr_cabinet,images["daughterRoom"],7,23,"cabinet")
-  	local crib = Items(images.dr_crib,images["daughterRoom"],26,32,"crib")
-  	local stuffs = Items(images.dr_stuffs,images["daughterRoom"],width/2 + 23, 28,"toy")
+  	local cabinet = Items(Images.dr_cabinet,Images["daughterRoom"],7,23,"cabinet")
+  	local crib = Items(Images.dr_crib,Images["daughterRoom"],26,32,"crib")
+  	local stuffs = Items(Images.dr_stuffs,Images["daughterRoom"],WIDTH/2 + 23, 28,"toy")
   	--kitchen
-  	local kTable = Items(images.k_table,images["kitchen"],20,28,"kitchen table")
-  	local ref = Items(images.k_ref,images["kitchen"],42,26,"refrigerator")
-  	local trash = Items(images.k_trash,images["kitchen"],66,37,"trash bin")
-  	local sink = Items(images.k_sink,images["kitchen"],74,20,"sink")
+  	local kTable = Items(Images.k_table,Images["kitchen"],20,28,"kitchen table")
+  	local ref = Items(Images.k_ref,Images["kitchen"],42,26,"refrigerator")
+  	local trash = Items(Images.k_trash,Images["kitchen"],66,37,"trash bin")
+  	local sink = Items(Images.k_sink,Images["kitchen"],74,20,"sink")
   	--secret room
-  	local bed = Items(images.bed,images["secretRoom"],8,35,"master bed")
-  	local vault = Items(images.vault,images["secretRoom"],40,26,"safe vault")
+  	local bed = Items(Images.bed,Images["secretRoom"],8,35,"master bed")
+  	local vault = Items(Images.vault,Images["secretRoom"],40,26,"safe vault")
   	--local rope = Items(images.rope,images["secretRoom"],80,20,"rope")
-  	local tv = Items(images.tv,images["secretRoom"],113,27,"tv")
+  	local tv = Items(Images.tv,Images["secretRoom"],113,27,"tv")
 
   	--attic room
-  	local attic_ladder = Items(images.attic_room_ladder,images["atticRoom"],78,42,"attic_ladder")
+  	local attic_ladder = Items(Images.attic_room_ladder,Images["atticRoom"],78,42,"attic_ladder")
   	table.insert(obj,attic_ladder)
-  	local attic_clock = Items(images.clock,images["atticRoom"],width/2-12,22,"clock")
+  	local attic_clock = Items(Images.clock,Images["atticRoom"],WIDTH/2-12,22,"clock")
   	table.insert(obj,attic_clock)
-  	local attic_chest = Items(images.chest,images["atticRoom"],11,35,"chest")
+  	local attic_chest = Items(Images.chest,Images["atticRoom"],11,35,"chest")
   	table.insert(obj,attic_chest)
 
-  	local storage_puzzle_item = Items(images.storage_vault,images["storageRoom"],40,30,"storage puzzle")
+  	local storage_puzzle_item = Items(Images.storage_vault,Images["storageRoom"],40,30,"storage puzzle")
   	table.insert(obj,storage_puzzle_item)
 
 	if OS ~= "Android" or OS ~= "iOS" then
-		local b_battery = Items(images.basement_battery,images["basementRoom"],30,38,"battery")
+		local b_battery = Items(Images.basement_battery,Images["basementRoom"],30,38,"battery")
 		table.insert(obj,b_battery)
   	end
 
@@ -438,8 +438,8 @@ function assets.item_set()
 
   	table.insert(obj,candle_left)
   	table.insert(obj,candle_right)
-  	table.insert(obj,pl)
-  	table.insert(obj,pr)
+  	-- table.insert(obj,pl)
+  	-- table.insert(obj,pr)
 
   	table.insert(obj,abstract)
   	table.insert(obj,surreal)
@@ -454,74 +454,74 @@ function assets.item_set()
   	table.insert(obj,sink)
 
   	rl = {
-		images.right_light1,
-		images.right_light2,
-		images.right_light3,
-		images.right_light4,
+		Images.right_light1,
+		Images.right_light2,
+		Images.right_light3,
+		Images.right_light4,
 	}
 
 	ll = {
-		images.left_light1,
-		images.left_light2,
+		Images.left_light1,
+		Images.left_light2,
 	}
 
 	puzzle_pics = {
-		images.pic1,
-		images.pic2,
-		images.pic3,
-		images.pic4
+		Images.pic1,
+		Images.pic2,
+		Images.pic3,
+		Images.pic4
 	}
 
 end
 
 function assets.init_gui_pos()
-	local ox, oy = images.skip:getDimensions()
+	local ox, oy = Images.skip:getDimensions()
 	ox = (ox/9)/2
 	oy = oy/2
 
 	gui_pos = {
 		start_x = 4,
-		start_y = height-15,
-		start_w = images.start:getWidth(),
-		start_h = images.start:getHeight(),
+		start_y = HEIGHT-15,
+		start_w = Images.start:getWidth(),
+		start_h = Images.start:getHeight(),
 		quit_x = 6,
-		quit_y = height-8,
-		quit_w = images.exit:getWidth(),
-		quit_h = images.exit:getHeight(),
+		quit_y = HEIGHT-8,
+		quit_w = Images.exit:getWidth(),
+		quit_h = Images.exit:getHeight(),
 		b_x = 4,
-		b_y = height - 15,
-		b_w = images.return_gui:getWidth(),
-		b_h = images.return_gui:getHeight(),
-		skip_x = width/2 - ox,
-		skip_y = height/2 - oy,
+		b_y = HEIGHT - 15,
+		b_w = Images.return_gui:getWidth(),
+		b_h = Images.return_gui:getHeight(),
+		skip_x = WIDTH/2 - ox,
+		skip_y = HEIGHT_HALF - oy,
 		skip_w = 8,
 		skip_h = 8,
-		t_x = width/2 - images.twitter:getWidth()/2 + 50,
+		t_x = WIDTH/2 - Images.twitter:getWidth()/2 + 50,
 		t_y = 13,
-		t_w = images.twitter:getWidth(),
-		t_h = images.twitter:getHeight(),
-		p_x = width/2 - images.paypal:getWidth()/2 + 50,
+		t_w = Images.twitter:getWidth(),
+		t_h = Images.twitter:getHeight(),
+		p_x = WIDTH/2 - Images.paypal:getWidth()/2 + 50,
 		p_y = 29,
-		p_w = images.paypal:getWidth(),
-		p_h = images.paypal:getHeight(),
-		e_x = width/2 - images.email:getWidth()/2 + 50,
-		e_y = height - 17,
-		e_w = images.email:getWidth(),
-		e_h = images.email:getHeight(),
+		p_w = Images.paypal:getWidth(),
+		p_h = Images.paypal:getHeight(),
+		e_x = WIDTH/2 - Images.email:getWidth()/2 + 50,
+		e_y = HEIGHT - 17,
+		e_w = Images.email:getWidth(),
+		e_h = Images.email:getHeight(),
 	}
 
 	local icon_size = 8
 	local items = {
-		{"options_", images.options},
-		{"g_", images.gui_gallery},
-		{"q_", images.question},
-		{"i_", images.instruction_gui},
-		{"a_", images.about},
-		{"web", images.website_gui}
+		{"options_", Images.options},
+		{"g_", Images.gui_gallery},
+		{"q_", Images.question},
+		{"i_", Images.instruction_gui},
+		{"a_", Images.about},
+		{"web", Images.website_gui}
 	}
 
-	local base_x = width/2 + icon_size * 1.5
-	local base_y = height - 13
+	local base_x = WIDTH/2 + icon_size * 1.5
+	local base_y = HEIGHT - 13
 	local pad = 2
 	for i, item in ipairs(items) do
 		local id, image = unpack(item)

@@ -53,14 +53,14 @@ function rightroom_update(dt)
 	end
 
 	if right_light_flag == true then
-		light_etc(dt,rl,rl_img,right_canvas)
+		light_etc(dt,rl,rl_img,CANVAS_RIGHT)
 	end
 
 	if player.x >= 23 then
 		--event_route = him_convo
 		if rr_event == 0 then
 			rr_event = 1
-			final_clock = seconds_to_clock(clock)
+			final_clock = seconds_to_clock(CLOCK)
 			if event_route == him_convo then
 				credits = "destroying home"
 			elseif event_route == leave_convo then
@@ -84,8 +84,8 @@ function rightroom_update(dt)
 					 if light_timer <= 0 then
 					 	light_timer = light_maxTimer
 					 	rl_img = rl_img + 1
-					 	sounds.fl_toggle:play()
-					 	sounds.fl_toggle:setLooping(false)
+					 	Sounds.fl_toggle:play()
+					 	Sounds.fl_toggle:setLooping(false)
 					 end
 				end
 			else
@@ -95,18 +95,18 @@ function rightroom_update(dt)
 		elseif rr_event == 2 then
 			convo_update(dt)
 			if n == 1 then
-				enemy_posX = lume.lerp(enemy_posX,98,0.1)
+				enemy_posX = Lume.lerp(enemy_posX,98,0.1)
 			elseif n == 5 then
-				enemy_posX = lume.lerp(enemy_posX,75,0.1)
+				enemy_posX = Lume.lerp(enemy_posX,75,0.1)
 			elseif n == 7 then
-				enemy_posX = lume.lerp(enemy_posX,62,0.1)
+				enemy_posX = Lume.lerp(enemy_posX,62,0.1)
 				if flip_once == false then
 					enemy_idle:flipH()
 					flip_once = true
 				end
 				
 			elseif n == 13 then
-				enemy_posX = lume.lerp(enemy_posX,39,0.1)
+				enemy_posX = Lume.lerp(enemy_posX,39,0.1)
 			elseif n == 15 then
 				--player shoot pose
 				ending_animate = true
@@ -118,16 +118,16 @@ function rightroom_update(dt)
 					enemy_dead:flipH()
 				end
 			elseif n == 17 then
-				enemy_posX = lume.lerp(enemy_posX,35,0.1)
+				enemy_posX = Lume.lerp(enemy_posX,35,0.1)
 			elseif n == 19 then
-				enemy_posX = lume.lerp(enemy_posX,33,0.1)
+				enemy_posX = Lume.lerp(enemy_posX,33,0.1)
 			elseif n == 21 then
 				if ammo_available == true then
 					if event_route == wait_convo then
 						en_anim = "idle"
 						if scream_once == false then
-							sounds.enemy_scream:play()
-							sounds.enemy_scream:setLooping(false)	
+							Sounds.enemy_scream:play()
+							Sounds.enemy_scream:setLooping(false)	
 							scream_once = true	
 						end
 					end
@@ -139,17 +139,17 @@ function rightroom_update(dt)
 						--player already used the ammo on him
 						if click_once == false then
 							click_once = true
-							sounds.gun_click:play()
-							sounds.gun_click:setLooping(false)
+							Sounds.gun_click:play()
+							Sounds.gun_click:setLooping(false)
 						end
 					elseif event_route == wait_convo then
 						--player chose wait
 						--with bullet
 						if shot_once == false then
 							shot_once = true
-							sounds.gunshot:play()
-							sounds.gunshot:setVolume(1)
-							sounds.gunshot:setLooping(false)
+							Sounds.gunshot:play()
+							Sounds.gunshot:setVolume(1)
+							Sounds.gunshot:setLooping(false)
 							enemy_posX = enemy_posX + 10
 						end
 						--enemy dies animation
@@ -161,8 +161,8 @@ function rightroom_update(dt)
 						en_anim = "idle"
 						if click_once == false then
 							click_once = true
-							sounds.gun_click:play()
-							sounds.gun_click:setLooping(false)
+							Sounds.gun_click:play()
+							Sounds.gun_click:setLooping(false)
 						end
 					end
 				end
@@ -170,11 +170,11 @@ function rightroom_update(dt)
 				if ammo_available == true then
 					if event_route == him_convo then
 						if scream_once == false then
-							sounds.enemy_scream:play()
-							sounds.enemy_scream:setLooping(false)	
+							Sounds.enemy_scream:play()
+							Sounds.enemy_scream:setLooping(false)	
 							scream_once = true	
 						end
-						enemy_posX = lume.lerp(enemy_posX,player.x-10,0.1)
+						enemy_posX = Lume.lerp(enemy_posX,player.x-10,0.1)
 						ending_animate = true
 						ending_final = -2
 
@@ -185,11 +185,11 @@ function rightroom_update(dt)
 				else
 					if event_route == wait_convo then
 						if scream_once == false then
-							sounds.enemy_scream:play()
-							sounds.enemy_scream:setLooping(false)	
+							Sounds.enemy_scream:play()
+							Sounds.enemy_scream:setLooping(false)	
 							scream_once = true	
 						end
-						enemy_posX = lume.lerp(enemy_posX,player.x-10,0.1)
+						enemy_posX = Lume.lerp(enemy_posX,player.x-10,0.1)
 						ending_animate = true
 						ending_final = -2
 					end
@@ -199,7 +199,7 @@ function rightroom_update(dt)
 	end
 	if fade_to_black == true then
 		if a < 1 then
-			a = lume.lerp(a, 1,0.01)
+			a = Lume.lerp(a, 1,0.01)
 			if a >= 200/255 then
 				credits_load()
 			end
@@ -248,10 +248,10 @@ function convo_draw()
 	--draw convo
 	love.graphics.setColor(1, 1, 1, 1)
 	if top == true then
-		love.graphics.print(convo[n], width/2 - font:getWidth(convo[n])/2,font:getHeight(convo[n])/2 - 3)
+		love.graphics.print(convo[n], WIDTH/2 - DEF_FONT:getWidth(convo[n])/2,DEF_FONT_HALF - 3)
 	end
 	if bot == true then
-		love.graphics.print(convo[n+1], width/2 - font:getWidth(convo[n+1])/2,height - font:getHeight(convo[n+1])- 2)
+		love.graphics.print(convo[n+1], WIDTH/2 - DEF_FONT:getWidth(convo[n+1])/2,HEIGHT - DEF_FONT_HALF - 2)
 	end
 end
 
@@ -269,11 +269,11 @@ function enemy_draw()
 	if rr_event == 2 then
 		love.graphics.setColor(1, 1, 1, 1)
 		if en_anim == "mys" then
-			enemy_mys:draw(images.enemy_sheet,enemy_posX,30)
+			enemy_mys:draw(Images.enemy_sheet,enemy_posX,30)
 		elseif en_anim == "idle" then
-			enemy_idle:draw(images.enemy_sheet,enemy_posX,30)
+			enemy_idle:draw(Images.enemy_sheet,enemy_posX,30)
 		elseif en_anim == "dies" then
-			enemy_dead:draw(images.enemy_dead_sheet,enemy_posX,30)
+			enemy_dead:draw(Images.enemy_dead_sheet,enemy_posX,30)
 		end
 	end
 end

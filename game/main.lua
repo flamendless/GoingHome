@@ -1,4 +1,3 @@
-
 --project by Brandon Blanker Lim-it
 --@flamendless
 --@flam8studio
@@ -14,10 +13,10 @@ local URLS = require("urls")
 local Shaders = require("shaders")
 
 JSON = require("libs.json.json")
-loader = require("libs.love-loader")
-lume = require("libs.lume")
+LOADER = require("libs.love-loader")
+Lume = require("libs.lume")
 -- pause = require("pause")
-anim8 = require("libs.anim8")
+Anim8 = require("libs.anim8")
 Timer = require("libs.knife.timer")
 Object = require("libs.classic")
 Player = require("player")
@@ -30,25 +29,27 @@ Interact = require("interact")
 SaveData = require("save_data")
 
 OS = love.system.getOS()
-
 if OS == "Android" then
-	android = require("gui")
+	Android = require("gui")
 end
 --require("error")
 
 Gallery = require("gallery")
 
 require("gameStates")
-assets = require("assets")
+Assets = require("assets")
 
-font = love.graphics.newFont("assets/Jamboree.ttf", 8)
+DEF_FONT = love.graphics.newFont("assets/Jamboree.ttf", 8)
+DEF_FONT:setFilter("nearest", "nearest", 1)
+DEF_FONT_HEIGHT = DEF_FONT:getHeight()
+DEF_FONT_HALF = DEF_FONT_HEIGHT/2
 
-images = {}
-sounds = {}
-finishedLoading = false
+Images = {}
+Sounds = {}
+FINISHED_LOADING = false
 SCENE = {}
 
-p_anim,animation = {}
+-- p_anim, animation = {}
 
 require("rain_intro_scenes")
 require("game_over")
@@ -62,17 +63,18 @@ require("storagePuzzle")
 require("leave_event")
 require("credits_scene")
 
-hump_timer = require("libs.hump.timer")
-splash_finished = false
+HumpTimer = require("libs.hump.timer")
+SPLASH_FINISHED = false
 
 local utf8 = require("utf8")
-user_input = ""
-correct = "mom fell his fault"
+USER_INPUT = ""
+CORRECT = "mom fell his fault"
 
 love.keyboard.setTextInput(false)
-width, height = 128, 64
-sw, sh = love.window.getDesktopDimensions()
-interact = false
+WIDTH, HEIGHT = 128, 64
+HEIGHT_HALF = HEIGHT/2
+SW, SH = love.window.getDesktopDimensions()
+INTERACT = false
 
 -- local recording = false
 
@@ -81,10 +83,10 @@ FC = require("libs.firstcrush.gui")
 
 MAIN_CANVAS = love.graphics.newCanvas(love.graphics.getDimensions())
 
-function toggle_fs()
+local function toggle_fs()
 	love.window.setFullscreen(not love.window.getFullscreen())
 	local sWidth, sHeight = love.graphics.getDimensions()
-	ratio = math.min(sWidth/width, sHeight/height)
+	RATIO = math.min(sWidth/WIDTH, sHeight/HEIGHT)
 	MAIN_CANVAS = love.graphics.newCanvas(love.graphics.getDimensions())
 end
 
@@ -93,19 +95,19 @@ if debug == false then
 		toggle_fs()
 	end
 
-	ty = 0
+	TY = 0
 	-- ty = sh - (height * math.min(sw/width,sh/height))
 	if OS == "iOS" then
 		if pro_version then
 			--ty = sh - (height * math.min(sw/width,sh/height))
-			ty = height/2
+			TY = HEIGHT_HALF
 		end
 	end
 	if OS == "Android" then
 		if pro_version then
-			ty = height
+			TY = HEIGHT
 		else
-			ty = sh - (height * math.min(sw/width,sh/height))
+			TY = SH - (HEIGHT * math.min(SW/WIDTH,SH/HEIGHT))
 		end
 	end
 end
@@ -114,11 +116,10 @@ if gameplay_record then
 	love.mouse.setVisible(false)
 end
 
-progress = {}
 -- pauseFlag = false
-temp_move = false
+TEMP_MOVE = false
 
-function show_ads()
+function ShowAds()
 	if FC:validate() == "accept" then
 		love.system.createBanner(_ads.banner,"top","SMART_BANNER")
 		love.system.createInterstitial(_ads.inter)
@@ -133,70 +134,69 @@ function love.load()
 	SaveData.load()
 
 	if pro_version then
-		states = "splash"
+		STATES = "splash"
 	else
-		states = "adshow"
+		STATES = "adshow"
 	end
 
-	clock = 0 --game timer
+	CLOCK = 0 --game timer
 
 	local sWidth, sHeight = love.graphics.getDimensions()
-	ratio = math.min(sWidth/width, sHeight/height)
-	pressed = false
+	RATIO = math.min(sWidth/WIDTH, sHeight/HEIGHT)
+	PRESSED = false
 	love.keyboard.setKeyRepeat(true)
 
 	gamestates.load()
 
 	--canvas
-	custom_mask = love.graphics.newCanvas()
-	love.graphics.setCanvas(custom_mask)
+	CANVAS_CUSTOM_MASK = love.graphics.newCanvas()
+	love.graphics.setCanvas(CANVAS_CUSTOM_MASK)
 	love.graphics.clear(0,0,0)
 	love.graphics.setCanvas()
 
 	--tv_flash
-	tv_flash = love.graphics.newCanvas()
-	love.graphics.setCanvas(tv_flash)
+	CANVAS_TV_FLASH = love.graphics.newCanvas()
+	love.graphics.setCanvas(CANVAS_TV_FLASH)
 	love.graphics.clear(0,0,0)
 	love.graphics.setCanvas()
 
 	--candles
-	candles_flash = love.graphics.newCanvas()
-	love.graphics.setCanvas(candles_flash)
+	CANVAS_CANDLES_FLASH = love.graphics.newCanvas()
+	love.graphics.setCanvas(CANVAS_CANDLES_FLASH)
 	love.graphics.clear(0,0,0)
 	love.graphics.setCanvas()
 
 	--right room
-	right_canvas = love.graphics.newCanvas()
-	love.graphics.setCanvas(right_canvas)
+	CANVAS_RIGHT = love.graphics.newCanvas()
+	love.graphics.setCanvas(CANVAS_RIGHT)
 	love.graphics.clear(0,0,0)
 	love.graphics.setCanvas()
 
 	--left room
-	left_canvas = love.graphics.newCanvas()
-	love.graphics.setCanvas(left_canvas)
+	CANVAS_LEFT = love.graphics.newCanvas()
+	love.graphics.setCanvas(CANVAS_LEFT)
 	love.graphics.clear(0,0,0)
 	love.graphics.setCanvas()
 
 	--dust
-	dust = love.graphics.newCanvas()
+	-- dust = love.graphics.newCanvas()
 
 	--set variables
-	blink = false
+	BLINK = false
 	--windows animation var
-	win_move_l = true
-	win_move_r = true
+	WIN_MOVE_L = true
+	WIN_MOVE_R = true
 
-	lv = 100 --starting light value
-	light_blink = true
-	lightOn = false
-
+	LIGHT_VALUE = 100 --starting light value
+	LIGHT_BLINK = true
+	LIGHT_ON = false
 end
 
 function love.update(dt)
 	-- if recording then return end
-	clock = clock + 1 * dt
-	if not finishedLoading then
-		loader.update()
+	CLOCK = CLOCK + 1 * dt
+	if not FINISHED_LOADING then
+		LOADER.update()
 	else
 		-- if shaders_test or enemy_exists then
 		-- 	Shaders.update(Shaders.palette_swap)
@@ -216,7 +216,7 @@ function love.update(dt)
 
 			gamestates.update(dt)
 			if OS == "Android" or OS == "iOS" then
-				android.update(dt)
+				Android.update(dt)
 			end
 		end
 	end
@@ -227,11 +227,11 @@ function love.draw()
 		love.graphics.clear()
 		love.graphics.push()
 			if OS == "Android" or OS == "iOS" then
-				love.graphics.translate(0, ty)
+				love.graphics.translate(0, TY)
 			end
 
-			love.graphics.scale(ratio, ratio)
-			if finishedLoading then
+			love.graphics.scale(RATIO, RATIO)
+			if FINISHED_LOADING then
 
 				-- if shaders_test or enemy_exists then
 				-- 	love.graphics.setShader(Shaders.palette_swap)
@@ -248,17 +248,16 @@ function love.draw()
 				if FC:getState() then FC:draw() end
 			else
 				local percent = 0
-				if loader.resourceCount ~= 0 then
-					percent = loader.loadedCount / loader.resourceCount
+				if LOADER.resourceCount ~= 0 then
+					percent = LOADER.loadedCount / LOADER.resourceCount
 				end
 				love.graphics.setColor(1, 1, 1, 150/255)
-				love.graphics.setFont(font)
+				love.graphics.setFont(DEF_FONT)
 				local str_loading = ("Loading..%d%%"):format(percent * 100)
-				local fh = font:getHeight()
-				love.graphics.print(str_loading, width/2 - font:getWidth(str_loading)/2, height - fh)
+				love.graphics.print(str_loading, WIDTH/2 - DEF_FONT:getWidth(str_loading)/2, HEIGHT - DEF_FONT_HEIGHT)
 
 				local scale = 0.4
-				love.graphics.draw(img_loading, width/2, height/2, 0, scale, scale, lsw/2, lsh/2)
+				love.graphics.draw(img_loading, WIDTH/2, HEIGHT_HALF, 0, scale, scale, lsw/2, lsh/2)
 			end
 		love.graphics.pop()
 	love.graphics.setCanvas()
@@ -271,24 +270,24 @@ function love.draw()
 	love.graphics.setShader()
 end
 
-function love.mousereleased(x,y,button,istouch)
-	if not finishedLoading then return end
+function love.mousereleased(x, y, button, istouch)
+	if not FINISHED_LOADING then return end
 	local state = gamestates.getState()
-	local mx = (x) /ratio
-	local my = (y - ty) /ratio
+	local mx = (x) /RATIO
+	local my = (y - TY) /RATIO
 	if state == "intro" or state == "rain_intro" then
-		if pressed == true then
-			pressed = false
+		if PRESSED == true then
+			PRESSED = false
 		end
 	end
 end
 
 function love.mousepressed(x,y,button,istouch)
 	FC:mousepressed(x,y,button,istouch)
-	if not finishedLoading then return end
+	if not FINISHED_LOADING then return end
 	local state = gamestates.getState()
-	local mx = (x) /ratio
-	local my = (y - ty) /ratio
+	local mx = (x) /RATIO
+	local my = (y - TY) /RATIO
 	--android.mouse_gui(x,y,button,istouch)
 	if state == "gallery" then
 		if Gallery.mouse(mx,my,gExit) then
@@ -339,16 +338,15 @@ function love.mousepressed(x,y,button,istouch)
 			end
 
 			if options and button == 1 then
-				local fh = font:getHeight()
-				local base_y = 1 + fh
+				local base_y = 1 + DEF_FONT_HEIGHT
 				local rw = 8
 				for i, item in ipairs(SaveData.get_opts()) do
 					local str, value = item.str, item.value
-					local y = base_y + fh * (i - 1)
-					local rx = width - 16 - rw/2
+					local y = base_y + DEF_FONT_HEIGHT * (i - 1)
+					local rx = WIDTH - 16 - rw/2
 					local ry = y + rw/4
 
-					if check_gui(16, y, font:getWidth(str), fh) or
+					if check_gui(16, y, DEF_FONT:getWidth(str), DEF_FONT_HEIGHT) or
 						check_gui(rx, ry, rw, rw)
 					then
 						SaveData.toggle_opts(i)
@@ -383,16 +381,16 @@ function love.mousepressed(x,y,button,istouch)
 
 	elseif state == "rain_intro" then
 		if check_gui(gui_pos.skip_x,gui_pos.skip_y,gui_pos.skip_w,gui_pos.skip_h) then
-			pressed = true
+			PRESSED = true
 			fade.state = true
-			states = "intro"
+			STATES = "intro"
 			gamestates.load()
 		end
 	elseif state == "intro" then
 		if check_gui(gui_pos.skip_x,gui_pos.skip_y,gui_pos.skip_w,gui_pos.skip_h) then
-			pressed = true
+			PRESSED = true
 			fade.state = true
-			states = "tutorial"
+			STATES = "tutorial"
 			gamestates.load()
 		end
 	-- elseif state == "main" and pauseFlag == true then
@@ -415,11 +413,11 @@ function love.keyreleased(key)
 		toggle_fs()
 	end
 
-	if not finishedLoading then return end
+	if not FINISHED_LOADING then return end
 
 	local state = gamestates.getState()
 	if OS == "Android" then
-		android.setKey(key)
+		Android.setKey(key)
 	end
 
 	if state == "main" then
@@ -428,7 +426,7 @@ function love.keyreleased(key)
 		end
 	elseif state == "intro" or state == "rain_intro" then
 		if key == "return" or key == "e" then
-			pressed = false
+			PRESSED = false
 		end
 	elseif state == "title" then
 		if (instruction == false and about == false and questions == false and options == false) and cursor_select then
@@ -512,11 +510,11 @@ end
 
 function love.keypressed(key)
 	-- if key == "f9" then recording = not recording end
-	if not finishedLoading then return end
+	if not FINISHED_LOADING then return end
 	local dt = love.timer.getDelta( )
 	local state = gamestates.getState()
 	if OS == "Android" then
-		android.setKey(key)
+		Android.setKey(key)
 	end
 
 	-- if state == "title" then
@@ -554,37 +552,37 @@ function love.keypressed(key)
 	local to_skip = key ~= nil
 
 	if to_skip and state == "rain_intro" then
-		pressed = true
+		PRESSED = true
 		fade.state = true
-		states = "intro"
+		STATES = "intro"
 		gamestates.load()
 	elseif to_skip and state == "intro" then
-		pressed = true
+		PRESSED = true
 		fade.state = true
-		states = "tutorial"
+		STATES = "tutorial"
 		gamestates.load()
 	elseif to_skip and state == "tutorial" then
-		pressed = true
+		PRESSED = true
 		fade.state = true
-		states = "main"
+		STATES = "main"
 		gamestates.load()
 	elseif state == "main" then
 		if key == "f" then
-			if currentRoom ~= images["rightRoom"] and
-				currentRoom ~= images["leftRoom"] and
+			if currentRoom ~= Images["rightRoom"] and
+				currentRoom ~= Images["leftRoom"] and
 				ending_leave ~= true and
 				word_puzzle == false
 			then
-				lightOn = not lightOn
+				LIGHT_ON = not LIGHT_ON
 
 				if ghost_event == "limp" or
 					ghost_event == "flashback" or
-					currentRoom == images["leftRoom"] or
-					currentRoom == images["rightRoom"] or
+					currentRoom == Images["leftRoom"] or
+					currentRoom == Images["rightRoom"] or
 					ending_leave == true then
-					sounds.fl_toggle:stop()
+					Sounds.fl_toggle:stop()
 				else
-					sounds.fl_toggle:play()
+					Sounds.fl_toggle:play()
 				end
 			end
 		end
@@ -645,14 +643,14 @@ function love.keypressed(key)
 						end
 					end
 
-					if currentRoom == images["leftRoom"] or currentRoom == images["rightRoom"] then
-						if lightOn == false then
+					if currentRoom == Images["leftRoom"] or currentRoom == Images["rightRoom"] then
+						if LIGHT_ON == false then
 							player:checkItems()
 							player:checkDoors()
 						end
 					end
 					if move_chair == false then
-						if (event_find == false) and (lightOn == true) then
+						if (event_find == false) and (LIGHT_ON == true) then
 							player:checkItems()
 							player:checkDoors()
 						else
@@ -719,23 +717,23 @@ function love.keypressed(key)
 	if word_puzzle == true then
 		move = false
 		if OS == "Android" then
-			android.lightChange(true)
+			Android.lightChange(true)
 		end
 		if key == "escape" then
 			word_puzzle = false
 			move = true
 			storage_puzzle = false
 			if OS == "Android" then
-				android.lightChange(false)
+				Android.lightChange(false)
 			end
 		else
 			love.keyboard.setTextInput(true)
 			if key == "backspace" then
-				sounds.backspace_key:play()
-				sounds.backspace_key:setLooping(false)
-				local byteoffset = utf8.offset(user_input, -1)
+				Sounds.backspace_key:play()
+				Sounds.backspace_key:setLooping(false)
+				local byteoffset = utf8.offset(USER_INPUT, -1)
 				if byteoffset then
-					user_input = string.sub(user_input,1,byteoffset -1)
+					USER_INPUT = string.sub(USER_INPUT,1,byteoffset -1)
 				end
 			end
 		end
@@ -744,14 +742,14 @@ function love.keypressed(key)
 	if doodle_flag == true then
 		move = false
 		if OS == "Android" then
-			android.lightChange(true)
+			Android.lightChange(true)
 		end
 		if key == "escape" then
 			doodle_flag = false
 			move = true
 			storage_puzzle = false
 			if OS == "Android" then
-				android.lightChange(false)
+				Android.lightChange(false)
 			end
 		elseif key == "a" then
 			if pic_number > 1 then
@@ -772,13 +770,13 @@ function love.keypressed(key)
 
 	if clock_puzzle == true then
 		if OS == "Android" then
-			android.lightChange(true)
+			Android.lightChange(true)
 		end
 		if key == "escape" then
 			clock_puzzle = false
 			move = true
 			if OS == "Android" then
-				android.lightChange(false)
+				Android.lightChange(false)
 			end
 		elseif key == "w" then
 			if selected == "hour" then
@@ -852,16 +850,16 @@ function love.keypressed(key)
 			clock_puzzle = false
 			move = true
 			if OS == "Android" or OS == "iOS" or debug == true then
-				android.lightChange(false)
+				Android.lightChange(false)
 			end
 			if hour == 10 and minute == 2 and second == 8 and ampm == "pm" then
 				clock_puzzle = false
-				sounds.item_got:play()
+				Sounds.item_got:play()
 				solved = true
-				sounds.main_theme:stop()
-				sounds.intro_soft:stop()
-				sounds.finding_home:stop()
-				sounds.ts_theme:stop()
+				Sounds.main_theme:stop()
+				Sounds.intro_soft:stop()
+				Sounds.finding_home:stop()
+				Sounds.ts_theme:stop()
 
 			end
 		end
@@ -871,10 +869,10 @@ end
 
 
 function love.textinput(t)
-	if string.len(user_input) < string.len(correct) then
-		sounds.type:play()
-		sounds.type:setLooping(false)
-		user_input = user_input .. t
+	if string.len(USER_INPUT) < string.len(CORRECT) then
+		Sounds.type:play()
+		Sounds.type:setLooping(false)
+		USER_INPUT = USER_INPUT .. t
 	end
 end
 
@@ -906,7 +904,7 @@ function check_gun()
 		doorTxt("I have all the parts","I need a table to rebuild it")
 		local ammo_dial = Interact(false,{"It's an ammo box","There's only one ammo here","Load it?"},{"Yes","No"},"","ammo")
 		table.insert(dialogue,ammo_dial)
-		local ammo_item = Items(images.ammo,images["leftRoom"],41,34,"ammo")
+		local ammo_item = Items(Images.ammo,Images["leftRoom"],41,34,"ammo")
 		table.insert(obj,ammo_item)
 		ammo_available = true
 	else
@@ -915,34 +913,34 @@ function check_gun()
 end
 
 function turnLight()
-	if currentRoom ~= images["rightRoom"] and currentRoom ~= images["leftRoom"] and ending_leave ~= true then
+	if currentRoom ~= Images["rightRoom"] and currentRoom ~= Images["leftRoom"] and ending_leave ~= true then
 		if word_puzzle == false then
-			if lightOn == true then
-				lightOn = false
-			elseif lightOn == false then
-				lightOn = true
+			if LIGHT_ON == true then
+				LIGHT_ON = false
+			elseif LIGHT_ON == false then
+				LIGHT_ON = true
 			end
 			if ghost_event == "limp" or
 				ghost_event == "flashback" or
-				currentRoom == images["leftRoom"] or
-				currentRoom == images["rightRoom"] or
+				currentRoom == Images["leftRoom"] or
+				currentRoom == Images["rightRoom"] or
 				ending_leave == true then
-				sounds.fl_toggle:stop()
+				Sounds.fl_toggle:stop()
 			else
-				sounds.fl_toggle:play()
+				Sounds.fl_toggle:play()
 			end
 		end
 	end
 end
 
 function love.touchpressed(id,x,y)
-	if not finishedLoading then return end
-	android.touchpressed(id,x,y)
+	if not FINISHED_LOADING then return end
+	Android.touchpressed(id,x,y)
 end
 
 function love.touchreleased(id,x,y)
-	if not finishedLoading then return end
-	android.touchreleased(id,x,y)
+	if not FINISHED_LOADING then return end
+	Android.touchreleased(id,x,y)
 end
 
 function love.touchmoved(id,x,y)

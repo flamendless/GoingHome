@@ -43,7 +43,7 @@ function fc:GDPR_check()
 end
 
 function fc:validate()
-	if love.filesystem.exists("gdrp") then
+	if love.filesystem.getInfo("gdrp") then
 		local _g = love.filesystem.read("gdrp")
 		return _g
 	end
@@ -204,7 +204,7 @@ function fc:draw()
 			love.graphics.setFont(self.font)
 			love.graphics.print(v.text,
 				v.x + v.w/2 - self.font:getWidth(v.text)/2,
-				v.y + v.h/2 - self.font:getHeight(v.text)/2)
+				v.y + v.h/2 - self.font:getHeight()/2)
 		end
 	end
 

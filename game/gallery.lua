@@ -5,7 +5,6 @@ local current = 1
 local title = 1
 local song = 2
 local stringWidth = 0
-local stringHeight = 0
 local volume = 1
 
 local isPlaying = false
@@ -13,53 +12,53 @@ local isPlaying = false
 local galleryGui = {}
 
 function Gallery.load()
-	music[1] = {"On The Way Home", sounds.intro_soft }
-	music[2] = {"Peaceful Home", sounds.finding_home }
-	music[3] = {"A Home's Melody", sounds.ts_theme }
-	music[4] = {"Finding Home",sounds.main_theme}
-	music[5] = {"Alone Home", sounds.they_are_gone}
+	music[1] = {"On The Way Home", Sounds.intro_soft }
+	music[2] = {"Peaceful Home", Sounds.finding_home }
+	music[3] = {"A Home's Melody", Sounds.ts_theme }
+	music[4] = {"Finding Home",Sounds.main_theme}
+	music[5] = {"Alone Home", Sounds.they_are_gone}
 
 	gPlay = {
-		img = images.galleryPlay,
-		x = width/2,
-		y = height - 10,
-		w = images.galleryPlay:getWidth(),
-		h = images.galleryPlay:getHeight()
+		img = Images.galleryPlay,
+		x = WIDTH/2,
+		y = HEIGHT - 10,
+		w = Images.galleryPlay:getWidth(),
+		h = Images.galleryPlay:getHeight()
 	}
 	gNext = {
-		img = images.galleryNext,
+		img = Images.galleryNext,
 		x = gPlay.x + 24,
 		y = gPlay.y,
-		w = images.galleryNext:getWidth(),
-		h = images.galleryNext:getHeight()
+		w = Images.galleryNext:getWidth(),
+		h = Images.galleryNext:getHeight()
 	}
 	gPrevious = {
-		img = images.galleryPrevious,
+		img = Images.galleryPrevious,
 		x = gPlay.x - 24,
 		y = gNext.y,
-		w = images.galleryPrevious:getWidth(),
-		h = images.galleryPrevious:getHeight()
+		w = Images.galleryPrevious:getWidth(),
+		h = Images.galleryPrevious:getHeight()
 	}
 	gVolume = {
-		img = images.galleryVolume,
-		x = width - 16,
-		y = height - 16,
-		w = images.galleryVolume:getWidth(),
-		h = images.galleryVolume:getHeight()
+		img = Images.galleryVolume,
+		x = WIDTH - 16,
+		y = HEIGHT - 16,
+		w = Images.galleryVolume:getWidth(),
+		h = Images.galleryVolume:getHeight()
 	}
 	gSlider = {
-		img = images.gallerySlider,
-		x = width - 16,
-		y = height - 16,
-		w = images.gallerySlider:getWidth(),
-		h = images.gallerySlider:getHeight()
+		img = Images.gallerySlider,
+		x = WIDTH - 16,
+		y = HEIGHT - 16,
+		w = Images.gallerySlider:getWidth(),
+		h = Images.gallerySlider:getHeight()
 	}
 	gExit = {
-		img = images.return_gui,
+		img = Images.return_gui,
 		x = 5,
 		y = 2,
-		w = images.gui_settings:getWidth(),
-		h = images.gui_settings:getHeight(),
+		w = Images.gui_settings:getWidth(),
+		h = Images.gui_settings:getHeight(),
 		is_button = true,
 	}
 
@@ -81,11 +80,10 @@ end
 function Gallery.update(dt)
 	local cur = music[current]
 	local title = cur[title]
-	stringWidth = font:getWidth(title)/2
-	stringHeight = font:getHeight()
+	stringWidth = DEF_FONT:getWidth(title)/2
 
 	isPlaying = cur[song]:isPlaying()
-	imgPlay = isPlaying == true and images.galleryPlay or images.galleryPause
+	imgPlay = isPlaying == true and Images.galleryPlay or Images.galleryPause
 	gPlay.img = imgPlay
 end
 
@@ -112,9 +110,13 @@ end
 function Gallery.draw()
 	love.graphics.setColor(1, 1, 1, 1)
 	love.graphics.setColor(0, 0, 0, 1)
-	love.graphics.rectangle("fill",0,0,width,height)
+	love.graphics.rectangle("fill",0,0,WIDTH,HEIGHT)
 	love.graphics.setColor(1, 1, 1, 1)
-	love.graphics.print(music[current][title],width/2 - stringWidth,height/2 - stringHeight)
+	love.graphics.print(
+		music[current][title],
+		WIDTH/2 - stringWidth,
+		HEIGHT_HALF - DEF_FONT_HEIGHT
+	)
 
 	for _, obj in ipairs(galleryGui) do
 		if obj.is_button and check_gui(obj.x, obj.y, obj.w, obj.h) then
@@ -168,15 +170,15 @@ end
 
 function Gallery.touch(id,x,y,gui)
 	local gui = gui
-	local x = x/ratio
-	local y = (y-ty)/ratio
+	local x = x/RATIO
+	local y = (y-TY)/RATIO
 	return x > gui.x - gui.w/2 and x < gui.x + gui.w and
 		y > gui.y - gui.h/2 and y < gui.y + gui.h
 end
 
 function Gallery.touchmoved(id,x,y)
-	local x = x/ratio
-	local y = (y-ty)/ratio
+	local x = x/RATIO
+	local y = (y-TY)/RATIO
 
 	if gVolume.y > gSlider.y then
 		gVolume.y = y

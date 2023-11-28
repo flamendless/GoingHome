@@ -136,7 +136,7 @@ function left_room_update(dt)
 	end
 
 	if left_light_flag == true then
-		light_etc(dt,ll,ll_img,left_canvas)
+		light_etc(dt,ll,ll_img,CANVAS_LEFT)
 	end
 	----------------MAIN STUFFS--------------
 	if lr_event == 1 then
@@ -236,8 +236,8 @@ function left_room_update(dt)
 					f_leave2_flag = true
 				elseif event_route[c+1] == "..." then
 					if leave_scream == false then
-						sounds.enemy_scream:play()
-						sounds.enemy_scream:setLooping(false)
+						Sounds.enemy_scream:play()
+						Sounds.enemy_scream:setLooping(false)
 						leave_scream = true
 						ending_animate = false
 						leave_animate = false
@@ -259,8 +259,8 @@ function left_room_update(dt)
 			if timer > 0 then
 				timer = timer - 1 * dt
 				if timer <= 0 then
-					sounds.enemy_scream:play()
-					sounds.enemy_scream:setLooping(false)
+					Sounds.enemy_scream:play()
+					Sounds.enemy_scream:setLooping(false)
 					lr_event = 6
 					move = true
 					ending_animate = false
@@ -268,7 +268,7 @@ function left_room_update(dt)
 					--insert note
 					local note_item = Interact(false,{"It's a note","It's written using blood","Read it?"},{"Yes","No"},"","note")
 					table.insert(dialogue,note_item)
-					local note_dial = Items(images.note,images["leftRoom"],10,40,"note")
+					local note_dial = Items(Images.note,Images["leftRoom"],10,40,"note")
 			  		table.insert(obj,note_dial)
 			  		random_breathe_flag = true
 				end
@@ -278,7 +278,7 @@ function left_room_update(dt)
 			move = true
 		end
 	elseif lr_event == 6 then
-		lv = 1
+		LIGHT_VALUE = 1
 		left_light_flag = true
 	end
 end
@@ -290,10 +290,10 @@ function left_room_draw()
 		love.graphics.setColor(100/255, 100/255, 100/255, 1)
 
 		if show_top == true then
-			love.graphics.print(convo[c],width/2 - font:getWidth(convo[c])/2, font:getHeight(convo[c])/2 - 3)
+			love.graphics.print(convo[c],WIDTH/2 - DEF_FONT:getWidth(convo[c])/2, DEF_FONT_HALF - 3)
 		end
 		if show_bot == true then
-			love.graphics.print(convo[c+1],width/2 - font:getWidth(convo[c+1])/2, height - font:getHeight(convo[c+1]) - 2)
+			love.graphics.print(convo[c+1],WIDTH/2 - DEF_FONT:getWidth(convo[c+1])/2, HEIGHT - DEF_FONT_HEIGHT - 2)
 		end
 
 		love.graphics.setColor(1, 1, 1, 1)
@@ -305,22 +305,22 @@ function left_room_draw()
 		else
 			love.graphics.setColor(1, 1, 1, 1)
 		end
-		love.graphics.print(ending_options[1],font:getWidth(ending_options[1])/2 - 10,height - font:getHeight(ending_options[1]) - 2)
+		love.graphics.print(ending_options[1],DEF_FONT:getWidth(ending_options[1])/2 - 10,HEIGHT - DEF_FONT_HEIGHT - 2)
 		if e_c == 2 then
 			love.graphics.setColor(1, 0, 0, 1)
 		else
 			love.graphics.setColor(1, 1, 1, 1)
 		end
-		love.graphics.print(ending_options[2],width - font:getWidth(ending_options[2]) - 6,height - font:getHeight(ending_options[2]) - 2)
+		love.graphics.print(ending_options[2],WIDTH - DEF_FONT:getWidth(ending_options[2]) - 6,HEIGHT - DEF_FONT_HEIGHT - 2)
 
 	--choices
 	elseif lr_event == 4 then
 		love.graphics.setColor(100/255, 100/255, 100/255, 1)
 		if show_top == true then
-			love.graphics.print(event_route[c],width/2 - font:getWidth(event_route[c])/2, font:getHeight(event_route[c])/2 - 3)
+			love.graphics.print(event_route[c],WIDTH/2 - DEF_FONT:getWidth(event_route[c])/2, DEF_FONT_HALF - 3)
 		end
 		if show_bot == true then
-			love.graphics.print(event_route[c+1],width/2 - font:getWidth(event_route[c+1])/2, height - font:getHeight(event_route[c+1]) - 2)
+			love.graphics.print(event_route[c+1],WIDTH/2 - DEF_FONT:getWidth(event_route[c+1])/2, HEIGHT - DEF_FONT_HEIGHT - 2)
 		end
 
 	--ending sequences
@@ -365,34 +365,34 @@ end
 
 function father_anim_draw()
 	if _ev == 1 then
-		f1_anim:draw(images.f1,8,25)
+		f1_anim:draw(Images.f1,8,25)
 	elseif _ev == 2 then
 		if event_route == leave_convo then
 			if f_leave2_flag == true then
-				f_headbang:draw(images.f_leave,8,25)
+				f_headbang:draw(Images.f_leave,8,25)
 			else
-				f_leave:draw(images.f_leave,8,25)
+				f_leave:draw(Images.f_leave,8,25)
 			end
 		elseif event_route == him_convo then
 			if f_shot_anim_flag == true then
 				if f_shot_anim2_flag == false then
-					f_shot_anim:draw(images.f_shot_sheet,8,25)
+					f_shot_anim:draw(Images.f_shot_sheet,8,25)
 				else
-					f_shot_anim2:draw(images.f_shot_sheet,8,25)
+					f_shot_anim2:draw(Images.f_shot_sheet,8,25)
 				end
 			else
-				f1_anim:draw(images.f1,8,25)
+				f1_anim:draw(Images.f1,8,25)
 			end
 		elseif event_route == wait_convo then
 			if f_leave2_flag == true then
-				f_headbang:draw(images.f_leave,8,25)
+				f_headbang:draw(Images.f_leave,8,25)
 			else
-				f_leave:draw(images.f_leave,8,25)
+				f_leave:draw(Images.f_leave,8,25)
 			end
 		end
 	end
 	love.graphics.setColor(1, 1, 1, 1)
-	love.graphics.draw(images.jail,0,16)
+	love.graphics.draw(Images.jail,0,16)
 end
 
 

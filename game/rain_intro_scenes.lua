@@ -34,8 +34,8 @@ function intro_load()
 	text_flag = false
 
 	current_text = car_moving_text
-	current_text_x = width/2 - 32 - font:getWidth(current_text)/2
-	current_text_y = height/2 - font:getHeight()/2
+	current_text_x = WIDTH/2 - 32 - DEF_FONT:getWidth(current_text)/2
+	current_text_y = HEIGHT_HALF - DEF_FONT_HALF
 
 	car_show = true
 	pd_show = false
@@ -51,8 +51,8 @@ function intro_next()
 
 	if car_show then
 		current_text = pd_text
-		current_text_x = width/2  +10 - font:getWidth(current_text)/2
-		current_text_y = height/2 - font:getHeight()/2
+		current_text_x = WIDTH/2  +10 - DEF_FONT:getWidth(current_text)/2
+		current_text_y = HEIGHT_HALF - DEF_FONT_HALF
 		pd_show = true
 		car_show = false
 	end
@@ -60,8 +60,8 @@ end
 
 function intro_update(dt)
 	if not has_played then
-		sounds.intro_soft:play()
-		sounds.intro_soft:setLooping(false)
+		Sounds.intro_soft:play()
+		Sounds.intro_soft:setLooping(false)
 		has_played = true
 	end
 
@@ -71,7 +71,7 @@ function intro_update(dt)
 		if fade_alpha >= 1 then
 			in_house_show = false
 			text_flag = false
-			sounds.intro_soft:stop()
+			Sounds.intro_soft:stop()
 		end
 	end
 
@@ -118,8 +118,8 @@ function intro_update(dt)
 	--in house
 	if in_house_show == true then
 		current_text = ih_text
-		current_text_x = width/2 + 10- font:getWidth(current_text)/2
-		current_text_y = height/2 - 12 - font:getHeight()/2
+		current_text_x = WIDTH/2 + 10- DEF_FONT:getWidth(current_text)/2
+		current_text_y = HEIGHT_HALF - 12 - DEF_FONT_HALF
 
 		ih_anim:update(dt)
 
@@ -133,11 +133,11 @@ function intro_update(dt)
 		end
 	end
 
-	if not sounds.intro_soft:isPlaying() then
+	if not Sounds.intro_soft:isPlaying() then
 		fade.state = true
-		states = "intro"
+		STATES = "intro"
 		gamestates.load()
-		sounds.intro_soft:stop()
+		Sounds.intro_soft:stop()
 	end
 
 	if text_flag == true then
@@ -157,24 +157,24 @@ function intro_draw()
 	--car moving
 	if car_show == true then
 		love.graphics.setColor(1, 1, 1, car_alpha)
-		car_anim:draw(images.car_moving,width - 32 - 16,height/2 - 24)
+		car_anim:draw(Images.car_moving,WIDTH - 32 - 16,HEIGHT_HALF - 24)
 	end
 
 	--in house
 	if in_house_show == true then
 	love.graphics.setColor(1, 1, 1, 1)
-		ih_anim:draw(images.in_house,0,0)
+		ih_anim:draw(Images.in_house,0,0)
 	end
 
 	--player door
 	if pd_show == true then
 		love.graphics.setColor(1, 1, 1, pd_alpha)
-		pd_anim:draw(images.player_door,width/2 - 32 - 8, height/2 - 12)
+		pd_anim:draw(Images.player_door,WIDTH/2 - 32 - 8, HEIGHT_HALF - 12)
 	end
 
 	--texts
 	if text_flag == true then
-		love.graphics.setFont(font)
+		love.graphics.setFont(DEF_FONT)
 		love.graphics.setColor(1, 1, 1, 1)
 		love.graphics.print(current_text, current_text_x, current_text_y)
 	end
@@ -182,6 +182,6 @@ function intro_draw()
 	skip_draw()
 
 	love.graphics.setColor(0, 0, 0, fade_alpha)
-	love.graphics.rectangle("fill", 0, 0, width, height)
+	love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 	love.graphics.setColor(1, 1, 1, 1)
 end

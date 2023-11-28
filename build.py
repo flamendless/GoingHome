@@ -34,6 +34,7 @@ EXCLUDE: List[str] = [
     "new_assets",
 ]
 
+
 class Mode(Enum):
     NONE = -1
     LINUX = 0,
@@ -46,6 +47,7 @@ def get_mode() -> Mode:
         return Mode.WSL
     else:
         return Mode[platform.system().upper()]
+
 
 def zip_files():
     filename: str = f"{GAME_NAME}.love"
@@ -74,6 +76,7 @@ def build():
     print("building...")
     zip_files()
 
+
 def run(args):
     print("running...")
 
@@ -98,6 +101,7 @@ def run(args):
         print(f"Running {cmd}")
         os.system(cmd)
 
+
 def clean(*args):
     appdata_dir: str = None
     mode: Mode = get_mode()
@@ -110,6 +114,7 @@ def clean(*args):
     if appdata_dir:
         print(f"Deleting {appdata_dir}")
         os.rmdir(appdata_dir)
+
 
 def build_run(*args):
     build(args)

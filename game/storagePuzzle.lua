@@ -7,23 +7,23 @@ local lx = 128/2 - 22
 
 
 function validate_input()
-	if string.lower(user_input) == string.lower(correct) then
+	if string.lower(USER_INPUT) == string.lower(CORRECT) then
 		--correct
-		sounds.vault_unlock:play()
-		sounds.vault_unlock:setLooping(false)
-		user_input = ""
+		Sounds.vault_unlock:play()
+		Sounds.vault_unlock:setLooping(false)
+		USER_INPUT = ""
 		final_puzzle_solved = true
 		storage_puzzle = false
 		word_puzzle = false
 		move = true
 		if OS == "Android" or OS == "iOS" or  debug == true then
-			android.lightChange(false)
+			Android.lightChange(false)
 		end
 	else
 		--wrong
-		sounds.wrong_input:play()
-		sounds.wrong_input:setLooping(false)
-		user_input = ""
+		Sounds.wrong_input:play()
+		Sounds.wrong_input:setLooping(false)
+		USER_INPUT = ""
 		if OS == "Android" or OS == "iOS" or debug == true then
 			love.keyboard.setTextInput(false)
 		end
@@ -36,7 +36,7 @@ function storage_puzzle_update(dt)
 	--main update
 	if final_puzzle_solved == false then
 		if word_puzzle == true then
-			if (string.len(user_input) == string.len(correct)) or love.keyboard.isDown("return") then
+			if (string.len(USER_INPUT) == string.len(CORRECT)) or love.keyboard.isDown("return") then
 				validate_input()
 			end
 		end
@@ -48,16 +48,16 @@ function storage_puzzle_update(dt)
 			a = 1
 		end
 
-		if rx >= width/2 + 22 and rx <= width/2 + 24 then
+		if rx >= WIDTH/2 + 22 and rx <= WIDTH/2 + 24 then
 			rx = rx + 5 * dt
 		else
-			rx = width/2 + 22
+			rx = WIDTH/2 + 22
 		end
 
-		if lx <= width/2 - 22 and lx >= width/2 - 24 then
+		if lx <= WIDTH/2 - 22 and lx >= WIDTH/2 - 24 then
 			lx = lx - 5 * dt
 		else
-			lx = width/2 - 22
+			lx = WIDTH/2 - 22
 		end
 	end
 end
@@ -66,21 +66,21 @@ function storage_puzzle_draw()
 	if doodle_flag == true then
 		if pic_number > 0 and pic_number < #puzzle_pics then
 			love.graphics.setColor(1, 1, 1, a)
-			love.graphics.draw(images.arrow,rx, height/2 - images.arrow:getHeight()/2 + 12  ,0,0.25,0.25)
+			love.graphics.draw(Images.arrow,rx, HEIGHT_HALF - Images.arrow:getHeight()/2 + 12  ,0,0.25,0.25)
 		end
 		if pic_number <= #puzzle_pics and pic_number > 1 then
 			love.graphics.setColor(1, 1, 1, a)
-			love.graphics.draw(images.arrow,lx, height/2 - images.arrow:getHeight()/2 + 12 ,0,-0.25,0.25)
+			love.graphics.draw(Images.arrow,lx, HEIGHT_HALF - Images.arrow:getHeight()/2 + 12 ,0,-0.25,0.25)
 		end
 
 		--main draw
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.draw(puzzle_pics[pic_number],width/2,height/2,0,1.25,1.25,16.5,12)
+		love.graphics.draw(puzzle_pics[pic_number],WIDTH/2,HEIGHT_HALF,0,1.25,1.25,16.5,12)
 	end
 	if word_puzzle == true then
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.draw(images.input_base,width/2 - images.input_base:getWidth()/2,height/2 - images.input_base:getHeight()/2)
+		love.graphics.draw(Images.input_base,WIDTH/2 - Images.input_base:getWidth()/2,HEIGHT_HALF - Images.input_base:getHeight()/2)
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.print(user_input,28,height/2 - 10)
+		love.graphics.print(USER_INPUT,28,HEIGHT_HALF - 10)
 	end
 end

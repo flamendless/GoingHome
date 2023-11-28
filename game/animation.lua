@@ -17,110 +17,110 @@ mother_speed = 15
 function animation_set()
 	local state = gamestates.getState()
 	if state == "splash" then
-		local splash = anim8.newGrid(64,32,images.splash:getDimensions())
-		splash_anim = anim8.newAnimation(splash('1-5',1),0.25, function()
+		local splash = Anim8.newGrid(64,32,Images.splash:getDimensions())
+		splash_anim = Anim8.newAnimation(splash('1-5',1),0.25, function()
 			splash_anim:pauseAtEnd()
 			--states = "title"
-			splash_finished = true
+			SPLASH_FINISHED = true
 		end)
 	elseif state == "intro" or state == "rain_intro" then
 		--moving car
-		local _car = anim8.newGrid(32,48,images.car_moving:getWidth(),images.car_moving:getHeight())
-		car_anim = anim8.newAnimation(_car('1-17',1),0.1, function()
+		local _car = Anim8.newGrid(32,48,Images.car_moving:getWidth(),Images.car_moving:getHeight())
+		car_anim = Anim8.newAnimation(_car('1-17',1),0.1, function()
 			car_anim:pauseAtEnd()
 			intro_next()
 		end)
-		local _skip = anim8.newGrid(8, 8, images.skip:getDimensions())
-		skip_button = anim8.newAnimation(_skip("1-1",1),0.1)
+		local _skip = Anim8.newGrid(8, 8, Images.skip:getDimensions())
+		skip_button = Anim8.newAnimation(_skip("1-1",1),0.1)
 
 		--player door
-		local _pd = anim8.newGrid(16,24,images.player_door:getDimensions())
-		pd_anim = anim8.newAnimation(_pd('1-14',1),0.1, "pauseAtEnd")
+		local _pd = Anim8.newGrid(16,24,Images.player_door:getDimensions())
+		pd_anim = Anim8.newAnimation(_pd('1-14',1),0.1, "pauseAtEnd")
 		--in house
-		local _ih = anim8.newGrid(128,32,images.in_house:getWidth(),images.in_house:getHeight())
-		ih_anim = anim8.newAnimation(_ih('1-10',1),0.1,"pauseAtEnd")
+		local _ih = Anim8.newGrid(128,32,Images.in_house:getWidth(),Images.in_house:getHeight())
+		ih_anim = Anim8.newAnimation(_ih('1-10',1),0.1,"pauseAtEnd")
 
 	elseif state == "main" then
 		--window left
-		local wl = anim8.newGrid(128,32,images.window_left:getWidth(),images.window_left:getHeight())
-		win_left_anim = anim8.newAnimation(wl('1-6',1),0.1, function()
+		local wl = Anim8.newGrid(128,32,Images.window_left:getWidth(),Images.window_left:getHeight())
+		win_left_anim = Anim8.newAnimation(wl('1-6',1),0.1, function()
 			win_left_anim:gotoFrame(4)
-			Timer.after(3, function() win_left_anim:pauseAtStart() win_move_l = false end)
+			Timer.after(3, function() win_left_anim:pauseAtStart() WIN_MOVE_L = false end)
 		end)
 		--window right
-		local wr = anim8.newGrid(128,32,images.window_right:getWidth(),images.window_right:getHeight())
-		win_right_anim = anim8.newAnimation(wr('1-5',1),0.1, function()
+		local wr = Anim8.newGrid(128,32,Images.window_right:getWidth(),Images.window_right:getHeight())
+		win_right_anim = Anim8.newAnimation(wr('1-5',1),0.1, function()
 			win_right_anim:gotoFrame(3)
-			Timer.after(2,function() win_right_anim:pauseAtStart() win_move_r = false end)
+			Timer.after(2,function() win_right_anim:pauseAtStart() WIN_MOVE_R = false end)
 
 		end)
 
-		local g = anim8.newGrid(8,16, images.player_sheet:getWidth(), images.player_sheet:getHeight())
-		idle = anim8.newAnimation(g('1-2',1),1)
-		walk_right = anim8.newAnimation(g('3-6',1), 0.25)
-		walk_left = anim8.newAnimation(g('3-6',1), 0.25):flipH()
+		local g = Anim8.newGrid(8,16, Images.player_sheet:getWidth(), Images.player_sheet:getHeight())
+		idle = Anim8.newAnimation(g('1-2',1),1)
+		walk_right = Anim8.newAnimation(g('3-6',1), 0.25)
+		walk_left = Anim8.newAnimation(g('3-6',1), 0.25):flipH()
 
-		local _fs = anim8.newGrid(11,18,images.f_shot_sheet:getWidth(),images.f_shot_sheet:getHeight())
-		f_shot_anim = anim8.newAnimation(_fs('1-5',1),0.2,function()
+		local _fs = Anim8.newGrid(11,18,Images.f_shot_sheet:getWidth(),Images.f_shot_sheet:getHeight())
+		f_shot_anim = Anim8.newAnimation(_fs('1-5',1),0.2,function()
 				f_shot_anim:pauseAtEnd()
 				f_shot_anim2_flag = true
-				sounds.gunshot:play()
-				sounds.gunshot:setLooping(false)
+				Sounds.gunshot:play()
+				Sounds.gunshot:setLooping(false)
 			end)
-		f_shot_anim2 = anim8.newAnimation(_fs('6-15',1),0.1, function()
+		f_shot_anim2 = Anim8.newAnimation(_fs('6-15',1),0.1, function()
 				f_shot_anim2:pauseAtEnd()
 				lr_event = 5
 			end)
 
 		--leave sequence
-		local _fleave = anim8.newGrid(11,18,images.f_leave:getWidth(),images.f_leave:getHeight())
-		f_leave = anim8.newAnimation(_fleave('1-45',1),0.5,function()
+		local _fleave = Anim8.newGrid(11,18,Images.f_leave:getWidth(),Images.f_leave:getHeight())
+		f_leave = Anim8.newAnimation(_fleave('1-45',1),0.5,function()
 				f_leave:pauseAtEnd()
 			end)
-		f_headbang = anim8.newAnimation(_fleave('39-45',1),0.5,function()
-				sounds.smash_head:play()
-				sounds.smash_head:setLooping(false)
+		f_headbang = Anim8.newAnimation(_fleave('39-45',1),0.5,function()
+				Sounds.smash_head:play()
+				Sounds.smash_head:setLooping(false)
 			end)
 
 
-		local _pk = anim8.newGrid(8,16,images.player_killed_sheet:getWidth(),images.player_killed_sheet:getHeight())
-		player_killed = anim8.newAnimation(_pk('1-14',1),0.2, function()
+		local _pk = Anim8.newGrid(8,16,Images.player_killed_sheet:getWidth(),Images.player_killed_sheet:getHeight())
+		player_killed = Anim8.newAnimation(_pk('1-14',1),0.2, function()
 				player_killed:pauseAtEnd()
 				en_anim = "mys"
 				fade_to_black = true
 			end)
 
 
-		local _pp = anim8.newGrid(8,16,images.player_panic_sheet:getWidth(),images.player_panic_sheet:getHeight())
-		player_panic = anim8.newAnimation(_pp('1-8',1),1,function()
+		local _pp = Anim8.newGrid(8,16,Images.player_panic_sheet:getWidth(),Images.player_panic_sheet:getHeight())
+		player_panic = Anim8.newAnimation(_pp('1-8',1),1,function()
 				player_panic:pauseAtEnd()
 				player_ending_shot = true
 			end)
 
-		local _shoot_pose = anim8.newGrid(8,16, images.shoot_pose_sheet:getWidth(),
-			images.shoot_pose_sheet:getHeight())
-		shoot_pose_anim = anim8.newAnimation(_shoot_pose('1-3',1),0.3, "pauseAtEnd")
+		local _shoot_pose = Anim8.newGrid(8,16, Images.shoot_pose_sheet:getWidth(),
+			Images.shoot_pose_sheet:getHeight())
+		shoot_pose_anim = Anim8.newAnimation(_shoot_pose('1-3',1),0.3, "pauseAtEnd")
 
-		local _reload = anim8.newGrid(8,16, images.reload_sheet:getWidth(),images.reload_sheet:getHeight())
-		reload_anim = anim8.newAnimation(_reload('1-4',1),0.3,function()
+		local _reload = Anim8.newGrid(8,16, Images.reload_sheet:getWidth(),Images.reload_sheet:getHeight())
+		reload_anim = Anim8.newAnimation(_reload('1-4',1),0.3,function()
 				reload_anim:pauseAtStart()
 				reload_animate = false
 				ending_animate = false
 			end)
 
-		local _leave = anim8.newGrid(8,16,images.leave_sheet:getWidth(),images.leave_sheet:getHeight())
-		leave_anim = anim8.newAnimation(_leave('1-4',1),0.3, function()
+		local _leave = Anim8.newGrid(8,16,Images.leave_sheet:getWidth(),Images.leave_sheet:getHeight())
+		leave_anim = Anim8.newAnimation(_leave('1-4',1),0.3, function()
 				leave_anim:pauseAtEnd()
 			end)
-		wait_anim = anim8.newAnimation(_shoot_pose('3-1',1),0.3,function()
+		wait_anim = Anim8.newAnimation(_shoot_pose('3-1',1),0.3,function()
 				wait_anim:pauseAtEnd()
 			end)
 
 		--father
-		local _f = anim8.newGrid(11,18,images.father_sheet:getWidth(),images.father_sheet:getHeight())
+		local _f = Anim8.newGrid(11,18,Images.father_sheet:getWidth(),Images.father_sheet:getHeight())
 		father_anim = {
 			--talk
-			anim8.newAnimation(_f('1-2',1),0.5, function()
+			Anim8.newAnimation(_f('1-2',1),0.5, function()
 				if done == true then
 					father_anim[1]:pauseAtStart()
 				end
@@ -133,7 +133,7 @@ function animation_set()
 			end),
 
 			-- shout
-			anim8.newAnimation(_f('3-4',1),0.5, function()
+			Anim8.newAnimation(_f('3-4',1),0.5, function()
 				if father_move == true then
 					father_anim[2]:pauseAtStart()
 					father_animation_count = father_animation_count + 1
@@ -146,7 +146,7 @@ function animation_set()
 			end),
 
 		--walk
-			anim8.newAnimation(_f('5-8',1),0.15, function()
+			Anim8.newAnimation(_f('5-8',1),0.15, function()
 				if father_x >= 55 then
 					father_x = 60
 					shout_again = false
@@ -159,19 +159,19 @@ function animation_set()
 			end),
 
 			--push
-			anim8.newAnimation(_f('9-14',1),0.25, function()
-				sounds.mother_scream:play()
-				sounds.mother_scream:setLooping(false)
+			Anim8.newAnimation(_f('9-14',1),0.25, function()
+				Sounds.mother_scream:play()
+				Sounds.mother_scream:setLooping(false)
 				done = true
 				father_animation_count = 1
 			end)
 		}
 
 		--mother
-		local _m = anim8.newGrid(11,17,images.mother_sheet:getWidth(),images.mother_sheet:getHeight())
+		local _m = Anim8.newGrid(11,17,Images.mother_sheet:getWidth(),Images.mother_sheet:getHeight())
 		mother_anim = {
 			--talk
-			anim8.newAnimation(_m('1-2',1),0.5, function()
+			Anim8.newAnimation(_m('1-2',1),0.5, function()
 				if talk_count < 2 then
 					talk_count = talk_count + 1
 				else
@@ -181,7 +181,7 @@ function animation_set()
 			end),
 
 			--shout
-			anim8.newAnimation(_m('3-4',1),0.5, function()
+			Anim8.newAnimation(_m('3-4',1),0.5, function()
 				if shout_again == false then
 					if stop_walk == false then
 						if shout_count < 2 then
@@ -196,7 +196,7 @@ function animation_set()
 			end),
 
 			--walk
-			anim8.newAnimation(_m('5-8',1),0.15, function()
+			Anim8.newAnimation(_m('5-8',1),0.15, function()
 				if mother_x >= 65 then
 					mother_move = false
 					mother_animation_count = 2
@@ -210,46 +210,46 @@ function animation_set()
 			end),
 
 			--fall
-			anim8.newAnimation(_m('9-14',1),0.25, function()
+			Anim8.newAnimation(_m('9-14',1),0.25, function()
 				mother_gone = true
 			end),
 		}
 
 
 		--child
-		local _child = anim8.newGrid(8,16,images.player_child_sheet:getWidth(),images.player_child_sheet:getHeight())
-		child = anim8.newAnimation(_child('1-4',1),0.05)
+		local _child = Anim8.newGrid(8,16,Images.player_child_sheet:getWidth(),Images.player_child_sheet:getHeight())
+		child = Anim8.newAnimation(_child('1-4',1),0.05)
 
 		--player child pushing chair
-		local _push = anim8.newGrid(8,16,images.player_child_push:getWidth(),images.player_child_push:getHeight())
-		player_push = anim8.newAnimation(_push('1-4',1),0.25)
+		local _push = Anim8.newGrid(8,16,Images.player_child_push:getWidth(),Images.player_child_push:getHeight())
+		player_push = Anim8.newAnimation(_push('1-4',1),0.25)
 
 
 		--enemy
-		local en = anim8.newGrid(12,14,images.enemy_sheet:getWidth(),images.enemy_sheet:getHeight())
-		enemy_idle = anim8.newAnimation(en('4-5',1),1)
-		enemy_mys = anim8.newAnimation(en('1-3',1),1)
-		enemy_move = anim8.newAnimation(en('6-7',1),0.5)
+		local en = Anim8.newGrid(12,14,Images.enemy_sheet:getWidth(),Images.enemy_sheet:getHeight())
+		enemy_idle = Anim8.newAnimation(en('4-5',1),1)
+		enemy_mys = Anim8.newAnimation(en('1-3',1),1)
+		enemy_move = Anim8.newAnimation(en('6-7',1),0.5)
 
-		local _ed = anim8.newGrid(12,14,images.enemy_dead_sheet:getWidth(),images.enemy_dead_sheet:getHeight())
-		enemy_dead = anim8.newAnimation(_ed('1-8',1),0.1,function()
+		local _ed = Anim8.newGrid(12,14,Images.enemy_dead_sheet:getWidth(),Images.enemy_dead_sheet:getHeight())
+		enemy_dead = Anim8.newAnimation(_ed('1-8',1),0.1,function()
 				enemy_dead:pauseAtEnd()
 				fade_to_black = true
 			end)
 
 
 		--tv
-		local _tv = anim8.newGrid(8,17,images.tv_anim:getWidth(),images.tv_anim:getHeight())
-		tv_anim = anim8.newAnimation(_tv('1-5',1),0.1,false)
+		local _tv = Anim8.newGrid(8,17,Images.tv_anim:getWidth(),Images.tv_anim:getHeight())
+		tv_anim = Anim8.newAnimation(_tv('1-5',1),0.1,false)
 
 		--corpse
-		local _corpse = anim8.newGrid(17,24,images.corpse_anim:getWidth(),images.corpse_anim:getHeight())
-		corpse_fall_anim = anim8.newAnimation(_corpse('1-13',1),0.075, function()
-			sounds.body_fall:play()
-			sounds.body_fall:setLooping(false)
+		local _corpse = Anim8.newGrid(17,24,Images.corpse_anim:getWidth(),Images.corpse_anim:getHeight())
+		corpse_fall_anim = Anim8.newAnimation(_corpse('1-13',1),0.075, function()
+			Sounds.body_fall:play()
+			Sounds.body_fall:setLooping(false)
 			corpse_fall_anim:pauseAtEnd()
 			corpse_trigger = false
-			local corpse = Items(images.corpse,images["secretRoom"],90,40,"corpse")
+			local corpse = Items(Images.corpse,Images["secretRoom"],90,40,"corpse")
 			table.insert(obj,corpse)
 
 			local corpse_dial = Interact(false,{"A corpse!?","What?!...","Why is there a corpse here!?...","Touch it?"},{"Yes","No"},"It's not responding","corpse")
@@ -257,11 +257,11 @@ function animation_set()
 		end)
 
 		--clock
-		local _clock = anim8.newGrid(12,22,images.clock_anim:getWidth(),images.clock_anim:getHeight())
-		attic_clock_anim = anim8.newAnimation(_clock('1-9',1),1)
+		local _clock = Anim8.newGrid(12,22,Images.clock_anim:getWidth(),Images.clock_anim:getHeight())
+		attic_clock_anim = Anim8.newAnimation(_clock('1-9',1),1)
 		--sit to stand
-		local _f1 = anim8.newGrid(11,18,images.f1:getWidth(),images.f1:getHeight())
-		f1_anim = anim8.newAnimation(_f1('1-12',1),0.5,"pauseAtEnd")
+		local _f1 = Anim8.newGrid(11,18,Images.f1:getWidth(),Images.f1:getHeight())
+		f1_anim = Anim8.newAnimation(_f1('1-12',1),0.5,"pauseAtEnd")
 	end
  end
 
@@ -280,19 +280,19 @@ function epic_scene_draw()
 	love.graphics.setColor(1, 1, 1, 1)
 	if mother_gone == false then
 		if OS == "Android" then
-			android.lightChange(true)
+			Android.lightChange(true)
 		end
-		mother_anim[mother_animation_count]:draw(images.mother_sheet,mother_x,27)
+		mother_anim[mother_animation_count]:draw(Images.mother_sheet,mother_x,27)
 	else
 		if OS == "Android" then
-			android.lightChange(false)
+			Android.lightChange(false)
 		end
 		player.visible = true
 		player.x = 14
 		player.y = 27
 		parent_found = true
 		fade.state = true
-		currentRoom = images["secretRoom"]
+		currentRoom = Images["secretRoom"]
 	end
-	father_anim[father_animation_count]:draw(images.father_sheet,father_x,26)
+	father_anim[father_animation_count]:draw(Images.father_sheet,father_x,26)
 end

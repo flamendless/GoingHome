@@ -55,24 +55,24 @@ function Enemy:update(dt)
 		enemy_exists = false
 	end
 
-	if currentRoom == images["hallwayLeft"] or
-		currentRoom == images["hallwayRight"] or
-		currentRoom == images["masterRoom"] or
-		currentRoom == images["kitchen"] or
-		currentRoom == images["daughterRoom"] or
-		currentRoom == images["storageRoom"] or
-		currentRoom == images["mainRoom"] or
-		currentRoom == images["livingRoom"] then
+	if currentRoom == Images["hallwayLeft"] or
+		currentRoom == Images["hallwayRight"] or
+		currentRoom == Images["masterRoom"] or
+		currentRoom == Images["kitchen"] or
+		currentRoom == Images["daughterRoom"] or
+		currentRoom == Images["storageRoom"] or
+		currentRoom == Images["mainRoom"] or
+		currentRoom == Images["livingRoom"] then
 		self.trigger = true
 	end
 
 	if event == "secret_room_first" or event == "after_secret_room" or event == "after_dialogue" then
-		if currentRoom == images["secretRoom"] then
+		if currentRoom == Images["secretRoom"] then
 			enemy_exists = false
 		end
 	end
 
-	if self.y < height - 20 - self.h then
+	if self.y < HEIGHT - 20 - self.h then
 		self.y = self.y + self.grav
 	end
 
@@ -96,9 +96,9 @@ function Enemy:update(dt)
 			end
 
 			if self.chaseOn == false then
-				sounds.enemy_mys_sound:play()
+				Sounds.enemy_mys_sound:play()
 			else
-				sounds.enemy_mys_sound:stop()
+				Sounds.enemy_mys_sound:stop()
 			end
 		end
 	end
@@ -107,7 +107,7 @@ function Enemy:update(dt)
 end
 
 function Enemy:draw()
-	self.image:draw(images.enemy_sheet,self.x,self.y,self.rot,self.xscale,self.yscale,self.ox)
+	self.image:draw(Images.enemy_sheet,self.x,self.y,self.rot,self.xscale,self.yscale,self.ox)
 end
 
 --enemy actions
@@ -115,8 +115,8 @@ end
 function Enemy:chase(dt)
 
 	--sounds
-	if sounds.enemy_scream:isPlaying() == false then
-		sounds.enemy_chase:play()
+	if Sounds.enemy_scream:isPlaying() == false then
+		Sounds.enemy_chase:play()
 	end
 	----
 
@@ -136,7 +136,7 @@ function Enemy:chase(dt)
 	--avoid
 	if self.chaseOn == true then
 		if ghost_event ~= "still no escape" then
-			if lightOn == false then
+			if LIGHT_ON == false then
 				local random = math.floor(math.random(100))
 				if random <= 20 then
 					self.chaseOn = false

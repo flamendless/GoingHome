@@ -32,8 +32,8 @@ local shotTimer = 2
 function leave_event_update(dt)
 	if ending_leave_event == 1 then
 		player_color = true
-		lightOn = false
-		lv = 1
+		LIGHT_ON = false
+		LIGHT_VALUE = 1
 		move = false
 		if c < #text1 then
 			if timer > 0 then
@@ -47,43 +47,43 @@ function leave_event_update(dt)
 			ending_leave_event = 2
 		end
 	elseif ending_leave_event == 2 then
-		if lv > 0 then
-			lv = lv - 60 * dt
-			if lv <= 0 then
-				lv = 0
+		if LIGHT_VALUE > 0 then
+			LIGHT_VALUE = LIGHT_VALUE - 60 * dt
+			if LIGHT_VALUE <= 0 then
+				LIGHT_VALUE = 0
 				move = true
 			end
 		else
-			lightOn = true
+			LIGHT_ON = true
 		end
 	end
 
 
-	if currentRoom == images["mainRoom"] then
-		if sounds.knock:isPlaying() == false then
-			sounds.knock:play()
-			sounds.knock:setLooping(true)
+	if currentRoom == Images["mainRoom"] then
+		if Sounds.knock:isPlaying() == false then
+			Sounds.knock:play()
+			Sounds.knock:setLooping(true)
 		end
 	end
 
 	--end room
-	if currentRoom == images["endRoom"] then
+	if currentRoom == Images["endRoom"] then
 		move = false
 		random_breathe_flag = false
-		sounds.knock:setLooping(false)
-		sounds.knock:stop()
-		lightOn = false
-		if lv > 0 then
+		Sounds.knock:setLooping(false)
+		Sounds.knock:stop()
+		LIGHT_ON = false
+		if LIGHT_VALUE > 0 then
 			move = false
-			lv = lv - 60 * dt
-			if lv <= 0 then
-				lv = 0
+			LIGHT_VALUE = LIGHT_VALUE - 60 * dt
+			if LIGHT_VALUE <= 0 then
+				LIGHT_VALUE = 0
 				--activate the player panic animation
 				ending_animate = true
 				ending_final = -1
 			end
-		elseif lv <= 0 then
-			lv = 0
+		elseif LIGHT_VALUE <= 0 then
+			LIGHT_VALUE = 0
 			--activate the player panic animation
 			ending_animate = true
 			ending_final = -1
@@ -97,16 +97,16 @@ function leave_event_update(dt)
 					if shotTimer >0 and shotTimer <1 then
 						if gun_click_flag == false then
 							gun_click_flag = true
-							sounds.gun_click:play()
-							sounds.gun_click:setLooping(false)
+							Sounds.gun_click:play()
+							Sounds.gun_click:setLooping(false)
 						end
 					elseif shotTimer <= 0 then
 						if ending_shot == 0 then
 							shotTimer = 2
 							ending_shot = 1
-							sounds.gunshot:play()
-							sounds.gunshot:setLooping(false)
-							final_clock = seconds_to_clock(clock)
+							Sounds.gunshot:play()
+							Sounds.gunshot:setLooping(false)
+							final_clock = seconds_to_clock(CLOCK)
 						elseif ending_shot == 1 then
 							-- sounds.ts_theme:play()
 							-- sounds.ts_theme:setLooping(true)
@@ -129,11 +129,11 @@ function leave_event_draw()
 		love.graphics.setColor(0,0,0,1)
 		love.graphics.rectangle("fill",0,16,128,32)
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.print(text1[c],width/2 - font:getWidth(text1[c])/2, height/2 - font:getHeight(text1[c])/2)
+		love.graphics.print(text1[c],WIDTH/2 - DEF_FONT:getWidth(text1[c])/2, HEIGHT_HALF - DEF_FONT_HALF)
 	end
 
 	--end room
-	if currentRoom == images["endRoom"] then
+	if currentRoom == Images["endRoom"] then
 		if player_ending_shot == true then
 			love.graphics.setColor(0,0,0,va)
 			love.graphics.rectangle("fill",0,16,128,32)

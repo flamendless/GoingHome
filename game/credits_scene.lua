@@ -11,8 +11,8 @@ local last = 72
 
 
 function credits_load()
-	sounds.ts_theme:play()
-	sounds.ts_theme:setLooping(true)
+	Sounds.ts_theme:play()
+	Sounds.ts_theme:setLooping(true)
 	credits_flag = true
 	random_breathe_flag = false
 
@@ -79,7 +79,7 @@ function credits_update(dt)
 			end
 		end
 	elseif n >= #credits_txt then
-		local ts = sounds.ts_theme
+		local ts = Sounds.ts_theme
 
 		if ts:isPlaying() == true then
 			if _vol > 0 then
@@ -96,21 +96,20 @@ end
 function credits_draw()
 	love.graphics.setColor(1, 1, 1, 1)
 	local t = credits_txt[n]
-	local tw = font:getWidth(credits_txt[n])
-	local th = font:getHeight(credits_txt[n])
+	local tw = DEF_FONT:getWidth(credits_txt[n])
 
 	if n < 18 then
-		love.graphics.print(t,width/2 - tw/2, height/2 - th/2)
+		love.graphics.print(t,WIDTH/2 - tw/2, HEIGHT_HALF - DEF_FONT_HALF)
 	elseif n >= 18 and n <= 23 then
 		timer_to_use = minTimer
 		local s = 18
 		for i = 1,5 do
-			love.graphics.print(credits_txt[s+i],width/2 - font:getWidth(credits_txt[s+i])/2,10*i - font:getHeight(credits_txt[s+i])/2)
+			love.graphics.print(credits_txt[s+i],WIDTH/2 - DEF_FONT:getWidth(credits_txt[s+i])/2,10*i - DEF_FONT_HALF)
 		end
 	elseif n >= 24 and n < 29 then
 		timer_to_use = maxTimer
-		love.graphics.print(t,width/2 - tw/2, height/2 - th/2)
-	
+		love.graphics.print(t,WIDTH/2 - tw/2, HEIGHT_HALF - DEF_FONT_HALF)
+
 	--start
 	-- elseif n >= 30 and n < 34 then
 	-- 	timer_to_use = minTimer
@@ -155,7 +154,7 @@ function credits_draw()
 	elseif n >= start + 40 and n < last then
 		dynamic_print(69)
 	elseif n >= last then
-		love.graphics.print(t,width/2 - tw/2, height/2 - th/2)
+		love.graphics.print(t,WIDTH/2 - tw/2, HEIGHT_HALF - DEF_FONT_HALF)
 		timer_to_use = maxTimer
 	end
 end
@@ -163,6 +162,6 @@ end
 function dynamic_print(s)
 	local s = s
 	for i = 1, 5 do
-		love.graphics.print(credits_txt[s + i], width/2 - font:getWidth(credits_txt[s + i])/2,10*i - font:getHeight(credits_txt[s+i])/2)
+		love.graphics.print(credits_txt[s + i], WIDTH/2 - DEF_FONT:getWidth(credits_txt[s + i])/2,10*i - DEF_FONT_HALF)
 	end
 end
