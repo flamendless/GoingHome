@@ -72,11 +72,41 @@ def zip_files(out: str) -> bool:
     return True
 
 
+def copy_files(out: str) -> bool:
+    os.chdir(GAME_DIR)
+    for path, subdirs, files in os.walk("."):
+        for ex in EXCLUDE:
+            if ex in subdirs:
+                subdirs.remove(ex)
+            if ex in files:
+                files.remove(ex)
+
+            if ex.startswith("*."):
+                for file in list(files):
+                    if file.endswith(ex[1:]):
+                        files.remove(file)
+
+        for file in files:
+            f: str = os.path.join(path, file)
+            print(f"Copying {f} to {out}")
+            copy2(f, out)
+    os.chdir(ROOT_DIR)
+    return True
+
+
 def build(args: argparse.Namespace) -> None:
     filename: str = f"{GAME_NAME}.love"
     out: str = f"{ROOT_DIR}/{RELEASE_DIR}{filename}"
     print(f"building '{out}'...")
-    res: bool = zip_files(out)
+
+    res: bool = None
+    if args.nozip:
+        if not args.outpath:
+            raise Exception("'outpath' is required when using this")
+        res = copy_files(args.outpath)
+    else:
+        res = zip_files(out)
+
     if not res:
         raise Exception(f"Zipping '{out}' failed")
 
@@ -166,6 +196,12 @@ if __name__ == "__main__":
         action="store",
         dest="outpath",
         help="Output to path"
+    )
+    parser.add_argument(
+        "--nozip",
+        action="store_true",
+        dest="nozip",
+        help="Instead of zipping, just copy files"
     )
 
     args: argparse.Namespace = parser.parse_args()
