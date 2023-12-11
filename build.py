@@ -1,10 +1,10 @@
+import argparse
+from enum import Enum
 import os
 import platform
-import argparse
-
-from enum import Enum
-from zipfile import ZipFile
+from shutil import copy2
 from typing import Dict, Callable, List
+from zipfile import ZipFile
 
 GAME_NAME: str = "GoingHomeRevisited"
 IDENTITY: str = "GoingHomeRevisited"
@@ -49,10 +49,9 @@ def get_mode() -> Mode:
         return Mode[platform.system().upper()]
 
 
-def zip_files():
-    filename: str = f"{GAME_NAME}.love"
+def zip_files(out: str) -> bool:
     os.chdir(GAME_DIR)
-    with ZipFile(f"{ROOT_DIR}/{RELEASE_DIR}/{filename}", "w") as zip:
+    with ZipFile(out, "w") as zip:
         for path, subdirs, files in os.walk("."):
             for ex in EXCLUDE:
                 if ex in subdirs:
@@ -67,17 +66,25 @@ def zip_files():
 
             for file in files:
                 f: str = os.path.join(path, file)
-                print(f"Adding {f} to {filename}")
+                print(f"Adding {f} to {out}")
                 zip.write(f)
     os.chdir(ROOT_DIR)
+    return True
 
 
-def build():
-    print("building...")
-    zip_files()
+def build(args: argparse.Namespace) -> None:
+    filename: str = f"{GAME_NAME}.love"
+    out: str = f"{ROOT_DIR}/{RELEASE_DIR}{filename}"
+    print(f"building '{out}'...")
+    res: bool = zip_files(out)
+    if not res:
+        raise Exception(f"Zipping '{out}' failed")
+
+    if args.outpath:
+        copy2(out, args.outpath)
 
 
-def run(args):
+def run(args: argparse.Namespace) -> None:
     print("running...")
 
     if not os.path.exists(f"{RELEASE_DIR}{GAME_NAME}.love"):
@@ -152,7 +159,16 @@ if __name__ == "__main__":
         help="Run game"
     )
 
-    args = parser.parse_args()
+    # For Android
+    parser.add_argument(
+        "-o",
+        "--outpath",
+        action="store",
+        dest="outpath",
+        help="Output to path"
+    )
+
+    args: argparse.Namespace = parser.parse_args()
 
     if (not args.build) and (not args.run):
         raise Exception("Must pass argument(s)")
@@ -164,7 +180,7 @@ if __name__ == "__main__":
     }
 
     if args.build:
-        build()
+        build(args)
 
     if args.run:
         run(args)
