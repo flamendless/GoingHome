@@ -88,8 +88,13 @@ def copy_files(out: str) -> bool:
 
         for file in files:
             f: str = os.path.join(path, file)
-            print(f"Copying {f} to {out}")
-            copy2(f, out)
+            base: str = os.path.dirname(f).removeprefix("./")
+            basedir: str = f"{out}{base}"
+            if not os.path.exists(basedir):
+                os.mkdir(basedir)
+            temp_out: str = f"{basedir}/{file}"
+            print(f"Copying {f} to {temp_out}")
+            copy2(f, temp_out)
     os.chdir(ROOT_DIR)
     return True
 
