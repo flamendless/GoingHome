@@ -12,7 +12,7 @@ function love.conf(t)
 	t.window.resizable = false
 	t.window.title = "Going Home: Revisited"
 	t.externalstorage = true
-	t.version = "11.4"
+	t.version = "11.5"
 	t.window.icon = "assets/icon.png"
 	t.identity = "GoingHomeRevisited"
 
