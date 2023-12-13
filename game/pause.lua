@@ -52,7 +52,7 @@ end
 function pause.draw()
 	love.graphics.setColor(1, 1, 1, 1)
 	love.graphics.print(pauseTxt,WIDTH/2 - DEF_FONT:getWidth(pauseTxt)/2,8)
-	if (OS == "Android") or (OS == "iOS") then
+	if ON_MOBILE then
 		love.graphics.draw(Images.gui_sBack,gSettingsBack.x,gSettingsBack.y)
 		love.graphics.draw(Images.gui_quit,gQuit.x,gQuit.y)
 	end

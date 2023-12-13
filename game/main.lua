@@ -2,6 +2,8 @@
 --@flamendless
 --@flam8studio
 
+local VERSION = "v1.0.10"
+
 love.graphics.setDefaultFilter("nearest", "nearest", 1)
 local img_loading = love.graphics.newImage("assets/loading.png")
 local lsw, lsh = img_loading:getDimensions()
@@ -32,6 +34,8 @@ OS = love.system.getOS()
 ON_MOBILE = (OS == "Android") or (OS == "iOS")
 if ON_MOBILE then
 	Android = require("gui")
+	LoveAdmob = require("love_admob")
+	VERSION = VERSION .. "-android"
 end
 --require("error")
 
@@ -92,7 +96,7 @@ local function toggle_fs()
 end
 
 if debug == false then
-	if (OS ~= "iOS") and (OS ~= "Android") then
+	if not ON_MOBILE then
 		toggle_fs()
 	end
 
@@ -121,17 +125,20 @@ end
 TEMP_MOVE = false
 
 function ShowAds()
+	print("ShowAds start")
 	if FC:validate() == "accept" then
-		love.system.createBanner(_ads.banner,"top","SMART_BANNER")
-		love.system.createInterstitial(_ads.inter)
-		love.system.showBanner()
-		if love.system.isInterstitialLoaded() == true then
-			love.system.showInterstitial()
+		LoveAdmob.createBanner(_ads.banner,"top","SMART_BANNER")
+		LoveAdmob.createInterstitial(_ads.inter)
+		LoveAdmob.showBanner()
+		if LoveAdmob.isInterstitialLoaded() == true then
+			LoveAdmob.showInterstitial()
 		end
 	end
+	print("ShowAds end")
 end
 
 function love.load()
+	print("VERSION:", VERSION)
 	SaveData.load()
 
 	if pro_version then
@@ -203,6 +210,10 @@ function love.update(dt)
 		-- 	Shaders.update(Shaders.palette_swap)
 		-- end
 
+		if ON_MOBILE and LoveAdmob then
+			LoveAdmob.update(dt)
+		end
+
 		if FC:getState() then
 			FC:update(dt)
 		else
@@ -227,9 +238,9 @@ function love.draw()
 	love.graphics.setCanvas(MAIN_CANVAS)
 		love.graphics.clear()
 		love.graphics.push()
-			if ON_MOBILE then
-				love.graphics.translate(0, TY)
-			end
+			-- if ON_MOBILE then
+			-- 	love.graphics.translate(0, TY)
+			-- end
 
 			love.graphics.scale(RATIO, RATIO)
 			if FINISHED_LOADING then
@@ -261,6 +272,14 @@ function love.draw()
 				love.graphics.draw(img_loading, WIDTH/2, HEIGHT_HALF, 0, scale, scale, lsw/2, lsh/2)
 			end
 		love.graphics.pop()
+
+		love.graphics.push()
+			love.graphics.scale(RATIO/2, RATIO/2)
+			love.graphics.setColor(1, 1, 1, 1)
+			love.graphics.print(VERSION, 8, 8)
+			love.graphics.print(gamestates.getState(), 8, 16)
+		love.graphics.pop()
+
 	love.graphics.setCanvas()
 
 	love.graphics.setColor(1, 1, 1, 1)
@@ -307,9 +326,9 @@ function love.mousepressed(x,y,button,istouch)
 					end
 				elseif check_gui(gui_pos.webx,gui_pos.weby,gui_pos.webw,gui_pos.webh) then
 					if ON_MOBILE then
-						love.system.createInterstitial(_ads.inter)
-						if love.system.isInterstitialLoaded() == true then
-							love.system.showInterstitial()
+						LoveAdmob.createInterstitial(_ads.inter)
+						if LoveAdmob.isInterstitialLoaded() == true then
+							LoveAdmob.showInterstitial()
 						end
 					else
 						love.system.openURL(URLS.game_page)
@@ -364,7 +383,7 @@ function love.mousepressed(x,y,button,istouch)
 					love.system.openURL(URLS.twitter)
 				elseif check_gui(gui_pos.p_x,gui_pos.p_y,gui_pos.p_w,gui_pos.p_h) then
 					if OS ~= "iOS" then
-					love.system.openURL(URLS.paypal)
+						love.system.openURL(URLS.paypal)
 					end
 				elseif check_gui(gui_pos.e_x,gui_pos.e_y,gui_pos.e_w,gui_pos.e_h) then
 					love.system.openURL(URLS.mailto)
@@ -945,6 +964,7 @@ function love.touchreleased(id,x,y)
 end
 
 function love.touchmoved(id,x,y)
+	if not ON_MOBILE then return end
 	--local state = gamestates.getState()
 	--if state == "gallery" then
 		--if pro_version then

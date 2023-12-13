@@ -103,8 +103,8 @@ function game_over.exit()
 	--gamestates.load()
 	if pro_version == false then
 		if ON_MOBILE then
-			if love.system.isInterstitialLoaded() == true then
-				love.system.showInterstitial()
+			if LoveAdmob.isInterstitialLoaded() == true then
+				LoveAdmob.showInterstitial()
 				love.event.quit("restart")
 			else
 				love.event.quit("restart")

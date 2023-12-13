@@ -305,8 +305,7 @@ function gamestates.update(dt)
 		currentRoom == Images["rightRoom"] or
 		currentRoom == Images["basementRoom"] or
 		ending_leave == true then
-
-		 enemy_exists = false
+		enemy_exists = false
 	end
 
 	local state = gamestates.getState()
@@ -367,7 +366,6 @@ function gamestates.update(dt)
 
 	elseif state == "rain_intro" then
 		intro_update(dt)
-
 
 	elseif state == "intro" then
 		intro_timer = intro_timer - 1 * dt
@@ -1177,6 +1175,7 @@ function gamestates.control()
 end
 
 function gamestates.nextState(state)
+	print(string.format("%s -> %s", STATES, state))
 	STATES = state
 	gamestates.load()
 end
@@ -1351,8 +1350,9 @@ function lightning(dt)
 end
 
 function check_gui(gx,gy,gw,gh)
-	local mx = love.mouse.getX()/RATIO
-	local my = (love.mouse.getY()-TY)/RATIO
+	local mx, my = love.mouse.getPosition()
+	mx = mx/RATIO
+	my = my/RATIO
 	return mx >= gx and mx <= gx + gw and my >= gy and my <= gy + gh
 end
 

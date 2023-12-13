@@ -279,12 +279,12 @@ end
 function epic_scene_draw()
 	love.graphics.setColor(1, 1, 1, 1)
 	if mother_gone == false then
-		if OS == "Android" then
+		if ON_MOBILE then
 			Android.lightChange(true)
 		end
 		mother_anim[mother_animation_count]:draw(Images.mother_sheet,mother_x,27)
 	else
-		if OS == "Android" then
+		if ON_MOBILE then
 			Android.lightChange(false)
 		end
 		player.visible = true
