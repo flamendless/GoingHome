@@ -5,6 +5,8 @@ love_admob.updateTime = 1 --Seconds
 
 function love_admob.update(dt)
 	if love_admob.timer > 1 then
+		print(Inspect(love_admob))
+		print("Test", love_admob.test())
 		love_admob.checkForAdsCallbacks()
 		love_admob.timer = 0
 	end
@@ -13,6 +15,7 @@ end
 
 function love_admob.checkForAdsCallbacks()
 	print(2, love_admob.coreInterstitialError)
+
 	if love_admob.coreInterstitialError() then --Interstitial failed to load
 		if love_admob.interstitialFailedToLoad then
 			love_admob.interstitialFailedToLoad()

@@ -225,7 +225,7 @@ function gamestates.init()
 		Sounds.ts_theme:play()
 		Sounds.ts_theme:setVolume(0.5)
 
-		if ON_MOBILE and (not pro_version) then
+		if ON_MOBILE and (not PRO_VERSION) then
 			ShowAds()
 		end
 	elseif state == "rain_intro" then
@@ -506,9 +506,9 @@ function gamestates.update(dt)
 		end
 		---------------------------
 		if gameover == false then
-			if ON_MOBILE or debug == true then
+			if ON_MOBILE or debugging == true then
 				--android.lightCircle()
-			elseif not ON_MOBILE and (not debug) then
+			elseif not ON_MOBILE and (not debugging) then
 				if event_trigger_light == -1 then
 					_lightX = mx - Images.light_small:getWidth()/2 + math.random(-0.05,0.05)
 					_lightY = my - Images.light_small:getHeight()/2 + math.random(-0.05,0.05)
@@ -1057,7 +1057,7 @@ function gamestates.draw()
 		end
 
 		player:draw()
-		if ON_MOBILE or debug == true then
+		if ON_MOBILE or debugging == true then
 			Android.light_draw()
 		end
 
@@ -1087,7 +1087,7 @@ function gamestates.draw()
 			love.graphics.rectangle("fill",0,0,Images.bg:getWidth(),Images.bg:getHeight()/2)
 		end
 
-		if not ON_MOBILE and (not debug) then
+		if not ON_MOBILE and (not debugging) then
 		if currentRoom == Images["secretRoom"] then
 			if tv_light_flag == true then
 				love.graphics.draw(CANVAS_TV_FLASH)
@@ -1181,7 +1181,7 @@ function gamestates.nextState(state)
 end
 
 function light_check()
-	if ON_MOBILE or debug == true then
+	if ON_MOBILE or debugging == true then
 		Android.light_check()
 	else
 		local mx = love.mouse.getX()/RATIO
@@ -1307,9 +1307,9 @@ function light_etc(dt,img_table,img_var,canvas)
 	love.graphics.clear(0,0,0,LIGHT_VALUE)
 	love.graphics.setBlendMode("multiply", "premultiplied")
 	love.graphics.draw(img_table[img_var],x,y)
-	if ON_MOBILE or debug then
+	if ON_MOBILE or debugging then
 		love.graphics.draw(mainLight,lx,ly)
-	elseif not ON_MOBILE and (not debug) then
+	elseif not ON_MOBILE and (not debugging) then
 		love.graphics.draw(light,lightX,lightY)
 	end
 	love.graphics.setBlendMode("alpha")
@@ -1415,7 +1415,7 @@ function seconds_to_clock(seconds)
 end
 
 function dev_draw()
-	if debug == true then
+	if debugging == true then
 		love.graphics.push()
 		love.graphics.scale(1/4)
 		love.graphics.setColor(1, 0, 0, 1)

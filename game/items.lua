@@ -325,7 +325,7 @@ function Items:checkFunction()
 				elseif v.tag and o.tag == "storage puzzle" then
 					if self.tag == v.tag then
 						if final_puzzle_solved == false then
-							if ON_MOBILE or debug then
+							if ON_MOBILE or debugging then
 								love.keyboard.setTextInput(true)
 							end
 							word_puzzle = true

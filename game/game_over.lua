@@ -101,7 +101,7 @@ function game_over.exit()
 	--return to title screen
 	--states = "title"
 	--gamestates.load()
-	if pro_version == false then
+	if PRO_VERSION == false then
 		if ON_MOBILE then
 			if LoveAdmob.isInterstitialLoaded() == true then
 				LoveAdmob.showInterstitial()

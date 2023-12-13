@@ -39,12 +39,11 @@ function love.conf(t)
 	--console
 	--io.stdout:setvbuf("no")
 
-	lovedebug = debug
-	debug = false
+	lovedebug = debugging
+	debugging = false
 	debugMode = false
 	gameplay_record = false
 	cheat = false
-	pro_version = true
 	apple_ver = false
 	shaders_test = true
 end

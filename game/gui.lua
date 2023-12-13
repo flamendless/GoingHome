@@ -339,7 +339,7 @@ function android.light_update(dt)
 		mainLight = Images.light3
 	end
 
-	if ON_MOBILE or debug == true then
+	if ON_MOBILE or debugging == true then
 		love.graphics.setCanvas(CANVAS_CUSTOM_MASK)
 		love.graphics.clear(0,0,0,LIGHT_VALUE)
 		love.graphics.setBlendMode("multiply", "premultiplied")
@@ -370,7 +370,7 @@ function android.light_update(dt)
 end
 
 function android.light_draw()
-	if ON_MOBILE or debug == true then
+	if ON_MOBILE or debugging == true then
 		love.graphics.draw(CANVAS_CUSTOM_MASK)
 	end
 end

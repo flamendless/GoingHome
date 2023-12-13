@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.10"
+local VERSION = "v1.0.15"
 
 love.graphics.setDefaultFilter("nearest", "nearest", 1)
 local img_loading = love.graphics.newImage("assets/loading.png")
@@ -16,6 +16,7 @@ local Shaders = require("shaders")
 
 JSON = require("libs.json.json")
 LOADER = require("libs.love-loader")
+Inspect = require("libs.inspect.inspect")
 Lume = require("libs.lume")
 -- pause = require("pause")
 Anim8 = require("libs.anim8")
@@ -30,12 +31,17 @@ Items = require("items")
 Interact = require("interact")
 SaveData = require("save_data")
 
+PRO_VERSION = true
 OS = love.system.getOS()
 ON_MOBILE = (OS == "Android") or (OS == "iOS")
 if ON_MOBILE then
 	Android = require("gui")
 	LoveAdmob = require("love_admob")
-	VERSION = VERSION .. "-android"
+	if PRO_VERSION then
+		VERSION = VERSION .. "-android-pro"
+	else
+		VERSION = VERSION .. "-android"
+	end
 end
 --require("error")
 
@@ -95,7 +101,7 @@ local function toggle_fs()
 	MAIN_CANVAS = love.graphics.newCanvas(love.graphics.getDimensions())
 end
 
-if debug == false then
+if debugging == false then
 	if not ON_MOBILE then
 		toggle_fs()
 	end
@@ -103,13 +109,13 @@ if debug == false then
 	TY = 0
 	-- ty = sh - (height * math.min(sw/width,sh/height))
 	if OS == "iOS" then
-		if pro_version then
+		if PRO_VERSION then
 			--ty = sh - (height * math.min(sw/width,sh/height))
 			TY = HEIGHT_HALF
 		end
 	end
 	if ON_MOBILE then
-		if pro_version then
+		if PRO_VERSION then
 			TY = HEIGHT
 		else
 			TY = SH - (HEIGHT * math.min(SW/WIDTH,SH/HEIGHT))
@@ -141,7 +147,7 @@ function love.load()
 	print("VERSION:", VERSION)
 	SaveData.load()
 
-	if pro_version then
+	if PRO_VERSION then
 		STATES = "splash"
 	else
 		STATES = "adshow"
@@ -546,7 +552,7 @@ function love.keypressed(key)
 	-- end
 
 	if state == "gallery" then
-		if pro_version then
+		if PRO_VERSION then
 			Gallery.keypressed(key)
 			if key == "escape" then
 				Gallery.exit()
@@ -869,7 +875,7 @@ function love.keypressed(key)
 		elseif key == "return" then
 			clock_puzzle = false
 			move = true
-			if ON_MOBILE or debug == true then
+			if ON_MOBILE or debugging == true then
 				Android.lightChange(false)
 			end
 			if hour == 10 and minute == 2 and second == 8 and ampm == "pm" then
