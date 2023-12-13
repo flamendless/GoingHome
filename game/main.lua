@@ -29,7 +29,8 @@ Interact = require("interact")
 SaveData = require("save_data")
 
 OS = love.system.getOS()
-if OS == "Android" then
+ON_MOBILE = (OS == "Android") or (OS == "iOS")
+if ON_MOBILE then
 	Android = require("gui")
 end
 --require("error")
@@ -103,7 +104,7 @@ if debug == false then
 			TY = HEIGHT_HALF
 		end
 	end
-	if OS == "Android" then
+	if ON_MOBILE then
 		if pro_version then
 			TY = HEIGHT
 		else
@@ -215,7 +216,7 @@ function love.update(dt)
 			end
 
 			gamestates.update(dt)
-			if OS == "Android" or OS == "iOS" then
+			if ON_MOBILE then
 				Android.update(dt)
 			end
 		end
@@ -226,7 +227,7 @@ function love.draw()
 	love.graphics.setCanvas(MAIN_CANVAS)
 		love.graphics.clear()
 		love.graphics.push()
-			if OS == "Android" or OS == "iOS" then
+			if ON_MOBILE then
 				love.graphics.translate(0, TY)
 			end
 
@@ -305,7 +306,7 @@ function love.mousepressed(x,y,button,istouch)
 						love.event.quit()
 					end
 				elseif check_gui(gui_pos.webx,gui_pos.weby,gui_pos.webw,gui_pos.webh) then
-					if OS == "Android" then
+					if ON_MOBILE then
 						love.system.createInterstitial(_ads.inter)
 						if love.system.isInterstitialLoaded() == true then
 							love.system.showInterstitial()
@@ -416,7 +417,7 @@ function love.keyreleased(key)
 	if not FINISHED_LOADING then return end
 
 	local state = gamestates.getState()
-	if OS == "Android" then
+	if ON_MOBILE then
 		Android.setKey(key)
 	end
 
@@ -513,7 +514,7 @@ function love.keypressed(key)
 	if not FINISHED_LOADING then return end
 	local dt = love.timer.getDelta( )
 	local state = gamestates.getState()
-	if OS == "Android" then
+	if ON_MOBILE then
 		Android.setKey(key)
 	end
 
@@ -716,14 +717,14 @@ function love.keypressed(key)
 
 	if word_puzzle == true then
 		move = false
-		if OS == "Android" then
+		if ON_MOBILE then
 			Android.lightChange(true)
 		end
 		if key == "escape" then
 			word_puzzle = false
 			move = true
 			storage_puzzle = false
-			if OS == "Android" then
+			if ON_MOBILE then
 				Android.lightChange(false)
 			end
 		else
@@ -741,14 +742,14 @@ function love.keypressed(key)
 
 	if doodle_flag == true then
 		move = false
-		if OS == "Android" then
+		if ON_MOBILE then
 			Android.lightChange(true)
 		end
 		if key == "escape" then
 			doodle_flag = false
 			move = true
 			storage_puzzle = false
-			if OS == "Android" then
+			if ON_MOBILE then
 				Android.lightChange(false)
 			end
 		elseif key == "a" then
@@ -769,13 +770,13 @@ function love.keypressed(key)
 	end
 
 	if clock_puzzle == true then
-		if OS == "Android" then
+		if ON_MOBILE then
 			Android.lightChange(true)
 		end
 		if key == "escape" then
 			clock_puzzle = false
 			move = true
-			if OS == "Android" then
+			if ON_MOBILE then
 				Android.lightChange(false)
 			end
 		elseif key == "w" then
@@ -849,7 +850,7 @@ function love.keypressed(key)
 		elseif key == "return" then
 			clock_puzzle = false
 			move = true
-			if OS == "Android" or OS == "iOS" or debug == true then
+			if ON_MOBILE or debug == true then
 				Android.lightChange(false)
 			end
 			if hour == 10 and minute == 2 and second == 8 and ampm == "pm" then

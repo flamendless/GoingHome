@@ -339,7 +339,7 @@ function android.light_update(dt)
 		mainLight = Images.light3
 	end
 
-	if OS == "Android" or OS == "iOS" or debug == true then
+	if ON_MOBILE or debug == true then
 		love.graphics.setCanvas(CANVAS_CUSTOM_MASK)
 		love.graphics.clear(0,0,0,LIGHT_VALUE)
 		love.graphics.setBlendMode("multiply", "premultiplied")
@@ -370,7 +370,7 @@ function android.light_update(dt)
 end
 
 function android.light_draw()
-	if OS == "Android" or OS == "iOS" or debug == true then
+	if ON_MOBILE or debug == true then
 		love.graphics.draw(CANVAS_CUSTOM_MASK)
 	end
 end
@@ -398,7 +398,7 @@ function android.lightChange(bool)
 end
 
 function android.mouse_gui(x,y,button,istouch)
-if OS == "Android" or OS == "iOS" then
+	if not ON_MOBILE then return end
 	local state = gamestates.getState()
 	local mx= x/RATIO
 	local my = (y-TY)/RATIO
@@ -430,7 +430,6 @@ if OS == "Android" or OS == "iOS" then
 			end
 		end
 	end
-end
 end
 
 return android

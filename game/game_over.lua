@@ -102,7 +102,7 @@ function game_over.exit()
 	--states = "title"
 	--gamestates.load()
 	if pro_version == false then
-		if OS == "Android" then
+		if ON_MOBILE then
 			if love.system.isInterstitialLoaded() == true then
 				love.system.showInterstitial()
 				love.event.quit("restart")

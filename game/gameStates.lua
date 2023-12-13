@@ -153,7 +153,7 @@ local function draw_instructions()
 	end
 
 	local texts, last_str
-	if OS == "Android" or OS == "iOS" then
+	if ON_MOBILE then
 		texts = instruction_texts_mobile
 		last_str = "tap to continue"
 	else
@@ -225,7 +225,7 @@ function gamestates.init()
 		Sounds.ts_theme:play()
 		Sounds.ts_theme:setVolume(0.5)
 
-		if (OS == "Android") and (not pro_version) then
+		if ON_MOBILE and (not pro_version) then
 			ShowAds()
 		end
 	elseif state == "rain_intro" then
@@ -315,7 +315,7 @@ function gamestates.update(dt)
 	if state == "gallery" then
 		Gallery.update(dt)
 	elseif state == "adshow" then
-		if OS == "Android" then
+		if ON_MOBILE then
 			if adTimer > 0 then
 				adTimer = adTimer - 1 * dt
 				if adTimer <= 0 then
@@ -508,9 +508,9 @@ function gamestates.update(dt)
 		end
 		---------------------------
 		if gameover == false then
-			if OS == "Android" or OS == "iOS" or debug == true then
+			if ON_MOBILE or debug == true then
 				--android.lightCircle()
-			elseif OS ~= "Android" or OS == "iOS" and debug == false then
+			elseif not ON_MOBILE and (not debug) then
 				if event_trigger_light == -1 then
 					_lightX = mx - Images.light_small:getWidth()/2 + math.random(-0.05,0.05)
 					_lightY = my - Images.light_small:getHeight()/2 + math.random(-0.05,0.05)
@@ -702,7 +702,7 @@ function gamestates.draw()
 
 	local state = gamestates.getState()
 	if state == "adshow" then
-		if OS == "Android" or OS == "iOS" then
+		if ON_MOBILE then
 			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.draw(Images.adIntro,0,0)
 		end
@@ -1059,7 +1059,7 @@ function gamestates.draw()
 		end
 
 		player:draw()
-		if OS == "Android" or OS == "iOS" or debug == true then
+		if ON_MOBILE or debug == true then
 			Android.light_draw()
 		end
 
@@ -1089,7 +1089,7 @@ function gamestates.draw()
 			love.graphics.rectangle("fill",0,0,Images.bg:getWidth(),Images.bg:getHeight()/2)
 		end
 
-		if OS ~= "Android" or OS ~= "iOS" and debug == false then
+		if not ON_MOBILE and (not debug) then
 		if currentRoom == Images["secretRoom"] then
 			if tv_light_flag == true then
 				love.graphics.draw(CANVAS_TV_FLASH)
@@ -1148,7 +1148,7 @@ function gamestates.draw()
 			end
 		end
 
-		if OS == "Android" or OS == "iOS" then
+		if ON_MOBILE then
 			if gameplay_record == false then
 				Android.draw()
 			end
@@ -1182,7 +1182,7 @@ function gamestates.nextState(state)
 end
 
 function light_check()
-	if OS == "Android" or OS == "iOS" or debug == true then
+	if ON_MOBILE or debug == true then
 		Android.light_check()
 	else
 		local mx = love.mouse.getX()/RATIO
@@ -1281,7 +1281,7 @@ function skip_draw()
 	skip_alpha = math.clamp(skip_alpha, 0, 1)
 	love.graphics.setColor(1, 1, 1, skip_alpha)
 	local skip_text
-	if OS == "Android" or OS == "iOS" then
+	if ON_MOBILE then
 		skip_text = "tap to skip"
 	else
 		skip_text = "press any key to skip"
@@ -1308,9 +1308,9 @@ function light_etc(dt,img_table,img_var,canvas)
 	love.graphics.clear(0,0,0,LIGHT_VALUE)
 	love.graphics.setBlendMode("multiply", "premultiplied")
 	love.graphics.draw(img_table[img_var],x,y)
-	if OS == "Android" or OS == "iOS" or debug then
+	if ON_MOBILE or debug then
 		love.graphics.draw(mainLight,lx,ly)
-	elseif OS ~= "Android" or OS ~= "iOS" and debug == false then
+	elseif not ON_MOBILE and (not debug) then
 		love.graphics.draw(light,lightX,lightY)
 	end
 	love.graphics.setBlendMode("alpha")

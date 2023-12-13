@@ -70,7 +70,7 @@ function Player:update(dt)
 	walk_left:update(dt)
 	child:update(dt)
 
-	if ((OS == "Android") or (OS == "iOS") and self.android == 0) then
+	if ON_MOBILE and self.android == 0 then
 		self.isMoving = false
 	end
 end

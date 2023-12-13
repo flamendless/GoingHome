@@ -216,7 +216,7 @@ local textures = {
 	}
 }
 
-if (OS ~= "Android") or (OS ~= "iOS") then
+if not ON_MOBILE then
 	table.insert(textures.main, {
 		"basement_battery","assets/images/basement_battery.png"
 	})
@@ -350,7 +350,7 @@ end
 function assets.set()
 	assets.item_set()
 	assets.dialogue_set()
-	if OS == "Android" then
+	if ON_MOBILE then
 		Android.load()
 	end
 end
@@ -409,7 +409,7 @@ function assets.item_set()
   	local storage_puzzle_item = Items(Images.storage_vault,Images["storageRoom"],40,30,"storage puzzle")
   	table.insert(obj,storage_puzzle_item)
 
-	if OS ~= "Android" or OS ~= "iOS" then
+	if not ON_MOBILE then
 		local b_battery = Items(Images.basement_battery,Images["basementRoom"],30,38,"battery")
 		table.insert(obj,b_battery)
   	end
@@ -577,7 +577,7 @@ function assets.dialogue_set()
 
 	local storage_puzzle = Interact(false,{"It's a safe vault","I need a combination","to open it.","Input combination?"},{"Yes","No"},"There's nothing more here","storage puzzle")
 	table.insert(dialogue,storage_puzzle)
-	if OS ~= "Android" or OS ~= "iOS" then
+	if not ON_MOBILE then
 		local b_battery_dial = Interact(false,{"It's a toolbox","It contains electronic parts","Search for items?"},{"Yes","No"},"","battery")
 		table.insert(dialogue,b_battery_dial)
 	end
@@ -703,7 +703,7 @@ function assets.dialogue_set()
   			"battery",
   			"ammo"	}
   	}
-  	if OS == "Android" or OS == "iOS" then
+  	if ON_MOBILE then
 			for k,v in pairs(obj_properties) do
 				for n,m in pairs(obj_properties[k]) do
 					if m == "battery" then
