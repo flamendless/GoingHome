@@ -87,14 +87,14 @@ ending_wait = false
 flash_text_finished = false
 gun_obtained = false
 route = 0
-l,r = 0,0
+l, r = 0, 0
 adTimer = 5
 adTxt = {
-"Please Allow Ads In The Game",
-"To Support The Developer",
-"The Ads will be unintrusive",
-"to the gameplay.",
-"or buy the adless version" }
+	"Please Allow Ads In The Game",
+	"To Support The Developer",
+	"The Ads will be unintrusive",
+	"to the gameplay.",
+	"or buy the adless version" }
 lightningVol = 0.3
 
 local tutorial_timer = 5
@@ -137,11 +137,11 @@ local str_about = {
 }
 
 local function draw_instructions()
-	love.graphics.setColor(0,0,0,0)
-	love.graphics.rectangle("fill",0,0,WIDTH,HEIGHT)
+	love.graphics.setColor(0, 0, 0, 0)
+	love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 	love.graphics.setFont(DEF_FONT)
 	love.graphics.setColor(1, 1, 1)
-	local hw = WIDTH/2
+	local hw = WIDTH / 2
 
 	local state = gamestates.getState()
 
@@ -164,12 +164,12 @@ local function draw_instructions()
 	local y
 	for i, str in ipairs(texts) do
 		y = by + DEF_FONT_HEIGHT * (i - 1)
-		love.graphics.print(str, hw - DEF_FONT:getWidth(str)/2, y)
+		love.graphics.print(str, hw - DEF_FONT:getWidth(str) / 2, y)
 	end
 
 	if state == "tutorial" then
 		love.graphics.setColor(1, 0, 0, 1)
-		love.graphics.print(last_str, hw - DEF_FONT:getWidth(last_str)/2, y + DEF_FONT_HEIGHT)
+		love.graphics.print(last_str, hw - DEF_FONT:getWidth(last_str) / 2, y + DEF_FONT_HEIGHT)
 		love.graphics.setColor(1, 1, 1, 1)
 	end
 end
@@ -182,7 +182,7 @@ function gamestates.load()
 	random_breathe = true
 
 	txt = "press I for instruction"
-	fade = Fade(1,6)
+	fade = Fade(1, 6)
 	instruction = false
 	doors_locked = true
 	action_flag = 0
@@ -249,8 +249,8 @@ function gamestates.init()
 		LIGHT_VALUE = 1
 
 		--create dynamic objects
-		player = Player(WIDTH/2,HEIGHT_HALF ,8,16)
-		ghost = Enemy(42, 30,12,14)
+		player = Player(WIDTH / 2, HEIGHT_HALF, 8, 16)
+		ghost = Enemy(42, 30, 12, 14)
 
 		mrChair = Chair()
 
@@ -260,7 +260,7 @@ function gamestates.init()
 
 		currentRoom = Images["mainRoom"]
 		--locked doors
-		locked = Set{
+		locked = Set {
 			"mainRoom_right",
 			"livingRoom_mid",
 			"masterRoom_mid"
@@ -270,7 +270,7 @@ function gamestates.init()
 			locked["mainRoom_right"] = false
 		end
 
-		obtainables = Set{
+		obtainables = Set {
 			"cabinet", --where to get the toy hammer
 			"toy", --where to get the air pumper
 			"ball", --interacts with the hoop
@@ -298,8 +298,8 @@ function gamestates.getState() return STATES end
 
 function gamestates.update(dt)
 	local mx, my = love.mouse.getPosition()
-	mx = mx/RATIO
-	my = (my+TY)/RATIO
+	mx = mx / RATIO
+	my = (my + TY) / RATIO
 
 	if currentRoom == Images["leftRoom"] or
 		currentRoom == Images["rightRoom"] or
@@ -342,12 +342,12 @@ function gamestates.update(dt)
 		end
 	elseif state == "title" then
 		if instruction == false and about == false and questions == false and options == false then
-			if check_gui(gui_pos.start_x,gui_pos.start_y,gui_pos.start_w,gui_pos.start_h) or
-				check_gui(gui_pos.quit_x,gui_pos.quit_y,gui_pos.quit_w,gui_pos.quit_h) or
-				check_gui(gui_pos.i_x,gui_pos.i_y,gui_pos.i_w,gui_pos.i_h) or
-				check_gui(gui_pos.a_x,gui_pos.a_y,gui_pos.a_w,gui_pos.a_h) or
-				check_gui(gui_pos.q_x,gui_pos.q_y,gui_pos.q_w,gui_pos.q_h) or
-				check_gui(gui_pos.webx,gui_pos.weby,gui_pos.webw,gui_pos.webh) or
+			if check_gui(gui_pos.start_x, gui_pos.start_y, gui_pos.start_w, gui_pos.start_h) or
+				check_gui(gui_pos.quit_x, gui_pos.quit_y, gui_pos.quit_w, gui_pos.quit_h) or
+				check_gui(gui_pos.i_x, gui_pos.i_y, gui_pos.i_w, gui_pos.i_h) or
+				check_gui(gui_pos.a_x, gui_pos.a_y, gui_pos.a_w, gui_pos.a_h) or
+				check_gui(gui_pos.q_x, gui_pos.q_y, gui_pos.q_w, gui_pos.q_h) or
+				check_gui(gui_pos.webx, gui_pos.weby, gui_pos.webw, gui_pos.webh) or
 				check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) or
 				check_gui(gui_pos.options_x, gui_pos.options_y, gui_pos.options_w, gui_pos.options_h)
 			then
@@ -363,10 +363,8 @@ function gamestates.update(dt)
 		else
 			cursor_select = true
 		end
-
 	elseif state == "rain_intro" then
 		intro_update(dt)
-
 	elseif state == "intro" then
 		intro_timer = intro_timer - 1 * dt
 
@@ -384,7 +382,6 @@ function gamestates.update(dt)
 		end
 
 		if intro_finished == true then
-
 			if Sounds.unlock:isPlaying() == false then
 				Sounds.unlock:play()
 			end
@@ -411,7 +408,7 @@ function gamestates.update(dt)
 
 		skip_button:update(dt)
 
-			-----MAIN-------
+		-----MAIN-------
 	elseif state == "main" then
 		--windows
 		win_left_anim:update(dt)
@@ -419,10 +416,16 @@ function gamestates.update(dt)
 		Timer.update(dt)
 
 		if WIN_MOVE_L == false then
-			Timer.after(10, function() WIN_MOVE_L = true  win_left_anim:resume() end)
+			Timer.after(10, function()
+				WIN_MOVE_L = true
+				win_left_anim:resume()
+			end)
 		end
 		if WIN_MOVE_R == false then
-			Timer.after(9, function() WIN_MOVE_R = true win_right_anim:resume() end)
+			Timer.after(9, function()
+				WIN_MOVE_R = true
+				win_right_anim:resume()
+			end)
 		end
 
 		if ghost_event == "flashback" and Sounds.tv_loud and Sounds.tv_loud:isPlaying() then
@@ -478,7 +481,7 @@ function gamestates.update(dt)
 			else
 				Sounds.lightning:stop()
 				if ghost_event == "flashback" and
-				flash_text_finished == true then
+					flash_text_finished == true then
 					LIGHT_VALUE = 0
 				else
 					LIGHT_VALUE = 1
@@ -490,39 +493,39 @@ function gamestates.update(dt)
 			Sounds.rain:stop()
 		end
 
-		local choose = math.floor(math.random(1,3))
-		local random = math.floor(math.random(5,10))
+		local choose = math.floor(math.random(1, 3))
+		local random = math.floor(math.random(5, 10))
 		local num = "breath_"
 
 		if random_breathe_flag == true then
 			if random_breathe == true then
 				random_breathe = false
-				Timer.after(random,function()
+				Timer.after(random, function()
 					Sounds[num .. tostring(choose)]:play()
 					Sounds[num .. tostring(choose)]:setVolume(0.5)
 					random_breathe = true
 				end)
 			end
 		end
-		---------------------------
+
 		if gameover == false then
-			if ON_MOBILE or debugging == true then
+			if ON_MOBILE or DEBUGGING then
 				--android.lightCircle()
-			elseif not ON_MOBILE and (not debugging) then
+			elseif not ON_MOBILE and (not DEBUGGING) then
 				if event_trigger_light == -1 then
-					_lightX = mx - Images.light_small:getWidth()/2 + math.random(-0.05,0.05)
-					_lightY = my - Images.light_small:getHeight()/2 + math.random(-0.05,0.05)
+					_lightX = mx - Images.light_small:getWidth() / 2 + math.random(-0.05, 0.05)
+					_lightY = my - Images.light_small:getHeight() / 2 + math.random(-0.05, 0.05)
 				else
-					_lightX = mx - Images.light:getWidth()/2 + math.random(-0.05,0.05)
-					_lightY = my - Images.light:getHeight()/2 + math.random(-0.05,0.05)
+					_lightX = mx - Images.light:getWidth() / 2 + math.random(-0.05, 0.05)
+					_lightY = my - Images.light:getHeight() / 2 + math.random(-0.05, 0.05)
 				end
 				lightX = math.clamp(_lightX, player.x - 120, player.x + 100)
 				lightY = math.clamp(_lightY, player.y - 20, player.y + 0)
 
 				love.graphics.setCanvas(CANVAS_CUSTOM_MASK)
-				love.graphics.clear(0,0,0,LIGHT_VALUE)
+				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 				love.graphics.setBlendMode("multiply", "premultiplied")
-				love.graphics.draw(light,lightX,lightY)
+				love.graphics.draw(light, lightX, lightY)
 				love.graphics.setBlendMode("alpha")
 				love.graphics.setCanvas()
 			end
@@ -530,10 +533,10 @@ function gamestates.update(dt)
 
 		--game logic
 		if LIGHT_BLINK == true and LIGHT_ON == true then
-			if math.random(0,100) <= 5 then
+			if math.random(0, 100) <= 5 then
 				BLINK = true
 			end
-			if math.random(0,50) <= 20 then
+			if math.random(0, 50) <= 20 then
 				BLINK = false
 			end
 		end
@@ -545,10 +548,16 @@ function gamestates.update(dt)
 			--Timer.update(dt)
 
 			if WIN_MOVE_L == false then
-				Timer.after(10, function() WIN_MOVE_L = true  win_left_anim:resume() end)
+				Timer.after(10, function()
+					WIN_MOVE_L = true
+					win_left_anim:resume()
+				end)
 			end
 			if WIN_MOVE_R == false then
-				Timer.after(9, function() WIN_MOVE_R = true win_right_anim:resume() end)
+				Timer.after(9, function()
+					WIN_MOVE_R = true
+					win_right_anim:resume()
+				end)
 			end
 
 			if action_flag == 1 then
@@ -578,10 +587,10 @@ function gamestates.update(dt)
 			Sounds.clock_tick:stop()
 		end
 
-		for _,v in ipairs(obj) do
+		for _, v in ipairs(obj) do
 			v:update(dt)
 		end
-		for _,v in ipairs(dialogue) do
+		for _, v in ipairs(dialogue) do
 			v:update(dt)
 		end
 
@@ -652,16 +661,17 @@ function gamestates.update(dt)
 		if candles_light_flag == true then
 			if currentRoom == Images["masterRoom"] then
 				local rand = 0.05
-				local cx = 0 + (math.random(-rand,rand))
-				local cy = HEIGHT_HALF - Images.candles_light_mask:getHeight()/2 + (math.random(-rand,rand))
+				local cx = 0 + (math.random(-rand, rand))
+				local cy = HEIGHT_HALF - Images.candles_light_mask:getHeight() / 2 + (math.random(-rand, rand))
 				function getCandles()
-					return cx,cy
+					return cx, cy
 				end
+
 				love.graphics.setCanvas(CANVAS_CANDLES_FLASH)
-				love.graphics.clear(0,0,0,LIGHT_VALUE)
+				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 				love.graphics.setBlendMode("multiply", "premultiplied")
-				love.graphics.draw(Images.candles_light_mask,cx,cy)
-				love.graphics.draw(light,lightX,lightY)
+				love.graphics.draw(Images.candles_light_mask, cx, cy)
+				love.graphics.draw(light, lightX, lightY)
 				love.graphics.setBlendMode("alpha")
 				love.graphics.setCanvas()
 			end
@@ -685,41 +695,39 @@ end
 
 local function draw_back_gui()
 	--back gui
-	if check_gui(gui_pos.b_x,gui_pos.b_y,gui_pos.b_w,gui_pos.b_h) then
+	if check_gui(gui_pos.b_x, gui_pos.b_y, gui_pos.b_w, gui_pos.b_h) then
 		love.graphics.setColor(1, 0, 0, 1)
 	else
 		love.graphics.setColor(1, 1, 1, 1)
 	end
-	love.graphics.draw(Images.return_gui,gui_pos.b_x,gui_pos.b_y)
+	love.graphics.draw(Images.return_gui, gui_pos.b_x, gui_pos.b_y)
 end
 
 function gamestates.draw()
 	local mx, my = love.mouse.getPosition()
-	mx = mx/RATIO
-	my = (my-TY)/RATIO
+	mx = mx / RATIO
+	my = (my - TY) / RATIO
 
 	local state = gamestates.getState()
-	if state == "adshow" then
-		if ON_MOBILE then
-			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(Images.adIntro,0,0)
-		end
+	if ON_MOBILE and state == "adshow" then
+		love.graphics.setColor(1, 1, 1, 1)
+		love.graphics.draw(Images.adIntro, 0, 0)
 	elseif state == "splash" then
 		love.graphics.setColor(1, 1, 1, 1)
-		splash_anim:draw(Images.splash,WIDTH/2 - 32,HEIGHT_HALF - 16 )
+		splash_anim:draw(Images.splash, WIDTH / 2 - 32, HEIGHT_HALF - 16)
 	elseif state == "splash2" then
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.draw(Images.wits, WIDTH/2 - 64,HEIGHT_HALF - 32)
+		love.graphics.draw(Images.wits, WIDTH / 2 - 64, HEIGHT_HALF - 32)
 	elseif state == "title" then
 		if instruction == false and about == false and questions == false and options == false then
 			--main title screen art
 			love.graphics.setColor(1, 1, 1, 1)
 			local bgw, bgh = Images.bg:getDimensions()
-			love.graphics.draw(Images.bg, WIDTH/2 - bgw/2, HEIGHT_HALF - bgh/2)
+			love.graphics.draw(Images.bg, WIDTH / 2 - bgw / 2, HEIGHT_HALF - bgh / 2)
 
 			local ttw, tth = Images.title_text:getDimensions()
 			local scale = 0.4
-			love.graphics.draw(Images.title_text, WIDTH/4, HEIGHT_HALF - 2, 0, scale, scale, ttw/2, tth/2)
+			love.graphics.draw(Images.title_text, WIDTH / 4, HEIGHT_HALF - 2, 0, scale, scale, ttw / 2, tth / 2)
 
 			--start
 			if cursor_pos == 1 then
@@ -728,13 +736,13 @@ function gamestates.draw()
 				love.graphics.setColor(1, 1, 1, 1)
 			end
 			if mouse_select == true then
-				if check_gui(gui_pos.start_x,gui_pos.start_y,gui_pos.start_w,gui_pos.start_h)  then
+				if check_gui(gui_pos.start_x, gui_pos.start_y, gui_pos.start_w, gui_pos.start_h) then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
-				 	love.graphics.setColor(1, 1, 1, 1)
+					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.start,gui_pos.start_x,gui_pos.start_y)
+			love.graphics.draw(Images.start, gui_pos.start_x, gui_pos.start_y)
 
 			--exit
 			if OS ~= "iOS" then
@@ -744,14 +752,14 @@ function gamestates.draw()
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 				if mouse_select == true then
-					if check_gui(gui_pos.quit_x,gui_pos.quit_y,gui_pos.quit_w,gui_pos.quit_h)   then
+					if check_gui(gui_pos.quit_x, gui_pos.quit_y, gui_pos.quit_w, gui_pos.quit_h) then
 						love.graphics.setColor(1, 0, 0, 1)
 					else
-				 		love.graphics.setColor(1, 1, 1, 1)
+						love.graphics.setColor(1, 1, 1, 1)
 					end
 				end
 
-				love.graphics.draw(Images.exit, gui_pos.quit_x , gui_pos.quit_y)
+				love.graphics.draw(Images.exit, gui_pos.quit_x, gui_pos.quit_y)
 			end
 
 			--website
@@ -761,13 +769,13 @@ function gamestates.draw()
 				love.graphics.setColor(1, 1, 1, 1)
 			end
 			if mouse_select == true then
-				if check_gui(gui_pos.webx,gui_pos.weby,gui_pos.webw,gui_pos.webh) then
+				if check_gui(gui_pos.webx, gui_pos.weby, gui_pos.webw, gui_pos.webh) then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.website_gui,gui_pos.webx,gui_pos.weby)
+			love.graphics.draw(Images.website_gui, gui_pos.webx, gui_pos.weby)
 
 			--instruction
 			if cursor_pos == 7 then
@@ -775,14 +783,14 @@ function gamestates.draw()
 			else
 				love.graphics.setColor(1, 1, 1, 1)
 			end
-			if mouse_select == true  then
-				if check_gui(gui_pos.i_x,gui_pos.i_y,gui_pos.i_w,gui_pos.i_h) then
+			if mouse_select == true then
+				if check_gui(gui_pos.i_x, gui_pos.i_y, gui_pos.i_w, gui_pos.i_h) then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.instruction_gui,gui_pos.i_x, gui_pos.i_y)
+			love.graphics.draw(Images.instruction_gui, gui_pos.i_x, gui_pos.i_y)
 
 			--about
 			if cursor_pos == 6 then
@@ -791,13 +799,13 @@ function gamestates.draw()
 				love.graphics.setColor(1, 1, 1, 1)
 			end
 			if mouse_select == true then
-				if check_gui(gui_pos.a_x,gui_pos.a_y,gui_pos.a_w,gui_pos.a_h) then
+				if check_gui(gui_pos.a_x, gui_pos.a_y, gui_pos.a_w, gui_pos.a_h) then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.about,gui_pos.a_x , gui_pos.a_y)
+			love.graphics.draw(Images.about, gui_pos.a_x, gui_pos.a_y)
 
 			--questions
 			if cursor_pos == 5 then
@@ -806,13 +814,13 @@ function gamestates.draw()
 				love.graphics.setColor(1, 1, 1, 1)
 			end
 			if mouse_select == true then
-				if check_gui(gui_pos.q_x,gui_pos.q_y,gui_pos.q_w,gui_pos.q_h) then
+				if check_gui(gui_pos.q_x, gui_pos.q_y, gui_pos.q_w, gui_pos.q_h) then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.question,gui_pos.q_x,gui_pos.q_y)
+			love.graphics.draw(Images.question, gui_pos.q_x, gui_pos.q_y)
 
 			--gallery
 			if cursor_pos == 4 then
@@ -836,26 +844,24 @@ function gamestates.draw()
 				love.graphics.setColor(1, 1, 1, 1)
 			end
 			if mouse_select == true then
-				if check_gui(gui_pos.options_x,gui_pos.options_y,gui_pos.options_w,gui_pos.options_h) then
+				if check_gui(gui_pos.options_x, gui_pos.options_y, gui_pos.options_w, gui_pos.options_h) then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
 			love.graphics.draw(Images.options, gui_pos.options_x, gui_pos.options_y)
-
 		elseif instruction == true and about == false and questions == false then
 			draw_instructions()
 			draw_back_gui()
-
 		elseif options then
 			love.graphics.setColor(0, 0, 0, 0)
-			love.graphics.rectangle("fill",0,0,WIDTH,HEIGHT)
+			love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 			love.graphics.setFont(DEF_FONT)
 
 			local str_options = "Options"
 			love.graphics.setColor(1, 0, 0, 1)
-			love.graphics.print(str_options, WIDTH/2 - DEF_FONT:getWidth(str_options)/2)
+			love.graphics.print(str_options, WIDTH / 2 - DEF_FONT:getWidth(str_options) / 2)
 
 			love.graphics.setColor(1, 1, 1, 1)
 
@@ -867,8 +873,8 @@ function gamestates.draw()
 			for i, item in ipairs(SaveData.get_opts()) do
 				local str, value = item.str, item.value
 				local y = base_y + DEF_FONT_HEIGHT * (i - 1)
-				local rx = WIDTH - 16 - rw/2
-				local ry = y + rw/4
+				local rx = WIDTH - 16 - rw / 2
+				local ry = y + rw / 4
 
 				if check_gui(16, y, DEF_FONT:getWidth(str), DEF_FONT_HEIGHT) or
 					check_gui(rx, ry, rw, rw)
@@ -888,29 +894,27 @@ function gamestates.draw()
 			end
 
 			draw_back_gui()
-
 		elseif instruction == false and questions == true and about == false then
-
 			--questions/support/contacts
 			love.graphics.setColor(0, 0, 0, 0)
-			love.graphics.rectangle("fill",0,0,WIDTH,HEIGHT)
+			love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 			love.graphics.setFont(DEF_FONT)
 			love.graphics.setColor(1, 1, 1)
 
 			local str_contact = "Contact us:"
-			love.graphics.print(str_contact, WIDTH/2 - DEF_FONT:getWidth(str_contact)/2, DEF_FONT_HALF - 4)
+			love.graphics.print(str_contact, WIDTH / 2 - DEF_FONT:getWidth(str_contact) / 2, DEF_FONT_HALF - 4)
 
 			love.graphics.setColor(1, 0, 0)
 			local str_twitter = "@flamendless"
-			love.graphics.print(str_twitter, WIDTH/2 - DEF_FONT:getWidth(str_twitter)/2, 10 + DEF_FONT_HALF)
+			love.graphics.print(str_twitter, WIDTH / 2 - DEF_FONT:getWidth(str_twitter) / 2, 10 + DEF_FONT_HALF)
 
 			if OS ~= "iOS" then
 				local str_donate = "Donate"
-				love.graphics.print(str_donate, WIDTH/2 - DEF_FONT:getWidth(str_donate)/2, 27 + DEF_FONT_HALF)
+				love.graphics.print(str_donate, WIDTH / 2 - DEF_FONT:getWidth(str_donate) / 2, 27 + DEF_FONT_HALF)
 			end
 
 			local str_email = "E-Mail"
-			love.graphics.print(str_email, WIDTH/2 - DEF_FONT:getWidth(str_email)/2, 44 + DEF_FONT_HALF)
+			love.graphics.print(str_email, WIDTH / 2 - DEF_FONT:getWidth(str_email) / 2, 44 + DEF_FONT_HALF)
 
 			--questions
 			if cursor_pos == 3 then
@@ -921,40 +925,40 @@ function gamestates.draw()
 
 			--twitter
 			if mouse_select == true then
-				if check_gui(gui_pos.t_x,gui_pos.t_y,gui_pos.t_w,gui_pos.t_h) then
+				if check_gui(gui_pos.t_x, gui_pos.t_y, gui_pos.t_w, gui_pos.t_h) then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.twitter,gui_pos.t_x,gui_pos.t_y)
+			love.graphics.draw(Images.twitter, gui_pos.t_x, gui_pos.t_y)
 
 			--paypal
 			if OS ~= "iOS" then
 				if mouse_select == true then
-					if check_gui(gui_pos.p_x,gui_pos.p_y,gui_pos.p_w,gui_pos.p_h) then
+					if check_gui(gui_pos.p_x, gui_pos.p_y, gui_pos.p_w, gui_pos.p_h) then
 						love.graphics.setColor(1, 0, 0, 1)
 					else
 						love.graphics.setColor(1, 1, 1, 1)
 					end
 				end
-				love.graphics.draw(Images.paypal,gui_pos.p_x,gui_pos.p_y)
+				love.graphics.draw(Images.paypal, gui_pos.p_x, gui_pos.p_y)
 			end
 
 			--email
 			if mouse_select == true then
-				if check_gui(gui_pos.e_x,gui_pos.e_y,gui_pos.e_w,gui_pos.e_h) then
+				if check_gui(gui_pos.e_x, gui_pos.e_y, gui_pos.e_w, gui_pos.e_h) then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.email,gui_pos.e_x,gui_pos.e_y)
+			love.graphics.draw(Images.email, gui_pos.e_x, gui_pos.e_y)
 			draw_back_gui()
 		end
 		if about == true then
-			love.graphics.setColor(0,0,0,0)
-			love.graphics.rectangle("fill",0,0,WIDTH,HEIGHT)
+			love.graphics.setColor(0, 0, 0, 0)
+			love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 			love.graphics.setFont(DEF_FONT)
 			love.graphics.setColor(1, 1, 1)
 
@@ -964,28 +968,24 @@ function gamestates.draw()
 				else
 					love.graphics.setColor(1, 1, 1, 1)
 				end
-				love.graphics.print(str, WIDTH/2 - DEF_FONT:getWidth(str)/2, DEF_FONT_HEIGHT * (i - 1))
+				love.graphics.print(str, WIDTH / 2 - DEF_FONT:getWidth(str) / 2, DEF_FONT_HEIGHT * (i - 1))
 			end
 			draw_back_gui()
 		end
 	elseif state == "intro" then
-
-		love.graphics.setColor(0,0,0,1)
-		love.graphics.rectangle("fill",0,0,WIDTH,HEIGHT)
+		love.graphics.setColor(0, 0, 0, 1)
+		love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 		love.graphics.setFont(DEF_FONT)
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.print(intro_txt[intro_count],WIDTH/2 - DEF_FONT:getWidth(intro_txt[intro_count])/2,HEIGHT_HALF - DEF_FONT_HALF)
+		love.graphics.print(intro_txt[intro_count], WIDTH / 2 - DEF_FONT:getWidth(intro_txt[intro_count]) / 2,
+			HEIGHT_HALF - DEF_FONT_HALF)
 		skip_draw()
-
 	elseif state == "gallery" then
 		Gallery.draw()
-
 	elseif state == "rain_intro" then
 		intro_draw()
-
 	elseif state == "tutorial" then
 		draw_instructions()
-
 	elseif state == "main" then
 		if currentRoom == Images["mainRoom"] then
 			newRoom = Images["mainRoom_color"]
@@ -1002,20 +1002,20 @@ function gamestates.draw()
 		love.graphics.setColor(1, 1, 1, 1)
 		local bgw, bgh = Images.bg:getDimensions()
 		if ending_leave == false then
-			love.graphics.draw(currentRoom,WIDTH/2 - bgw/2,HEIGHT_HALF - bgh/2)
+			love.graphics.draw(currentRoom, WIDTH / 2 - bgw / 2, HEIGHT_HALF - bgh / 2)
 		else
-			love.graphics.draw(newRoom,WIDTH/2 - bgw/2,HEIGHT_HALF - bgh/2)
+			love.graphics.draw(newRoom, WIDTH / 2 - bgw / 2, HEIGHT_HALF - bgh / 2)
 		end
 
 		if currentRoom == Images["mainRoom"] then
 			if ending_leave == false then
 				love.graphics.setColor(1, 1, 1, 1)
-				win_left_anim:draw(Images.window_left,WIDTH/2 - bgw/2,HEIGHT_HALF - bgh/2)
-				win_right_anim:draw(Images.window_right,WIDTH/2 - bgw/2,HEIGHT_HALF - bgh/2)
+				win_left_anim:draw(Images.window_left, WIDTH / 2 - bgw / 2, HEIGHT_HALF - bgh / 2)
+				win_right_anim:draw(Images.window_right, WIDTH / 2 - bgw / 2, HEIGHT_HALF - bgh / 2)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
-				win_left_anim:draw(Images.window_left_color,WIDTH/2 - bgw/2,HEIGHT_HALF - bgh/2)
-				win_right_anim:draw(Images.window_right_color,WIDTH/2 - bgw/2,HEIGHT_HALF - bgh/2)
+				win_left_anim:draw(Images.window_left_color, WIDTH / 2 - bgw / 2, HEIGHT_HALF - bgh / 2)
+				win_right_anim:draw(Images.window_right_color, WIDTH / 2 - bgw / 2, HEIGHT_HALF - bgh / 2)
 			end
 		elseif currentRoom == Images["leftRoom"] then
 			father_anim_draw()
@@ -1023,7 +1023,7 @@ function gamestates.draw()
 			enemy_draw()
 		end
 
-		for _,v in ipairs(obj) do
+		for _, v in ipairs(obj) do
 			v:draw()
 		end
 
@@ -1034,11 +1034,11 @@ function gamestates.draw()
 		if currentRoom == Images["secretRoom"] and event == "after_dialogue" then
 			if tv_light_flag == true then
 				love.graphics.setColor(1, 1, 1, 1)
-				tv_anim:draw(Images.tv_anim,113,27)
+				tv_anim:draw(Images.tv_anim, 113, 27)
 			end
 			if corpse_trigger == true then
 				love.graphics.setColor(1, 1, 1, 1)
-				corpse_fall_anim:draw(Images.corpse_anim,90,20)
+				corpse_fall_anim:draw(Images.corpse_anim, 90, 20)
 			end
 		end
 
@@ -1057,7 +1057,7 @@ function gamestates.draw()
 		end
 
 		player:draw()
-		if ON_MOBILE or debugging == true then
+		if ON_MOBILE or DEBUGGING == true then
 			Android.light_draw()
 		end
 
@@ -1073,64 +1073,66 @@ function gamestates.draw()
 		if dust_trigger == true then
 			particle_draw()
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(Images.overlay,WIDTH/2 - Images.bg:getWidth()/2,HEIGHT_HALF - Images.bg:getHeight()/2)
-			love.graphics.setColor(0,0,0,1)
-			love.graphics.rectangle("fill",0,HEIGHT_HALF + Images.bg:getHeight()/2,WIDTH,HEIGHT)
+			love.graphics.draw(Images.overlay, WIDTH / 2 - Images.bg:getWidth() / 2,
+				HEIGHT_HALF - Images.bg:getHeight() / 2)
+			love.graphics.setColor(0, 0, 0, 1)
+			love.graphics.rectangle("fill", 0, HEIGHT_HALF + Images.bg:getHeight() / 2, WIDTH, HEIGHT)
 		elseif ghost_event == "fall down" then
 			particle_draw()
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(Images.overlay,WIDTH/2 - Images.bg:getWidth()/2,HEIGHT_HALF - Images.bg:getHeight()/2)
-			love.graphics.setColor(0,0,0,1)
-			love.graphics.rectangle("fill",0,HEIGHT_HALF + Images.bg:getHeight()/2,WIDTH,HEIGHT)
+			love.graphics.draw(Images.overlay, WIDTH / 2 - Images.bg:getWidth() / 2,
+				HEIGHT_HALF - Images.bg:getHeight() / 2)
+			love.graphics.setColor(0, 0, 0, 1)
+			love.graphics.rectangle("fill", 0, HEIGHT_HALF + Images.bg:getHeight() / 2, WIDTH, HEIGHT)
 
-			love.graphics.setColor(0,0,0,1)
-			love.graphics.rectangle("fill",0,0,Images.bg:getWidth(),Images.bg:getHeight()/2)
+			love.graphics.setColor(0, 0, 0, 1)
+			love.graphics.rectangle("fill", 0, 0, Images.bg:getWidth(), Images.bg:getHeight() / 2)
 		end
 
-		if not ON_MOBILE and (not debugging) then
-		if currentRoom == Images["secretRoom"] then
-			if tv_light_flag == true then
-				love.graphics.draw(CANVAS_TV_FLASH)
-				love.graphics.setColor(1, 1, 1, 1)
+		if not ON_MOBILE and (not DEBUGGING) then
+			if currentRoom == Images["secretRoom"] then
+				if tv_light_flag == true then
+					love.graphics.draw(CANVAS_TV_FLASH)
+					love.graphics.setColor(1, 1, 1, 1)
+				else
+					love.graphics.draw(CANVAS_CUSTOM_MASK)
+					love.graphics.setColor(1, 1, 1, 1)
+				end
+			elseif currentRoom == Images["masterRoom"] then
+				if candles_light_flag == true then
+					love.graphics.draw(CANVAS_CANDLES_FLASH)
+					love.graphics.setColor(1, 1, 1, 1)
+				else
+					love.graphics.draw(CANVAS_CUSTOM_MASK)
+					love.graphics.setColor(1, 1, 1, 1)
+				end
+			elseif currentRoom == Images["rightRoom"] then
+				if right_light_flag == true then
+					love.graphics.draw(CANVAS_RIGHT)
+					love.graphics.setColor(1, 1, 1, 1)
+				else
+					love.graphics.draw(CANVAS_CUSTOM_MASK)
+					love.graphics.setColor(1, 1, 1, 1)
+				end
+			elseif currentRoom == Images["leftRoom"] then
+				if left_light_flag == true then
+					love.graphics.draw(CANVAS_LEFT)
+					love.graphics.setColor(1, 1, 1, 1)
+				else
+					love.graphics.draw(CANVAS_CUSTOM_MASK)
+					love.graphics.setColor(1, 1, 1, 1)
+				end
 			else
 				love.graphics.draw(CANVAS_CUSTOM_MASK)
 				love.graphics.setColor(1, 1, 1, 1)
 			end
-		elseif currentRoom == Images["masterRoom"] then
-			if candles_light_flag == true then
-				love.graphics.draw(CANVAS_CANDLES_FLASH)
-				love.graphics.setColor(1, 1, 1, 1)
-			else
-				love.graphics.draw(CANVAS_CUSTOM_MASK)
-				love.graphics.setColor(1, 1, 1, 1)
-			end
-		elseif currentRoom == Images["rightRoom"] then
-			if right_light_flag == true then
-				love.graphics.draw(CANVAS_RIGHT)
-				love.graphics.setColor(1, 1, 1, 1)
-			else
-				love.graphics.draw(CANVAS_CUSTOM_MASK)
-				love.graphics.setColor(1, 1, 1, 1)
-			end
-		elseif currentRoom == Images["leftRoom"] then
-			if left_light_flag == true then
-				love.graphics.draw(CANVAS_LEFT)
-				love.graphics.setColor(1, 1, 1, 1)
-			else
-				love.graphics.draw(CANVAS_CUSTOM_MASK)
-				love.graphics.setColor(1, 1, 1, 1)
-			end
-		else
-			love.graphics.draw(CANVAS_CUSTOM_MASK)
-			love.graphics.setColor(1, 1, 1, 1)
-		end
 		end
 
 		if currentRoom == Images["secretRoom"] then
 			if event == "after_secret_room" then
 				if text1_flag == true then
 					love.graphics.setColor(1, 1, 1, 1)
-					love.graphics.print(txt1,txt1_x,txt1_y)
+					love.graphics.print(txt1, txt1_x, txt1_y)
 				end
 			end
 			SCENE.secretRoom_draw()
@@ -1181,26 +1183,26 @@ function gamestates.nextState(state)
 end
 
 function light_check()
-	if ON_MOBILE or debugging == true then
+	if ON_MOBILE or DEBUGGING == true then
 		Android.light_check()
 	else
-		local mx = love.mouse.getX()/RATIO
-		local my = (love.mouse.getY()-TY)/RATIO
+		local mx = love.mouse.getX() / RATIO
+		local my = (love.mouse.getY() - TY) / RATIO
 		local rad = 10
-		local gx = ghost.x-ghost.ox
+		local gx = ghost.x - ghost.ox
 		--debugging
 
 		--inside
 		if fade.state == false then
 			if enemy_exists == true and LIGHT_ON == true then
-				if mx >= gx - ghost.w/2 and mx <= gx + ghost.w + ghost.w/2 then
-					if my >= ghost.y - ghost.h/1.5 and my <= ghost.y + ghost.y + ghost.h/1.5 then
+				if mx >= gx - ghost.w / 2 and mx <= gx + ghost.w + ghost.w / 2 then
+					if my >= ghost.y - ghost.h / 1.5 and my <= ghost.y + ghost.y + ghost.h / 1.5 then
 						ghost:action_inside()
 					end
-				--near
+					--near
 				elseif mx >= gx - rad and mx <= gx + ghost.w + rad then
 					ghost:action_near()
-				--no action
+					--no action
 				else
 					ghost:action_none()
 				end
@@ -1214,26 +1216,26 @@ function determine_enemy_pos()
 	local right = WIDTH - 14
 
 	if ghost.chaseOn == false then
-		if player.x <= WIDTH/2 - l + 1 then --player is in the left
+		if player.x <= WIDTH / 2 - l + 1 then --player is in the left
 			ghost.x = right
 			ghost.xscale = -1
-		elseif player.x >= WIDTH/2 + r + 1 then --player is in the right
+		elseif player.x >= WIDTH / 2 + r + 1 then --player is in the right
 			ghost.x = left
 			ghost.xscale = 1
-		elseif player.x >= WIDTH/2 - l then --player in mid
-			if player.x <= WIDTH/2 + r then
-				ghost.x = Lume.randomchoice({left, right})
+		elseif player.x >= WIDTH / 2 - l then --player in mid
+			if player.x <= WIDTH / 2 + r then
+				ghost.x = Lume.randomchoice({ left, right })
 				ghost.xscale = 1
 			end
 		end
 	else
-		if player.x <= WIDTH/2 - l + 1 then
+		if player.x <= WIDTH / 2 - l + 1 then
 			ghost.x = right
-		elseif player.x >= WIDTH/2 + r + 1 then
+		elseif player.x >= WIDTH / 2 + r + 1 then
 			ghost.x = left
-		elseif player.x >= WIDTH/2 - l then --player in mid
-			if player.x <= WIDTH/2 + r then
-				ghost.x = Lume.randomchoice({left, right})
+		elseif player.x >= WIDTH / 2 - l then --player in mid
+			if player.x <= WIDTH / 2 + r then
+				ghost.x = Lume.randomchoice({ left, right })
 				ghost.xscale = 1
 			end
 		end
@@ -1287,42 +1289,42 @@ function skip_draw()
 	end
 	love.graphics.print(
 		skip_text,
-		WIDTH/2 - DEF_FONT:getWidth(skip_text)/2,
+		WIDTH / 2 - DEF_FONT:getWidth(skip_text) / 2,
 		HEIGHT - DEF_FONT_HEIGHT
 	)
 end
 
 function random_page()
-	local random = math.floor(math.random(1,4))
+	local random = math.floor(math.random(1, 4))
 	Sounds["page" .. tostring(random)]:play()
 	Sounds["page" .. tostring(random)]:setLooping(false)
 end
 
-function light_etc(dt,img_table,img_var,canvas)
+function light_etc(dt, img_table, img_var, canvas)
 	LIGHT_ON = false
 	local r = 0.05
-	local x = 0 + (math.random(-r,r))
-	local y = HEIGHT_HALF - img_table[img_var]:getHeight()/2 + (math.random(-r,r))
+	local x = 0 + (math.random(-r, r))
+	local y = HEIGHT_HALF - img_table[img_var]:getHeight() / 2 + (math.random(-r, r))
 	love.graphics.setCanvas(canvas)
-	love.graphics.clear(0,0,0,LIGHT_VALUE)
+	love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 	love.graphics.setBlendMode("multiply", "premultiplied")
-	love.graphics.draw(img_table[img_var],x,y)
-	if ON_MOBILE or debugging then
-		love.graphics.draw(mainLight,lx,ly)
-	elseif not ON_MOBILE and (not debugging) then
-		love.graphics.draw(light,lightX,lightY)
+	love.graphics.draw(img_table[img_var], x, y)
+	if ON_MOBILE or DEBUGGING then
+		love.graphics.draw(mainLight, lx, ly)
+	elseif not ON_MOBILE and (not DEBUGGING) then
+		love.graphics.draw(light, lightX, lightY)
 	end
 	love.graphics.setBlendMode("alpha")
 	love.graphics.setCanvas()
 
 	function getLightEtc()
-		return x,y
+		return x, y
 	end
 end
 
 function lightning(dt)
-	if lightning_flash == true  then
-		local random = math.floor(math.random(0,1000))
+	if lightning_flash == true then
+		local random = math.floor(math.random(0, 1000))
 		if random <= 5 then
 			if Sounds.lightning:isPlaying() == false then
 				Sounds.lightning:play()
@@ -1337,10 +1339,10 @@ function lightning(dt)
 	if fade.state == false then
 		if ending_leave_event ~= 2 then
 			if (tell >= 6 and tell <= 7) then
-				LIGHT_VALUE = Lume.lerp(LIGHT_VALUE,0,amount)
+				LIGHT_VALUE = Lume.lerp(LIGHT_VALUE, 0, amount)
 				lStrike = true
 			else
-				LIGHT_VALUE = Lume.lerp(LIGHT_VALUE,1,amount)
+				LIGHT_VALUE = Lume.lerp(LIGHT_VALUE, 1, amount)
 				lStrike = false
 			end
 		end
@@ -1349,10 +1351,10 @@ function lightning(dt)
 	end
 end
 
-function check_gui(gx,gy,gw,gh)
+function check_gui(gx, gy, gw, gh)
 	local mx, my = love.mouse.getPosition()
-	mx = mx/RATIO
-	my = my/RATIO
+	mx = mx / RATIO
+	my = my / RATIO
 	return mx >= gx and mx <= gx + gw and my >= gy and my <= gy + gh
 end
 
@@ -1360,7 +1362,7 @@ function triggerTxt(dt)
 	move = false
 
 	if _alarm > 0 then
-		_alarm = _alarm -1 * dt
+		_alarm = _alarm - 1 * dt
 		tt_draw = true
 	elseif _alarm <= 0 then
 		if t == 1 then
@@ -1387,40 +1389,39 @@ function triggerTxt_draw()
 	local as2 = "I have to find them quick!"
 	if tt_draw == true then
 		if t == 1 then
-			love.graphics.print(tt_txt, WIDTH/2 - DEF_FONT:getWidth(tt_txt)/2, 0 + DEF_FONT_HEIGHT/4)
-			love.graphics.print(tt_txt2, WIDTH/2 - DEF_FONT:getWidth(tt_txt2)/2, HEIGHT - DEF_FONT_HEIGHT)
+			love.graphics.print(tt_txt, WIDTH / 2 - DEF_FONT:getWidth(tt_txt) / 2, 0 + DEF_FONT_HEIGHT / 4)
+			love.graphics.print(tt_txt2, WIDTH / 2 - DEF_FONT:getWidth(tt_txt2) / 2, HEIGHT - DEF_FONT_HEIGHT)
 		elseif t == 2 then
-			love.graphics.print("",WIDTH/2 - DEF_FONT:getWidth(" ")/2, 0 + DEF_FONT_HEIGHT/4)
-			love.graphics.print("",WIDTH/2 - DEF_FONT:getWidth(" ")/2, HEIGHT - DEF_FONT_HEIGHT)
+			love.graphics.print("", WIDTH / 2 - DEF_FONT:getWidth(" ") / 2, 0 + DEF_FONT_HEIGHT / 4)
+			love.graphics.print("", WIDTH / 2 - DEF_FONT:getWidth(" ") / 2, HEIGHT - DEF_FONT_HEIGHT)
 		elseif t == 3 then
 			if Sounds.enemy_scream:isPlaying() == false then
-				love.graphics.print(as,WIDTH/2 - DEF_FONT:getWidth(as)/2, 0 + DEF_FONT_HEIGHT/4)
-				love.graphics.print(as2,WIDTH/2 - DEF_FONT:getWidth(as2)/2, HEIGHT - DEF_FONT_HEIGHT)
+				love.graphics.print(as, WIDTH / 2 - DEF_FONT:getWidth(as) / 2, 0 + DEF_FONT_HEIGHT / 4)
+				love.graphics.print(as2, WIDTH / 2 - DEF_FONT:getWidth(as2) / 2, HEIGHT - DEF_FONT_HEIGHT)
 			end
 		end
 	end
 end
-
 
 function seconds_to_clock(seconds)
 	local seconds = tonumber(seconds)
 	if seconds <= 0 then
 		return "00:00:00"
 	else
-		hours = string.format("%02.f",math.floor(seconds/3600))
-		mins = string.format("%02.f",math.floor(seconds/60 - (hours*60)))
-		secs = string.format("%02.f",math.floor(seconds-hours*3600-mins*60))
-		return hours..":"..mins..":"..secs
+		hours = string.format("%02.f", math.floor(seconds / 3600))
+		mins = string.format("%02.f", math.floor(seconds / 60 - (hours * 60)))
+		secs = string.format("%02.f", math.floor(seconds - hours * 3600 - mins * 60))
+		return hours .. ":" .. mins .. ":" .. secs
 	end
 end
 
 function dev_draw()
-	if debugging == true then
+	if DEBUGGING == true then
 		love.graphics.push()
-		love.graphics.scale(1/4)
+		love.graphics.scale(1 / 4)
 		love.graphics.setColor(1, 0, 0, 1)
 		love.graphics.setFont(DEF_FONT)
-		love.graphics.print("DEV VERSION",WIDTH * 3.65, HEIGHT * 3.8)
+		love.graphics.print("DEV VERSION", WIDTH * 3.65, HEIGHT * 3.8)
 		love.graphics.pop()
 	end
 end

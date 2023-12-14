@@ -39,8 +39,6 @@ function love.conf(t)
 	--console
 	--io.stdout:setvbuf("no")
 
-	lovedebug = debugging
-	debugging = false
 	debugMode = false
 	gameplay_record = false
 	cheat = false

@@ -5,7 +5,7 @@ leftHold, rightHold = false, false
 androidInteract = false
 local changed = false
 local temp_light = 0
-lx,ly = 0,0
+lx, ly = 0, 0
 
 function android.load()
 	gLeft = {
@@ -33,7 +33,7 @@ function android.load()
 		h = 8
 	}
 	gUp = {
-		x = gLeft2.x + gLeft2.w/2 + 2,
+		x = gLeft2.x + gLeft2.w / 2 + 2,
 		y = gLeft2.y - gLeft2.h - 2,
 		w = 12,
 		h = 8
@@ -75,13 +75,13 @@ function android.load()
 		h = 7
 	}
 	gSettingsBack = {
-		x = WIDTH/2 - 13,
+		x = WIDTH / 2 - 13,
 		y = HEIGHT_HALF - 8,
 		w = 26,
 		h = 12
 	}
 	gQuit = {
-		x = WIDTH/2 - 10,
+		x = WIDTH / 2 - 10,
 		y = HEIGHT_HALF + 8,
 		w = 20,
 		h = 12
@@ -94,8 +94,8 @@ function android.update(dt)
 
 	local lo_w, lo_h = Images.lightOutline:getDimensions()
 
-	lx = player.x - lo_w/2 + math.random(-0.05,0.05)
-	ly = player.y - lo_h/2.5 + math.random(-0.05,0.05)
+	lx = player.x - lo_w / 2 + math.random(-0.05, 0.05)
+	ly = player.y - lo_h / 2.5 + math.random(-0.05, 0.05)
 	android.light_update(dt)
 	if move == false then
 		player.android = 0
@@ -111,10 +111,10 @@ function android.update(dt)
 
 	if move_chair then
 		local touches = love.touch.getTouches()
-		for i,id in ipairs(touches) do
-			local x,y = love.touch.getPosition(id)
-			if guiCheck_touch(id,x,y,gAct) then
-				mrChair:keypressed(dt,"e")
+		for i, id in ipairs(touches) do
+			local x, y = love.touch.getPosition(id)
+			if guiCheck_touch(id, x, y, gAct) then
+				mrChair:keypressed(dt, "e")
 			end
 		end
 	end
@@ -124,101 +124,101 @@ function android.draw()
 	local state = gamestates.getState()
 	love.graphics.setColor(1, 1, 1, 1)
 	if state == "main" then
-			--android.light_draw()
-		 if move == true then
+		--android.light_draw()
+		if move == true then
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(Images.gui_left,gLeft.x,gLeft.y)
-			love.graphics.draw(Images.gui_right,gRight.x,gRight.y)
-			love.graphics.draw(Images.gui_light,gLight.x,gLight.y)
-			love.graphics.draw(Images.gui_act,gAct.x,gAct.y)
-			love.graphics.draw(Images.gui_settings,gSettings.x,gSettings.y)
-		 else
-			love.graphics.setColor(1, 1, 1, 50/255)
-			love.graphics.draw(Images.gui_left,gLeft.x,gLeft.y)
-			love.graphics.draw(Images.gui_right,gRight.x,gRight.y)
-			love.graphics.draw(Images.gui_act,gAct.x,gAct.y)
-		 end
+			love.graphics.draw(Images.gui_left, gLeft.x, gLeft.y)
+			love.graphics.draw(Images.gui_right, gRight.x, gRight.y)
+			love.graphics.draw(Images.gui_light, gLight.x, gLight.y)
+			love.graphics.draw(Images.gui_act, gAct.x, gAct.y)
+			love.graphics.draw(Images.gui_settings, gSettings.x, gSettings.y)
+		else
+			love.graphics.setColor(1, 1, 1, 50 / 255)
+			love.graphics.draw(Images.gui_left, gLeft.x, gLeft.y)
+			love.graphics.draw(Images.gui_right, gRight.x, gRight.y)
+			love.graphics.draw(Images.gui_act, gAct.x, gAct.y)
+		end
 		if word_puzzle then
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(Images.gui_esc,gEsc.x,gEsc.y)
+			love.graphics.draw(Images.gui_esc, gEsc.x, gEsc.y)
 		end
-		  if clock_puzzle == true then
+		if clock_puzzle == true then
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(Images.gui_left,gLeft2.x,gLeft2.y)
-			love.graphics.draw(Images.gui_right,gRight2.x,gRight2.y)
-			love.graphics.draw(Images.gui_up,gUp.x,gUp.y)
-			love.graphics.draw(Images.gui_down,gDown.x,gDown.y)
-			love.graphics.draw(Images.gui_enter,gEnter.x,gEnter.y)
-			love.graphics.draw(Images.gui_esc,gEsc.x,gEsc.y)
+			love.graphics.draw(Images.gui_left, gLeft2.x, gLeft2.y)
+			love.graphics.draw(Images.gui_right, gRight2.x, gRight2.y)
+			love.graphics.draw(Images.gui_up, gUp.x, gUp.y)
+			love.graphics.draw(Images.gui_down, gDown.x, gDown.y)
+			love.graphics.draw(Images.gui_enter, gEnter.x, gEnter.y)
+			love.graphics.draw(Images.gui_esc, gEsc.x, gEsc.y)
 		end
 		if doodle_flag == true then
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(Images.gui_esc,gEsc.x,gEsc.y)
+			love.graphics.draw(Images.gui_esc, gEsc.x, gEsc.y)
 		end
 	end
 end
 
-function android.touchpressed(id,x,y)
+function android.touchpressed(id, x, y)
 	local state = gamestates.getState()
 	if state == "splash" or state == "splash2" then
 		love.keypressed("e")
 	end
 	if state == "gallery" then
-		if Gallery.touch(id,x,y,gPlay) then
+		if Gallery.touch(id, x, y, gPlay) then
 			love.keypressed("space")
-		elseif Gallery.touch(id,x,y,gNext) then
+		elseif Gallery.touch(id, x, y, gNext) then
 			love.keypressed("n")
-		elseif Gallery.touch(id,x,y,gPrevious) then
+		elseif Gallery.touch(id, x, y, gPrevious) then
 			love.keypressed("b")
-		elseif Gallery.touch(id,x,y,gExit) then
+		elseif Gallery.touch(id, x, y, gExit) then
 			love.keypressed("escape")
 		end
 	end
 	if state == "main" and not pauseFlag then
 		if move == true then
-			if guiCheck_touch(id,x,y,gLeft) then
+			if guiCheck_touch(id, x, y, gLeft) then
 				love.keypressed("a")
 				leftHold = true
 				rightHold = false
-			elseif guiCheck_touch(id,x,y,gRight) then
+			elseif guiCheck_touch(id, x, y, gRight) then
 				love.keypressed("d")
 				rightHold = true
 				leftHold = false
 			end
-			if guiCheck_touch(id,x,y,gAct) then
+			if guiCheck_touch(id, x, y, gAct) then
 				love.keypressed("e")
 			end
 		elseif move == false then
 			android.dialogue()
 			android.endingDialogue()
-			if guiCheck_touch(id,x,y,gAct) then
+			if guiCheck_touch(id, x, y, gAct) then
 				love.keypressed("e")
-			elseif guiCheck_touch(id,x,y,gLeft) then
+			elseif guiCheck_touch(id, x, y, gLeft) then
 				love.keypressed("a")
-			elseif guiCheck_touch(id,x,y,gRight) then
+			elseif guiCheck_touch(id, x, y, gRight) then
 				love.keypressed("d")
 			end
 		end
 
 		if doodle_flag or clock_puzzle or word_puzzle then
-			if guiCheck_touch(id,x,y,gEsc) then
+			if guiCheck_touch(id, x, y, gEsc) then
 				love.keypressed("escape")
 			end
 		end
 		if clock_puzzle then
-			if guiCheck_touch(id,x,y,gEnter) then
+			if guiCheck_touch(id, x, y, gEnter) then
 				love.keypressed("return")
-			elseif guiCheck_touch(id,x,y,gLeft2) then
+			elseif guiCheck_touch(id, x, y, gLeft2) then
 				love.keypressed("a")
-			elseif guiCheck_touch(id,x,y,gRight2) then
+			elseif guiCheck_touch(id, x, y, gRight2) then
 				love.keypressed("d")
-			elseif guiCheck_touch(id,x,y,gUp) then
+			elseif guiCheck_touch(id, x, y, gUp) then
 				love.keypressed("w")
-			elseif guiCheck_touch(id,x,y,gDown) then
+			elseif guiCheck_touch(id, x, y, gDown) then
 				love.keypressed("s")
 			end
 		end
-		if guiCheck_touch(id,x,y,gLight) then
+		if guiCheck_touch(id, x, y, gLight) then
 			love.keypressed("f")
 		end
 	end
@@ -245,10 +245,10 @@ function android.touchpressed(id,x,y)
 	-- end
 end
 
-function android.touchreleased(id,x,y)
+function android.touchreleased(id, x, y)
 	local state = gamestates.getState()
 	if state == "main" and not pauseFlag then
-		if guiCheck_touch(id,x,y,gLight) then
+		if guiCheck_touch(id, x, y, gLight) then
 
 		else
 			leftHold = false
@@ -259,19 +259,18 @@ function android.touchreleased(id,x,y)
 	end
 end
 
-
-function guiCheck_touch(id,x,y,gui)
+function guiCheck_touch(id, x, y, gui)
 	local gui = gui
-	local x = x/RATIO
-	local y = (y - TY)/RATIO
+	local x = x / RATIO
+	local y = (y - TY) / RATIO
 	return x > gui.x and x < gui.x + gui.w and
 		y > gui.y and y < gui.y + gui.h
 end
 
 function android.dialogue()
 	local key = android.getKey()
-	for k,v in pairs(dialogue) do
-		for j,k in pairs(obj) do
+	for k, v in pairs(dialogue) do
+		for j, k in pairs(obj) do
 			if (v.tag == k.tag) and v.state then
 				if key == "e" then
 					if v.n <= #v.txt then
@@ -283,7 +282,7 @@ function android.dialogue()
 						v.cursor = 1
 					elseif key == "d" then
 						v.cursor = 2
-					elseif key == "e"  then
+					elseif key == "e" then
 						v:returnChoices(v.cursor)
 					end
 				end
@@ -299,7 +298,7 @@ function android.endingDialogue()
 			e_c = 1
 		elseif key == "d" then
 			e_c = 2
-		elseif key == "e"  then
+		elseif key == "e" then
 			if route == 1 then
 				if e_c == 1 then
 					event_route = him_convo
@@ -339,30 +338,30 @@ function android.light_update(dt)
 		mainLight = Images.light3
 	end
 
-	if ON_MOBILE or debugging == true then
+	if ON_MOBILE or DEBUGGING then
 		love.graphics.setCanvas(CANVAS_CUSTOM_MASK)
-		love.graphics.clear(0,0,0,LIGHT_VALUE)
+		love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 		love.graphics.setBlendMode("multiply", "premultiplied")
 		if changed == false then
-			love.graphics.draw(mainLight,lx,ly)
+			love.graphics.draw(mainLight, lx, ly)
 			if candles_light_flag and currentRoom == Images["masterRoom"] then
-				local cx,cy = getCandles()
-				love.graphics.draw(Images.candles_light_mask,cx,cy)
+				local cx, cy = getCandles()
+				love.graphics.draw(Images.candles_light_mask, cx, cy)
 			end
 			if tv_light_flag and currentRoom == Images["secretRoom"] then
-				local tx,ty = 104,11
-				love.graphics.draw(Images.tv_light,tx,ty)
+				local tx, ty = 104, 11
+				love.graphics.draw(Images.tv_light, tx, ty)
 			end
 			if left_light_flag and currentRoom == Images["leftRoom"] then
 				local img = getLeftRoom()
-				light_etc(dt,ll,img,CANVAS_CUSTOM_MASK)
+				light_etc(dt, ll, img, CANVAS_CUSTOM_MASK)
 			end
 			if right_light_flag and currentRoom == Images["rightRoom"] then
 				local img = getRightRoom()
-				light_etc(dt,rl,img,CANVAS_CUSTOM_MASK)
+				light_etc(dt, rl, img, CANVAS_CUSTOM_MASK)
 			end
 		else
-			love.graphics.draw(mainLight,0,0)
+			love.graphics.draw(mainLight, 0, 0)
 		end
 		love.graphics.setBlendMode("alpha")
 		love.graphics.setCanvas()
@@ -370,19 +369,19 @@ function android.light_update(dt)
 end
 
 function android.light_draw()
-	if ON_MOBILE or debugging == true then
+	if ON_MOBILE or DEBUGGING then
 		love.graphics.draw(CANVAS_CUSTOM_MASK)
 	end
 end
 
 function android.light_check()
-	local near_range = Images.lightOutline:getWidth()/2.5
-	local inside_range = Images.lightOutline:getWidth()/3
+	local near_range = Images.lightOutline:getWidth() / 2.5
+	local inside_range = Images.lightOutline:getWidth() / 3
 	if fade.state == false then
 		if enemy_exists == true and LIGHT_ON == true then
 			if player.x >= ghost.x - inside_range and
 				player.x <= ghost.x + inside_range then
-					ghost:action_inside()
+				ghost:action_inside()
 			elseif player.x >= ghost.x - near_range and
 				player.x <= ghost.x + near_range then
 				ghost:action_near()
@@ -397,19 +396,19 @@ function android.lightChange(bool)
 	changed = bool
 end
 
-function android.mouse_gui(x,y,button,istouch)
+function android.mouse_gui(x, y, button, istouch)
 	if not ON_MOBILE then return end
 	local state = gamestates.getState()
-	local mx= x/RATIO
-	local my = (y-TY)/RATIO
+	local mx = x / RATIO
+	local my = (y - TY) / RATIO
 
 	if button == 1 then
 		if state == "title" then
 			if instruction == false and about == false and questions == false then
-				if  check_gui(gui_pos.start_x,gui_pos.start_y,gui_pos.start_w,gui_pos.start_h) then
+				if check_gui(gui_pos.start_x, gui_pos.start_y, gui_pos.start_w, gui_pos.start_h) then
 					--start
 					gamestates.control()
-				elseif check_gui(gui_pos.quit_x,gui_pos.quit_y,gui_pos.quit_w,gui_pos.quit_h) then
+				elseif check_gui(gui_pos.quit_x, gui_pos.quit_y, gui_pos.quit_w, gui_pos.quit_h) then
 					--exit
 					love.event.quit()
 				end

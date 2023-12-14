@@ -16,7 +16,7 @@ function validate_input()
 		storage_puzzle = false
 		word_puzzle = false
 		move = true
-		if ON_MOBILE or debugging then
+		if ON_MOBILE or DEBUGGING then
 			Android.lightChange(false)
 		end
 	else
@@ -24,7 +24,7 @@ function validate_input()
 		Sounds.wrong_input:play()
 		Sounds.wrong_input:setLooping(false)
 		USER_INPUT = ""
-		if OS == "Android" or OS == "iOS" or debugging == true then
+		if ON_MOBILE or DEBUGGING then
 			love.keyboard.setTextInput(false)
 		end
 	end
