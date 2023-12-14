@@ -2,11 +2,17 @@ local love_admob = require("admob")
 
 love_admob.timer = 0
 love_admob.updateTime = 1 --Seconds
+love_admob.debugging = false
+
+local test_done = false
 
 function love_admob.update(dt)
 	if love_admob.timer > 1 then
-		-- print(Inspect(love_admob))
-		-- print("Test", love_admob.test())
+		if not test_done and love_admob.debugging then
+			print(Inspect(love_admob))
+			test_done = love_admob.test()
+			print("Test", test_done)
+		end
 		love_admob.checkForAdsCallbacks()
 		love_admob.timer = 0
 	end

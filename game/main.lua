@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.19"
+local VERSION = "v1.0.20"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -38,6 +38,7 @@ ON_MOBILE = (OS == "Android") or (OS == "iOS")
 if ON_MOBILE then
 	Android = require("gui")
 	LoveAdmob = require("love_admob")
+	LoveAdmob.debugging = DEBUGGING
 	if PRO_VERSION then
 		VERSION = VERSION .. "-android-pro"
 	else
@@ -87,6 +88,7 @@ WIDTH, HEIGHT = 128, 64
 HEIGHT_HALF = HEIGHT / 2
 SW, SH = love.window.getDesktopDimensions()
 INTERACT = false
+TY = 0
 
 -- local recording = false
 
@@ -135,7 +137,6 @@ function ShowAds()
 	print("ShowAds start")
 	if FC:validate() == "accept" then
 		LoveAdmob.createBanner(_ads.banner, "top", "SMART_BANNER")
-		LoveAdmob.createInterstitial(_ads.inter)
 		LoveAdmob.showBanner()
 		if LoveAdmob.isInterstitialLoaded() == true then
 			LoveAdmob.showInterstitial()
@@ -336,7 +337,6 @@ function love.mousepressed(x, y, button, istouch)
 					end
 				elseif check_gui(gui_pos.webx, gui_pos.weby, gui_pos.webw, gui_pos.webh) then
 					if ON_MOBILE then
-						LoveAdmob.createInterstitial(_ads.inter)
 						if LoveAdmob.isInterstitialLoaded() == true then
 							LoveAdmob.showInterstitial()
 						end
