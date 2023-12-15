@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.20"
+local VERSION = "v1.0.22"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -39,11 +39,15 @@ if ON_MOBILE then
 	Android = require("gui")
 	LoveAdmob = require("love_admob")
 	LoveAdmob.debugging = DEBUGGING
+
 	if PRO_VERSION then
 		VERSION = VERSION .. "-android-pro"
 	else
 		VERSION = VERSION .. "-android"
 	end
+
+	AdMobKeys = require("admob_keys")
+	AdMobKeys.test = DEBUGGING
 end
 --require("error")
 
@@ -92,7 +96,6 @@ TY = 0
 
 -- local recording = false
 
-local _ads = require("ads")
 FC = require("libs.firstcrush.gui")
 
 MAIN_CANVAS = love.graphics.newCanvas(love.graphics.getDimensions())
@@ -133,16 +136,25 @@ end
 -- pauseFlag = false
 TEMP_MOVE = false
 
-function ShowAds()
-	print("ShowAds start")
-	if FC:validate() == "accept" then
-		LoveAdmob.createBanner(_ads.banner, "top", "SMART_BANNER")
+if ON_MOBILE and not PRO_VERSION then
+	function ShowBannerAds()
+		if math.floor(CLOCK) % 5 ~= 0 then return end
+		if FC:validate() ~= "accept" then return end
+		LoveAdmob.createBanner(AdMobKeys.banner, "top", "SMART_BANNER")
 		LoveAdmob.showBanner()
-		if LoveAdmob.isInterstitialLoaded() == true then
+	end
+
+	function ShowInterstitialAds()
+		if math.floor(CLOCK) % 3 ~= 0 then return end
+		if FC:validate() ~= "accept" then return end
+		if not LoveAdmob.isInterstitialLoaded() then
+			LoveAdmob.requestInterstitial(AdMobKeys.ids.inter)
+		end
+
+		if LoveAdmob.isInterstitialLoaded() then
 			LoveAdmob.showInterstitial()
 		end
 	end
-	print("ShowAds end")
 end
 
 function love.load()
@@ -210,7 +222,7 @@ end
 
 function love.update(dt)
 	-- if recording then return end
-	CLOCK = CLOCK + 1 * dt
+	CLOCK = CLOCK + dt
 	if not FINISHED_LOADING then
 		LOADER.update()
 	else
@@ -265,7 +277,6 @@ function love.draw()
 		love.graphics.setShader()
 
 		if FC:getState() then FC:draw() end
-		FC:draw()
 	else
 		local percent = 0
 		if LOADER.resourceCount ~= 0 then
@@ -288,6 +299,7 @@ function love.draw()
 			love.graphics.setFont(DEF_FONT)
 			love.graphics.print(VERSION, 8, 8)
 			love.graphics.print(gamestates.getState(), 8, 16)
+			love.graphics.print(tostring(CLOCK), 8, 24)
 		love.graphics.pop()
 	end
 

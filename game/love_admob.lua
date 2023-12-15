@@ -6,6 +6,34 @@ love_admob.debugging = false
 
 local test_done = false
 
+--[[
+	debugging: bool = false
+	timer: int = 0
+	updateTime: int = 1
+
+	changeEUConsent: function
+	checkForAdsCallbacks: function
+	coreGetRewardQuantity: function
+	coreGetRewardType: function
+	coreInterstitialClosed: function
+	coreInterstitialError: function
+	coreRewardedAdDidFinish: function
+	coreRewardedAdDidStop: function
+	coreRewardedAdError: function
+	createBanner: function
+	getDeviceLanguage: function
+	hideBanner: function
+	isInterstitialLoaded: function
+	isRewardedAdLoaded: function
+	requestInterstitial: function
+	requestRewardedAd: function
+	showBanner: function
+	showInterstitial: function
+	showRewardedAd: function
+	test: function
+	update: function
+--]]
+
 function love_admob.update(dt)
 	if love_admob.timer > 1 then
 		if not test_done and love_admob.debugging then

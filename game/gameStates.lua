@@ -224,10 +224,6 @@ function gamestates.init()
 		Sounds.ts_theme:setLooping(true)
 		Sounds.ts_theme:play()
 		Sounds.ts_theme:setVolume(0.5)
-
-		if ON_MOBILE and (not PRO_VERSION) then
-			ShowAds()
-		end
 	elseif state == "rain_intro" then
 		Sounds.ts_theme:stop()
 		intro_load()
@@ -341,6 +337,10 @@ function gamestates.update(dt)
 			gamestates.load()
 		end
 	elseif state == "title" then
+		if ON_MOBILE and (not PRO_VERSION) then
+			ShowBannerAds()
+		end
+
 		if instruction == false and about == false and questions == false and options == false then
 			if check_gui(gui_pos.start_x, gui_pos.start_y, gui_pos.start_w, gui_pos.start_h) or
 				check_gui(gui_pos.quit_x, gui_pos.quit_y, gui_pos.quit_w, gui_pos.quit_h) or

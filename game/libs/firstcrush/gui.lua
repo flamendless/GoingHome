@@ -54,6 +54,7 @@ function fc:GDPR_init()
 	end)
 	self:show()
 	self:start()
+	LoveAdmob.changeEUConsent()
 end
 
 function fc:init()
