@@ -220,6 +220,9 @@ function gamestates.init()
 			gamestates.nextState("title")
 		end)
 	elseif state == "title" then
+		if ON_MOBILE and not PRO_VERSION then
+			LoadAds()
+		end
 		--set music
 		Sounds.ts_theme:setLooping(true)
 		Sounds.ts_theme:play()

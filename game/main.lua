@@ -137,20 +137,22 @@ end
 TEMP_MOVE = false
 
 if ON_MOBILE and not PRO_VERSION then
+	function LoadAds()
+		print("Loading ads...")
+		if FC:validate() ~= "accept" then return end
+		LoveAdmob.createBanner(AdMobKeys.ids.banner, "bottom")
+		LoveAdmob.requestInterstitial(AdMobKeys.ids.inter)
+		print("Loading success")
+	end
+
 	function ShowBannerAds()
 		if math.floor(CLOCK) % 5 ~= 0 then return end
-		if FC:validate() ~= "accept" then return end
-		LoveAdmob.createBanner(AdMobKeys.ids.banner, "top", "SMART_BANNER")
 		LoveAdmob.showBanner()
 	end
 
 	function ShowInterstitialAds()
 		if math.floor(CLOCK) % 3 ~= 0 then return end
 		if FC:validate() ~= "accept" then return end
-		if not LoveAdmob.isInterstitialLoaded() then
-			LoveAdmob.requestInterstitial(AdMobKeys.ids.inter)
-		end
-
 		if LoveAdmob.isInterstitialLoaded() then
 			LoveAdmob.showInterstitial()
 		end
