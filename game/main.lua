@@ -140,7 +140,7 @@ if ON_MOBILE and not PRO_VERSION then
 	function ShowBannerAds()
 		if math.floor(CLOCK) % 5 ~= 0 then return end
 		if FC:validate() ~= "accept" then return end
-		LoveAdmob.createBanner(AdMobKeys.banner, "top", "SMART_BANNER")
+		LoveAdmob.createBanner(AdMobKeys.ids.banner, "top", "SMART_BANNER")
 		LoveAdmob.showBanner()
 	end
 
