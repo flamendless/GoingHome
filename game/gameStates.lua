@@ -220,13 +220,13 @@ function gamestates.init()
 			gamestates.nextState("title")
 		end)
 	elseif state == "title" then
-		if ON_MOBILE and not PRO_VERSION then
-			LoadAds()
-		end
 		--set music
 		Sounds.ts_theme:setLooping(true)
 		Sounds.ts_theme:play()
 		Sounds.ts_theme:setVolume(0.5)
+		if ON_MOBILE and not PRO_VERSION then
+			PreloadAds()
+		end
 	elseif state == "rain_intro" then
 		Sounds.ts_theme:stop()
 		intro_load()
@@ -255,7 +255,7 @@ function gamestates.init()
 
 		enemy_exists = false
 		seen = false
-		gameover = false
+		GAMEOVER = false
 
 		currentRoom = Images["mainRoom"]
 		--locked doors
@@ -456,7 +456,7 @@ function gamestates.update(dt)
 
 		Timer.update(dt)
 
-		if gameover == false then
+		if GAMEOVER == false then
 			if event ~= "after_secret_room" and
 				ghost_event ~= "no escape" and
 				ghost_event ~= "still no escape" and
@@ -511,7 +511,7 @@ function gamestates.update(dt)
 			end
 		end
 
-		if gameover == false then
+		if GAMEOVER == false then
 			if ON_MOBILE or DEBUGGING then
 				--android.lightCircle()
 			elseif not ON_MOBILE and (not DEBUGGING) then
@@ -638,7 +638,7 @@ function gamestates.update(dt)
 			end
 		end
 
-		if gameover == true then
+		if GAMEOVER == true then
 			if go_flag == 0 then
 				go_flag = 1
 			end
@@ -1159,7 +1159,7 @@ function gamestates.draw()
 		for _, v in pairs(dialogue) do
 			v:draw()
 		end
-		if gameover == true then
+		if GAMEOVER == true then
 			game_over.draw()
 		end
 

@@ -39,7 +39,6 @@ function game_over.update(dt)
 	lightY =  player.y - Images.light:getHeight()/2 + 4
 
 
-
 	if timer >= 8 and timer <= 9 then
 		player.img = Images.player_idle
 		LIGHT_ON = true
@@ -97,18 +96,13 @@ function game_over.exit()
 	--sounds.ts_theme:play()
 	Sounds.rain:stop()
 	Sounds.main_theme:stop()
-	gameover = false
+	GAMEOVER = false
 	--return to title screen
 	--states = "title"
 	--gamestates.load()
 	if PRO_VERSION == false then
 		if ON_MOBILE then
-			if LoveAdmob.isInterstitialLoaded() == true then
-				LoveAdmob.showInterstitial()
-				love.event.quit("restart")
-			else
-				love.event.quit("restart")
-			end
+			ShowRewardedAds(true)
 		else
 			love.event.quit("restart")
 		end

@@ -27,7 +27,7 @@ function SCENE.atticRoom_update(dt)
 		if ghost.x >= 19 then
 			ghost.chaseOn = true
 		else
-			if gameover == false then
+			if GAMEOVER == false then
 				ghost.chaseOn = false
 				Sounds.floor_hole:play()
 				Sounds.floor_hole:setLooping(false)

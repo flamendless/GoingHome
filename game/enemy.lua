@@ -26,7 +26,7 @@ function Enemy:update(dt)
 	--lightning
 	if lStrike == true then
 		if self.x <= player.x and self.x >= player.x + player.w then
-			gameover = true
+			GAMEOVER = true
 		end
 		if player.x < self.x and player.x > self.x - 14 or player.x > self.x and player.x < self.x + 8 then
 			self.chaseOn = true
@@ -39,7 +39,7 @@ function Enemy:update(dt)
 		if move == true then
 			if self.x >= player.x and self.x <= player.x + player.w then
 				self.chaseOn = false
-				gameover = true
+				GAMEOVER = true
 			else
 				self.chaseOn = true
 			end
@@ -130,7 +130,7 @@ function Enemy:chase(dt)
 	--collision
 	if self.x >= player.x and self.x <= player.x + player.w then
 		self.chaseOn = false
-		gameover = true
+		GAMEOVER = true
 	end
 
 	--avoid

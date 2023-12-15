@@ -4,6 +4,17 @@ love_admob.timer = 0
 love_admob.updateTime = 1 --Seconds
 love_admob.debugging = false
 
+love_admob.ad_timers = {
+	banner = 0,
+	interstitial = 0,
+	rewarded = 0,
+}
+
+love_admob.showing = {
+	interstitial = false,
+	rewarded = false,
+}
+
 local test_done = false
 
 --[[
@@ -44,40 +55,48 @@ function love_admob.update(dt)
 		love_admob.checkForAdsCallbacks()
 		love_admob.timer = 0
 	end
+	love_admob.ad_timers.banner = love_admob.ad_timers.banner + dt
+	love_admob.ad_timers.interstitial = love_admob.ad_timers.interstitial + dt
+	love_admob.ad_timers.rewarded = love_admob.ad_timers.rewarded + dt
 	love_admob.timer = love_admob.timer + dt
 end
 
 function love_admob.checkForAdsCallbacks()
 	if love_admob.coreInterstitialError() then --Interstitial failed to load
+		love_admob.showing.interstitial = false
 		if love_admob.interstitialFailedToLoad then
 			love_admob.interstitialFailedToLoad()
 		end
 	end
 
 	if love_admob.coreInterstitialClosed() then --User has closed the ad
+		love_admob.showing.interstitial = false
 		if love_admob.interstitialClosed then
 			love_admob.interstitialClosed()
 		end
 	end
 
 	if love_admob.coreRewardedAdError() then --Rewarded ad failed to load
+		love_admob.showing.rewarded = false
 		if love_admob.rewardedAdFailedToLoad then
 			love_admob.rewardedAdFailedToLoad()
 		end
 	end
 
 	if love_admob.coreRewardedAdDidFinish() then --Video has finished playing
+		love_admob.showing.rewarded = false
 		local rewardType = "???"
 		local rewardQuantity = 1
 		rewardType = love_admob.coreGetRewardType() or "???"
 		rewardQuantity = love_admob.coreGetRewardQuantity() or 1
 
 		if love_admob.rewardUserWithReward then
-			love_admob.rewardUserWithReward(rewardType,rewardQuantity)
+			love_admob.rewardUserWithReward(rewardType, rewardQuantity)
 		end
 	end
 
 	if love_admob.coreRewardedAdDidStop() then --Video has stopped by user
+		love_admob.showing.rewarded = false
 		if love_admob.rewardedAdDidStop then
 			love_admob.rewardedAdDidStop()
 		end

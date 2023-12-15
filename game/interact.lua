@@ -45,7 +45,7 @@ function Interact:new(state,txt,opt_txt,sm,tag)
 end
 
 function Interact:update(dt)
-	if gameover == true then
+	if GAMEOVER == true then
 		self.state = false
 	end
 
