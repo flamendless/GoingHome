@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.25"
+local VERSION = "v1.0.26"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -48,6 +48,10 @@ if ON_MOBILE then
 
 	AdMobKeys = require("admob_keys")
 	AdMobKeys.test = DEBUGGING
+
+	LoveAdmob.rewardUserWithReward = function(reward_type, reward_qty)
+		print("rewardUserWithReward callback", reward_type, reward_qty)
+	end
 end
 --require("error")
 

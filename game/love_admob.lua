@@ -50,7 +50,7 @@ function love_admob.update(dt)
 		if not test_done and love_admob.debugging then
 			print(Inspect(love_admob))
 			test_done = love_admob.test()
-			print("Test", test_done)
+			print("AdMob Test", test_done)
 		end
 		love_admob.checkForAdsCallbacks()
 		love_admob.timer = 0
@@ -85,13 +85,12 @@ function love_admob.checkForAdsCallbacks()
 
 	if love_admob.coreRewardedAdDidFinish() then --Video has finished playing
 		love_admob.showing.rewarded = false
-		local rewardType = "???"
-		local rewardQuantity = 1
-		rewardType = love_admob.coreGetRewardType() or "???"
-		rewardQuantity = love_admob.coreGetRewardQuantity() or 1
+		local reward_type = love_admob.coreGetRewardType() or "???"
+		local reward_qty = love_admob.coreGetRewardQuantity() or 1
+		print("AdMob reward:", reward_type, reward_qty)
 
 		if love_admob.rewardUserWithReward then
-			love_admob.rewardUserWithReward(rewardType, rewardQuantity)
+			love_admob.rewardUserWithReward(reward_type, reward_qty)
 		end
 	end
 
