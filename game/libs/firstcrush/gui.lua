@@ -36,8 +36,7 @@ end
 
 function fc:validate()
 	if love.filesystem.getInfo("gdrp") then
-		local _g = love.filesystem.read("gdrp")
-		return _g
+		return love.filesystem.read("gdrp")
 	end
 end
 
@@ -213,9 +212,12 @@ end
 function fc:mousepressed(mx, my, mb, istouch)
 	if not self.state then return end
 	if #self.buttons > 0 then
-		for k, v in pairs(self.buttons) do
+		for _, v in ipairs(self.buttons) do
 			if mb == 1 or istouch then
-				if v.isHover then v.callback() end
+				if point_to_rect(mx, my, v.x, v.y, v.w, v.h) then
+					cursor = v.index
+					v.callback()
+				end
 			end
 		end
 	end
@@ -224,7 +226,7 @@ end
 function fc:touchpressed(id, tx, ty)
 	if not self.state then return end
 	if #self.buttons > 0 then
-		for k, v in pairs(self.buttons) do
+		for _, v in ipairs(self.buttons) do
 			if point_to_rect(tx, ty, v.x, v.y, v.w, v.h) then
 				cursor = v.index
 				v.callback()
