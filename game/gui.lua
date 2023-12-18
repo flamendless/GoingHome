@@ -103,6 +103,7 @@ function android.get_light_pos() return lx, ly end
 function android.update(dt)
 	local state = gamestates.getState()
 	if state ~= "main" then return end
+	if not Images.lightOutline then return end
 
 	local lo_w, lo_h = Images.lightOutline:getDimensions()
 
@@ -171,15 +172,7 @@ function android.touchpressed(id, x, y)
 	if state == "splash" or state == "splash2" then
 		love.keypressed("e")
 	elseif state == "gallery" then
-		if Gallery.touch(id, x, y, gPlay) then
-			love.keypressed("space")
-		elseif Gallery.touch(id, x, y, gNext) then
-			love.keypressed("n")
-		elseif Gallery.touch(id, x, y, gPrevious) then
-			love.keypressed("b")
-		elseif Gallery.touch(id, x, y, gExit) then
-			love.keypressed("escape")
-		end
+		Gallery.interactions(id, x, y)
 	elseif state == "main" and not Pause.flag then
 		if move == true then
 			if guiCheck_touch(id, x, y, gLeft) then

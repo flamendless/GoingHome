@@ -11,16 +11,20 @@ local isPlaying = false
 
 local galleryGui = {}
 
+local gPlay, gNext, gPrevious, gVolume, gSlider, gExit
+
 function Gallery.load()
-	music[1] = {"On The Way Home", Sounds.intro_soft }
-	music[2] = {"Peaceful Home", Sounds.finding_home }
-	music[3] = {"A Home's Melody", Sounds.ts_theme }
-	music[4] = {"Finding Home",Sounds.main_theme}
-	music[5] = {"Alone Home", Sounds.they_are_gone}
+	music = {
+		{ "On The Way Home", Sounds.intro_soft },
+		{ "Peaceful Home",   Sounds.finding_home },
+		{ "A Home's Melody", Sounds.ts_theme },
+		{ "Finding Home",    Sounds.main_theme },
+		{ "Alone Home",      Sounds.they_are_gone },
+	}
 
 	gPlay = {
 		img = Images.galleryPlay,
-		x = WIDTH/2,
+		x = WIDTH / 2,
 		y = HEIGHT - 10,
 		w = Images.galleryPlay:getWidth(),
 		h = Images.galleryPlay:getHeight()
@@ -63,15 +67,15 @@ function Gallery.load()
 	}
 
 
-	table.insert(galleryGui,gPlay)
-	table.insert(galleryGui,gNext)
-	table.insert(galleryGui,gPrevious)
-	table.insert(galleryGui,gExit)
+	table.insert(galleryGui, gPlay)
+	table.insert(galleryGui, gNext)
+	table.insert(galleryGui, gPrevious)
+	table.insert(galleryGui, gExit)
 	--table.insert(galleryGui,gSlider)
 	--table.insert(galleryGui,gVolume)
 
-	for k,v in ipairs(music) do
-		music[k][song]:setVolume(1)
+	for _, v in ipairs(music) do
+		v[song]:setVolume(1)
 	end
 
 	Gallery.pause()
@@ -80,7 +84,7 @@ end
 function Gallery.update(dt)
 	local cur = music[current]
 	local title = cur[title]
-	stringWidth = DEF_FONT:getWidth(title)/2
+	stringWidth = DEF_FONT:getWidth(title) / 2
 
 	isPlaying = cur[song]:isPlaying()
 	imgPlay = isPlaying == true and Images.galleryPlay or Images.galleryPause
@@ -89,10 +93,8 @@ end
 
 function Gallery.keypressed(key)
 	if key == "b" then
-		--ternary for next
 		Gallery.prev()
 	elseif key == "n" then
-		--ternary for previous
 		Gallery.next()
 	elseif key == "space" then
 		if isPlaying then
@@ -110,11 +112,11 @@ end
 function Gallery.draw()
 	love.graphics.setColor(1, 1, 1, 1)
 	love.graphics.setColor(0, 0, 0, 1)
-	love.graphics.rectangle("fill",0,0,WIDTH,HEIGHT)
+	love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 	love.graphics.setColor(1, 1, 1, 1)
 	love.graphics.print(
 		music[current][title],
-		WIDTH/2 - stringWidth,
+		WIDTH / 2 - stringWidth,
 		HEIGHT_HALF - DEF_FONT_HEIGHT
 	)
 
@@ -128,7 +130,7 @@ function Gallery.draw()
 		love.graphics.draw(obj.img,
 			obj.x, obj.y,
 			0, 1, 1,
-			obj.w/2, obj.h/2
+			obj.w / 2, obj.h / 2
 		)
 	end
 end
@@ -168,17 +170,28 @@ function Gallery.decrease()
 	love.audio.setVolume(volume)
 end
 
-function Gallery.touch(id,x,y,gui)
-	local gui = gui
-	local x = x/RATIO
-	local y = (y-TY)/RATIO
-	return x > gui.x - gui.w/2 and x < gui.x + gui.w and
-		y > gui.y - gui.h/2 and y < gui.y + gui.h
+function Gallery.interactions(id, x, y)
+	if Gallery.touch(id, x, y, gPlay) then
+		love.keypressed("space")
+	elseif Gallery.touch(id, x, y, gNext) then
+		love.keypressed("n")
+	elseif Gallery.touch(id, x, y, gPrevious) then
+		love.keypressed("b")
+	elseif Gallery.touch(id, x, y, gExit) then
+		Gallery.exit()
+	end
 end
 
-function Gallery.touchmoved(id,x,y)
-	local x = x/RATIO
-	local y = (y-TY)/RATIO
+function Gallery.touch(id, x, y, gui)
+	x = x / RATIO
+	y = (y - TY) / RATIO
+	return x > gui.x - gui.w / 2 and x < gui.x + gui.w and
+		y > gui.y - gui.h / 2 and y < gui.y + gui.h
+end
+
+function Gallery.touchmoved(id, x, y)
+	x = x / RATIO
+	y = (y - TY) / RATIO
 
 	if gVolume.y > gSlider.y then
 		gVolume.y = y
@@ -193,23 +206,24 @@ function Gallery.touchmoved(id,x,y)
 	end
 end
 
-function math.normalize(x,y)
-	local l=(x*x+y*y)^.5
-	if l==0 then
-		return 0,0,0
+function math.normalize(x, y)
+	local l = (x * x + y * y) ^ .5
+	if l == 0 then
+		return 0, 0, 0
 	else
-		return x/l,y/l,l
+		return x / l, y / l, l
 	end
 end
 
-function Gallery.mouse(x,y,gui)
-	return x > gui.x - gui.w/2 and x < gui.x + gui.w and
-		y > gui.y - gui.h/2 and y < gui.y + gui.h
+function Gallery.mouse(x, y, gui)
+	return x > gui.x - gui.w / 2 and x < gui.x + gui.w and
+		y > gui.y - gui.h / 2 and y < gui.y + gui.h
 end
 
 function Gallery.exit()
 	love.audio.setVolume(1)
 	Gallery.stop()
+	gamestates.nextState("title")
 end
 
 return Gallery

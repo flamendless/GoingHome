@@ -374,9 +374,7 @@ function love.mousepressed(x, y, button, istouch)
 	local my = (y - TY) / RATIO
 	--android.mouse_gui(x,y,button,istouch)
 	if state == "gallery" then
-		if Gallery.mouse(mx, my, gExit) then
-			love.keypressed("escape")
-		end
+		Gallery.interactions(nil, x, y)
 	elseif state == "title" then
 		if button == 1 then
 			if instruction == false and about == false and questions == false then
