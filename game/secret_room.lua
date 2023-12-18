@@ -75,7 +75,7 @@ function SCENE.secretRoom_update(dt)
 		if _timer > 0 then
 			_timer = _timer - 1 * dt
 
-			local _t = math.floor(math.random(-4,4))
+			local _t = math.floor(math.random(-4, 4))
 			if _t == 1 then
 				_flag = true
 				Sounds.fl_toggle:play()
@@ -102,18 +102,16 @@ function SCENE.secretRoom_update(dt)
 			_timer = _timer - 1 * dt
 			if _timer >= 7 and _timer <= 9 then
 				txt1 = "I have to find them quick..."
-				txt1_x = WIDTH/2 - DEF_FONT:getWidth(txt1)/2
-				txt1_y = HEIGHT/4  - DEF_FONT_HALF
+				txt1_x = WIDTH / 2 - DEF_FONT:getWidth(txt1) / 2
+				txt1_y = HEIGHT / 4 - DEF_FONT_HALF
 				text1_flag = true
 			elseif _timer >= 4 and _timer <= 6 then
 				txt1 = "The flashlight won't last..."
 				txt1_y = HEIGHT_HALF - DEF_FONT_HALF
-
 			elseif _timer >= 1 and _timer <= 3 then
-				txt1_x = WIDTH/2 + DEF_FONT:getWidth(txt1)/2
+				txt1_x = WIDTH / 2 + DEF_FONT:getWidth(txt1) / 2
 				txt1 = "Alex..."
-				txt1_y = HEIGHT - 8  - DEF_FONT_HALF
-
+				txt1_y = HEIGHT - 8 - DEF_FONT_HALF
 			elseif _timer <= 0 then
 				txt1 = ""
 
@@ -122,7 +120,6 @@ function SCENE.secretRoom_update(dt)
 				--sounds.they_are_gone:play()
 				--sounds.they_are_gone:setLooping(true)
 				--sounds.they_are_gone:setVolume(0.25)
-
 			end
 		end
 	elseif event == "after_dialogue" then
@@ -135,11 +132,13 @@ function SCENE.secretRoom_update(dt)
 				tv_light_flag = true
 				static_fade = true
 
-				for i,v in ipairs(dialogue) do
+				for i, v in ipairs(dialogue) do
 					if v.tag == "tv" then
 						table.remove(dialogue, i)
-						local tv_open = Interact(false,{"It's just showing random pixels","H...How?","There's no electricity","Turn it off?"},{"Yes","Leave it be"},"It won't turn off","tv")
-						table.insert(dialogue,tv_open)
+						local tv_open = Interact(false,
+							{ "It's just showing random pixels", "H...How?", "There's no electricity", "Turn it off?" },
+							{ "Yes", "Leave it be" }, "It won't turn off", "tv")
+						table.insert(dialogue, tv_open)
 						tv_open_volume = true
 						tv_mute = false
 					end
@@ -174,10 +173,8 @@ function SCENE.secretRoom_update(dt)
 		ENEMY_EXISTS = false
 		LIGHT_ON = false
 		random_breathe_flag = false
-
 	elseif ghost_event == "lying down" then
-
-		love.mouse.setPosition(131,326)
+		love.mouse.setPosition(131, 326)
 
 		LIGHT_ON = true
 		if timer > 0 then
@@ -194,17 +191,15 @@ function SCENE.secretRoom_update(dt)
 						break
 					end
 				end
-				local head = Items(Images.st_head,Images["stairRoom"],80,22,"head")
+				local head = Items(Images.st_head, Images["stairRoom"], 80, 22, "head")
 				table.insert(obj, head)
 			end
 		end
-
-
 	elseif ghost_event == "flashback" then
 		--set previous rooms to false
 		--things to hide while in flashback
-		for _,v in ipairs(obj) do
-			for _,m in ipairs(hide) do
+		for _, v in ipairs(obj) do
+			for _, m in ipairs(hide) do
 				if v.tag == m then
 					v.visible = false
 					break
@@ -229,6 +224,7 @@ function SCENE.secretRoom_update(dt)
 				if timer > 0 then
 					LIGHT_ON = false
 					if c < #_txt_2 then
+						LIGHT_VALUE = 0
 						txt = true
 						timer = timer - 1 * dt
 						if timer <= 0 then
@@ -245,34 +241,35 @@ function SCENE.secretRoom_update(dt)
 				end
 			elseif event_find == true then
 				if move_chair == false then
-				    --finding parents
-				    if screamed == 0 then
-				    	if player.x >= 77 and player.x <= 80 then
-				    		Sounds.floor_squeak:play()
-				    		move = false
-				    		screamed = 1
-				    		timer = 3
-				    	end
-				    elseif screamed == 1 then
-				    	if timer > 0 then
-				    		timer = timer - 1 * dt
-				    		if timer <= 0 then
-				    			screamed = -1
-				    			move = true
-				    		end
-				    	end
-				    elseif screamed == -1 then
-				    	--here is the part where we are going to find a chair
-				    	--create the chair
-				    	LIGHT_ON = true
-				    	if insert_chair == false then
-					    	local chair = Items(Images.store_chair,Images["storageRoom"],37,34,"chair")
-					    	table.insert(obj,chair)
-					    	local cd = Interact(false,{"It's a chair","What to do?"},{"Take it","Push it"},"It's too big","chair")
-							table.insert(dialogue,cd)
+					--finding parents
+					if screamed == 0 then
+						if player.x >= 77 and player.x <= 80 then
+							Sounds.floor_squeak:play()
+							move = false
+							screamed = 1
+							timer = 3
+						end
+					elseif screamed == 1 then
+						if timer > 0 then
+							timer = timer - 1 * dt
+							if timer <= 0 then
+								screamed = -1
+								move = true
+							end
+						end
+					elseif screamed == -1 then
+						--here is the part where we are going to find a chair
+						--create the chair
+						LIGHT_ON = true
+						if insert_chair == false then
+							local chair = Items(Images.store_chair, Images["storageRoom"], 37, 34, "chair")
+							table.insert(obj, chair)
+							local cd = Interact(false, { "It's a chair", "What to do?" }, { "Take it", "Push it" },
+								"It's too big", "chair")
+							table.insert(dialogue, cd)
 							insert_chair = true
 						end
-				    end
+					end
 				end
 				LIGHT_ON = true
 			end
@@ -283,12 +280,12 @@ function SCENE.secretRoom_update(dt)
 					break
 				end
 			end
-			local holes = Items(Images.st_hole,Images["stairRoom"], 80, 22, "hole")
+			local holes = Items(Images.st_hole, Images["stairRoom"], 80, 22, "hole")
 			table.insert(obj, holes)
 
 			--set previous rooms configs to true
-			for _,v in ipairs(obj) do
-				for _,m in ipairs(hide) do
+			for _, v in ipairs(obj) do
+				for _, m in ipairs(hide) do
 					if v.tag == m then
 						v.visible = true
 						break
@@ -334,7 +331,7 @@ function SCENE.secretRoom_update(dt)
 		tv_light_flag = true
 
 		--remove corpse
-		for _,v in ipairs(obj) do
+		for _, v in ipairs(obj) do
 			if v.tag == "corpse" then
 				--table.remove(obj,k)
 				v.visible = false
@@ -360,36 +357,36 @@ function SCENE.secretRoom_update(dt)
 	--tv illum
 	if tv_light_flag == true then
 		love.graphics.setCanvas(CANVAS_TV_FLASH)
-		love.graphics.clear(0,0,0,LIGHT_VALUE)
+		love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 		love.graphics.setBlendMode("multiply", "premultiplied")
-		love.graphics.draw(Images.tv_light,104,11)
-		love.graphics.draw(light,LIGHTX,LIGHTY)
+		love.graphics.draw(Images.tv_light, 104, 11)
+		love.graphics.draw(light, LIGHTX, LIGHTY)
 		love.graphics.setBlendMode("alpha")
 		love.graphics.setCanvas()
 		tv_anim:update(dt)
 	end
 end
 
-local t1 = "They're in the attic"
-local t2 = "I can't reach the ladder"
-
 function SCENE.secretRoom_draw()
 	if ghost_event == "flashback" then
 		if txt == true then
-			love.graphics.setColor(180/255,180/255,180/255,1)
-			love.graphics.print(_txt_2[c],WIDTH/2 - DEF_FONT:getWidth(_txt_2[c])/2, HEIGHT_HALF - DEF_FONT_HALF)
+			love.graphics.setColor(180 / 255, 180 / 255, 180 / 255, 1)
+			local subtext = _txt_2[c]
+			love.graphics.print(subtext, WIDTH / 2 - DEF_FONT:getWidth(subtext) / 2, HEIGHT_HALF - DEF_FONT_HALF)
 		end
 
 		if screamed == 1 then
-			love.graphics.setColor(180/255,180/255,180/255,1)
-			love.graphics.print(t1, WIDTH/2 - DEF_FONT:getWidth(t1)/2, 0 + DEF_FONT_HEIGHT/4)
-			love.graphics.print(t2, WIDTH/2 - DEF_FONT:getWidth(t2)/2, HEIGHT - DEF_FONT_HEIGHT)
-
+			local t1 = "They're in the attic"
+			local t2 = "I can't reach the ladder"
+			love.graphics.setColor(180 / 255, 180 / 255, 180 / 255, 1)
+			love.graphics.print(t1, WIDTH / 2 - DEF_FONT:getWidth(t1) / 2, 0 + DEF_FONT_HEIGHT / 4)
+			love.graphics.print(t2, WIDTH / 2 - DEF_FONT:getWidth(t2) / 2, HEIGHT - DEF_FONT_HEIGHT)
 		end
 	elseif ghost_event == "limp" then
 		if txt == true then
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.print(_txt[c],WIDTH/2 - DEF_FONT:getWidth(_txt[c])/2, HEIGHT_HALF - DEF_FONT_HALF)
+			local subtext = _txt[c]
+			love.graphics.print(subtext, WIDTH / 2 - DEF_FONT:getWidth(subtext) / 2, HEIGHT_HALF - DEF_FONT_HALF)
 		end
 	end
 end

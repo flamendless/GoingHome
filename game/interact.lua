@@ -21,7 +21,7 @@ function Interact:new(state, txt, opt_txt, sm, tag)
 	self.x = {}
 	self.y = {}
 	for i = 1, #self.txt do
-		self.x[i] = WIDTH / 2 - DEF_FONT:getWidth(self.txt[i]) / 2
+		self.x[i] = WIDTH_HALF - DEF_FONT:getWidth(self.txt[i]) / 2
 		self.y[i] = 0 + DEF_FONT_HEIGHT / 4
 	end
 
@@ -121,39 +121,56 @@ function Interact:draw()
 		if self.option == false then
 			love.graphics.print(self.txt[self.n], self.x[self.n], self.y[self.n])
 		else
+			local ll = #self.txt
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.print(self.txt[#self.txt], self.x[#self.txt], self.y[#self.txt])
+			love.graphics.print(self.txt[ll], self.x[ll], self.y[ll])
+
+			local choices_xpad
+			local choices_y
+			if ON_MOBILE then
+				choices_xpad = 8
+				choices_y = HEIGHT_HALF - DEF_FONT_HALF
+			else
+				choices_xpad = 2
+				choices_y = HEIGHT - DEF_FONT_HALF - 8
+			end
 
 			love.graphics.setColor(self.opt1)
-			love.graphics.print(self.opt_txt[1], WIDTH / 4 - DEF_FONT:getWidth(self.opt_txt[1]) / 2,
-				HEIGHT - DEF_FONT_HALF - 8)
+			love.graphics.print(
+				self.opt_txt[1],
+				WIDTH / choices_xpad - DEF_FONT:getWidth(self.opt_txt[1]) / 2,
+				choices_y
+			)
 
 			love.graphics.setColor(self.opt2)
-			love.graphics.print(self.opt_txt[2], WIDTH - DEF_FONT:getWidth(self.opt_txt[2]) / 2 - WIDTH / 4,
-				HEIGHT - DEF_FONT_HALF - 8)
+			love.graphics.print(
+				self.opt_txt[2],
+				WIDTH - DEF_FONT:getWidth(self.opt_txt[2]) / 2 - WIDTH / choices_xpad,
+				choices_y
+			)
 		end
 	end
 	if self.simpleMessage == true then
 		if DEF_FONT:getWidth(self.sm) >= WIDTH - 16 then
-			local sw = string.len(self.sm)
-			local s1 = string.sub(self.sm, 1, sw / 2)
-			local s2 = string.sub(self.sm, sw / 2 + 1)
+			local sw = string.len(self.sm) / 2
+			local s1 = string.sub(self.sm, 1, sw)
+			local s2 = string.sub(self.sm, sw + 1)
 
-			love.graphics.print(s1, WIDTH / 2 - DEF_FONT:getWidth(s1) / 2, 0 + DEF_FONT_HEIGHT / 4)
-			love.graphics.print(s2, WIDTH / 2 - DEF_FONT:getWidth(s2) / 2, HEIGHT - DEF_FONT_HALF - 8)
+			love.graphics.print(s1, WIDTH_HALF - DEF_FONT:getWidth(s1) / 2, DEF_FONT_HEIGHT / 4)
+			love.graphics.print(s2, WIDTH_HALF - DEF_FONT:getWidth(s2) / 2, HEIGHT - DEF_FONT_HALF - 8)
 		else
-			love.graphics.print(self.sm, WIDTH / 2 - DEF_FONT:getWidth(self.sm) / 2, HEIGHT - DEF_FONT_HALF - 8)
+			love.graphics.print(self.sm, WIDTH_HALF - DEF_FONT:getWidth(self.sm) / 2, HEIGHT - DEF_FONT_HALF - 8)
 		end
 	elseif self.specialTxt == true then
-		love.graphics.print(self.sp_1, WIDTH / 2 - DEF_FONT:getWidth(self.sp_1) / 2, 0 + DEF_FONT_HEIGHT / 4)
+		love.graphics.print(self.sp_1, WIDTH_HALF - DEF_FONT:getWidth(self.sp_1) / 2, 0 + DEF_FONT_HEIGHT / 4)
 
 		if self.sp_2_show == true then
-			love.graphics.print(self.sp_2, WIDTH / 2 - DEF_FONT:getWidth(self.sp_2) / 2, HEIGHT - DEF_FONT_HALF - 8)
+			love.graphics.print(self.sp_2, WIDTH_HALF - DEF_FONT:getWidth(self.sp_2) / 2, HEIGHT - DEF_FONT_HALF - 8)
 		end
 	end
 
 	if self._door == true then
-		love.graphics.print(self._dt, WIDTH / 2 - DEF_FONT:getWidth(self._dt) / 2, 0 + DEF_FONT_HEIGHT / 4)
+		love.graphics.print(self._dt, WIDTH_HALF - DEF_FONT:getWidth(self._dt) / 2, 0 + DEF_FONT_HEIGHT / 4)
 	end
 end
 

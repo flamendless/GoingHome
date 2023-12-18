@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.30"
+local VERSION = "v1.0.32"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -95,6 +95,7 @@ CORRECT = "mom fell his fault"
 
 love.keyboard.setTextInput(false)
 WIDTH, HEIGHT = 128, 64
+WIDTH_HALF = WIDTH / 2
 HEIGHT_HALF = HEIGHT / 2
 SW, SH = love.window.getDesktopDimensions()
 INTERACT = false
@@ -328,10 +329,10 @@ function love.draw()
 		love.graphics.setColor(1, 1, 1, 150 / 255)
 		love.graphics.setFont(DEF_FONT)
 		local str_loading = ("Loading..%d%%"):format(percent * 100)
-		love.graphics.print(str_loading, WIDTH / 2 - DEF_FONT:getWidth(str_loading) / 2, HEIGHT - DEF_FONT_HEIGHT)
+		love.graphics.print(str_loading, WIDTH_HALF - DEF_FONT:getWidth(str_loading) / 2, HEIGHT - DEF_FONT_HEIGHT)
 
 		local scale = 0.4
-		love.graphics.draw(img_loading, WIDTH / 2, HEIGHT_HALF, 0, scale, scale, lsw / 2, lsh / 2)
+		love.graphics.draw(img_loading, WIDTH_HALF, HEIGHT_HALF, 0, scale, scale, lsw / 2, lsh / 2)
 	end
 	love.graphics.pop()
 
@@ -343,6 +344,9 @@ function love.draw()
 		love.graphics.print(VERSION, 8, 8)
 		love.graphics.print(gamestates.getState(), 8, 16)
 		love.graphics.print(tostring(CLOCK), 8, 24)
+		if ghost_event then
+			love.graphics.print(tostring(ghost_event), 8, 32)
+		end
 		love.graphics.pop()
 	end
 
@@ -736,7 +740,7 @@ function love.keypressed(key)
 						end
 					end
 
-					if currentRoom == Images["leftRoom"] or currentRoom == Images["rightRoom"] then
+					if currentRoom == Images.leftRoom or currentRoom == Images.rightRoom then
 						if LIGHT_ON == false then
 							player:checkItems()
 							player:checkDoors()

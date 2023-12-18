@@ -77,13 +77,13 @@ function android.load()
 		h = 7
 	}
 	gSettingsBack = {
-		x = WIDTH / 2 - 13,
+		x = WIDTH_HALF - 13,
 		y = HEIGHT_HALF - 8,
 		w = 26,
 		h = 12
 	}
 	gQuit = {
-		x = WIDTH / 2 - 10,
+		x = WIDTH_HALF - 10,
 		y = HEIGHT_HALF + 8,
 		w = 20,
 		h = 12

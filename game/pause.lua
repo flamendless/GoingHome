@@ -58,7 +58,7 @@ end
 function pause.draw()
 	if not pause.flag then return end
 	love.graphics.setColor(1, 1, 1, 1)
-	love.graphics.print(pauseTxt, WIDTH / 2 - DEF_FONT:getWidth(pauseTxt) / 2, 8)
+	love.graphics.print(pauseTxt, WIDTH_HALF - DEF_FONT:getWidth(pauseTxt) / 2, 8)
 	if ON_MOBILE then
 		local gSettingsBack = Android.getgui("settings_back")
 		local gQuit = Android.getgui("quit")

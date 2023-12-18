@@ -24,7 +24,7 @@ function Gallery.load()
 
 	gPlay = {
 		img = Images.galleryPlay,
-		x = WIDTH / 2,
+		x = WIDTH_HALF,
 		y = HEIGHT - 10,
 		w = Images.galleryPlay:getWidth(),
 		h = Images.galleryPlay:getHeight()
@@ -116,7 +116,7 @@ function Gallery.draw()
 	love.graphics.setColor(1, 1, 1, 1)
 	love.graphics.print(
 		music[current][title],
-		WIDTH / 2 - stringWidth,
+		WIDTH_HALF - stringWidth,
 		HEIGHT_HALF - DEF_FONT_HEIGHT
 	)
 
