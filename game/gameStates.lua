@@ -3,10 +3,10 @@ gamestates = {}
 about = false
 options = false
 questions = false
-door_locked = true
+DOOR_LOCKED = true
 
 if DEBUGGING then
-	door_locked = false
+	DOOR_LOCKED = false
 end
 
 --
@@ -278,7 +278,7 @@ function gamestates.init()
 			"masterRoom_mid"
 		}
 
-		if not door_locked then
+		if not DOOR_LOCKED then
 			locked["mainRoom_right"] = false
 		end
 
@@ -349,8 +349,7 @@ function gamestates.update(dt)
 		tutorial_timer = tutorial_timer - dt
 		if tutorial_timer < 0 then
 			fade.state = true
-			STATES = "main"
-			gamestates.load()
+			gamestates.nextState("main")
 		end
 	elseif state == "title" then
 		if ON_MOBILE and (not PRO_VERSION) then
@@ -401,8 +400,7 @@ function gamestates.update(dt)
 			if Sounds.unlock:isPlaying() == false then
 				Sounds.unlock:play()
 			end
-			STATES = "main"
-			gamestates.load()
+			gamestates.nextState("tutorial")
 		end
 
 		--sounds
@@ -611,7 +609,7 @@ function gamestates.update(dt)
 		end
 
 		--enemy logics
-		if door_locked == false then
+		if DOOR_LOCKED == false then
 			if ENEMY_EXISTS == true then
 				if ghost_event ~= "no escape" then
 					if move == true then
@@ -873,6 +871,7 @@ function gamestates.draw()
 				end
 			end
 			love.graphics.draw(Images.options, gui_pos.options_x, gui_pos.options_y)
+
 		elseif instruction == true and about == false and questions == false then
 			draw_instructions()
 			draw_back_gui()
@@ -894,24 +893,25 @@ function gamestates.draw()
 			local rw = 8
 			for i, item in ipairs(SaveData.get_opts()) do
 				local str, value = item.str, item.value
-				local y = base_y + DEF_FONT_HEIGHT * (i - 1)
-				local rx = WIDTH - 16 - rw / 2
-				local ry = y + rw / 4
+				if not item.hide then
+					local y = base_y + DEF_FONT_HEIGHT * (i - 1)
+					local rx = WIDTH - 16 - rw / 2
+					local ry = y + rw / 4
 
-				if check_gui(16, y, DEF_FONT:getWidth(str), DEF_FONT_HEIGHT) or
-					check_gui(rx, ry, rw, rw)
-				then
-					love.graphics.setColor(1, 0, 0, 1)
-				else
-					love.graphics.setColor(1, 1, 1, 1)
-				end
+					if check_gui(16, y, DEF_FONT:getWidth(str), DEF_FONT_HEIGHT) or
+						check_gui(rx, ry, rw, rw)
+					then
+						love.graphics.setColor(1, 0, 0, 1)
+					else
+						love.graphics.setColor(1, 1, 1, 1)
+					end
 
-				love.graphics.print(str, 16, base_y + DEF_FONT_HEIGHT * (i - 1))
-				love.graphics.rectangle("line", rx, ry, rw, rw)
-
-				if value then
-					love.graphics.line(rx, ry, rx + rw, ry + rw)
-					love.graphics.line(rx, ry + rw, rx + rw, ry)
+					love.graphics.print(str, 16, base_y + DEF_FONT_HEIGHT * (i - 1))
+					love.graphics.rectangle("line", rx, ry, rw, rw)
+					if value then
+						love.graphics.line(rx, ry, rx + rw, ry + rw)
+						love.graphics.line(rx, ry + rw, rx + rw, ry)
+					end
 				end
 			end
 

@@ -415,9 +415,9 @@ function Player:checkDoors()
 				move = false
 			end
 			locked["mainRoom_right"] = false
-			door_locked = false
+			DOOR_LOCKED = false
 
-			SaveData.data.door_locked = door_locked
+			SaveData.data.DOOR_LOCKED = DOOR_LOCKED
 			SaveData.save()
 
 			for k,v in pairs(dialogue) do
@@ -438,7 +438,7 @@ function Player:checkItems()
 		then
 			if self.state == "normal" and v.visible then
 				if event_find == false then
-					if door_locked == false then
+					if DOOR_LOCKED == false then
 						v:returnTag()
 					else
 						v:stillLocked()
@@ -449,7 +449,7 @@ function Player:checkItems()
 			else
 				if (v.tag == "chair" or v.tag == "chair_final") and v.visible then
 					if event_find == false then
-						if door_locked == false then
+						if DOOR_LOCKED == false then
 							v:returnTag()
 						else
 							v:stillLocked()

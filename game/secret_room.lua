@@ -224,7 +224,6 @@ function SCENE.secretRoom_update(dt)
 				if timer > 0 then
 					LIGHT_ON = false
 					if c < #_txt_2 then
-						LIGHT_VALUE = 0
 						txt = true
 						timer = timer - 1 * dt
 						if timer <= 0 then

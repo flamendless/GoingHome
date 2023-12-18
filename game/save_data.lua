@@ -12,14 +12,17 @@ local opts = {
 	{
 		str = "classic effect",
 		value = false,
+		hide = false,
 	},
 	{
 		str = "sound/music",
 		value = true,
+		hide = false,
 	},
 	{
 		str = "hide cursor",
 		value = false,
+		hide = false,
 	},
 }
 
@@ -41,7 +44,7 @@ function SaveData.load()
 	SaveData.get_opts()
 
 	if SaveData.data.door_locked == false then
-		door_locked = false
+		DOOR_LOCKED = false
 	end
 	print("SaveData loaded")
 end
@@ -50,6 +53,9 @@ function SaveData.get_opts()
 	opts[1].value = SaveData.data.use_grayscale
 	opts[2].value = SaveData.data.music_sounds
 	opts[3].value = SaveData.data.hide_cursor
+	if ON_MOBILE then
+		opts[3].hide = true
+	end
 	return opts
 end
 

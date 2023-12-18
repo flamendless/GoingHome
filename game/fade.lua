@@ -13,7 +13,7 @@ function Fade:update(dt)
 	if self.a <= 1 then
 		self.state = false
 		self.a = 1
-		if door_locked == false then
+		if DOOR_LOCKED == false then
 			if action_flag == 0 then
 				action_flag = 1
 			end

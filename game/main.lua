@@ -118,21 +118,6 @@ if DEBUGGING == false then
 	if not ON_MOBILE then
 		toggle_fs()
 	end
-
-	TY = 0
-	if OS == "iOS" then
-		if PRO_VERSION then
-			--ty = sh - (height * math.min(sw/width,sh/height))
-			TY = HEIGHT_HALF
-		end
-	end
-	if ON_MOBILE then
-		if PRO_VERSION then
-			TY = HEIGHT
-		else
-			TY = SH - (HEIGHT * math.min(SW / WIDTH, SH / HEIGHT))
-		end
-	end
 end
 
 if gameplay_record then
@@ -302,53 +287,49 @@ end
 
 function love.draw()
 	love.graphics.setCanvas(MAIN_CANVAS)
-	love.graphics.clear()
-	love.graphics.push()
-
-	-- if ON_MOBILE then
-	-- 	love.graphics.translate(0, TY)
-	-- end
-
-	love.graphics.scale(RATIO, RATIO)
-	if FINISHED_LOADING then
-		-- if shaders_test or enemy_exists then
-		-- 	love.graphics.setShader(Shaders.palette_swap)
-		-- end
-
-		gamestates.draw()
-		Pause.draw()
-
-		love.graphics.setShader()
-
-		if FC:getState() then FC:draw() end
-	else
-		local percent = 0
-		if LOADER.resourceCount ~= 0 then
-			percent = LOADER.loadedCount / LOADER.resourceCount
-		end
-		love.graphics.setColor(1, 1, 1, 150 / 255)
-		love.graphics.setFont(DEF_FONT)
-		local str_loading = ("Loading..%d%%"):format(percent * 100)
-		love.graphics.print(str_loading, WIDTH_HALF - DEF_FONT:getWidth(str_loading) / 2, HEIGHT - DEF_FONT_HEIGHT)
-
-		local scale = 0.4
-		love.graphics.draw(img_loading, WIDTH_HALF, HEIGHT_HALF, 0, scale, scale, lsw / 2, lsh / 2)
-	end
-	love.graphics.pop()
-
-	if DEBUGGING then
+		love.graphics.clear()
 		love.graphics.push()
-		love.graphics.scale(RATIO / 2, RATIO / 2)
-		love.graphics.setColor(1, 0, 0, 1)
-		love.graphics.setFont(DEF_FONT)
-		love.graphics.print(VERSION, 8, 8)
-		love.graphics.print(gamestates.getState(), 8, 16)
-		love.graphics.print(tostring(CLOCK), 8, 24)
-		if ghost_event then
-			love.graphics.print(tostring(ghost_event), 8, 32)
-		end
+
+			love.graphics.scale(RATIO, RATIO)
+			if FINISHED_LOADING then
+				-- if shaders_test or enemy_exists then
+				-- 	love.graphics.setShader(Shaders.palette_swap)
+				-- end
+
+				gamestates.draw()
+				Pause.draw()
+
+				love.graphics.setShader()
+
+				if FC:getState() then FC:draw() end
+			else
+				local percent = 0
+				if LOADER.resourceCount ~= 0 then
+					percent = LOADER.loadedCount / LOADER.resourceCount
+				end
+				love.graphics.setColor(1, 1, 1, 150 / 255)
+				love.graphics.setFont(DEF_FONT)
+				local str_loading = ("Loading..%d%%"):format(percent * 100)
+				love.graphics.print(str_loading, WIDTH_HALF - DEF_FONT:getWidth(str_loading) / 2, HEIGHT - DEF_FONT_HEIGHT)
+
+				local scale = 0.4
+				love.graphics.draw(img_loading, WIDTH_HALF, HEIGHT_HALF, 0, scale, scale, lsw / 2, lsh / 2)
+			end
 		love.graphics.pop()
-	end
+
+		if DEBUGGING then
+			love.graphics.push()
+				love.graphics.scale(RATIO / 2, RATIO / 2)
+				love.graphics.setColor(1, 0, 0, 1)
+				love.graphics.setFont(DEF_FONT)
+				love.graphics.print(VERSION, 8, 8)
+				love.graphics.print(gamestates.getState(), 8, 16)
+				love.graphics.print(tostring(LIGHT_VALUE), 8, 24)
+				if ghost_event then
+					love.graphics.print(tostring(ghost_event), 8, 32)
+				end
+			love.graphics.pop()
+		end
 
 	love.graphics.setCanvas()
 
@@ -1040,4 +1021,10 @@ function love.touchmoved(id, x, y)
 	--Gallery.touchmoved(id,x,y)
 	--end
 	--end
+end
+
+function unrequire(m)
+  package.loaded[m] = nil
+  _G[m] = nil
+  -- require(m)
 end

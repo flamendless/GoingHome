@@ -106,14 +106,21 @@ function game_over.exit()
 			ShowRewardedAds(true, function(reward_type, reward_qty)
 				print("rewardUserWithReward callback", reward_type, reward_qty)
 				gamestates.nextState("title")
+
+				unrequire("gameStates")
+				require("gameStates")
 			end)
 		else
 			gamestates.nextState("title")
 			-- love.event.quit("restart")
+			unrequire("gameStates")
+			require("gameStates")
 		end
 	else
 		gamestates.nextState("title")
 		-- love.event.quit("restart")
+		unrequire("gameStates")
+		require("gameStates")
 	end
 end
 
@@ -132,11 +139,5 @@ function game_over.init(dt)
 	RANDOM_BREATHE = false
 
 end
-
--- function unrequire(m)
---   package.loaded[m] = nil
---   _G[m] = nil
---   require(m)
--- end
 
 return game_over
