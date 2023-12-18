@@ -89,12 +89,14 @@ gun_obtained = false
 route = 0
 l, r = 0, 0
 adTimer = 5
-adTxt = {
-	"Please Allow Ads In The Game",
-	"To Support The Developer",
-	"The Ads will be unintrusive",
-	"to the gameplay.",
-	"or buy the adless version" }
+local adTxts = {
+	"Please Allow Ads to support",
+	"The Developer. Ads will be",
+	"unintrusive and shown",
+	"minimally, or buy",
+	"the adless version",
+}
+local adTxt = table.concat(adTxts, "\n")
 lightningVol = 0.3
 
 local tutorial_timer = 5
@@ -714,8 +716,14 @@ function gamestates.draw()
 
 	local state = gamestates.getState()
 	if ON_MOBILE and state == "adshow" then
+		local w = love.graphics.getWidth()
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.draw(Images.adIntro, 0, 0)
+		love.graphics.printf(
+			adTxt,
+			8, 8,
+			w - 16
+		)
+		-- love.graphics.draw(Images.adIntro, 0, 0)
 	elseif state == "splash" then
 		love.graphics.setColor(1, 1, 1, 1)
 		splash_anim:draw(Images.splash, WIDTH / 2 - 32, HEIGHT_HALF - 16)
@@ -1152,12 +1160,10 @@ function gamestates.draw()
 			end
 		end
 
-		if ON_MOBILE then
-			if gameplay_record == false then
-				Android.draw()
-			end
+		if ON_MOBILE and not gameplay_record then
+			Android.draw()
 		end
-		for _, v in pairs(dialogue) do
+		for _, v in ipairs(dialogue) do
 			v:draw()
 		end
 		if GAMEOVER == true then

@@ -15,6 +15,11 @@ love_admob.showing = {
 	rewarded = false,
 }
 
+love_admob.shown_count = {
+	interstitial = 0,
+	rewarded = 0,
+}
+
 local test_done = false
 
 --[[

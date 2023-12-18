@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.29"
+local VERSION = "v1.0.30"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -157,6 +157,10 @@ if ON_MOBILE and not PRO_VERSION then
 	end
 
 	function ShowInterstitialAds()
+		if LoveAdmob.shown_count.interstitial >= 3 then
+			return
+		end
+
 		if LoveAdmob.showing.interstitial then return end
 		if math.floor(LoveAdmob.ad_timers.interstitial) % 5 ~= 0 then return end
 		if FC:validate() ~= "accept" then return end
@@ -167,10 +171,16 @@ if ON_MOBILE and not PRO_VERSION then
 			LoveAdmob.showInterstitial()
 			LoveAdmob.showing.interstitial = true
 			LoveAdmob.ad_timers.interstitial = 0
+			LoveAdmob.shown_count.interstitial = LoveAdmob.shown_count.interstitial + 1
 		end
 	end
 
 	function ShowRewardedAds(force, cb_reward_success)
+		if LoveAdmob.shown_count.rewarded >= 3 then
+			cb_reward_success("skip", 0)
+			return
+		end
+
 		if cb_reward_success then
 			LoveAdmob.rewardUserWithReward = cb_reward_success
 		end
@@ -187,6 +197,7 @@ if ON_MOBILE and not PRO_VERSION then
 			LoveAdmob.showRewardedAd()
 			LoveAdmob.showing.rewarded = true
 			LoveAdmob.ad_timers.rewarded = 0
+			LoveAdmob.shown_count.rewarded = LoveAdmob.shown_count.rewarded + 1
 		end
 	end
 end
