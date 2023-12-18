@@ -4,6 +4,11 @@ about = false
 options = false
 questions = false
 door_locked = true
+
+if DEBUGGING then
+	door_locked = false
+end
+
 --
 lStrike = false
 local _alarm = 3
@@ -143,7 +148,7 @@ local function draw_instructions()
 	love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 	love.graphics.setFont(DEF_FONT)
 	love.graphics.setColor(1, 1, 1)
-	local hw = WIDTH / 2
+	local hw = WIDTH_HALF
 
 	local state = gamestates.getState()
 
@@ -229,6 +234,11 @@ function gamestates.init()
 		if ON_MOBILE and not PRO_VERSION then
 			PreloadAds()
 		end
+		if SaveData.data.music_sounds then
+			love.audio.setVolume(1)
+		else
+			love.audio.setVolume(0)
+		end
 	elseif state == "rain_intro" then
 		Sounds.ts_theme:stop()
 		intro_load()
@@ -251,7 +261,7 @@ function gamestates.init()
 		LIGHT_VALUE = 1
 
 		--create dynamic objects
-		player = Player(WIDTH / 2, HEIGHT_HALF, 8, 16)
+		player = Player(WIDTH_HALF, HEIGHT_HALF, 8, 16)
 		ghost = Enemy(42, 30, 12, 14)
 
 		mrChair = Chair()
@@ -726,16 +736,16 @@ function gamestates.draw()
 		-- love.graphics.draw(Images.adIntro, 0, 0)
 	elseif state == "splash" then
 		love.graphics.setColor(1, 1, 1, 1)
-		splash_anim:draw(Images.splash, WIDTH / 2 - 32, HEIGHT_HALF - 16)
+		splash_anim:draw(Images.splash, WIDTH_HALF - 32, HEIGHT_HALF - 16)
 	elseif state == "splash2" then
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.draw(Images.wits, WIDTH / 2 - 64, HEIGHT_HALF - 32)
+		love.graphics.draw(Images.wits, WIDTH_HALF - 64, HEIGHT_HALF - 32)
 	elseif state == "title" then
 		if instruction == false and about == false and questions == false and options == false then
 			--main title screen art
 			love.graphics.setColor(1, 1, 1, 1)
 			local bgw, bgh = Images.bg:getDimensions()
-			love.graphics.draw(Images.bg, WIDTH / 2 - bgw / 2, HEIGHT_HALF - bgh / 2)
+			love.graphics.draw(Images.bg, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
 
 			local ttw, tth = Images.title_text:getDimensions()
 			local scale = 0.4
@@ -873,7 +883,7 @@ function gamestates.draw()
 
 			local str_options = "Options"
 			love.graphics.setColor(1, 0, 0, 1)
-			love.graphics.print(str_options, WIDTH / 2 - DEF_FONT:getWidth(str_options) / 2)
+			love.graphics.print(str_options, WIDTH_HALF - DEF_FONT:getWidth(str_options) / 2)
 
 			love.graphics.setColor(1, 1, 1, 1)
 
@@ -914,19 +924,19 @@ function gamestates.draw()
 			love.graphics.setColor(1, 1, 1)
 
 			local str_contact = "Contact us:"
-			love.graphics.print(str_contact, WIDTH / 2 - DEF_FONT:getWidth(str_contact) / 2, DEF_FONT_HALF - 4)
+			love.graphics.print(str_contact, WIDTH_HALF - DEF_FONT:getWidth(str_contact) / 2, DEF_FONT_HALF - 4)
 
 			love.graphics.setColor(1, 0, 0)
 			local str_twitter = "@flamendless"
-			love.graphics.print(str_twitter, WIDTH / 2 - DEF_FONT:getWidth(str_twitter) / 2, 10 + DEF_FONT_HALF)
+			love.graphics.print(str_twitter, WIDTH_HALF - DEF_FONT:getWidth(str_twitter) / 2, 10 + DEF_FONT_HALF)
 
 			if OS ~= "iOS" then
 				local str_donate = "Donate"
-				love.graphics.print(str_donate, WIDTH / 2 - DEF_FONT:getWidth(str_donate) / 2, 27 + DEF_FONT_HALF)
+				love.graphics.print(str_donate, WIDTH_HALF - DEF_FONT:getWidth(str_donate) / 2, 27 + DEF_FONT_HALF)
 			end
 
 			local str_email = "E-Mail"
-			love.graphics.print(str_email, WIDTH / 2 - DEF_FONT:getWidth(str_email) / 2, 44 + DEF_FONT_HALF)
+			love.graphics.print(str_email, WIDTH_HALF - DEF_FONT:getWidth(str_email) / 2, 44 + DEF_FONT_HALF)
 
 			--questions
 			if cursor_pos == 3 then
@@ -980,7 +990,7 @@ function gamestates.draw()
 				else
 					love.graphics.setColor(1, 1, 1, 1)
 				end
-				love.graphics.print(str, WIDTH / 2 - DEF_FONT:getWidth(str) / 2, DEF_FONT_HEIGHT * (i - 1))
+				love.graphics.print(str, WIDTH_HALF - DEF_FONT:getWidth(str) / 2, DEF_FONT_HEIGHT * (i - 1))
 			end
 			draw_back_gui()
 		end
@@ -989,7 +999,7 @@ function gamestates.draw()
 		love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 		love.graphics.setFont(DEF_FONT)
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.print(intro_txt[intro_count], WIDTH / 2 - DEF_FONT:getWidth(intro_txt[intro_count]) / 2,
+		love.graphics.print(intro_txt[intro_count], WIDTH_HALF - DEF_FONT:getWidth(intro_txt[intro_count]) / 2,
 			HEIGHT_HALF - DEF_FONT_HALF)
 		skip_draw()
 	elseif state == "gallery" then
@@ -1014,20 +1024,20 @@ function gamestates.draw()
 		love.graphics.setColor(1, 1, 1, 1)
 		local bgw, bgh = Images.bg:getDimensions()
 		if ending_leave == false then
-			love.graphics.draw(currentRoom, WIDTH / 2 - bgw / 2, HEIGHT_HALF - bgh / 2)
+			love.graphics.draw(currentRoom, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
 		else
-			love.graphics.draw(newRoom, WIDTH / 2 - bgw / 2, HEIGHT_HALF - bgh / 2)
+			love.graphics.draw(newRoom, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
 		end
 
 		if currentRoom == Images["mainRoom"] then
 			if ending_leave == false then
 				love.graphics.setColor(1, 1, 1, 1)
-				win_left_anim:draw(Images.window_left, WIDTH / 2 - bgw / 2, HEIGHT_HALF - bgh / 2)
-				win_right_anim:draw(Images.window_right, WIDTH / 2 - bgw / 2, HEIGHT_HALF - bgh / 2)
+				win_left_anim:draw(Images.window_left, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
+				win_right_anim:draw(Images.window_right, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
-				win_left_anim:draw(Images.window_left_color, WIDTH / 2 - bgw / 2, HEIGHT_HALF - bgh / 2)
-				win_right_anim:draw(Images.window_right_color, WIDTH / 2 - bgw / 2, HEIGHT_HALF - bgh / 2)
+				win_left_anim:draw(Images.window_left_color, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
+				win_right_anim:draw(Images.window_right_color, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
 			end
 		elseif currentRoom == Images["leftRoom"] then
 			father_anim_draw()
@@ -1085,14 +1095,14 @@ function gamestates.draw()
 		if dust_trigger == true then
 			particle_draw()
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(Images.overlay, WIDTH / 2 - Images.bg:getWidth() / 2,
+			love.graphics.draw(Images.overlay, WIDTH_HALF - Images.bg:getWidth() / 2,
 				HEIGHT_HALF - Images.bg:getHeight() / 2)
 			love.graphics.setColor(0, 0, 0, 1)
 			love.graphics.rectangle("fill", 0, HEIGHT_HALF + Images.bg:getHeight() / 2, WIDTH, HEIGHT)
 		elseif ghost_event == "fall down" then
 			particle_draw()
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(Images.overlay, WIDTH / 2 - Images.bg:getWidth() / 2,
+			love.graphics.draw(Images.overlay, WIDTH_HALF - Images.bg:getWidth() / 2,
 				HEIGHT_HALF - Images.bg:getHeight() / 2)
 			love.graphics.setColor(0, 0, 0, 1)
 			love.graphics.rectangle("fill", 0, HEIGHT_HALF + Images.bg:getHeight() / 2, WIDTH, HEIGHT)
@@ -1226,25 +1236,25 @@ function determine_enemy_pos()
 	local right = WIDTH - 14
 
 	if ghost.chaseOn == false then
-		if player.x <= WIDTH / 2 - l + 1 then --player is in the left
+		if player.x <= WIDTH_HALF - l + 1 then --player is in the left
 			ghost.x = right
 			ghost.xscale = -1
-		elseif player.x >= WIDTH / 2 + r + 1 then --player is in the right
+		elseif player.x >= WIDTH_HALF + r + 1 then --player is in the right
 			ghost.x = left
 			ghost.xscale = 1
-		elseif player.x >= WIDTH / 2 - l then --player in mid
-			if player.x <= WIDTH / 2 + r then
+		elseif player.x >= WIDTH_HALF - l then --player in mid
+			if player.x <= WIDTH_HALF + r then
 				ghost.x = Lume.randomchoice({ left, right })
 				ghost.xscale = 1
 			end
 		end
 	else
-		if player.x <= WIDTH / 2 - l + 1 then
+		if player.x <= WIDTH_HALF - l + 1 then
 			ghost.x = right
-		elseif player.x >= WIDTH / 2 + r + 1 then
+		elseif player.x >= WIDTH_HALF + r + 1 then
 			ghost.x = left
-		elseif player.x >= WIDTH / 2 - l then --player in mid
-			if player.x <= WIDTH / 2 + r then
+		elseif player.x >= WIDTH_HALF - l then --player in mid
+			if player.x <= WIDTH_HALF + r then
 				ghost.x = Lume.randomchoice({ left, right })
 				ghost.xscale = 1
 			end
@@ -1299,7 +1309,7 @@ function skip_draw()
 	end
 	love.graphics.print(
 		skip_text,
-		WIDTH / 2 - DEF_FONT:getWidth(skip_text) / 2,
+		WIDTH_HALF - DEF_FONT:getWidth(skip_text) / 2,
 		HEIGHT - DEF_FONT_HEIGHT
 	)
 end
@@ -1400,15 +1410,15 @@ function triggerTxt_draw()
 	local as2 = "I have to find them quick!"
 	if tt_draw == true then
 		if t == 1 then
-			love.graphics.print(tt_txt, WIDTH / 2 - DEF_FONT:getWidth(tt_txt) / 2, 0 + DEF_FONT_HEIGHT / 4)
-			love.graphics.print(tt_txt2, WIDTH / 2 - DEF_FONT:getWidth(tt_txt2) / 2, HEIGHT - DEF_FONT_HEIGHT)
+			love.graphics.print(tt_txt, WIDTH_HALF - DEF_FONT:getWidth(tt_txt) / 2, 0 + DEF_FONT_HEIGHT / 4)
+			love.graphics.print(tt_txt2, WIDTH_HALF - DEF_FONT:getWidth(tt_txt2) / 2, HEIGHT - DEF_FONT_HEIGHT)
 		elseif t == 2 then
-			love.graphics.print("", WIDTH / 2 - DEF_FONT:getWidth(" ") / 2, 0 + DEF_FONT_HEIGHT / 4)
-			love.graphics.print("", WIDTH / 2 - DEF_FONT:getWidth(" ") / 2, HEIGHT - DEF_FONT_HEIGHT)
+			love.graphics.print("", WIDTH_HALF - DEF_FONT:getWidth(" ") / 2, 0 + DEF_FONT_HEIGHT / 4)
+			love.graphics.print("", WIDTH_HALF - DEF_FONT:getWidth(" ") / 2, HEIGHT - DEF_FONT_HEIGHT)
 		elseif t == 3 then
 			if Sounds.enemy_scream:isPlaying() == false then
-				love.graphics.print(as, WIDTH / 2 - DEF_FONT:getWidth(as) / 2, 0 + DEF_FONT_HEIGHT / 4)
-				love.graphics.print(as2, WIDTH / 2 - DEF_FONT:getWidth(as2) / 2, HEIGHT - DEF_FONT_HEIGHT)
+				love.graphics.print(as, WIDTH_HALF - DEF_FONT:getWidth(as) / 2, 0 + DEF_FONT_HEIGHT / 4)
+				love.graphics.print(as2, WIDTH_HALF - DEF_FONT:getWidth(as2) / 2, HEIGHT - DEF_FONT_HEIGHT)
 			end
 		end
 	end
