@@ -1,11 +1,13 @@
 local android = {}
 
 local androidKey
-leftHold, rightHold = false, false
-androidInteract = false
+local leftHold, rightHold = false, false
+-- androidInteract = false
 local changed = false
-local temp_light = 0
-lx, ly = 0, 0
+-- local temp_light = 0
+local lx, ly = 0, 0
+
+local gLeft, gRight, gLeft2, gRight2, gUp, gDown, gEnter, gEsc, gLight, gAct, gSettings, gSettingsBack, gQuit
 
 function android.load()
 	gLeft = {
@@ -88,6 +90,16 @@ function android.load()
 	}
 end
 
+function android.getgui(key)
+	if key == "settings_back" then
+		return gSettingsBack
+	elseif key == "quit" then
+		return gQuit
+	end
+end
+
+function android.get_light_pos() return lx, ly end
+
 function android.update(dt)
 	local state = gamestates.getState()
 	if state ~= "main" then return end
@@ -122,11 +134,10 @@ end
 
 function android.draw()
 	local state = gamestates.getState()
-	love.graphics.setColor(1, 1, 1, 1)
-	if state == "main" then
+	if not GAMEOVER and state == "main" then
+		love.graphics.setColor(1, 1, 1, 1)
 		--android.light_draw()
 		if move == true then
-			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.draw(Images.gui_left, gLeft.x, gLeft.y)
 			love.graphics.draw(Images.gui_right, gRight.x, gRight.y)
 			love.graphics.draw(Images.gui_light, gLight.x, gLight.y)
@@ -139,11 +150,9 @@ function android.draw()
 			love.graphics.draw(Images.gui_act, gAct.x, gAct.y)
 		end
 		if word_puzzle then
-			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.draw(Images.gui_esc, gEsc.x, gEsc.y)
 		end
 		if clock_puzzle == true then
-			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.draw(Images.gui_left, gLeft2.x, gLeft2.y)
 			love.graphics.draw(Images.gui_right, gRight2.x, gRight2.y)
 			love.graphics.draw(Images.gui_up, gUp.x, gUp.y)
@@ -152,7 +161,6 @@ function android.draw()
 			love.graphics.draw(Images.gui_esc, gEsc.x, gEsc.y)
 		end
 		if doodle_flag == true then
-			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.draw(Images.gui_esc, gEsc.x, gEsc.y)
 		end
 	end
@@ -162,8 +170,7 @@ function android.touchpressed(id, x, y)
 	local state = gamestates.getState()
 	if state == "splash" or state == "splash2" then
 		love.keypressed("e")
-	end
-	if state == "gallery" then
+	elseif state == "gallery" then
 		if Gallery.touch(id, x, y, gPlay) then
 			love.keypressed("space")
 		elseif Gallery.touch(id, x, y, gNext) then
@@ -173,8 +180,7 @@ function android.touchpressed(id, x, y)
 		elseif Gallery.touch(id, x, y, gExit) then
 			love.keypressed("escape")
 		end
-	end
-	if state == "main" and not pauseFlag then
+	elseif state == "main" and not Pause.flag then
 		if move == true then
 			if guiCheck_touch(id, x, y, gLeft) then
 				love.keypressed("a")
@@ -184,9 +190,10 @@ function android.touchpressed(id, x, y)
 				love.keypressed("d")
 				rightHold = true
 				leftHold = false
-			end
-			if guiCheck_touch(id, x, y, gAct) then
+			elseif guiCheck_touch(id, x, y, gAct) then
 				love.keypressed("e")
+			elseif guiCheck_touch(id, x, y, gSettings) then
+				Pause.toggle()
 			end
 		elseif move == false then
 			android.dialogue()
@@ -247,7 +254,7 @@ end
 
 function android.touchreleased(id, x, y)
 	local state = gamestates.getState()
-	if state == "main" and not pauseFlag then
+	if state == "main" and not Pause.flag then
 		if guiCheck_touch(id, x, y, gLight) then
 
 		else
@@ -260,17 +267,16 @@ function android.touchreleased(id, x, y)
 end
 
 function guiCheck_touch(id, x, y, gui)
-	local gui = gui
-	local x = x / RATIO
-	local y = (y - TY) / RATIO
+	x = x / RATIO
+	y = (y - TY) / RATIO
 	return x > gui.x and x < gui.x + gui.w and
 		y > gui.y and y < gui.y + gui.h
 end
 
 function android.dialogue()
 	local key = android.getKey()
-	for k, v in pairs(dialogue) do
-		for j, k in pairs(obj) do
+	for _, v in ipairs(dialogue) do
+		for _, k in ipairs(obj) do
 			if (v.tag == k.tag) and v.state then
 				if key == "e" then
 					if v.n <= #v.txt then
@@ -378,7 +384,7 @@ function android.light_check()
 	local near_range = Images.lightOutline:getWidth() / 2.5
 	local inside_range = Images.lightOutline:getWidth() / 3
 	if fade.state == false then
-		if enemy_exists == true and LIGHT_ON == true then
+		if ENEMY_EXISTS == true and LIGHT_ON == true then
 			if player.x >= ghost.x - inside_range and
 				player.x <= ghost.x + inside_range then
 				ghost:action_inside()
@@ -399,8 +405,6 @@ end
 function android.mouse_gui(x, y, button, istouch)
 	if not ON_MOBILE then return end
 	local state = gamestates.getState()
-	local mx = x / RATIO
-	local my = (y - TY) / RATIO
 
 	if button == 1 then
 		if state == "title" then

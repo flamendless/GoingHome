@@ -65,7 +65,7 @@ function SCENE.atticRoom_update(dt)
 	end
 	if event_trigger_light == 1 then
 		if timer > 0 then
-			random_breathe = false
+			RANDOM_BREATHE = false
 			timer = timer - 1 * dt
 			move = false
 			player.visible = false
@@ -80,7 +80,7 @@ function SCENE.atticRoom_update(dt)
 			LIGHT_ON = _flag
 		elseif timer <= 0 then
 			event_trigger_light = 2
-			random_breathe = true
+			RANDOM_BREATHE = true
 			timer = 3
 		end
 	elseif event_trigger_light == 2 then

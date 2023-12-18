@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.26"
+local VERSION = "v1.0.29"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -20,7 +20,6 @@ JSON = require("libs.json.json")
 LOADER = require("libs.love-loader")
 Inspect = require("libs.inspect.inspect")
 Lume = require("libs.lume")
--- pause = require("pause")
 Anim8 = require("libs.anim8")
 Timer = require("libs.knife.timer")
 Object = require("libs.classic")
@@ -29,6 +28,7 @@ Fade = require("fade")
 Enemy = require("enemy")
 Chair = require("chair")
 
+Pause = require("pause")
 Items = require("items")
 Interact = require("interact")
 SaveData = require("save_data")
@@ -49,9 +49,11 @@ if ON_MOBILE then
 	AdMobKeys = require("admob_keys")
 	AdMobKeys.test = DEBUGGING
 
-	LoveAdmob.rewardUserWithReward = function(reward_type, reward_qty)
-		print("rewardUserWithReward callback", reward_type, reward_qty)
-	end
+	-- LoveAdmob.rewardUserWithReward = function(reward_type, reward_qty)
+	-- 	print("rewardUserWithReward callback", reward_type, reward_qty)
+	-- 	if reward_qty == 1 and reward_type == "Reward" then
+	-- 	end
+	-- end
 end
 --require("error")
 
@@ -73,7 +75,7 @@ SCENE = {}
 -- p_anim, animation = {}
 
 require("rain_intro_scenes")
-require("game_over")
+GameOver = require("game_over")
 require("animation")
 require("secret_room")
 require("attic_room")
@@ -117,7 +119,6 @@ if DEBUGGING == false then
 	end
 
 	TY = 0
-	-- ty = sh - (height * math.min(sw/width,sh/height))
 	if OS == "iOS" then
 		if PRO_VERSION then
 			--ty = sh - (height * math.min(sw/width,sh/height))
@@ -169,7 +170,11 @@ if ON_MOBILE and not PRO_VERSION then
 		end
 	end
 
-	function ShowRewardedAds(force)
+	function ShowRewardedAds(force, cb_reward_success)
+		if cb_reward_success then
+			LoveAdmob.rewardUserWithReward = cb_reward_success
+		end
+
 		if not force then
 			if LoveAdmob.showing.rewarded then return end
 			if math.floor(LoveAdmob.ad_timers.rewarded) % 5 ~= 0 then return end
@@ -287,6 +292,7 @@ function love.draw()
 	love.graphics.setCanvas(MAIN_CANVAS)
 	love.graphics.clear()
 	love.graphics.push()
+
 	-- if ON_MOBILE then
 	-- 	love.graphics.translate(0, TY)
 	-- end
@@ -297,11 +303,8 @@ function love.draw()
 		-- 	love.graphics.setShader(Shaders.palette_swap)
 		-- end
 
-		-- if pauseFlag == false then
 		gamestates.draw()
-		-- elseif pauseFlag == true then
-		-- 	pause.draw()
-		-- end
+		Pause.draw()
 
 		love.graphics.setShader()
 
@@ -323,12 +326,12 @@ function love.draw()
 
 	if DEBUGGING then
 		love.graphics.push()
-			love.graphics.scale(RATIO / 2, RATIO / 2)
-			love.graphics.setColor(1, 0, 0, 1)
-			love.graphics.setFont(DEF_FONT)
-			love.graphics.print(VERSION, 8, 8)
-			love.graphics.print(gamestates.getState(), 8, 16)
-			love.graphics.print(tostring(CLOCK), 8, 24)
+		love.graphics.scale(RATIO / 2, RATIO / 2)
+		love.graphics.setColor(1, 0, 0, 1)
+		love.graphics.setFont(DEF_FONT)
+		love.graphics.print(VERSION, 8, 8)
+		love.graphics.print(gamestates.getState(), 8, 16)
+		love.graphics.print(tostring(CLOCK), 8, 24)
 		love.graphics.pop()
 	end
 
@@ -345,8 +348,6 @@ end
 function love.mousereleased(x, y, button, istouch)
 	if not FINISHED_LOADING then return end
 	local state = gamestates.getState()
-	local mx = (x) / RATIO
-	local my = (y - TY) / RATIO
 	if state == "intro" or state == "rain_intro" then
 		if PRESSED == true then
 			PRESSED = false
@@ -450,32 +451,50 @@ function love.mousepressed(x, y, button, istouch)
 			end
 		end
 	elseif state == "rain_intro" then
-		if check_gui(gui_pos.skip_x, gui_pos.skip_y, gui_pos.skip_w, gui_pos.skip_h) then
+		if ON_MOBILE or check_gui(
+				gui_pos.skip_x,
+				gui_pos.skip_y,
+				gui_pos.skip_w,
+				gui_pos.skip_h
+			) then
 			PRESSED = true
 			fade.state = true
 			STATES = "intro"
 			gamestates.load()
 		end
 	elseif state == "intro" then
-		if check_gui(gui_pos.skip_x, gui_pos.skip_y, gui_pos.skip_w, gui_pos.skip_h) then
+		if ON_MOBILE or check_gui(
+				gui_pos.skip_x,
+				gui_pos.skip_y,
+				gui_pos.skip_w,
+				gui_pos.skip_h
+			) then
 			PRESSED = true
 			fade.state = true
 			STATES = "tutorial"
 			gamestates.load()
 		end
-		-- elseif state == "main" and pauseFlag == true then
-		-- 	if check_gui(gSound.x,gSound.y,gSound.w,gSound.h) then
-		-- 		if gSound.img == images.gui_sound then
-		-- 			pause.sound("off")
-		-- 		else
-		-- 			pause.sound("on")
-		-- 		end
-		-- 	elseif check_gui(gSettingsBack.x,gSettingsBack.y,gSettingsBack.w,gSettingsBack.h) then
-		-- 		pause.exit()
-		-- 	elseif check_gui(gQuit.x,gQuit.y,gQuit.w,gQuit.h) then
-		-- 		love.event.quit()
-		-- 	end
+	elseif state == "tutorial" and ON_MOBILE then
+		PRESSED = true
+		fade.state = true
+		STATES = "main"
+		gamestates.load()
+	elseif state == "main" then
+		Pause.mousepressed(mx, my, button)
 	end
+	-- elseif state == "main" and pauseFlag == true then
+	-- 	if check_gui(gSound.x,gSound.y,gSound.w,gSound.h) then
+	-- 		if gSound.img == images.gui_sound then
+	-- 			pause.sound("off")
+	-- 		else
+	-- 			pause.sound("on")
+	-- 		end
+	-- 	elseif check_gui(gSettingsBack.x,gSettingsBack.y,gSettingsBack.w,gSettingsBack.h) then
+	-- 		pause.exit()
+	-- 	elseif check_gui(gQuit.x,gQuit.y,gQuit.w,gQuit.h) then
+	-- 		love.event.quit()
+	-- 	end
+	-- end
 end
 
 function love.keyreleased(key)
@@ -660,15 +679,9 @@ function love.keypressed(key)
 			end
 		end
 
-		-- if OS ~= "Android" or OS ~= "iOS" then
-		-- 	if key == "p" then
-		-- 		if pauseFlag == true then
-		-- 			pause.exit()
-		-- 		else
-		-- 			pause.load()
-		-- 		end
-		-- 	end
-		-- end
+		if not ON_MOBILE and key == "p" then
+			Pause.toggle()
+		end
 
 		if move == true then
 			love.keyboard.setKeyRepeat(true)
@@ -963,7 +976,8 @@ function check_gun()
 		obtainables["gun2"] == false and
 		obtainables["gun3"] == false then
 		doorTxt("I have all the parts", "I need a table to rebuild it")
-		local ammo_dial = Interact(false, { "It's an ammo box", "There's only one ammo here", "Load it?" }, { "Yes", "No" },
+		local ammo_dial = Interact(false, { "It's an ammo box", "There's only one ammo here", "Load it?" },
+			{ "Yes", "No" },
 			"", "ammo")
 		table.insert(dialogue, ammo_dial)
 		local ammo_item = Items(Images.ammo, Images["leftRoom"], 41, 34, "ammo")

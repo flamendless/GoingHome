@@ -179,7 +179,7 @@ function gamestates.load()
 	go_flag = 0
 	mid_dial = 0
 
-	random_breathe = true
+	RANDOM_BREATHE = true
 
 	txt = "press I for instruction"
 	fade = Fade(1, 6)
@@ -235,6 +235,7 @@ function gamestates.init()
 		Sounds.enemy_scream:setLooping(false)
 		Sounds.intro_soft:stop()
 	elseif state == "main" then
+		Pause.init()
 		Sounds.fl_toggle:setLooping(false)
 		Sounds.fl_toggle:setVolume(1)
 
@@ -253,7 +254,7 @@ function gamestates.init()
 
 		mrChair = Chair()
 
-		enemy_exists = false
+		ENEMY_EXISTS = false
 		seen = false
 		GAMEOVER = false
 
@@ -304,7 +305,7 @@ function gamestates.update(dt)
 		currentRoom == Images["rightRoom"] or
 		currentRoom == Images["basementRoom"] or
 		ending_leave == true then
-		enemy_exists = false
+		ENEMY_EXISTS = false
 	end
 
 	local state = gamestates.getState()
@@ -501,12 +502,12 @@ function gamestates.update(dt)
 		local num = "breath_"
 
 		if random_breathe_flag == true then
-			if random_breathe == true then
-				random_breathe = false
+			if RANDOM_BREATHE == true then
+				RANDOM_BREATHE = false
 				Timer.after(random, function()
 					Sounds[num .. tostring(choose)]:play()
 					Sounds[num .. tostring(choose)]:setVolume(0.5)
-					random_breathe = true
+					RANDOM_BREATHE = true
 				end)
 			end
 		end
@@ -522,13 +523,13 @@ function gamestates.update(dt)
 					_lightX = mx - Images.light:getWidth() / 2 + math.random(-0.05, 0.05)
 					_lightY = my - Images.light:getHeight() / 2 + math.random(-0.05, 0.05)
 				end
-				lightX = math.clamp(_lightX, player.x - 120, player.x + 100)
-				lightY = math.clamp(_lightY, player.y - 20, player.y + 0)
+				LIGHTX = math.clamp(_lightX, player.x - 120, player.x + 100)
+				LIGHTY = math.clamp(_lightY, player.y - 20, player.y + 0)
 
 				love.graphics.setCanvas(CANVAS_CUSTOM_MASK)
 				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 				love.graphics.setBlendMode("multiply", "premultiplied")
-				love.graphics.draw(light, lightX, lightY)
+				love.graphics.draw(light, LIGHTX, LIGHTY)
 				love.graphics.setBlendMode("alpha")
 				love.graphics.setCanvas()
 			end
@@ -599,7 +600,7 @@ function gamestates.update(dt)
 
 		--enemy logics
 		if door_locked == false then
-			if enemy_exists == true then
+			if ENEMY_EXISTS == true then
 				if ghost_event ~= "no escape" then
 					if move == true then
 						ghost:update(dt)
@@ -642,12 +643,12 @@ function gamestates.update(dt)
 			if go_flag == 0 then
 				go_flag = 1
 			end
-			game_over.update(dt)
+			GameOver.update(dt)
 		end
 
 		if go_flag == 1 then
 			move = false
-			game_over.load()
+			GameOver.load()
 			go_flag = -1
 		end
 
@@ -674,7 +675,7 @@ function gamestates.update(dt)
 				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 				love.graphics.setBlendMode("multiply", "premultiplied")
 				love.graphics.draw(Images.candles_light_mask, cx, cy)
-				love.graphics.draw(light, lightX, lightY)
+				love.graphics.draw(light, LIGHTX, LIGHTY)
 				love.graphics.setBlendMode("alpha")
 				love.graphics.setCanvas()
 			end
@@ -1050,7 +1051,7 @@ function gamestates.draw()
 		end
 
 		--enemy logics
-		if enemy_exists == true then
+		if ENEMY_EXISTS == true then
 			ghost:draw()
 			light_check()
 		end
@@ -1060,7 +1061,7 @@ function gamestates.draw()
 		end
 
 		player:draw()
-		if ON_MOBILE or DEBUGGING == true then
+		if ON_MOBILE then
 			Android.light_draw()
 		end
 
@@ -1160,7 +1161,7 @@ function gamestates.draw()
 			v:draw()
 		end
 		if GAMEOVER == true then
-			game_over.draw()
+			GameOver.draw()
 		end
 
 		--trigger txt
@@ -1197,7 +1198,7 @@ function light_check()
 
 		--inside
 		if fade.state == false then
-			if enemy_exists == true and LIGHT_ON == true then
+			if ENEMY_EXISTS == true and LIGHT_ON == true then
 				if mx >= gx - ghost.w / 2 and mx <= gx + ghost.w + ghost.w / 2 then
 					if my >= ghost.y - ghost.h / 1.5 and my <= ghost.y + ghost.y + ghost.h / 1.5 then
 						ghost:action_inside()
@@ -1247,10 +1248,10 @@ end
 
 function enemy_check()
 	local random = math.floor(math.random(0, 100))
-	if enemy_exists == true then
+	if ENEMY_EXISTS == true then
 		if random <= 40 then
 			--enemy disappears
-			enemy_exists = false
+			ENEMY_EXISTS = false
 			ghost.timer = 2
 			ghost.count = true
 			ghost.chaseOn = false
@@ -1260,12 +1261,12 @@ function enemy_check()
 	else --enemy does not exists
 		if event_trigger_light == -1 and random <= 60 then
 			--enemy appears
-			enemy_exists = true
+			ENEMY_EXISTS = true
 			--move enemy
 			determine_enemy_pos()
 		elseif random <= 50 then
 			--enemy appears
-			enemy_exists = true
+			ENEMY_EXISTS = true
 			--move enemy
 			determine_enemy_pos()
 		end
@@ -1313,9 +1314,10 @@ function light_etc(dt, img_table, img_var, canvas)
 	love.graphics.setBlendMode("multiply", "premultiplied")
 	love.graphics.draw(img_table[img_var], x, y)
 	if ON_MOBILE or DEBUGGING then
+		local lx, ly = Android.get_light_pos()
 		love.graphics.draw(mainLight, lx, ly)
 	elseif not ON_MOBILE and (not DEBUGGING) then
-		love.graphics.draw(light, lightX, lightY)
+		love.graphics.draw(light, LIGHTX, LIGHTY)
 	end
 	love.graphics.setBlendMode("alpha")
 	love.graphics.setCanvas()

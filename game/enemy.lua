@@ -47,12 +47,12 @@ function Enemy:update(dt)
 			self.chaseOn = false
 		end
 	elseif ghost_event == "fall down" or ghost_event == "lying down" or ghost_event == "flashback" then
-		enemy_exists = false
+		ENEMY_EXISTS = false
 	end
 	----
 
 	if self.trigger == false then
-		enemy_exists = false
+		ENEMY_EXISTS = false
 	end
 
 	if currentRoom == Images["hallwayLeft"] or
@@ -68,7 +68,7 @@ function Enemy:update(dt)
 
 	if event == "secret_room_first" or event == "after_secret_room" or event == "after_dialogue" then
 		if currentRoom == Images["secretRoom"] then
-			enemy_exists = false
+			ENEMY_EXISTS = false
 		end
 	end
 
@@ -78,7 +78,7 @@ function Enemy:update(dt)
 
 	self.image:update(dt)
 
-	if enemy_exists == true then
+	if ENEMY_EXISTS == true then
 		if self.image == enemy_move then
 			--move towards player
 			--set image orientation

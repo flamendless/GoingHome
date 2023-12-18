@@ -1,9 +1,20 @@
-local pause = {}
+local pause = {
+	flag = false,
+}
 
-pauseTxt = "The Game is Paused"
-local c = 1
+local pauseTxt = "The Game is Paused"
 
-function pause.gui()
+local gSound
+
+function pause.toggle()
+	if pause.flag then
+		Pause.exit()
+	else
+		Pause.load()
+	end
+end
+
+function pause.init()
 	gSound = {
 		img = Images.gui_sound,
 		w = Images.gui_sound:getWidth(),
@@ -14,7 +25,6 @@ function pause.gui()
 end
 
 function pause.sound(state)
-	local state = state
 	if state == "off" then
 		gSound.img = Images.gui_sound_off
 		love.audio.setVolume(0)
@@ -25,11 +35,9 @@ function pause.sound(state)
 end
 
 function pause.load()
-	pause.gui()
-
 	TEMP_MOVE = move
 	move = false
-	pauseFlag = true
+	pause.flag = true
 
 	Sounds.thunder:pause()
 	random_breathe_flag = false
@@ -38,25 +46,37 @@ function pause.load()
 	lightningVol = 0
 end
 
-
 function pause.exit()
 	move = TEMP_MOVE
-	pauseFlag = false
+	pause.flag = false
 	Sounds.thunder:play()
 	random_breathe_flag = true
 	Sounds.ts_theme:stop()
 	lightningVol = 0.3
 end
 
-
 function pause.draw()
+	if not pause.flag then return end
 	love.graphics.setColor(1, 1, 1, 1)
-	love.graphics.print(pauseTxt,WIDTH/2 - DEF_FONT:getWidth(pauseTxt)/2,8)
+	love.graphics.print(pauseTxt, WIDTH / 2 - DEF_FONT:getWidth(pauseTxt) / 2, 8)
 	if ON_MOBILE then
-		love.graphics.draw(Images.gui_sBack,gSettingsBack.x,gSettingsBack.y)
-		love.graphics.draw(Images.gui_quit,gQuit.x,gQuit.y)
+		local gSettingsBack = Android.getgui("settings_back")
+		local gQuit = Android.getgui("quit")
+		love.graphics.draw(Images.gui_sBack, gSettingsBack.x, gSettingsBack.y)
+		love.graphics.draw(Images.gui_quit, gQuit.x, gQuit.y)
 	end
-	love.graphics.draw(gSound.img,gSound.x,gSound.y)
+	love.graphics.draw(gSound.img, gSound.x, gSound.y)
+end
+
+function pause.mousepressed(mx, my, mb)
+	if not pause.flag then return end
+	if mb == 1 and check_gui(gSound.x, gSound.y, gSound.w, gSound.h) then
+		if gSound.img == Images.gui_sound then
+			pause.sound("off")
+		else
+			pause.sound("on")
+		end
+	end
 end
 
 return pause

@@ -1,8 +1,9 @@
-game_over = {}
+local game_over = {}
 
 local timer = 10
 local timer_starts = false
 local splash = false
+local message = false
 -- local alpha = 100
 
 local go_text = "The Fear Caught Up With You"
@@ -24,7 +25,7 @@ end
 
 function game_over.update(dt)
 
-	enemy_exists = false
+	ENEMY_EXISTS = false
 	game_over.init(dt)
 
 	if timer_starts == true then
@@ -35,9 +36,9 @@ function game_over.update(dt)
 		end
 	end
 
-	lightX = player.x - Images.light:getWidth()/2 + 4
-	lightY =  player.y - Images.light:getHeight()/2 + 4
-
+	local lw, lh = Images.light:getDimensions()
+	LIGHTX = player.x - lw + 4
+	LIGHTY =  player.y - lh + 4
 
 	if timer >= 8 and timer <= 9 then
 		player.img = Images.player_idle
@@ -102,12 +103,17 @@ function game_over.exit()
 	--gamestates.load()
 	if PRO_VERSION == false then
 		if ON_MOBILE then
-			ShowRewardedAds(true)
+			ShowRewardedAds(true, function(reward_type, reward_qty)
+				print("rewardUserWithReward callback", reward_type, reward_qty)
+				gamestates.nextState("title")
+			end)
 		else
-			love.event.quit("restart")
+			gamestates.nextState("title")
+			-- love.event.quit("restart")
 		end
 	else
-		love.event.quit("restart")
+		gamestates.nextState("title")
+		-- love.event.quit("restart")
 	end
 end
 
@@ -123,13 +129,14 @@ function game_over.init(dt)
 	end
 
 	Sounds.thunder:stop()
-	random_breathe = false
+	RANDOM_BREATHE = false
 
 end
 
-function unrequire(m)
-  package.loaded[m] = nil
-  _G[m] = nil
-  require(m)
-end
+-- function unrequire(m)
+--   package.loaded[m] = nil
+--   _G[m] = nil
+--   require(m)
+-- end
 
+return game_over

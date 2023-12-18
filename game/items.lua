@@ -240,7 +240,7 @@ function Items:checkFunction()
 								obtainables["clock"] = false
 								Sounds.item_got:play()
 
-								enemy_exists = true
+								ENEMY_EXISTS = true
 								ghost.trigger = true
 								ghost.x = WIDTH + 10
 								ghost.y = 30

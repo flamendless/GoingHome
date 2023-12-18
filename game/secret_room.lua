@@ -61,9 +61,9 @@ function SCENE.secretRoom_update(dt)
 
 
 	if event == "secret_room_first" then
-		enemy_exists = false
+		ENEMY_EXISTS = false
 		LIGHT_ON = false
-		random_breathe = false
+		RANDOM_BREATHE = false
 		move = false
 		Sounds.rain:setVolume(0.3)
 		Sounds.main_theme:setVolume(0)
@@ -89,7 +89,7 @@ function SCENE.secretRoom_update(dt)
 			LIGHT_ON = _flag
 		elseif _timer <= 0 then
 			event = "after_secret_room"
-			random_breathe = true
+			RANDOM_BREATHE = true
 			_timer = 10
 		end
 	elseif event == "after_secret_room" then
@@ -156,7 +156,7 @@ function SCENE.secretRoom_update(dt)
 	end
 
 	if ghost_event == "no escape" then
-		enemy_exists = true
+		ENEMY_EXISTS = true
 		ghost.chaseOn = true
 		ghost.x = 64
 		ghost.y = 30
@@ -165,13 +165,13 @@ function SCENE.secretRoom_update(dt)
 	end
 
 	if ghost_event == "still no escape" then
-		enemy_exists = true
+		ENEMY_EXISTS = true
 		ghost.chaseOn = true
 	end
 
 	if ghost_event == "fall down" then
 		particle_update(dt)
-		enemy_exists = false
+		ENEMY_EXISTS = false
 		LIGHT_ON = false
 		random_breathe_flag = false
 
@@ -309,7 +309,7 @@ function SCENE.secretRoom_update(dt)
 		end
 	elseif ghost_event == "limp" then
 		LIGHT_ON = false
-		enemy_exists = false
+		ENEMY_EXISTS = false
 		LIGHT_VALUE = 1
 
 		if timer > 0 then
@@ -363,7 +363,7 @@ function SCENE.secretRoom_update(dt)
 		love.graphics.clear(0,0,0,LIGHT_VALUE)
 		love.graphics.setBlendMode("multiply", "premultiplied")
 		love.graphics.draw(Images.tv_light,104,11)
-		love.graphics.draw(light,lightX,lightY)
+		love.graphics.draw(light,LIGHTX,LIGHTY)
 		love.graphics.setBlendMode("alpha")
 		love.graphics.setCanvas()
 		tv_anim:update(dt)
