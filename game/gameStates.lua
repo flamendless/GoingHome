@@ -724,12 +724,12 @@ function gamestates.draw()
 
 	local state = gamestates.getState()
 	if ON_MOBILE and state == "adshow" then
-		local w = love.graphics.getWidth()
 		love.graphics.setColor(1, 1, 1, 1)
 		love.graphics.printf(
 			adTxt,
-			8, 8,
-			w - 16
+			0, 4,
+			WIDTH,
+			"center"
 		)
 		-- love.graphics.draw(Images.adIntro, 0, 0)
 	elseif state == "splash" then
