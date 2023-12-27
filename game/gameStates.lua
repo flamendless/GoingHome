@@ -880,16 +880,20 @@ function gamestates.draw()
 			love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 			love.graphics.setFont(DEF_FONT)
 
-			local str_options = "Options"
+			local str_options = "OPTIONS"
 			love.graphics.setColor(1, 0, 0, 1)
-			love.graphics.print(str_options, WIDTH_HALF - DEF_FONT:getWidth(str_options) / 2)
+			love.graphics.print(
+				str_options,
+				WIDTH_HALF - DEF_FONT:getWidth(str_options) / 2,
+				-TY/4
+			)
 
 			love.graphics.setColor(1, 1, 1, 1)
 
 			love.graphics.setLineWidth(1)
 			love.graphics.setLineStyle("rough")
 
-			local base_y = 1 + DEF_FONT_HEIGHT
+			local base_y = 4 + DEF_FONT_HEIGHT
 			local rw = 8
 			for i, item in ipairs(SaveData.get_opts()) do
 				local str, value = item.str, item.value
@@ -923,20 +927,36 @@ function gamestates.draw()
 			love.graphics.setFont(DEF_FONT)
 			love.graphics.setColor(1, 1, 1)
 
-			local str_contact = "Contact us:"
-			love.graphics.print(str_contact, WIDTH_HALF - DEF_FONT:getWidth(str_contact) / 2, DEF_FONT_HALF - 4)
+			local str_contact = "CONTACT US:"
+			love.graphics.print(
+				str_contact,
+				WIDTH_HALF - DEF_FONT:getWidth(str_contact) / 2,
+				DEF_FONT_HALF - 2
+			)
 
 			love.graphics.setColor(1, 0, 0)
 			local str_twitter = "@flamendless"
-			love.graphics.print(str_twitter, WIDTH_HALF - DEF_FONT:getWidth(str_twitter) / 2, 10 + DEF_FONT_HALF)
+			love.graphics.print(
+				str_twitter,
+				WIDTH_HALF - DEF_FONT:getWidth(str_twitter) / 2,
+				10 + DEF_FONT_HALF
+			)
 
 			if OS ~= "iOS" then
-				local str_donate = "Donate"
-				love.graphics.print(str_donate, WIDTH_HALF - DEF_FONT:getWidth(str_donate) / 2, 27 + DEF_FONT_HALF)
+				local str_donate = "DONATE"
+				love.graphics.print(
+					str_donate,
+					WIDTH_HALF - DEF_FONT:getWidth(str_donate) / 2,
+					27 + DEF_FONT_HALF
+				)
 			end
 
 			local str_email = "E-Mail"
-			love.graphics.print(str_email, WIDTH_HALF - DEF_FONT:getWidth(str_email) / 2, 44 + DEF_FONT_HALF)
+			love.graphics.print(
+				str_email,
+				WIDTH_HALF - DEF_FONT:getWidth(str_email) / 2,
+				44 + DEF_FONT_HALF
+			)
 
 			--questions
 			if cursor_pos == 3 then
@@ -990,7 +1010,11 @@ function gamestates.draw()
 				else
 					love.graphics.setColor(1, 1, 1, 1)
 				end
-				love.graphics.print(str, WIDTH_HALF - DEF_FONT:getWidth(str) / 2, DEF_FONT_HEIGHT * (i - 1))
+				love.graphics.print(
+					str,
+					WIDTH_HALF - DEF_FONT:getWidth(str) / 2,
+					DEF_FONT_HEIGHT * (i - 1) - TY/2
+				)
 			end
 			draw_back_gui()
 		end
@@ -1375,7 +1399,7 @@ end
 function check_gui(gx, gy, gw, gh)
 	local mx, my = love.mouse.getPosition()
 	mx = mx / RATIO
-	my = my / RATIO
+	my = (my - TY) / RATIO
 	return mx >= gx and mx <= gx + gw and my >= gy and my <= gy + gh
 end
 

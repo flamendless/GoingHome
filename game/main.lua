@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.34"
+local VERSION = "v1.0.35"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -254,6 +254,9 @@ end
 function love.update(dt)
 	-- if recording then return end
 	CLOCK = CLOCK + dt
+
+	TY = -RATIO * 2
+
 	if not FINISHED_LOADING then
 		LOADER.update()
 	else
@@ -289,7 +292,6 @@ function love.draw()
 	love.graphics.setCanvas(MAIN_CANVAS)
 		love.graphics.clear()
 		love.graphics.push()
-
 			love.graphics.scale(RATIO, RATIO)
 			if FINISHED_LOADING then
 				-- if shaders_test or enemy_exists then
@@ -337,7 +339,7 @@ function love.draw()
 	if not ending_leave and SaveData.data.use_grayscale then
 		love.graphics.setShader(Shaders.grayscale)
 	end
-	love.graphics.draw(MAIN_CANVAS)
+	love.graphics.draw(MAIN_CANVAS, 0, TY)
 	love.graphics.setShader()
 end
 
