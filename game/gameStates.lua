@@ -938,19 +938,19 @@ function gamestates.draw()
 			love.graphics.print(
 				str_twitter,
 				WIDTH_HALF - DEF_FONT:getWidth(str_twitter) / 2,
-				10 + DEF_FONT_HALF
+				12 + DEF_FONT_HALF
 			)
 
 			if OS ~= "iOS" then
-				local str_donate = "DONATE"
+				local str_donate = "donate"
 				love.graphics.print(
 					str_donate,
 					WIDTH_HALF - DEF_FONT:getWidth(str_donate) / 2,
-					27 + DEF_FONT_HALF
+					28 + DEF_FONT_HALF
 				)
 			end
 
-			local str_email = "E-Mail"
+			local str_email = "e-mail"
 			love.graphics.print(
 				str_email,
 				WIDTH_HALF - DEF_FONT:getWidth(str_email) / 2,

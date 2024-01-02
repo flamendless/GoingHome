@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.38"
+local VERSION = "v1.0.39"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -250,8 +250,7 @@ function love.update(dt)
 	-- if recording then return end
 	CLOCK = CLOCK + dt
 
-	-- TY = -RATIO * 2
-	TY = love.graphics.getHeight()/2 - (HEIGHT * RATIO)/2
+	TY = (love.graphics.getHeight()/2 - (HEIGHT * RATIO)/2) - 8
 
 	if not FINISHED_LOADING then
 		LOADER.update()
