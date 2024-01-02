@@ -120,18 +120,24 @@ local intro_txt = {
 	""
 }
 
-local instruction_texts = {
-	"A and D to move",
-	"E to perform actions",
+local instruction_texts_title = {
+	"A, D to move, E to interact",
 	"F to toggle flashlight",
-	"F6 to toggle fullscreen",
 	"ENTER/ESC on puzzle",
+	"Your actions affect the story",
+}
+local instruction_texts = {
+	"A, D to move, E to interact",
+	"F to toggle flashlight",
+	"ENTER/ESC on puzzle",
+	"F6 to toggle fullscreen",
+	"Your actions affect the story",
 }
 local instruction_texts_mobile = {
-	"Navigate through the house",
-	"using but a little light.",
-	"Avoid the fear that haunts.",
-	"It must not be exposed to light.",
+	"Navigate using a small light",
+	"Avoid the fear that haunts",
+	"It must not be exposed to light",
+	"Your actions affect the story",
 }
 
 local str_about = {
@@ -147,7 +153,6 @@ local function draw_instructions()
 	love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 	love.graphics.setFont(DEF_FONT)
 	love.graphics.setColor(1, 1, 1)
-	local hw = WIDTH_HALF
 
 	local state = gamestates.getState()
 
@@ -163,19 +168,23 @@ local function draw_instructions()
 		texts = instruction_texts_mobile
 		last_str = "tap to continue"
 	else
-		texts = instruction_texts
+		if state == "title" then
+			texts = instruction_texts_title
+		else
+			texts = instruction_texts
+		end
 		last_str = "press E to continue"
 	end
 
 	local y
 	for i, str in ipairs(texts) do
 		y = by + DEF_FONT_HEIGHT * (i - 1)
-		love.graphics.print(str, hw - DEF_FONT:getWidth(str) / 2, y)
+		love.graphics.print(str, WIDTH_HALF - DEF_FONT:getWidth(str) / 2, y)
 	end
 
 	if state == "tutorial" then
 		love.graphics.setColor(1, 0, 0, 1)
-		love.graphics.print(last_str, hw - DEF_FONT:getWidth(last_str) / 2, y + DEF_FONT_HEIGHT)
+		love.graphics.print(last_str, WIDTH_HALF - DEF_FONT:getWidth(last_str) / 2, y + DEF_FONT_HEIGHT)
 		love.graphics.setColor(1, 1, 1, 1)
 	end
 end
@@ -707,7 +716,6 @@ function gamestates.update(dt)
 end
 
 local function draw_back_gui()
-	--back gui
 	if check_gui(gui_pos.b_x, gui_pos.b_y, gui_pos.b_w, gui_pos.b_h) then
 		love.graphics.setColor(1, 0, 0, 1)
 	else
