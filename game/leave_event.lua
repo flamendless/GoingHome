@@ -111,7 +111,7 @@ function leave_event_update(dt)
 							-- sounds.ts_theme:play()
 							-- sounds.ts_theme:setLooping(true)
 							ending_shot = -1
-							credits = "leaving home"
+							credit_set_ending("leaving home")
 							credits_load()
 						end
 					end

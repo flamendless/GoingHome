@@ -262,8 +262,12 @@ end
 function guiCheck_touch(id, x, y, gui)
 	x = x / RATIO
 	y = (y - TY) / RATIO
-	return x > gui.x and x < gui.x + gui.w and
-		y > gui.y and y < gui.y + gui.h
+	return (
+		x > gui.x and
+		x < gui.x + gui.w and
+		y > gui.y and
+		y < gui.y + gui.h
+	)
 end
 
 function android.dialogue()
@@ -318,13 +322,9 @@ function android.endingDialogue()
 	end
 end
 
-function android.setKey(key)
-	androidKey = key
-end
+function android.setKey(key) androidKey = key end
 
-function android.getKey()
-	return androidKey
-end
+function android.getKey() return androidKey end
 
 function android.light_update(dt)
 	if changed == false then
@@ -337,7 +337,7 @@ function android.light_update(dt)
 		mainLight = Images.light3
 	end
 
-	if ON_MOBILE or DEBUGGING then
+	if ON_MOBILE then
 		love.graphics.setCanvas(CANVAS_CUSTOM_MASK)
 		love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 		love.graphics.setBlendMode("multiply", "premultiplied")

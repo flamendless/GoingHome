@@ -78,7 +78,6 @@ ending_final = 0
 player_ending_shot = false
 ending_shot = 0
 broken_revolver = false
-credits = ""
 final_clock = 0
 credits_flag = false
 gun_click_flag = false
@@ -282,7 +281,7 @@ function gamestates.init()
 			locked["mainRoom_right"] = false
 		end
 
-		obtainables = Set {
+		obtainables = Set({
 			"cabinet", --where to get the toy hammer
 			"toy", --where to get the air pumper
 			"ball", --interacts with the hoop
@@ -302,7 +301,7 @@ function gamestates.init()
 			"match",
 			"revolver",
 			"gotBall"
-		}
+		})
 	end
 end
 
@@ -1194,7 +1193,7 @@ function gamestates.draw()
 			end
 		end
 
-		if ON_MOBILE and not gameplay_record then
+		if ON_MOBILE then
 			Android.draw()
 		end
 		for _, v in ipairs(dialogue) do
@@ -1340,8 +1339,9 @@ end
 
 function random_page()
 	local random = math.floor(math.random(1, 4))
-	Sounds["page" .. tostring(random)]:play()
-	Sounds["page" .. tostring(random)]:setLooping(false)
+	local sound = Sounds["page" .. tostring(random)]
+	sound:play()
+	sound:setLooping(false)
 end
 
 function light_etc(dt, img_table, img_var, canvas)

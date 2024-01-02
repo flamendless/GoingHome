@@ -62,14 +62,14 @@ function rightroom_update(dt)
 			rr_event = 1
 			final_clock = seconds_to_clock(CLOCK)
 			if event_route == him_convo then
-				credits = "destroying home"
+				credit_set_ending("destroying home")
 			elseif event_route == leave_convo then
-				credits = "leaving home"
+				credit_set_ending("leaving home")
 			elseif event_route == wait_convo then
 				if ammo_available == true then
-					credits = "saving home"
+					credit_set_ending("saving home")
 				else
-					credits = "dying home"
+					credit_set_ending("dying home")
 				end
 			end
 		end

@@ -91,7 +91,6 @@ SPLASH_FINISHED = false
 
 local utf8 = require("utf8")
 USER_INPUT = ""
-CORRECT = "mom fell his fault"
 
 love.keyboard.setTextInput(false)
 WIDTH, HEIGHT = 128, 64
@@ -118,10 +117,6 @@ if DEBUGGING == false then
 	if not ON_MOBILE then
 		toggle_fs()
 	end
-end
-
-if gameplay_record then
-	love.mouse.setVisible(false)
 end
 
 -- pauseFlag = false
@@ -815,34 +810,7 @@ function love.keypressed(key)
 		end
 	end
 
-	if doodle_flag == true then
-		move = false
-		if ON_MOBILE then
-			Android.lightChange(true)
-		end
-		if key == "escape" then
-			doodle_flag = false
-			move = true
-			storage_puzzle = false
-			if ON_MOBILE then
-				Android.lightChange(false)
-			end
-		elseif key == "a" then
-			if pic_number > 1 then
-				pic_number = pic_number - 1
-				random_page()
-			else
-				pic_number = 1
-			end
-		elseif key == "d" then
-			if pic_number < #puzzle_pics then
-				pic_number = pic_number + 1
-				random_page()
-			else
-				pic_number = #puzzle_pics
-			end
-		end
-	end
+	process_doodle_puzzle(key)
 
 	if clock_puzzle == true then
 		if ON_MOBILE then
@@ -942,11 +910,7 @@ function love.keypressed(key)
 end
 
 function love.textinput(t)
-	if string.len(USER_INPUT) < string.len(CORRECT) then
-		Sounds.type:play()
-		Sounds.type:setLooping(false)
-		USER_INPUT = USER_INPUT .. t
-	end
+	storage_puzzle_text_input(t)
 end
 
 function math.clamp(x, min, max)
