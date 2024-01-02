@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.35"
+local VERSION = "v1.0.36"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -364,7 +364,7 @@ function love.mousepressed(x, y, button, istouch)
 		Gallery.interactions(nil, x, y)
 	elseif state == "title" then
 		if button == 1 then
-			if instruction == false and about == false and questions == false then
+			if instruction == false and about == false and questions == false and not options then
 				if check_gui(gui_pos.start_x, gui_pos.start_y, gui_pos.start_w, gui_pos.start_h) then
 					--start
 					gamestates.control()
@@ -382,6 +382,51 @@ function love.mousepressed(x, y, button, istouch)
 						love.system.openURL(URLS.game_page)
 					end
 				end
+
+				if check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
+					gamestates.nextState("gallery")
+				end
+
+				if check_gui(gui_pos.options_x, gui_pos.options_y, gui_pos.options_w, gui_pos.options_h) then
+					options = not options
+				end
+
+				if options and button == 1 then
+					local base_y = 1 + DEF_FONT_HEIGHT
+					local rw = 8
+					for i, item in ipairs(SaveData.get_opts()) do
+						local str, value = item.str, item.value
+						local y = base_y + DEF_FONT_HEIGHT * (i - 1)
+						local rx = WIDTH - 16 - rw / 2
+						local ry = y + rw / 4
+
+						if check_gui(16, y, DEF_FONT:getWidth(str), DEF_FONT_HEIGHT) or
+							check_gui(rx, ry, rw, rw)
+						then
+							SaveData.toggle_opts(i)
+						end
+					end
+				end
+
+				if check_gui(gui_pos.q_x, gui_pos.q_y, gui_pos.q_w, gui_pos.q_h) then
+					questions = not questions
+				elseif check_gui(gui_pos.a_x, gui_pos.a_y, gui_pos.a_w, gui_pos.a_h) then
+					about = not about
+				elseif check_gui(gui_pos.i_x, gui_pos.i_y, gui_pos.i_w, gui_pos.i_h) then
+					instruction = not instruction
+				end
+
+				if questions then
+					if check_gui(gui_pos.t_x, gui_pos.t_y, gui_pos.t_w, gui_pos.t_h) then
+						love.system.openURL(URLS.twitter)
+					elseif check_gui(gui_pos.p_x, gui_pos.p_y, gui_pos.p_w, gui_pos.p_h) then
+						if OS ~= "iOS" then
+							love.system.openURL(URLS.paypal)
+						end
+					elseif check_gui(gui_pos.e_x, gui_pos.e_y, gui_pos.e_w, gui_pos.e_h) then
+						love.system.openURL(URLS.mailto)
+					end
+				end
 			end
 
 			if instruction or about or questions or options then
@@ -397,54 +442,6 @@ function love.mousepressed(x, y, button, istouch)
 				end
 			end
 
-			if check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
-				gamestates.nextState("gallery")
-			end
-
-			if check_gui(gui_pos.options_x, gui_pos.options_y, gui_pos.options_w, gui_pos.options_h) then
-				options = not options
-			end
-
-			if options and button == 1 then
-				local base_y = 1 + DEF_FONT_HEIGHT
-				local rw = 8
-				for i, item in ipairs(SaveData.get_opts()) do
-					local str, value = item.str, item.value
-					local y = base_y + DEF_FONT_HEIGHT * (i - 1)
-					local rx = WIDTH - 16 - rw / 2
-					local ry = y + rw / 4
-
-					if check_gui(16, y, DEF_FONT:getWidth(str), DEF_FONT_HEIGHT) or
-						check_gui(rx, ry, rw, rw)
-					then
-						SaveData.toggle_opts(i)
-					end
-				end
-			end
-
-			if check_gui(gui_pos.q_x, gui_pos.q_y, gui_pos.q_w, gui_pos.q_h) then
-				questions = not questions
-			end
-
-			if questions then
-				if check_gui(gui_pos.t_x, gui_pos.t_y, gui_pos.t_w, gui_pos.t_h) then
-					love.system.openURL(URLS.twitter)
-				elseif check_gui(gui_pos.p_x, gui_pos.p_y, gui_pos.p_w, gui_pos.p_h) then
-					if OS ~= "iOS" then
-						love.system.openURL(URLS.paypal)
-					end
-				elseif check_gui(gui_pos.e_x, gui_pos.e_y, gui_pos.e_w, gui_pos.e_h) then
-					love.system.openURL(URLS.mailto)
-				end
-			end
-
-			if check_gui(gui_pos.a_x, gui_pos.a_y, gui_pos.a_w, gui_pos.a_h) then
-				about = not about
-			end
-
-			if check_gui(gui_pos.i_x, gui_pos.i_y, gui_pos.i_w, gui_pos.i_h) then
-				instruction = not instruction
-			end
 		end
 	elseif state == "rain_intro" then
 		if ON_MOBILE or check_gui(
