@@ -1,20 +1,14 @@
 function love.conf(t)
-	t.releases = {
-		title = "Going Home: Revisited",
-		author = "Brandon Blanker Lim-it",
-		email = "flamendless8@gmail.com",
-		homepage = "http://flamendless.github.com/brbl",
-		description = "A Pixelated Survival Horror Game",
-		version = "2.0.0"
-	}
 	t.window.width = 1024
 	t.window.height = 512
 	t.window.resizable = false
 	t.window.title = "Going Home: Revisited"
-	t.externalstorage = true
-	t.version = "11.5"
 	t.window.icon = "assets/icon.png"
+	t.window.fullscreen = true
+
+	t.version = "11.5"
 	t.identity = "GoingHomeRevisited"
+	t.externalstorage = true
 
 	t.accelerometerjoystick = false
 	t.modules.data = true
@@ -38,10 +32,4 @@ function love.conf(t)
 
 	--console
 	--io.stdout:setvbuf("no")
-
-	debugMode = false
-	gameplay_record = false
-	cheat = false
-	apple_ver = false
-	shaders_test = true
 end
