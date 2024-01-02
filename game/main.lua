@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.36"
+local VERSION = "v1.0.37"
 PRO_VERSION = false
 DEBUGGING = true
 
