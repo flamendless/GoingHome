@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.39"
+local VERSION = "v1.0.40"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -250,7 +250,9 @@ function love.update(dt)
 	-- if recording then return end
 	CLOCK = CLOCK + dt
 
-	TY = (love.graphics.getHeight()/2 - (HEIGHT * RATIO)/2) - 8
+	local OFFY = (not ON_MOBILE) and 8 or 0
+	TY = (love.graphics.getHeight()/2 - (HEIGHT * RATIO)/2) - OFFY
+	TY = math.max(0, TY)
 
 	if not FINISHED_LOADING then
 		LOADER.update()
@@ -321,7 +323,8 @@ function love.draw()
 				love.graphics.setFont(DEF_FONT)
 				love.graphics.print(VERSION, 8, 0)
 				love.graphics.print(gamestates.getState(), 8, 8)
-				love.graphics.print(tostring(LIGHT_VALUE), 8, 16)
+				-- love.graphics.print(tostring(LIGHT_VALUE), 8, 16)
+				love.graphics.print(string.format("%d x %d, %d", love.graphics.getWidth(), love.graphics.getHeight(), love.graphics.getDPIScale()), 8, 16)
 				if ghost_event then
 					love.graphics.print(tostring(ghost_event), 8, 24)
 				end
