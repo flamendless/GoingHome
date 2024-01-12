@@ -134,6 +134,9 @@ function puzzle_update(dt)
 			Sounds.intro_soft:stop()
 			Sounds.finding_home:stop()
 			Sounds.ts_theme:stop()
+			if ON_MOBILE then
+				Android.lightChange(false)
+			end
 		end
 	end
 end

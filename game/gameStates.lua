@@ -682,7 +682,9 @@ function gamestates.update(dt)
 
 		if candles_light_flag == true then
 			if currentRoom == Images["masterRoom"] then
-				local cx, cy = getCandles()
+				local rand = 0.05
+				local cx = 0 + (math.random(-rand, rand))
+				local cy = HEIGHT_HALF - Images.candles_light_mask:getHeight() / 2 + (math.random(-rand, rand))
 				love.graphics.setCanvas(CANVAS_CANDLES_FLASH)
 				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 				love.graphics.setBlendMode("multiply", "premultiplied")

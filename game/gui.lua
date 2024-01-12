@@ -344,7 +344,9 @@ function android.light_update(dt)
 		if changed == false then
 			love.graphics.draw(mainLight, lx, ly)
 			if candles_light_flag and currentRoom == Images["masterRoom"] then
-				local cx, cy = getCandles()
+				local rand = 0.05
+				local cx = 0 + (math.random(-rand, rand))
+				local cy = HEIGHT_HALF - Images.candles_light_mask:getHeight() / 2 + (math.random(-rand, rand))
 				love.graphics.draw(Images.candles_light_mask, cx, cy)
 			end
 			if tv_light_flag and currentRoom == Images["secretRoom"] then

@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.40"
+local VERSION = "v1.0.41"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -992,11 +992,4 @@ function unrequire(m)
   package.loaded[m] = nil
   _G[m] = nil
   -- require(m)
-end
-
-function getCandles()
-	local rand = 0.05
-	local cx = 0 + (math.random(-rand, rand))
-	local cy = HEIGHT_HALF - Images.candles_light_mask:getHeight() / 2 + (math.random(-rand, rand))
-	return cx, cy
 end
