@@ -9,58 +9,46 @@ local ClockPuzzle = {
 }
 
 function ClockPuzzle.ev_up()
-	if ClockPuzzle.selected == "hour" then
-		if ClockPuzzle.hour < 12 then
-			ClockPuzzle.hour = ClockPuzzle.hour + 1
-		else
-			ClockPuzzle.hour = 1
-		end
-	elseif ClockPuzzle.selected == "minute" then
-		if ClockPuzzle.minute < 60 then
-			ClockPuzzle.minute = ClockPuzzle.minute + 1
-		else
-			ClockPuzzle.minute = 1
-		end
-	elseif ClockPuzzle.selected == "second" then
-		if ClockPuzzle.second < 60 then
-			ClockPuzzle.second = ClockPuzzle.second + 1
-		else
-			ClockPuzzle.second = 1
-		end
-	elseif ClockPuzzle.selected == "ampm" then
+	if ClockPuzzle.selected == "ampm" then
 		if ClockPuzzle.ampm == "am" then
 			ClockPuzzle.ampm = "pm"
 		else
 			ClockPuzzle.ampm = "am"
 		end
+		return
+	end
+
+	if ClockPuzzle.selected == "hour" then
+		ClockPuzzle.hour = ClockPuzzle.hour + 1
+		ClockPuzzle.hour = math.wrap(ClockPuzzle.hour, 1, 12 + 1)
+	elseif ClockPuzzle.selected == "minute" then
+		ClockPuzzle.minute = ClockPuzzle.minute + 1
+		ClockPuzzle.minute = math.wrap(ClockPuzzle.minute, 1, 60 + 1)
+	elseif ClockPuzzle.selected == "second" then
+		ClockPuzzle.second = ClockPuzzle.second + 1
+		ClockPuzzle.second = math.wrap(ClockPuzzle.second, 1, 60 + 1)
 	end
 end
 
 function ClockPuzzle.ev_down()
-	if ClockPuzzle.selected == "hour" then
-		if ClockPuzzle.hour > 1 then
-			ClockPuzzle.hour = ClockPuzzle.hour - 1
-		else
-			ClockPuzzle.hour = 12
-		end
-	elseif ClockPuzzle.selected == "minute" then
-		if ClockPuzzle.minute > 1 then
-			ClockPuzzle.minute = ClockPuzzle.minute - 1
-		else
-			ClockPuzzle.minute = 60
-		end
-	elseif ClockPuzzle.selected == "second" then
-		if ClockPuzzle.second > 1 then
-			ClockPuzzle.second = ClockPuzzle.second - 1
-		else
-			ClockPuzzle.second = 60
-		end
-	elseif ClockPuzzle.selected == "ampm" then
+	if ClockPuzzle.selected == "ampm" then
 		if ClockPuzzle.ampm == "am" then
 			ClockPuzzle.ampm = "pm"
 		else
 			ClockPuzzle.ampm = "am"
 		end
+		return
+	end
+
+	if ClockPuzzle.selected == "hour" then
+		ClockPuzzle.hour = ClockPuzzle.hour - 1
+		ClockPuzzle.hour = math.wrap(ClockPuzzle.hour, 1, 12 + 1)
+	elseif ClockPuzzle.selected == "minute" then
+		ClockPuzzle.minute = ClockPuzzle.minute - 1
+		ClockPuzzle.minute = math.wrap(ClockPuzzle.minute, 1, 60 + 1)
+	elseif ClockPuzzle.selected == "second" then
+		ClockPuzzle.second = ClockPuzzle.second - 1
+		ClockPuzzle.second = math.wrap(ClockPuzzle.second, 1, 60 + 1)
 	end
 end
 

@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.41"
+local VERSION = "v1.0.42"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -847,10 +847,6 @@ function love.textinput(t)
 	storage_puzzle_text_input(t)
 end
 
-function math.clamp(x, min, max)
-	return x < min and min or (x > max and max or x)
-end
-
 function Set(list)
 	local set = {}
 	for _, l in ipairs(list) do set[l] = true end
@@ -924,4 +920,12 @@ function unrequire(m)
   package.loaded[m] = nil
   _G[m] = nil
   -- require(m)
+end
+
+function math.clamp(v, lo, hi)
+	return math.max(lo, math.min(v, hi))
+end
+
+function math.wrap(v, lo, hi)
+	return (v - lo) % (hi - lo) + lo
 end
