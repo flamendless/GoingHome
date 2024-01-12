@@ -32,6 +32,7 @@ Pause = require("pause")
 Items = require("items")
 Interact = require("interact")
 SaveData = require("save_data")
+ClockPuzzle = require("clock_puzzle")
 
 OS = love.system.getOS()
 ON_MOBILE = (OS == "Android") or (OS == "iOS")
@@ -814,99 +815,30 @@ function love.keypressed(key)
 
 	process_doodle_puzzle(key)
 
-	if clock_puzzle == true then
+	if ClockPuzzle.state == true then
 		if ON_MOBILE then
 			Android.lightChange(true)
 		end
 		if key == "escape" then
-			clock_puzzle = false
+			ClockPuzzle.state = false
 			move = true
 			if ON_MOBILE then
 				Android.lightChange(false)
 			end
 		elseif key == "w" then
-			if selected == "hour" then
-				if hour < 12 then
-					hour = hour + 1
-				else
-					hour = 1
-				end
-			elseif selected == "minute" then
-				if minute < 60 then
-					minute = minute + 1
-				else
-					minute = 1
-				end
-			elseif selected == "second" then
-				if second < 60 then
-					second = second + 1
-				else
-					second = 1
-				end
-			elseif selected == "ampm" then
-				if ampm == "am" then
-					ampm = "pm"
-				else
-					ampm = "am"
-				end
-			end
+			ClockPuzzle.ev_up()
 		elseif key == "s" then
-			if selected == "hour" then
-				if hour > 1 then
-					hour = hour - 1
-				else
-					hour = 12
-				end
-			elseif selected == "minute" then
-				if minute > 1 then
-					minute = minute - 1
-				else
-					minute = 60
-				end
-			elseif selected == "second" then
-				if second > 1 then
-					second = second - 1
-				else
-					second = 60
-				end
-			elseif selected == "ampm" then
-				if ampm == "am" then
-					ampm = "pm"
-				else
-					ampm = "am"
-				end
-			end
+			ClockPuzzle.ev_down()
 		elseif key == "a" then
-			if selected == "minute" then
-				selected = "hour"
-			elseif selected == "second" then
-				selected = "minute"
-			elseif selected == "ampm" then
-				selected = "second"
-			end
+			ClockPuzzle.ev_left()
 		elseif key == "d" then
-			if selected == "hour" then
-				selected = "minute"
-			elseif selected == "minute" then
-				selected = "second"
-			elseif selected == "second" then
-				selected = "ampm"
-			end
+			ClockPuzzle.ev_right()
 		elseif key == "return" then
-			clock_puzzle = false
 			move = true
 			if ON_MOBILE or DEBUGGING == true then
 				Android.lightChange(false)
 			end
-			if hour == 10 and minute == 2 and second == 8 and ampm == "pm" then
-				clock_puzzle = false
-				Sounds.item_got:play()
-				solved = true
-				Sounds.main_theme:stop()
-				Sounds.intro_soft:stop()
-				Sounds.finding_home:stop()
-				Sounds.ts_theme:stop()
-			end
+			ClockPuzzle.ev_enter()
 		end
 	end
 end

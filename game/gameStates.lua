@@ -30,7 +30,7 @@ crowbar_broken = false
 
 event = ""
 
-clock_puzzle = false
+ClockPuzzle.state = false
 
 move_chair = false
 
@@ -635,7 +635,7 @@ function gamestates.update(dt)
 
 		player:update(dt)
 
-		if clock_puzzle == true then
+		if ClockPuzzle.state == true then
 			puzzle_update(dt)
 		end
 
@@ -1115,7 +1115,7 @@ function gamestates.draw()
 		end
 
 
-		if clock_puzzle == true then
+		if ClockPuzzle.state == true then
 			puzzle_draw()
 		end
 
@@ -1453,13 +1453,13 @@ function triggerTxt_draw()
 end
 
 function seconds_to_clock(seconds)
-	local seconds = tonumber(seconds)
+	seconds = tonumber(seconds)
 	if seconds <= 0 then
 		return "00:00:00"
 	else
-		hours = string.format("%02.f", math.floor(seconds / 3600))
-		mins = string.format("%02.f", math.floor(seconds / 60 - (hours * 60)))
-		secs = string.format("%02.f", math.floor(seconds - hours * 3600 - mins * 60))
+		local hours = string.format("%02.f", math.floor(seconds / 3600))
+		local mins = string.format("%02.f", math.floor(seconds / 60 - (hours * 60)))
+		local secs = string.format("%02.f", math.floor(seconds - hours * 3600 - mins * 60))
 		return hours .. ":" .. mins .. ":" .. secs
 	end
 end

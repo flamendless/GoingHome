@@ -112,23 +112,16 @@ end
 
 
 ------
---puzzle clock default variables
-hour = 1
-minute = 1
-second = 1
-ampm = "am"
-selected = "hour"
-solved = false
 
 
 --PUZZLE!
 function puzzle_update(dt)
 	move = false
-	if clock_puzzle then
-		if hour == 10 and minute == 2 and second == 8 and ampm == "pm" then
-			clock_puzzle = false
+	if ClockPuzzle.state then
+		if ClockPuzzle.hour == 10 and ClockPuzzle.minute == 2 and ClockPuzzle.second == 8 and ClockPuzzle.ampm == "pm" then
+			ClockPuzzle.state = false
 			Sounds.item_got:play()
-			solved = true
+			ClockPuzzle.solved = true
 			move = true
 			Sounds.main_theme:stop()
 			Sounds.intro_soft:stop()
@@ -146,24 +139,24 @@ function puzzle_draw()
 	love.graphics.draw(Images.clock_base,WIDTH/2  - Images.clock_base:getWidth()/2, HEIGHT_HALF - Images.clock_base:getHeight()/2)
 
 	--arrow
-	if selected == "hour" then
+	if ClockPuzzle.selected == "hour" then
 		c_x = WIDTH/2 - 27.5
 		c_y = HEIGHT_HALF - 7
 		c_xs = 1
 		c_ys = 1
-	elseif selected == "minute" then
+	elseif ClockPuzzle.selected == "minute" then
 		c_x = WIDTH/2 - 13.5
 		c_y = HEIGHT_HALF - 7
 		c_xs = 1
 		c_ys = 1
 
-	elseif selected == "second" then
+	elseif ClockPuzzle.selected == "second" then
 		c_x = WIDTH/2 + 0.5
 		c_y = HEIGHT_HALF - 7
 		c_xs = 1
 		c_ys = 1
 
-	elseif selected == "ampm" then
+	elseif ClockPuzzle.selected == "ampm" then
 		c_x = WIDTH/2 + 13.5
 		c_y = HEIGHT_HALF - 7
 		c_xs = 1.25
@@ -180,17 +173,17 @@ function puzzle_draw()
 	--hour
 	love.graphics.setColor(1, 1, 1, 1)
 	love.graphics.draw(Images.clock_digits,WIDTH/2 - 27.5 , HEIGHT_HALF - 7)
-	love.graphics.print(hour, WIDTH/2 - 22 - DEF_FONT:getWidth(hour)/2, HEIGHT_HALF - DEF_FONT_HALF)
+	love.graphics.print(ClockPuzzle.hour, WIDTH/2 - 22 - DEF_FONT:getWidth(ClockPuzzle.hour)/2, HEIGHT_HALF - DEF_FONT_HALF)
 
 	--minute
 	love.graphics.draw(Images.clock_digits,WIDTH/2 - 13.5 , HEIGHT_HALF - 7)
-	love.graphics.print(minute, WIDTH/2 - 8 - DEF_FONT:getWidth(minute)/2, HEIGHT_HALF - DEF_FONT_HALF)
+	love.graphics.print(ClockPuzzle.minute, WIDTH/2 - 8 - DEF_FONT:getWidth(ClockPuzzle.minute)/2, HEIGHT_HALF - DEF_FONT_HALF)
 
 	--second
 	love.graphics.draw(Images.clock_digits,WIDTH/2 + 0.5, HEIGHT_HALF - 7)
-	love.graphics.print(second, WIDTH/2 + 6 - DEF_FONT:getWidth(second)/2, HEIGHT_HALF - DEF_FONT_HALF)
+	love.graphics.print(ClockPuzzle.second, WIDTH/2 + 6 - DEF_FONT:getWidth(ClockPuzzle.second)/2, HEIGHT_HALF - DEF_FONT_HALF)
 
 	--ampm
 	love.graphics.draw(Images.clock_digits,WIDTH/2 + 13.5 , HEIGHT_HALF - 7,0,1.25,1)
-	love.graphics.print(ampm, WIDTH/2 + 20 - DEF_FONT:getWidth(ampm)/2, HEIGHT_HALF - DEF_FONT_HALF)
+	love.graphics.print(ClockPuzzle.ampm, WIDTH/2 + 20 - DEF_FONT:getWidth(ClockPuzzle.ampm)/2, HEIGHT_HALF - DEF_FONT_HALF)
 end

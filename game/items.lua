@@ -231,10 +231,10 @@ function Items:checkFunction()
 					end
 				elseif v.tag and o.tag == "clock" then
 					if self.tag == v.tag then
-						if solved == false then
+						if ClockPuzzle.solved == false then
 							o:special_text(""," I must input the combination")
-							clock_puzzle = true
-						elseif solved == true then
+							ClockPuzzle.state = true
+						elseif ClockPuzzle.solved == true then
 							if obtainables["clock"] == true then--not yet acquired
 								o:special_text("there's a key inside","you've got a clock key")
 								obtainables["clock"] = false

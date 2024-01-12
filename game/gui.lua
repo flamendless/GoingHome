@@ -153,7 +153,7 @@ function android.draw()
 		if word_puzzle then
 			love.graphics.draw(Images.gui_esc, gEsc.x, gEsc.y)
 		end
-		if clock_puzzle == true then
+		if ClockPuzzle.state == true then
 			love.graphics.draw(Images.gui_left, gLeft2.x, gLeft2.y)
 			love.graphics.draw(Images.gui_right, gRight2.x, gRight2.y)
 			love.graphics.draw(Images.gui_up, gUp.x, gUp.y)
@@ -200,12 +200,12 @@ function android.touchpressed(id, x, y)
 			end
 		end
 
-		if doodle_flag or clock_puzzle or word_puzzle then
+		if doodle_flag or ClockPuzzle.state or word_puzzle then
 			if guiCheck_touch(id, x, y, gEsc) then
 				love.keypressed("escape")
 			end
 		end
-		if clock_puzzle then
+		if ClockPuzzle.state then
 			if guiCheck_touch(id, x, y, gEnter) then
 				love.keypressed("return")
 			elseif guiCheck_touch(id, x, y, gLeft2) then
