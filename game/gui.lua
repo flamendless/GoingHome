@@ -135,10 +135,10 @@ end
 
 function android.draw()
 	local state = gamestates.getState()
-	if not GAMEOVER and state == "main" then
+	if (not GAMEOVER) and (state == "main") then
 		love.graphics.setColor(1, 1, 1, 1)
 		--android.light_draw()
-		if move == true then
+		if move == true or doodle_flag == true then
 			love.graphics.draw(Images.gui_left, gLeft.x, gLeft.y)
 			love.graphics.draw(Images.gui_right, gRight.x, gRight.y)
 			love.graphics.draw(Images.gui_light, gLight.x, gLight.y)
