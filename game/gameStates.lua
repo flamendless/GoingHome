@@ -145,7 +145,7 @@ local str_about = {
 	"Game By: @flamendless",
 	"Programmer: Brandon Lim-it",
 	"Artist: Conrad Reyes",
-	"Tester: Ian Plaus",
+	"QA: Ian Plaus",
 }
 
 local function draw_instructions()
