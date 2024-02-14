@@ -1,14 +1,15 @@
 import argparse
-from enum import Enum
 import os
 import platform
+from enum import Enum
 from shutil import copy2
-from typing import Dict, Callable, List
+from typing import Callable, Dict, List
 from zipfile import ZipFile
 
 GAME_NAME: str = "GoingHomeRevisited"
 IDENTITY: str = "GoingHomeRevisited"
 WSL_DRIVE: str = "Z:"
+CMD_PATH: str = "/mnt/c/Windows/System32/cmd.exe"
 GAME_DIR: str = "game/"
 RELEASE_DIR: str = "release/"
 ROOT_DIR: str = os.path.join(os.getcwd())
@@ -45,8 +46,7 @@ class Mode(Enum):
 def get_mode() -> Mode:
     if "wsl" in platform.platform().lower():
         return Mode.WSL
-    else:
-        return Mode[platform.system().upper()]
+    return Mode[platform.system().upper()]
 
 
 def zip_files(out: str) -> bool:
@@ -133,9 +133,8 @@ def run(args: argparse.Namespace) -> None:
     mode: Mode = get_mode()
     if mode == Mode.WSL:
         love_win_dir = "C:\\Program Files\\LOVE"
-        cmd_path = "/mnt/c/Windows/System32/cmd.exe"
         game_path: str = f"{WSL_DRIVE}/{love_file_path}"
-        cmd = f"{cmd_path} /c start cmd.exe /c 'cd {love_win_dir} && lovec.exe {game_path} {dev_mode} {profile_mode} & pause'"
+        cmd = f"{CMD_PATH} /c start cmd.exe /c 'cd {love_win_dir} && lovec.exe {game_path} {dev_mode} {profile_mode} & pause'"
     elif mode == Mode.LINUX:
         cmd = f"love {love_file_path} {dev_mode}"
 
@@ -170,28 +169,28 @@ if __name__ == "__main__":
         "--dev",
         action="store_true",
         dest="dev",
-        help="Enable DEV mode"
+        help="Enable DEV mode",
     )
     parser.add_argument(
         "-p",
         "--profile",
         action="store_true",
         dest="profile",
-        help="Enable PROFILE mode"
+        help="Enable PROFILE mode",
     )
     parser.add_argument(
         "-b",
         "--build",
         action="store_true",
         dest="build",
-        help="Build game"
+        help="Build game",
     )
     parser.add_argument(
         "-r",
         "--run",
         action="store_true",
         dest="run",
-        help="Run game"
+        help="Run game",
     )
 
     # For Android
@@ -200,13 +199,13 @@ if __name__ == "__main__":
         "--outpath",
         action="store",
         dest="outpath",
-        help="Output to path"
+        help="Output to path",
     )
     parser.add_argument(
         "--nozip",
         action="store_true",
         dest="nozip",
-        help="Instead of zipping, just copy files"
+        help="Instead of zipping, just copy files",
     )
 
     args: argparse.Namespace = parser.parse_args()
@@ -219,6 +218,9 @@ if __name__ == "__main__":
         "run": run,
         "clean": clean,
     }
+
+    if not os.path.exists(RELEASE_DIR):
+        os.makedirs(f"./{RELEASE_DIR}")
 
     if args.build:
         build(args)
