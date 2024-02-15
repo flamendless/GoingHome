@@ -201,6 +201,13 @@ if __name__ == "__main__":
         dest="run",
         help="Run game",
     )
+    parser.add_argument(
+        "-c",
+        "--clean",
+        action="store_true",
+        dest="clean",
+        help="Clean build",
+    )
 
     # For Android
     parser.add_argument(
@@ -220,7 +227,7 @@ if __name__ == "__main__":
     args: argparse.Namespace = parser.parse_args()
 
     if (not args.build) and (not args.run):
-        raise Exception("Must pass argument(s)")
+        raise Exception("Must pass either 'build', 'run', or 'clean'")
 
     cmds: dict[str, Callable] = {
         "build": build,
