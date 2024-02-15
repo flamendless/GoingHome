@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.42"
+local VERSION = "v1.0.43"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -114,10 +114,8 @@ local function toggle_fs()
 	MAIN_CANVAS = love.graphics.newCanvas(love.graphics.getDimensions())
 end
 
-if DEBUGGING == false then
-	if not ON_MOBILE then
-		toggle_fs()
-	end
+if not DEBUGGING and not ON_MOBILE then
+	toggle_fs()
 end
 
 -- pauseFlag = false
@@ -835,7 +833,7 @@ function love.keypressed(key)
 			ClockPuzzle.ev_right()
 		elseif key == "return" then
 			move = true
-			if ON_MOBILE or DEBUGGING == true then
+			if (ON_MOBILE or DEBUGGING) and Android then
 				Android.lightChange(false)
 			end
 			ClockPuzzle.ev_enter()

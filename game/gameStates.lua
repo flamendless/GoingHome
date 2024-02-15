@@ -1230,7 +1230,7 @@ function gamestates.nextState(state)
 end
 
 function light_check()
-	if ON_MOBILE or DEBUGGING == true then
+	if (ON_MOBILE or DEBUGGING) and Android then
 		Android.light_check()
 	else
 		local mx = love.mouse.getX() / RATIO
@@ -1357,7 +1357,7 @@ function light_etc(dt, img_table, img_var, canvas)
 	love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 	love.graphics.setBlendMode("multiply", "premultiplied")
 	love.graphics.draw(img_table[img_var], x, y)
-	if ON_MOBILE or DEBUGGING then
+	if (ON_MOBILE or DEBUGGING) and Android then
 		local lx, ly = Android.get_light_pos()
 		love.graphics.draw(mainLight, lx, ly)
 	elseif not ON_MOBILE and (not DEBUGGING) then
@@ -1465,7 +1465,7 @@ function seconds_to_clock(seconds)
 end
 
 function dev_draw()
-	if DEBUGGING == true then
+	if DEBUGGING then
 		love.graphics.push()
 		love.graphics.scale(1 / 4)
 		love.graphics.setColor(1, 0, 0, 1)

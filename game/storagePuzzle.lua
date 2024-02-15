@@ -55,7 +55,7 @@ local function validate_input()
 		storage_puzzle = false
 		word_puzzle = false
 		move = true
-		if ON_MOBILE or DEBUGGING then
+		if (ON_MOBILE or DEBUGGING) and Android then
 			Android.lightChange(false)
 		end
 	else
