@@ -1,9 +1,15 @@
+from sys import version_info
+
+if (version_info.major < 3) and (version_info.minor < 11):
+    raise Exception("At least Python 3.11 is required")
+
 import argparse
 import os
 import platform
+
 from enum import Enum
 from shutil import copy2
-from typing import Callable, Dict, List
+from typing import Callable
 from zipfile import ZipFile
 
 GAME_NAME: str = "GoingHomeRevisited"
@@ -14,7 +20,7 @@ GAME_DIR: str = "game/"
 RELEASE_DIR: str = "release/"
 ROOT_DIR: str = os.path.join(os.getcwd())
 
-EXCLUDE: List[str] = [
+EXCLUDE: list[str] = [
     "*.ase",
     ".git",
     ".test",
@@ -56,6 +62,7 @@ def zip_files(out: str) -> bool:
             for ex in EXCLUDE:
                 if ex in subdirs:
                     subdirs.remove(ex)
+
                 if ex in files:
                     files.remove(ex)
 
@@ -78,6 +85,7 @@ def copy_files(out: str) -> bool:
         for ex in EXCLUDE:
             if ex in subdirs:
                 subdirs.remove(ex)
+
             if ex in files:
                 files.remove(ex)
 
@@ -146,11 +154,12 @@ def run(args: argparse.Namespace) -> None:
 def clean(*args):
     appdata_dir: str = None
     mode: Mode = get_mode()
-    if mode == Mode.WSL:
-        appdata_dir = f"/mnt/c/Users/user/AppData/Roaming/LOVE/{IDENTITY}"
-    elif mode == Mode.LINUX:
-        home_dir: str = os.path.expanduser("~")
-        appdata_dir = f"{home_dir}/share/love/{IDENTITY}"
+    match mode:
+        case Mode.WSL:
+            appdata_dir = f"/mnt/c/Users/user/AppData/Roaming/LOVE/{IDENTITY}"
+        case Mode.LINUX:
+            home_dir: str = os.path.expanduser("~")
+            appdata_dir = f"{home_dir}/share/love/{IDENTITY}"
 
     if appdata_dir:
         print(f"Deleting {appdata_dir}")
@@ -213,7 +222,7 @@ if __name__ == "__main__":
     if (not args.build) and (not args.run):
         raise Exception("Must pass argument(s)")
 
-    cmds: Dict[str, Callable] = {
+    cmds: dict[str, Callable] = {
         "build": build,
         "run": run,
         "clean": clean,
