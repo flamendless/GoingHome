@@ -51,6 +51,7 @@ function credits_load()
 
 		"QA:",
 		"Ian Plaus",
+		"Kurt Russell De Asis",
 
 		"Dedicated to:",
 		"Hannah Daniella Tamayo",
