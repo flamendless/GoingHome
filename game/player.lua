@@ -136,10 +136,10 @@ function Player:draw()
 						shoot_pose_anim:draw(Images.shoot_pose_sheet,self.x,self.y)
 					end
 					if leave_animate == true then
-						leave_anim:draw(Images.leave_sheet,player.x,player.y)
+						leave_anim:draw(Images.leave_sheet,PLAYER.x,PLAYER.y)
 					end
 					if wait_animate == true then
-						wait_anim:draw(Images.shoot_pose_sheet,player.x,player.y)
+						wait_anim:draw(Images.shoot_pose_sheet,PLAYER.x,PLAYER.y)
 					end
 				elseif ending_final == -1 then
 					player_panic:draw(Images.player_panic_sheet,self.x,self.y)
@@ -191,11 +191,11 @@ function Player:checkDoors()
 	--main room
 	if currentRoom == Images["mainRoom"] then
 		if checkLeft then
-			player:moveRoom(right,Images["livingRoom"])
+			PLAYER:moveRoom(right,Images["livingRoom"])
 		elseif checkRight then
 			if ending_leave == false then
-				if locked["mainRoom_right"] == false then
-					player:moveRoom(left,Images["kitchen"])
+				if LOCKED["mainRoom_right"] == false then
+					PLAYER:moveRoom(left,Images["kitchen"])
 				else
 					doorTxt("It's locked from the other side","Maybe I should go around")
 					Sounds.locked:play()
@@ -213,23 +213,23 @@ function Player:checkDoors()
 				Sounds.locked:play()
 			else
 				LIGHT_VALUE = 1
-				player:moveRoom(8,Images["endRoom"])
-				player.y = 22
+				PLAYER:moveRoom(8,Images["endRoom"])
+				PLAYER.y = 22
 			end
 		end
 	--living room
 	elseif currentRoom == Images["livingRoom"] then
 		if checkLeft then
 			if ending_leave == false and ending_shoot == false then
-				player:moveRoom(right,Images["stairRoom"])
+				PLAYER:moveRoom(right,Images["stairRoom"])
 			else
 				doorTxt("I must not go there","I have to go to work")
 			end
 		elseif checkRight then
-			player:moveRoom(left,Images["mainRoom"])
+			PLAYER:moveRoom(left,Images["mainRoom"])
 		elseif checkMid then
 			if ending_leave == false or ending_shoot == false or ending_shoot == false then
-				if obtainables["chest"] == false then
+				if OBTAINABLES["chest"] == false then
 					if basement_unlocked == true then
 						if ending == false then
 							if ammo_available == true then
@@ -252,7 +252,7 @@ function Player:checkDoors()
 						  		table.insert(obj,br_i)
 							end
 							if route ~= 0 then
-								player:moveRoom(player.x,Images["basementRoom"])
+								PLAYER:moveRoom(PLAYER.x,Images["basementRoom"])
 								Sounds.rain:stop()
 								thunder_play = false
 								lightning_flash = false
@@ -280,19 +280,19 @@ function Player:checkDoors()
 					doorTxt("It's locked from the other side","I Guess there's no turning back")
 					Sounds.locked:play()
 				else
-					player:moveRoom(self.x,Images["livingRoom"])
+					PLAYER:moveRoom(self.x,Images["livingRoom"])
 				end
 			elseif ending_shoot == true then
 				doorTxt("It's locked from the other side","I Guess there's no turning back")
 					Sounds.locked:play()
 			elseif ending_leave == true then
-				player:moveRoom(self.x,Images["livingRoom"])
+				PLAYER:moveRoom(self.x,Images["livingRoom"])
 			end
 		elseif checkLeft then
 			if ending_leave == false and ending_shoot == false then
-				player:moveRoom(right,Images["leftRoom"])
+				PLAYER:moveRoom(right,Images["leftRoom"])
 			elseif ending_shoot == true then
-				player:moveRoom(right,Images["leftRoom"])
+				PLAYER:moveRoom(right,Images["leftRoom"])
 			elseif ending_leave == true then
 				doorTxt("I must not go there","I have to go to work")
 			end
@@ -303,18 +303,18 @@ function Player:checkDoors()
 		elseif checkRight then
 			if ending_leave == false and ending_shoot == false and ending_wait == false then
 				if rightroom_unlocked == true then
-					player:moveRoom(left,Images["rightRoom"])
+					PLAYER:moveRoom(left,Images["rightRoom"])
 				else
 					Sounds.locked:play()
 					Sounds.locked:setLooping(false)
 					doorTxt("","It's locked from the other side")
 				end
 			elseif ending_shoot == true then
-				player:moveRoom(left,Images["rightRoom"])
+				PLAYER:moveRoom(left,Images["rightRoom"])
 			elseif ending_leave == true then
 				doorTxt("I have to hurry","I have to go to work")
 			elseif ending_wait == true then
-				player:moveRoom(left,Images["rightRoom"])
+				PLAYER:moveRoom(left,Images["rightRoom"])
 			end
 		end
 	--leftRoom
@@ -322,9 +322,9 @@ function Player:checkDoors()
 		if checkRight then
 			if ending_shoot == true or ending_wait == true then
 				LIGHT_ON = true
-				player:moveRoom(left,Images["basementRoom"])
+				PLAYER:moveRoom(left,Images["basementRoom"])
 			else
-				player:moveRoom(left,Images["basementRoom"])
+				PLAYER:moveRoom(left,Images["basementRoom"])
 			end
 		end
 	elseif currentRoom == Images["rightRoom"] then
@@ -339,33 +339,33 @@ function Player:checkDoors()
 	--stair room
 	elseif currentRoom == Images["stairRoom"] then
 		if checkLeft then
-			player:moveRoom(left,Images["hallwayLeft"])
+			PLAYER:moveRoom(left,Images["hallwayLeft"])
 		elseif checkRight then
-			player:moveRoom(left,Images["livingRoom"])
+			PLAYER:moveRoom(left,Images["livingRoom"])
 		end
 	--hallway left
 	elseif currentRoom == Images["hallwayLeft"] then
 	     if checkLeft then
-	     	player:moveRoom(left,Images["stairRoom"])
+	     	PLAYER:moveRoom(left,Images["stairRoom"])
 	     elseif checkRight then
-	     	player:moveRoom(left,Images["masterRoom"])
+	     	PLAYER:moveRoom(left,Images["masterRoom"])
 	     elseif checkMid then
-	     	player:moveRoom(player.x,Images["storageRoom"])
+	     	PLAYER:moveRoom(PLAYER.x,Images["storageRoom"])
 	     end
 	--storage room
 	elseif currentRoom == Images["storageRoom"] then
 		if checkMid then
-			player:moveRoom(player.x,Images["hallwayLeft"])
+			PLAYER:moveRoom(PLAYER.x,Images["hallwayLeft"])
 		end
 	--master room
 	elseif currentRoom == Images["masterRoom"] then
 		if checkLeft then
-			player:moveRoom(right,Images["hallwayLeft"])
+			PLAYER:moveRoom(right,Images["hallwayLeft"])
 		elseif checkRight then
-			player:moveRoom(left,Images["hallwayRight"])
+			PLAYER:moveRoom(left,Images["hallwayRight"])
 		elseif checkMid then
 			if mid_dial == 0 then
-				if locked["masterRoom_mid"] == true then
+				if LOCKED["masterRoom_mid"] == true then
 					doorTxt("It's locked","I need to find the key")
 					Sounds.locked:play()
 				end
@@ -373,48 +373,48 @@ function Player:checkDoors()
 				Sounds.item_got:play()
 				doorTxt("You've used the key","It's open now.")
 				mid_dial = -1
-				locked["masterRoom_mid"] = false
+				LOCKED["masterRoom_mid"] = false
 				do return end
 			elseif mid_dial == -1 then
-				player:moveRoom(player.x,Images["secretRoom"])
-				move = true
+				PLAYER:moveRoom(PLAYER.x,Images["secretRoom"])
+				MOVE = true
 			end
 		end
 	--secret room
 	elseif currentRoom == Images["secretRoom"] then
 		if checkMid then
 			if event_find == false then
-				player:moveRoom(player.x,Images["masterRoom"])
+				PLAYER:moveRoom(PLAYER.x,Images["masterRoom"])
 			else
 				if screamed ~= -1 then
 					doorTxt("I'm scared..","")
 				else
-					player:moveRoom(player.x,Images["masterRoom"])
+					PLAYER:moveRoom(PLAYER.x,Images["masterRoom"])
 				end
 			end
 		end
 	--hallway right
 	elseif currentRoom == Images["hallwayRight"] then
 		if checkLeft then
-			player:moveRoom(right,Images["masterRoom"])
+			PLAYER:moveRoom(right,Images["masterRoom"])
 		elseif checkRight then
-			player:moveRoom(right,Images["kitchen"])
+			PLAYER:moveRoom(right,Images["kitchen"])
 		elseif checkMid then
-			player:moveRoom(player.x - 8,Images["daughterRoom"])
+			PLAYER:moveRoom(PLAYER.x - 8,Images["daughterRoom"])
 		end
 	--daughter room
 	elseif currentRoom == Images["daughterRoom"] then
 		if checkMid then
-			player:moveRoom(player.x + 8,Images["hallwayRight"])
+			PLAYER:moveRoom(PLAYER.x + 8,Images["hallwayRight"])
 		end
 	--kitchen
 	elseif currentRoom == Images["kitchen"] then
 		if checkLeft then
-			player:moveRoom(right,Images["mainRoom"])
-			if locked["mainRoom_right"] == true then
-				move = false
+			PLAYER:moveRoom(right,Images["mainRoom"])
+			if LOCKED["mainRoom_right"] == true then
+				MOVE = false
 			end
-			locked["mainRoom_right"] = false
+			LOCKED["mainRoom_right"] = false
 			DOOR_LOCKED = false
 
 			SaveData.data.DOOR_LOCKED = DOOR_LOCKED
@@ -425,7 +425,7 @@ function Player:checkDoors()
 			end
 
 		elseif checkRight then
-			player:moveRoom(right,Images["hallwayRight"])
+			PLAYER:moveRoom(right,Images["hallwayRight"])
 		end
 	end
 end
@@ -489,7 +489,7 @@ function doorTxt(str1,str2)
 	local str2 = str2
 	for _,v in ipairs(dialogue) do
 		v:special_text(str1,str2)
-		move = false
+		MOVE = false
 	end
 end
 

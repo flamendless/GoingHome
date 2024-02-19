@@ -107,19 +107,19 @@ function android.update(dt)
 
 	local lo_w, lo_h = Images.lightOutline:getDimensions()
 
-	lx = player.x - lo_w / 2 + math.random(-0.05, 0.05)
-	ly = player.y - lo_h / 2.5 + math.random(-0.05, 0.05)
+	lx = PLAYER.x - lo_w / 2 + math.random(-0.05, 0.05)
+	ly = PLAYER.y - lo_h / 2.5 + math.random(-0.05, 0.05)
 	android.light_update(dt)
-	if move == false then
-		player.android = 0
+	if MOVE == false then
+		PLAYER.android = 0
 	end
 
 	if leftHold == true then
-		player.android = -1
+		PLAYER.android = -1
 	elseif rightHold == true then
-		player.android = 1
+		PLAYER.android = 1
 	elseif leftHold == false and rightHold == false then
-		player.android = 0
+		PLAYER.android = 0
 	end
 
 	if move_chair then
@@ -127,7 +127,7 @@ function android.update(dt)
 		for i, id in ipairs(touches) do
 			local x, y = love.touch.getPosition(id)
 			if guiCheck_touch(id, x, y, gAct) then
-				mrChair:keypressed(dt, "e")
+				MRCHAIR:keypressed(dt, "e")
 			end
 		end
 	end
@@ -138,7 +138,7 @@ function android.draw()
 	if (not GAMEOVER) and (state == "main") then
 		love.graphics.setColor(1, 1, 1, 1)
 		--android.light_draw()
-		if move == true or doodle_flag == true then
+		if MOVE == true or doodle_flag == true then
 			love.graphics.draw(Images.gui_left, gLeft.x, gLeft.y)
 			love.graphics.draw(Images.gui_right, gRight.x, gRight.y)
 			love.graphics.draw(Images.gui_light, gLight.x, gLight.y)
@@ -175,7 +175,7 @@ function android.touchpressed(id, x, y)
 	elseif state == "gallery" then
 		Gallery.interactions(id, x, y)
 	elseif state == "main" and not Pause.flag then
-		if move == true then
+		if MOVE == true then
 			if guiCheck_touch(id, x, y, gLeft) then
 				love.keypressed("a")
 				leftHold = true
@@ -189,7 +189,7 @@ function android.touchpressed(id, x, y)
 			elseif guiCheck_touch(id, x, y, gSettings) then
 				Pause.toggle()
 			end
-		elseif move == false then
+		elseif MOVE == false then
 			android.dialogue()
 			android.endingDialogue()
 			if guiCheck_touch(id, x, y, gAct) then
@@ -254,7 +254,7 @@ function android.touchreleased(id, x, y)
 		else
 			leftHold = false
 			rightHold = false
-			player.android = 0
+			PLAYER.android = 0
 		end
 		androidKey = ""
 	end
@@ -381,14 +381,14 @@ function android.light_check()
 	local inside_range = Images.lightOutline:getWidth() / 3
 	if FADE_OBJ.state == false then
 		if ENEMY_EXISTS == true and LIGHT_ON == true then
-			if player.x >= ghost.x - inside_range and
-				player.x <= ghost.x + inside_range then
-				ghost:action_inside()
-			elseif player.x >= ghost.x - near_range and
-				player.x <= ghost.x + near_range then
-				ghost:action_near()
+			if PLAYER.x >= GHOST.x - inside_range and
+				PLAYER.x <= GHOST.x + inside_range then
+				GHOST:action_inside()
+			elseif PLAYER.x >= GHOST.x - near_range and
+				PLAYER.x <= GHOST.x + near_range then
+				GHOST:action_near()
 			else
-				ghost:action_none()
+				GHOST:action_none()
 			end
 		end
 	end

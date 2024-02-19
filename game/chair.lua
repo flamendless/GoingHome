@@ -3,8 +3,10 @@ local Chair = Object:extend()
 function Chair:new()
 	self.img = Images.store_chair
 	self.x, self.y = 37,34
-	self.w = self.img:getWidth()
-	self.img_glow = Images.store_chair_glow
+	if self.img then
+		self.w = self.img:getWidth()
+		self.img_glow = Images.store_chair_glow
+	end
 	self.glow = false
 	self.push = 0
 	self.vspeed = 10
@@ -19,13 +21,13 @@ function Chair:update(dt)
 
 	self.glow = false
 
-	if player.x + player.w < self.x + 2 and player.x + player.w > self.x then
-		if player.dir == 1 then
+	if PLAYER.x + PLAYER.w < self.x + 2 and PLAYER.x + PLAYER.w > self.x then
+		if PLAYER.dir == 1 then
 			self.glow = true
 			self.push = 1
 		end
-	elseif player.x > self.x + self.w - 2 and player.x < self.x + self.w then
-		if player.dir == -1 then
+	elseif PLAYER.x > self.x + self.w - 2 and PLAYER.x < self.x + self.w then
+		if PLAYER.dir == -1 then
 			self.glow = true
 			self.push = -1
 		end
@@ -36,17 +38,17 @@ function Chair:update(dt)
 
 	if currentRoom == Images["storageRoom"] then
 		if self.x + self.w/2 > WIDTH/2 then
-			player:moveRoom(player.x, Images["hallwayLeft"])
+			PLAYER:moveRoom(PLAYER.x, Images["hallwayLeft"])
 		end
 	elseif currentRoom == Images["hallwayLeft"] then
 		if self.x + self.w/2 > WIDTH - 16 then
-			player:moveRoom(10,Images["masterRoom"])
-			self.x = player.x + player.w
+			PLAYER:moveRoom(10,Images["masterRoom"])
+			self.x = PLAYER.x + PLAYER.w
 		end
 	elseif currentRoom == Images["masterRoom"] then
 		if self.x + self.w/2 > WIDTH/2 - 10 then
-			player:moveRoom(player.x+10,Images["secretRoom"])
-			self.x = player.x + player.w
+			PLAYER:moveRoom(PLAYER.x+10,Images["secretRoom"])
+			self.x = PLAYER.x + PLAYER.w
 		end
 	elseif currentRoom == Images["secretRoom"] then
 		if self.x > 77 then
@@ -74,7 +76,7 @@ function Chair:update(dt)
 					Sounds.chair_move:setVolume(0.7)
 					Sounds.chair_move:setLooping(false)
 				end
-				player.x = player.x + self.push * self.vspeed * dt
+				PLAYER.x = PLAYER.x + self.push * self.vspeed * dt
 				self.x = self.x + self.push * self.vspeed * dt
 				pushing_anim = true
 			end
@@ -94,7 +96,7 @@ function Chair:keypressed(dt,key)
 					Sounds.chair_move:setVolume(0.7)
 					Sounds.chair_move:setLooping(false)
 				end
-				player.x = player.x + self.push * self.vspeed * dt
+				PLAYER.x = PLAYER.x + self.push * self.vspeed * dt
 				self.x = self.x + self.push * self.vspeed * dt
 				pushing_anim = true
 			end

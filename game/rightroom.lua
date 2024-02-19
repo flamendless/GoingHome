@@ -87,7 +87,7 @@ function rightroom_update(dt)
 		light_etc(dt, rl, rl_img, CANVAS_RIGHT)
 	end
 
-	if player.x >= 23 then
+	if PLAYER.x >= 23 then
 		--event_route = him_convo
 		if rr_event == 0 then
 			rr_event = 1
@@ -109,7 +109,7 @@ function rightroom_update(dt)
 	if event_route == him_convo or wait_convo then
 		if rr_event == 1 then
 			if rl_img < 3 then
-				move = false
+				MOVE = false
 				if light_timer > 0 then
 					light_timer = light_timer - 1 * dt
 					if light_timer <= 0 then
@@ -204,7 +204,7 @@ function rightroom_update(dt)
 							Sounds.enemy_scream:setLooping(false)
 							scream_once = true
 						end
-						enemy_pos_x = Lume.lerp(enemy_pos_x, player.x - 10, 0.1)
+						enemy_pos_x = Lume.lerp(enemy_pos_x, PLAYER.x - 10, 0.1)
 						ending_animate = true
 						ending_final = -2
 					elseif event_route == wait_convo then
@@ -218,7 +218,7 @@ function rightroom_update(dt)
 							Sounds.enemy_scream:setLooping(false)
 							scream_once = true
 						end
-						enemy_pos_x = Lume.lerp(enemy_pos_x, player.x - 10, 0.1)
+						enemy_pos_x = Lume.lerp(enemy_pos_x, PLAYER.x - 10, 0.1)
 						ending_animate = true
 						ending_final = -2
 					end

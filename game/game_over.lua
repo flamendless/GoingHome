@@ -20,11 +20,10 @@ function game_over.load()
 
 	LIGHT_ON = false
 
-	player.dead = true
+	PLAYER.dead = true
 end
 
 function game_over.update(dt)
-
 	ENEMY_EXISTS = false
 	game_over.init(dt)
 
@@ -37,11 +36,11 @@ function game_over.update(dt)
 	end
 
 	local lw, lh = Images.light:getDimensions()
-	LIGHTX = player.x - lw + 4
-	LIGHTY =  player.y - lh + 4
+	LIGHTX = PLAYER.x - lw + 4
+	LIGHTY =  PLAYER.y - lh + 4
 
 	if timer >= 8 and timer <= 9 then
-		player.img = Images.player_idle
+		PLAYER.img = Images.player_idle
 		LIGHT_ON = true
 
 	end
@@ -50,7 +49,7 @@ function game_over.update(dt)
 	end
 	--
 	if timer >= 6 and timer <= 7 then
-		player.img = Images.player_red_eyes
+		PLAYER.img = Images.player_red_eyes
 		LIGHT_ON = true
 	end
 	if timer >= 5 and timer <= 6 then
@@ -58,7 +57,7 @@ function game_over.update(dt)
 	end
 	--
 	if timer >= 3 and timer <= 4 then
-		player.img = Images.player_eyes_bleed
+		PLAYER.img = Images.player_eyes_bleed
 		LIGHT_ON = true
 	end
 	if timer >= 2 and timer <= 3 then
@@ -66,7 +65,7 @@ function game_over.update(dt)
 	end
 	--
 	if timer >= 1 and timer <= 1.2 then
-		player.img = Images.player_dead
+		PLAYER.img = Images.player_dead
 		LIGHT_ON = true
 	end
 	if timer >= 0.5 and timer <= 0.9 then

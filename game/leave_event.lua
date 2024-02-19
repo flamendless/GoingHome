@@ -34,7 +34,7 @@ function leave_event_update(dt)
 		player_color = true
 		LIGHT_ON = false
 		LIGHT_VALUE = 1
-		move = false
+		MOVE = false
 		if c < #text1 then
 			if timer > 0 then
 				timer = timer - 1 * dt
@@ -51,7 +51,7 @@ function leave_event_update(dt)
 			LIGHT_VALUE = LIGHT_VALUE - 60 * dt
 			if LIGHT_VALUE <= 0 then
 				LIGHT_VALUE = 0
-				move = true
+				MOVE = true
 			end
 		else
 			LIGHT_ON = true
@@ -68,13 +68,13 @@ function leave_event_update(dt)
 
 	--end room
 	if currentRoom == Images["endRoom"] then
-		move = false
+		MOVE = false
 		random_breathe_flag = false
 		Sounds.knock:setLooping(false)
 		Sounds.knock:stop()
 		LIGHT_ON = false
 		if LIGHT_VALUE > 0 then
-			move = false
+			MOVE = false
 			LIGHT_VALUE = LIGHT_VALUE - 60 * dt
 			if LIGHT_VALUE <= 0 then
 				LIGHT_VALUE = 0

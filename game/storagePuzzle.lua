@@ -17,13 +17,13 @@ end
 
 function process_doodle_puzzle(key)
 	if not doodle_flag then return end
-	move = false
+	MOVE = false
 	if ON_MOBILE then
 		Android.lightChange(true)
 	end
 	if key == "escape" then
 		doodle_flag = false
-		move = true
+		MOVE = true
 		storage_puzzle = false
 		if ON_MOBILE then
 			Android.lightChange(false)
@@ -54,7 +54,7 @@ local function validate_input()
 		final_puzzle_solved = true
 		storage_puzzle = false
 		word_puzzle = false
-		move = true
+		MOVE = true
 		if (ON_MOBILE or DEBUGGING) and Android then
 			Android.lightChange(false)
 		end

@@ -8,7 +8,7 @@ function SCENE.atticRoom_update(dt)
 	Sounds.clock_tick:setVolume(0.5)
 	Sounds.clock_tick:setLooping(true)
 
-	if player.x < 10 then
+	if PLAYER.x < 10 then
 		if squeak == true then
 			Sounds.floor_squeak:play()
 			Sounds.floor_squeak:setLooping(false)
@@ -22,32 +22,32 @@ function SCENE.atticRoom_update(dt)
 		--if player goes to the far left do some falling
 		--print(player.x) --22.86
 
-		player.state = "child"
+		PLAYER.state = "child"
 
-		if ghost.x >= 19 then
-			ghost.chaseOn = true
+		if GHOST.x >= 19 then
+			GHOST.chaseOn = true
 		else
 			if GAMEOVER == false then
-				ghost.chaseOn = false
+				GHOST.chaseOn = false
 				Sounds.floor_hole:play()
 				Sounds.floor_hole:setLooping(false)
 
 				ghost_event = "fall down"
 				LIGHT_ON = false
-				move = false
-				player.y = -32
-				player.grav = 1
+				MOVE = false
+				PLAYER.y = -32
+				PLAYER.grav = 1
 				currentRoom = Images["secretRoom"]
 
-				player.visible = false
-				player.img = Images.player_down
+				PLAYER.visible = false
+				PLAYER.img = Images.player_down
 			end
 		end
 	elseif ghost_event == "flashback" then
 		if final_flashback == true then
 			LIGHT_ON = true
-			player.x = 80
-			player.y = 37
+			PLAYER.x = 80
+			PLAYER.y = 37
 			--here is the epic flashback scene -_-
 			flashback_epic = true
 			epic_scene_update(dt)
@@ -67,8 +67,8 @@ function SCENE.atticRoom_update(dt)
 		if timer > 0 then
 			RANDOM_BREATHE = false
 			timer = timer - 1 * dt
-			move = false
-			player.visible = false
+			MOVE = false
+			PLAYER.visible = false
 			local _t = math.floor(math.random(-6, 6))
 			if _t == 1 then
 				_flag = true
@@ -90,8 +90,8 @@ function SCENE.atticRoom_update(dt)
 		elseif timer <= 0 then
 			event_trigger_light = -1
 			LIGHT_ON = true
-			move = true
-			player.visible = true
+			MOVE = true
+			PLAYER.visible = true
 		end
 	end
 end
@@ -113,13 +113,13 @@ end
 
 --PUZZLE!
 function puzzle_update(dt)
-	move = false
+	MOVE = false
 	if ClockPuzzle.state then
 		if ClockPuzzle.hour == 10 and ClockPuzzle.minute == 2 and ClockPuzzle.second == 8 and ClockPuzzle.ampm == "pm" then
 			ClockPuzzle.state = false
 			Sounds.item_got:play()
 			ClockPuzzle.solved = true
-			move = true
+			MOVE = true
 			Sounds.main_theme:stop()
 			Sounds.intro_soft:stop()
 			Sounds.finding_home:stop()

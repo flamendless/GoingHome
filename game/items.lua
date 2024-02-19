@@ -11,7 +11,6 @@ function Items:new(image,room,x,y,tag)
 end
 
 function Items:update(dt)
-
 end
 
 function Items:draw()
@@ -51,7 +50,7 @@ function Items:returnTag()
 			if v.state == false then v.state = true end
 			-- if v.simpleMessage == true then v.simpleMessage = false end
 			if v.simpleMessage == false then
-				move = false
+				MOVE = false
 			end
 		end
 	end
@@ -65,7 +64,7 @@ function Items:specialTag()
 				if v.state == false then v.state = true end
 				-- if v.simpleMessage == true then v.simpleMessage = false end
 				if v.simpleMessage == false then
-					move = false
+					MOVE = false
 				end
 			end
 		end
@@ -78,7 +77,7 @@ function Items:stillLocked()
 		if v.tag == self.tag then
 			--if v.state == false then v.state = true end
 			--if v.simpleMessage == true then v.simpleMessage = false end
-			move = false
+			MOVE = false
 			v._door = true
 		end
 	end
@@ -110,7 +109,7 @@ function Items:checkFunction()
 		for i,o in ipairs(dialogue) do
 			if o.tag == v.tag then
 				if v.tag and o.tag == "head" then
-					if obtainables["cabinet"] == false then
+					if OBTAINABLES["cabinet"] == false then
 						if self.tag == v.tag then
 							--sound
 							Sounds.wood_drop:play()
@@ -121,22 +120,22 @@ function Items:checkFunction()
 						end
 					end
 				elseif v.tag and o.tag == "ball" then
-					if obtainables["toy"] == false then
+					if OBTAINABLES["toy"] == false then
 						if self.tag == v.tag then
 							Sounds.air_pump:play()
 							o:special_text("you used the air pumper","you've got the basketball")
 							table.remove(obj,k)
-							obtainables["toy"] = false
-							obtainables["gotBall"] = false
+							OBTAINABLES["toy"] = false
+							OBTAINABLES["gotBall"] = false
 						end
 					end
 				elseif v.tag and o.tag == "hoop" then
-					if obtainables["toy"] == false and obtainables["gotBall"] == false then
+					if OBTAINABLES["toy"] == false and OBTAINABLES["gotBall"] == false then
 						if self.tag == v.tag then
 							Sounds.ball_in_hoop:play()
 							o:special_text("you put the ball inside","something clicked")
 							--remove a locked room
-							obtainables["hole"] = false
+							OBTAINABLES["hole"] = false
 							--locked["masterRoom_mid"] = false
 							if event == "" then event = "secret_room_first" end
 							--change the image or object of the hoop
@@ -156,18 +155,18 @@ function Items:checkFunction()
 					end
 				elseif v.tag and o.tag == "sink" then
 					if self.tag == v.tag then
-						if obtainables["kitchen key"] == false and obtainables["crowbar"] == true then
+						if OBTAINABLES["kitchen key"] == false and OBTAINABLES["crowbar"] == true then
 							Sounds.item_got:play()
 							if tv_trigger == 0 then
 								tv_trigger = 1
 							end
 							o:special_text("there's a crowbar inside","you've picked it")
-							obtainables["crowbar"] = false
+							OBTAINABLES["crowbar"] = false
 						end
 					end
 				elseif v.tag and o.tag == "safe vault" then
 					if self.tag == v.tag then
-						if obtainables["crowbar"] == false then
+						if OBTAINABLES["crowbar"] == false then
 							--sound of crowbar hitting
 							Sounds.crowbar:play()
 							Sounds.crowbar:setLooping(false)
@@ -198,7 +197,7 @@ function Items:checkFunction()
 
 					if self.tag == v.tag then
 						if chest_open == false then
-							if obtainables["chest"] == false then
+							if OBTAINABLES["chest"] == false then
 
 								Sounds.re_sound:play()
 								Sounds.re_sound:setLooping(false)
@@ -207,14 +206,14 @@ function Items:checkFunction()
 								chest_open = true
 
 								--event_trigger_light = 1
-								move = false
+								MOVE = false
 								temp_clock = math.floor(CLOCK)
 
 								do return end
 
 							else --still locked
-								if obtainables["clock"] == false then
-									obtainables["chest"] = false
+								if OBTAINABLES["clock"] == false then
+									OBTAINABLES["chest"] = false
 
 									Sounds.item_got:play()
 									Sounds.item_got:setLooping(false)
@@ -235,16 +234,16 @@ function Items:checkFunction()
 							o:special_text(""," I must input the combination")
 							ClockPuzzle.state = true
 						elseif ClockPuzzle.solved == true then
-							if obtainables["clock"] == true then--not yet acquired
+							if OBTAINABLES["clock"] == true then--not yet acquired
 								o:special_text("there's a key inside","you've got a clock key")
-								obtainables["clock"] = false
+								OBTAINABLES["clock"] = false
 								Sounds.item_got:play()
 
 								ENEMY_EXISTS = true
-								ghost.trigger = true
-								ghost.x = WIDTH + 10
-								ghost.y = 30
-								ghost.xscale = -1
+								GHOST.trigger = true
+								GHOST.x = WIDTH + 10
+								GHOST.y = 30
+								GHOST.xscale = -1
 
 								ghost_event = "no escape"
 								ghost_chase = false
@@ -258,7 +257,7 @@ function Items:checkFunction()
 								--sounds.they_are_gone:setVolume(0.3)
 
 								do return end
-							elseif obtainables["clock"] == false then
+							elseif OBTAINABLES["clock"] == false then
 								o:special_text("","there's nothing more here")
 							end
 						end
@@ -267,11 +266,11 @@ function Items:checkFunction()
 				--gun parts
 				elseif v.tag and o.tag == "shelf" then
 					if self.tag == v.tag then
-						if obtainables["gun1"] == true then
+						if OBTAINABLES["gun1"] == true then
 							Sounds.re_sound:play()
 							Sounds.re_sound:setLooping(false)
 							o:special_text("you've got a revolver part","It's a barrel")
-							obtainables["gun1"] = false
+							OBTAINABLES["gun1"] = false
 							temp_clock_gun = math.floor(CLOCK)
 						end
 					end
@@ -279,7 +278,7 @@ function Items:checkFunction()
 				elseif v.tag and o.tag == "candles left" or v.tag and o.tag == "candles right" then
 					if self.tag == v.tag then
 						if candles_light == false then
-							if obtainables["match"] == false then
+							if OBTAINABLES["match"] == false then
 								--play sounds
 								Sounds.match:play()
 								Sounds.match:setLooping(false)
@@ -302,10 +301,10 @@ function Items:checkFunction()
 					end
 				elseif v.tag and o.tag == "trash bin" then
 					if self.tag == v.tag then
-						if obtainables["match"] == true then
+						if OBTAINABLES["match"] == true then
 							Sounds.re_sound:play()
 							Sounds.re_sound:setLooping(false)
-							obtainables["match"] = false
+							OBTAINABLES["match"] = false
 							o:special_text("There's a matchstick","You've picked it up")
 						else
 							o:special_text("","There's nothing more here")
@@ -313,8 +312,8 @@ function Items:checkFunction()
 					end
 				elseif v.tag and o.tag == "secret drawer" then
 					if self.tag == v.tag then
-						if obtainables["gun2"] == true then
-							obtainables["gun2"] = false
+						if OBTAINABLES["gun2"] == true then
+							OBTAINABLES["gun2"] = false
 							Sounds.re_sound:play()
 							o:special_text("you've got a revolver part","It's a cylinder")
 							temp_clock_gun = math.floor(CLOCK)
@@ -333,10 +332,10 @@ function Items:checkFunction()
 							o:special_text("","")
 							do return end
 						else
-							if obtainables["gun3"] == true then
+							if OBTAINABLES["gun3"] == true then
 								o:special_text("You've got a revolver part","It's the hammer")
 								Sounds.re_sound:play()
-								obtainables["gun3"] = false
+								OBTAINABLES["gun3"] = false
 								temp_clock_gun = math.floor(CLOCK)
 							else
 								o:special_text("","There's nothing more here")
@@ -352,19 +351,19 @@ function Items:checkFunction()
 				elseif v.tag and o.tag == "kitchen table" then
 					if self.tag == v.tag then
 						if gun_rebuild == false then
-							if obtainables["gun1"] == false and
-								obtainables["gun2"] == false and
-								obtainables["gun3"] == false then
+							if OBTAINABLES["gun1"] == false and
+								OBTAINABLES["gun2"] == false and
+								OBTAINABLES["gun3"] == false then
 								o:special_text("","I can rebuild the gun here")
 								gun_rebuild = true
 								gun_obtained = true
 							end
 						else
-							if obtainables["revolver"] == true then
+							if OBTAINABLES["revolver"] == true then
 								Sounds.re_sound:play()
 								Sounds.re_sound:setLooping(false)
 								o:special_text("Done! It felt like ages.","You've got a revolver")
-								obtainables["revolver"] = false
+								OBTAINABLES["revolver"] = false
 							else
 								o:special_text("","There's nothing more here")
 							end

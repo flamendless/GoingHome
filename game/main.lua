@@ -2,9 +2,25 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.44"
+local VERSION = "v1.0.45"
 PRO_VERSION = false
 DEBUGGING = true
+
+JSON = require("libs.json.json")
+LOADER = require("libs.love-loader")
+Inspect = require("libs.inspect.inspect")
+Lume = require("libs.lume")
+Anim8 = require("libs.anim8")
+Timer = require("libs.knife.timer")
+Object = require("libs.classic")
+HumpTimer = require("libs.hump.timer")
+FC = require("libs.firstcrush.gui")
+
+Images = {}
+Sounds = {}
+SCENE = {}
+
+require("globals")
 
 love.graphics.setDefaultFilter("nearest", "nearest", 1)
 local img_loading = love.graphics.newImage("assets/loading.png")
@@ -15,24 +31,7 @@ love.mouse.setCursor(cursor)
 
 local URLS = require("urls")
 local Shaders = require("shaders")
-
-JSON = require("libs.json.json")
-LOADER = require("libs.love-loader")
-Inspect = require("libs.inspect.inspect")
-Lume = require("libs.lume")
-Anim8 = require("libs.anim8")
-Timer = require("libs.knife.timer")
-Object = require("libs.classic")
-Player = require("player")
-Fade = require("fade")
-Enemy = require("enemy")
-Chair = require("chair")
-
-Pause = require("pause")
-Items = require("items")
-Interact = require("interact")
-SaveData = require("save_data")
-ClockPuzzle = require("clock_puzzle")
+local utf8 = require("utf8")
 
 OS = love.system.getOS()
 ON_MOBILE = (OS == "Android") or (OS == "iOS")
@@ -56,45 +55,13 @@ if ON_MOBILE then
 	-- 	end
 	-- end
 end
---require("error")
 
-Gallery = require("gallery")
-
-require("gameStates")
-Assets = require("assets")
-
+FADE_OBJ = Fade(1, 6)
 DEF_FONT = love.graphics.newFont("assets/Jamboree.ttf", 8)
 DEF_FONT:setFilter("nearest", "nearest", 1)
 DEF_FONT_HEIGHT = DEF_FONT:getHeight()
 DEF_FONT_HALF = DEF_FONT_HEIGHT / 2
-FADE_OBJ = Fade(1, 6)
 
-Images = {}
-Sounds = {}
-FINISHED_LOADING = false
-SCENE = {}
-
--- p_anim, animation = {}
-
-require("rain_intro_scenes")
-GameOver = require("game_over")
-require("animation")
-require("secret_room")
-require("attic_room")
-require("particles")
-require("rightroom")
-require("leftroom")
-require("storagePuzzle")
-require("leave_event")
-require("credits_scene")
-
-HumpTimer = require("libs.hump.timer")
-SPLASH_FINISHED = false
-
-local utf8 = require("utf8")
-USER_INPUT = ""
-
-love.keyboard.setTextInput(false)
 WIDTH, HEIGHT = 128, 64
 WIDTH_HALF = WIDTH / 2
 HEIGHT_HALF = HEIGHT / 2
@@ -102,11 +69,9 @@ SW, SH = love.window.getDesktopDimensions()
 INTERACT = false
 TX = 0
 TY = 0
+FINISHED_LOADING = false
 
--- local recording = false
-
-FC = require("libs.firstcrush.gui")
-
+love.keyboard.setTextInput(false)
 MAIN_CANVAS = love.graphics.newCanvas(love.graphics.getDimensions())
 
 local function toggle_fs()
@@ -240,16 +205,6 @@ function love.load()
 
 	--dust
 	-- dust = love.graphics.newCanvas()
-
-	--set variables
-	BLINK = false
-	--windows animation var
-	WIN_MOVE_L = true
-	WIN_MOVE_R = true
-
-	LIGHT_VALUE = 100 --starting light value
-	LIGHT_BLINK = true
-	LIGHT_ON = false
 end
 
 function love.update(dt)
@@ -512,7 +467,7 @@ function love.keyreleased(key)
 
 	if state == "main" then
 		if key == "a" or key == "d" then
-			player.isMoving = false
+			PLAYER.isMoving = false
 		end
 	elseif state == "intro" or state == "rain_intro" then
 		if key == "return" or key == "e" then
@@ -684,15 +639,15 @@ function love.keypressed(key)
 			Pause.toggle()
 		end
 
-		if move == true then
+		if MOVE == true then
 			love.keyboard.setKeyRepeat(true)
 			if pushing_anim == false then
 				if key == "a" then
-					if player.moveLeft == true then
-						player.isMoving = true
+					if PLAYER.moveLeft == true then
+						PLAYER.isMoving = true
 					end
-					if player.dir == 1 then
-						player.dir = -1
+					if PLAYER.dir == 1 then
+						PLAYER.dir = -1
 						child:flipH()
 						player_push:flipH()
 						idle:flipH()
@@ -705,11 +660,11 @@ function love.keypressed(key)
 						end
 					end
 				elseif key == "d" then
-					if player.moveRight == true then
-						player.isMoving = true
+					if PLAYER.moveRight == true then
+						PLAYER.isMoving = true
 					end
-					if player.dir == -1 then
-						player.dir = 1
+					if PLAYER.dir == -1 then
+						PLAYER.dir = 1
 						child:flipH()
 						player_push:flipH()
 						idle:flipH()
@@ -720,7 +675,7 @@ function love.keypressed(key)
 							ghost_chase = true
 						end
 					end
-				elseif key == "e" and move then
+				elseif key == "e" and MOVE then
 					--try fix for overlapping texts
 					for _, obj in ipairs(dialogue) do
 						if obj.simpleMessage or obj.specialTxt then
@@ -730,22 +685,22 @@ function love.keypressed(key)
 
 					if currentRoom == Images.leftRoom or currentRoom == Images.rightRoom then
 						if LIGHT_ON == false then
-							player:checkItems()
-							player:checkDoors()
+							PLAYER:checkItems()
+							PLAYER:checkDoors()
 						end
 					end
 					if move_chair == false then
 						if (event_find == false) and (LIGHT_ON == true) then
-							player:checkItems()
-							player:checkDoors()
+							PLAYER:checkItems()
+							PLAYER:checkDoors()
 						else
-							player:checkItems()
-							player:checkDoors()
+							PLAYER:checkItems()
+							PLAYER:checkDoors()
 						end
 					end
 				end
 			end
-		elseif move == false then
+		elseif MOVE == false then
 			love.keyboard.setKeyRepeat(false)
 			for _, v in ipairs(dialogue) do
 				for _, k in ipairs(obj) do
@@ -799,13 +754,13 @@ function love.keypressed(key)
 	end
 
 	if word_puzzle == true then
-		move = false
+		MOVE = false
 		if ON_MOBILE then
 			Android.lightChange(true)
 		end
 		if key == "escape" then
 			word_puzzle = false
-			move = true
+			MOVE = true
 			storage_puzzle = false
 			if ON_MOBILE then
 				Android.lightChange(false)
@@ -831,7 +786,7 @@ function love.keypressed(key)
 		end
 		if key == "escape" then
 			ClockPuzzle.state = false
-			move = true
+			MOVE = true
 			if ON_MOBILE then
 				Android.lightChange(false)
 			end
@@ -844,7 +799,7 @@ function love.keypressed(key)
 		elseif key == "d" then
 			ClockPuzzle.ev_right()
 		elseif key == "return" then
-			move = true
+			MOVE = true
 			if (ON_MOBILE or DEBUGGING) and Android then
 				Android.lightChange(false)
 			end
@@ -857,21 +812,15 @@ function love.textinput(t)
 	storage_puzzle_text_input(t)
 end
 
-function Set(list)
-	local set = {}
-	for _, l in ipairs(list) do set[l] = true end
-	return set
-end
-
 function round(num, idp)
 	local mult = 10 ^ (idp or 0)
 	return math.floor(num * mult + 0.5) / mult
 end
 
 function check_gun()
-	if obtainables["gun1"] == false and
-		obtainables["gun2"] == false and
-		obtainables["gun3"] == false then
+	if OBTAINABLES["gun1"] == false and
+		OBTAINABLES["gun2"] == false and
+		OBTAINABLES["gun3"] == false then
 		doorTxt("I have all the parts", "I need a table to rebuild it")
 		local ammo_dial = Interact(false, { "It's an ammo box", "There's only one ammo here", "Load it?" },
 			{ "Yes", "No" },
@@ -881,7 +830,7 @@ function check_gun()
 		table.insert(obj, ammo_item)
 		ammo_available = true
 	else
-		move = true
+		MOVE = true
 	end
 end
 
@@ -940,6 +889,7 @@ function RESET_STATES()
 		assets = 1,
 		conf = 1,
 		error = 1,
+		gallery = 1,
 		game_over = 1,
 		gui = 1,
 		interact = 1,

@@ -35,8 +35,8 @@ function pause.sound(state)
 end
 
 function pause.load()
-	TEMP_MOVE = move
-	move = false
+	TEMP_MOVE = MOVE
+	MOVE = false
 	pause.flag = true
 
 	Sounds.thunder:pause()
@@ -47,7 +47,7 @@ function pause.load()
 end
 
 function pause.exit()
-	move = TEMP_MOVE
+	MOVE = TEMP_MOVE
 	pause.flag = false
 	Sounds.thunder:play()
 	random_breathe_flag = true

@@ -152,7 +152,7 @@ function left_room_update(dt)
 		end
 
 	elseif lr_event == 2 then
-		move = false
+		MOVE = false
 
 		ll_img = 2
 		_ev = 1
@@ -216,7 +216,7 @@ function left_room_update(dt)
 				elseif event_route[c] == "" then
 					f_leave2_flag = true
 					lr_event = 5
-					move = true
+					MOVE = true
 				end
 			elseif event_route == him_convo then
 				if (event_route[c] == "") then
@@ -262,7 +262,7 @@ function left_room_update(dt)
 					Sounds.enemy_scream:play()
 					Sounds.enemy_scream:setLooping(false)
 					lr_event = 6
-					move = true
+					MOVE = true
 					ending_animate = false
 
 					--insert note
@@ -275,7 +275,7 @@ function left_room_update(dt)
 			end
 		elseif event_route == wait_convo then
 			ending_wait = true
-			move = true
+			MOVE = true
 		end
 	elseif lr_event == 6 then
 		LIGHT_VALUE = 1

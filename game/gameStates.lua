@@ -258,6 +258,7 @@ function gamestates.init()
 		Sounds.enemy_scream:setLooping(false)
 		Sounds.intro_soft:stop()
 	elseif state == "main" then
+		RESET_STATES()
 		Pause.init()
 		Sounds.fl_toggle:setLooping(false)
 		Sounds.fl_toggle:setVolume(1)
@@ -268,52 +269,18 @@ function gamestates.init()
 		Sounds.ts_theme:stop()
 
 		FADE_OBJ.state = true
-		move = true
+		MOVE = true
 		LIGHT_VALUE = 1
 
 		--create dynamic objects
-		player = Player(WIDTH_HALF, HEIGHT_HALF, 8, 16)
-		ghost = Enemy(42, 30, 12, 14)
-
-		mrChair = Chair()
-
-		ENEMY_EXISTS = false
-		seen = false
-		GAMEOVER = false
+		PLAYER = Player(WIDTH_HALF, HEIGHT_HALF, 8, 16)
+		GHOST = Enemy(42, 30, 12, 14)
+		MRCHAIR = Chair()
 
 		currentRoom = Images["mainRoom"]
-		--locked doors
-		locked = Set {
-			"mainRoom_right",
-			"livingRoom_mid",
-			"masterRoom_mid"
-		}
-
 		if not DOOR_LOCKED then
-			locked["mainRoom_right"] = false
+			LOCKED["mainRoom_right"] = false
 		end
-
-		obtainables = Set({
-			"cabinet", --where to get the toy hammer
-			"toy", --where to get the air pumper
-			"ball", --interacts with the hoop
-			"hole", -- switch inside the holes
-			"head_key",
-			"kitchen key",
-			"crowbar",
-			"rope",
-			"chest",
-			"clock",
-			"chair",
-			"crowbar2",
-			--gun parts
-			"gun1",
-			"gun2",
-			"gun3",
-			"match",
-			"revolver",
-			"gotBall"
-		})
 	end
 end
 
@@ -457,8 +424,8 @@ function gamestates.update(dt)
 			Sounds.tv_loud:stop()
 		end
 
-		if move == true then
-			player:movement(dt)
+		if MOVE == true then
+			PLAYER:movement(dt)
 		end
 
 		if ending_leave == true then
@@ -469,7 +436,7 @@ function gamestates.update(dt)
 
 		for _, v in pairs(dialogue) do
 			if v.tag == "clock" then
-				if move == true then
+				if MOVE == true then
 					v.specialTxt = false
 				end
 			end
@@ -544,8 +511,8 @@ function gamestates.update(dt)
 					_lightX = mx - Images.light:getWidth() / 2 + math.random(-0.05, 0.05)
 					_lightY = my - Images.light:getHeight() / 2 + math.random(-0.05, 0.05)
 				end
-				LIGHTX = math.clamp(_lightX, player.x - 120, player.x + 100)
-				LIGHTY = math.clamp(_lightY, player.y - 20, player.y + 0)
+				LIGHTX = math.clamp(_lightX, PLAYER.x - 120, PLAYER.x + 100)
+				LIGHTY = math.clamp(_lightY, PLAYER.y - 20, PLAYER.y + 0)
 
 				love.graphics.setCanvas(CANVAS_CUSTOM_MASK)
 				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
@@ -587,7 +554,7 @@ function gamestates.update(dt)
 
 			if action_flag == 1 then
 				action_flag = -1
-				move = false
+				MOVE = false
 				tt_update = true
 			end
 			if tt_update == true then
@@ -623,20 +590,20 @@ function gamestates.update(dt)
 		if DOOR_LOCKED == false then
 			if ENEMY_EXISTS == true then
 				if ghost_event ~= "no escape" then
-					if move == true then
-						ghost:update(dt)
+					if MOVE == true then
+						GHOST:update(dt)
 					end
 				else
 					if ghost_chase == true then
-						ghost:update(dt)
+						GHOST:update(dt)
 					end
 				end
 			end
 		else
-			ghost.x = -100
+			GHOST.x = -100
 		end
 
-		player:update(dt)
+		PLAYER:update(dt)
 
 		if ClockPuzzle.state == true then
 			puzzle_update(dt)
@@ -668,7 +635,7 @@ function gamestates.update(dt)
 		end
 
 		if go_flag == 1 then
-			move = false
+			MOVE = false
 			GameOver.load()
 			go_flag = -1
 		end
@@ -676,10 +643,10 @@ function gamestates.update(dt)
 
 		--it's mr. chair's time!
 		if move_chair == true then
-			mrChair:update(dt)
+			MRCHAIR:update(dt)
 		end
 
-		if mrChair.exists == false then
+		if MRCHAIR.exists == false then
 			pushing_anim = false
 		end
 
@@ -706,7 +673,7 @@ function gamestates.update(dt)
 	end
 
 	if temp_clock_gun ~= nil then
-		move = false
+		MOVE = false
 		if temp_clock_gun < CLOCK - 3 then
 			check_gun()
 			temp_clock_gun = nil
@@ -1080,7 +1047,7 @@ function gamestates.draw()
 		end
 
 		if ending_leave == false then
-			player:checkGlow()
+			PLAYER:checkGlow()
 		end
 
 		if currentRoom == Images["secretRoom"] and event == "after_dialogue" then
@@ -1100,15 +1067,15 @@ function gamestates.draw()
 
 		--enemy logics
 		if ENEMY_EXISTS == true then
-			ghost:draw()
+			GHOST:draw()
 			light_check()
 		end
 
 		if move_chair == true then
-			mrChair:draw()
+			MRCHAIR:draw()
 		end
 
-		player:draw()
+		PLAYER:draw()
 		if ON_MOBILE then
 			Android.light_draw()
 		end
@@ -1239,22 +1206,22 @@ function light_check()
 		local mx = love.mouse.getX() / RATIO
 		local my = (love.mouse.getY() - TY) / RATIO
 		local rad = 10
-		local gx = ghost.x - ghost.ox
+		local gx = GHOST.x - GHOST.ox
 		--debugging
 
 		--inside
 		if FADE_OBJ.state == false then
 			if ENEMY_EXISTS == true and LIGHT_ON == true then
-				if mx >= gx - ghost.w / 2 and mx <= gx + ghost.w + ghost.w / 2 then
-					if my >= ghost.y - ghost.h / 1.5 and my <= ghost.y + ghost.y + ghost.h / 1.5 then
-						ghost:action_inside()
+				if mx >= gx - GHOST.w / 2 and mx <= gx + GHOST.w + GHOST.w / 2 then
+					if my >= GHOST.y - GHOST.h / 1.5 and my <= GHOST.y + GHOST.y + GHOST.h / 1.5 then
+						GHOST:action_inside()
 					end
 					--near
-				elseif mx >= gx - rad and mx <= gx + ghost.w + rad then
-					ghost:action_near()
+				elseif mx >= gx - rad and mx <= gx + GHOST.w + rad then
+					GHOST:action_near()
 					--no action
 				else
-					ghost:action_none()
+					GHOST:action_none()
 				end
 			end
 		end
@@ -1265,28 +1232,28 @@ function determine_enemy_pos()
 	local left = 14
 	local right = WIDTH - 14
 
-	if ghost.chaseOn == false then
-		if player.x <= WIDTH_HALF - l + 1 then --player is in the left
-			ghost.x = right
-			ghost.xscale = -1
-		elseif player.x >= WIDTH_HALF + r + 1 then --player is in the right
-			ghost.x = left
-			ghost.xscale = 1
-		elseif player.x >= WIDTH_HALF - l then --player in mid
-			if player.x <= WIDTH_HALF + r then
-				ghost.x = Lume.randomchoice({ left, right })
-				ghost.xscale = 1
+	if GHOST.chaseOn == false then
+		if PLAYER.x <= WIDTH_HALF - l + 1 then --player is in the left
+			GHOST.x = right
+			GHOST.xscale = -1
+		elseif PLAYER.x >= WIDTH_HALF + r + 1 then --player is in the right
+			GHOST.x = left
+			GHOST.xscale = 1
+		elseif PLAYER.x >= WIDTH_HALF - l then --player in mid
+			if PLAYER.x <= WIDTH_HALF + r then
+				GHOST.x = Lume.randomchoice({ left, right })
+				GHOST.xscale = 1
 			end
 		end
 	else
-		if player.x <= WIDTH_HALF - l + 1 then
-			ghost.x = right
-		elseif player.x >= WIDTH_HALF + r + 1 then
-			ghost.x = left
-		elseif player.x >= WIDTH_HALF - l then --player in mid
-			if player.x <= WIDTH_HALF + r then
-				ghost.x = Lume.randomchoice({ left, right })
-				ghost.xscale = 1
+		if PLAYER.x <= WIDTH_HALF - l + 1 then
+			GHOST.x = right
+		elseif PLAYER.x >= WIDTH_HALF + r + 1 then
+			GHOST.x = left
+		elseif PLAYER.x >= WIDTH_HALF - l then --player in mid
+			if PLAYER.x <= WIDTH_HALF + r then
+				GHOST.x = Lume.randomchoice({ left, right })
+				GHOST.xscale = 1
 			end
 		end
 	end
@@ -1298,9 +1265,9 @@ function enemy_check()
 		if random <= 40 then
 			--enemy disappears
 			ENEMY_EXISTS = false
-			ghost.timer = 2
-			ghost.count = true
-			ghost.chaseOn = false
+			GHOST.timer = 2
+			GHOST.count = true
+			GHOST.chaseOn = false
 		else
 			determine_enemy_pos()
 		end
@@ -1411,7 +1378,7 @@ function check_gui(gx, gy, gw, gh)
 end
 
 function triggerTxt(dt)
-	move = false
+	MOVE = false
 
 	if _alarm > 0 then
 		_alarm = _alarm - 1 * dt
@@ -1420,16 +1387,16 @@ function triggerTxt(dt)
 		if t == 1 then
 			_alarm = 2
 			t = 2
-			move = true
+			MOVE = true
 		elseif t == 2 then
 			_alarm = 4
 			t = 3
-			move = false
+			MOVE = false
 			Sounds.enemy_scream:play()
 			Sounds.enemy_scream:setVolume(0.9)
 			Sounds.enemy_scream:setLooping(false)
 		elseif t == 3 then
-			move = true
+			MOVE = true
 			tt_update = false
 			tt_draw = false
 		end

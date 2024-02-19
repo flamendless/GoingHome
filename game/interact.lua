@@ -77,7 +77,7 @@ function Interact:update(dt)
 			self.specialTxt = false
 			self.state = false
 			self.option = false
-			move = true
+			MOVE = true
 		end
 	elseif self.specialTxt == true then
 		if self.sp_2_show == true then
@@ -90,7 +90,7 @@ function Interact:update(dt)
 				self.state = false
 				self.option = false
 				self.simpleMessage = false
-				move = true
+				MOVE = true
 				setRemove(self.toRemove)
 			end
 		else
@@ -109,7 +109,7 @@ function Interact:update(dt)
 			self.simpleMessage = false
 			self.state = false
 			self._door = false
-			move = true
+			MOVE = true
 		end
 	end
 end
@@ -208,12 +208,12 @@ function Interact:returnChoices(choice)
 			end
 
 			self.state = false
-			move = true
+			MOVE = true
 			self.option = false
 			move_chair = true
 		else
 			self.state = false
-			move = true
+			MOVE = true
 			self.option = false
 		end
 	end
@@ -231,44 +231,44 @@ function Interact:special_text(str1, str2)
 end
 
 function Interact:checkItem()
-	for _, _ in pairs(obtainables) do
+	for _, _ in pairs(OBTAINABLES) do
 		for _, m in ipairs(dialogue) do
 			for _, o in ipairs(obj) do
-				if o.tag and self.tag == "cabinet" and obtainables["cabinet"] == true then
+				if o.tag and self.tag == "cabinet" and OBTAINABLES["cabinet"] == true then
 					m:special_text("There's a toy hammer", "You've got a toy hammer")
 					self.toRemove = "cabinet"
 					--sound of item acquired
 					Sounds.item_got:play()
-				elseif o.tag and self.tag == "toy" and obtainables["toy"] == true then
+				elseif o.tag and self.tag == "toy" and OBTAINABLES["toy"] == true then
 					m:special_text("There's an air pumper.", "You've got an air pumper")
 					self.toRemove = "toy"
 					--sound of item acquired
 					Sounds.item_got:play()
-				elseif o.tag and self.tag == "hoop" and obtainables["ball"] == false then
+				elseif o.tag and self.tag == "hoop" and OBTAINABLES["ball"] == false then
 					self.toRemove = "ball"
 					--sound of item acquired
 					Sounds.item_got:play()
-				elseif o.tag and self.tag == "hole" and obtainables["hole"] == false then
+				elseif o.tag and self.tag == "hole" and OBTAINABLES["hole"] == false then
 					--self.toRemove = "hole"
-					if obtainables["head_key"] == true then
+					if OBTAINABLES["head_key"] == true then
 						m:special_text("", "you've picked up the key")
-						obtainables["head_key"] = false
+						OBTAINABLES["head_key"] = false
 						--sound of item acquired
 						Sounds.item_got:play()
 						if mid_dial == 0 then mid_dial = 1 end
 						trigger = 1
 						do return end
-					elseif obtainables["head_key"] == false then
+					elseif OBTAINABLES["head_key"] == false then
 						if trigger == 1 then
 							m:special_text("", "There's nothing more here")
 						end
 					end
 				elseif o.tag and self.tag == "sink" then
-					if obtainables["kitchen key"] == true then
+					if OBTAINABLES["kitchen key"] == true then
 						m:special_text("", "its locked")
-					elseif obtainables["kitchen key"] == false then
+					elseif OBTAINABLES["kitchen key"] == false then
 						self.toRemove = "sink"
-						if obtainables["crowbar"] == false then
+						if OBTAINABLES["crowbar"] == false then
 							if sink_trigger == 0 then
 								sink_trigger = 1
 								do return end
@@ -279,18 +279,18 @@ function Interact:checkItem()
 					end
 				elseif o.tag and self.tag == "master bed" then
 					--self.toRemove = ""
-					if obtainables["kitchen key"] == true then
+					if OBTAINABLES["kitchen key"] == true then
 						m:special_text("There's a key", "it has a spatula keychain")
 						Sounds.item_got:play()
 						--self.toRemove = "master bed"
-						obtainables["kitchen key"] = false
+						OBTAINABLES["kitchen key"] = false
 						if bed_trigger == 0 then
 							bed_trigger = 1
 							do return end
 						elseif bed_trigger == 1 then
 							m:special_text("", "Nothing else here")
 						end
-					elseif obtainables["kitchen key"] == false then
+					elseif OBTAINABLES["kitchen key"] == false then
 						m:special_text("", "Nothing else here")
 					end
 				elseif o.tag and self.tag == "tv" then
@@ -300,14 +300,14 @@ function Interact:checkItem()
 						tv_open_volume = false
 					end
 				elseif o.tag and self.tag == "open_vault" then
-					if obtainables["rope"] == true then
+					if OBTAINABLES["rope"] == true then
 						if rope_trigger == 0 then
 							m:special_text("", "Something fell")
 							local rope = Items(Images.rope, Images["secretRoom"], 80, 20, "rope")
 							table.insert(obj, rope)
 							Sounds.item_got:play()
 							self.toRemove = "open_vault"
-							obtainables["rope"] = false
+							OBTAINABLES["rope"] = false
 							rope_trigger = 1
 							do return end
 						end
@@ -333,7 +333,7 @@ function Interact:checkItem()
 					Sounds.climb:setLooping(false)
 					FADE_OBJ.state = true
 					currentRoom = Images["atticRoom"]
-					move = false
+					MOVE = false
 					final_flashback = true
 					if Sounds.clock_tick:isPlaying() == false then
 						Sounds.clock_tick:play()
@@ -361,7 +361,7 @@ function setRemove(item)
 			table.remove(obj_properties.dynamic, i)
 		end
 	end
-	obtainables[item] = false
+	OBTAINABLES[item] = false
 end
 
 return Interact

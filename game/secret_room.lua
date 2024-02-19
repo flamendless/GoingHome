@@ -64,7 +64,7 @@ function SCENE.secretRoom_update(dt)
 		ENEMY_EXISTS = false
 		LIGHT_ON = false
 		RANDOM_BREATHE = false
-		move = false
+		MOVE = false
 		Sounds.rain:setVolume(0.3)
 		Sounds.main_theme:setVolume(0)
 		Sounds.finding_home:setVolume(0)
@@ -116,7 +116,7 @@ function SCENE.secretRoom_update(dt)
 				txt1 = ""
 
 				event = "after_dialogue"
-				move = true
+				MOVE = true
 				--sounds.they_are_gone:play()
 				--sounds.they_are_gone:setLooping(true)
 				--sounds.they_are_gone:setVolume(0.25)
@@ -156,16 +156,16 @@ function SCENE.secretRoom_update(dt)
 
 	if ghost_event == "no escape" then
 		ENEMY_EXISTS = true
-		ghost.chaseOn = true
-		ghost.x = 64
-		ghost.y = 30
+		GHOST.chaseOn = true
+		GHOST.x = 64
+		GHOST.y = 30
 		ghost_event = "still no escape"
 		do return end
 	end
 
 	if ghost_event == "still no escape" then
 		ENEMY_EXISTS = true
-		ghost.chaseOn = true
+		GHOST.chaseOn = true
 	end
 
 	if ghost_event == "fall down" then
@@ -182,7 +182,7 @@ function SCENE.secretRoom_update(dt)
 			if timer <= 0 then
 				timer = 3
 				ghost_event = "flashback"
-				move = false
+				MOVE = false
 				LIGHT_ON = false
 
 				for i, v in ipairs(obj) do
@@ -211,13 +211,13 @@ function SCENE.secretRoom_update(dt)
 		tv_light_flag = false
 		Sounds.rain:stop()
 		Sounds.thunder:stop()
-		player.img = Images.player_child_idle
+		PLAYER.img = Images.player_child_idle
 		Sounds.main_theme:play()
 		Sounds.main_theme:setLooping(false)
 		Sounds.main_theme:setVolume(0.3)
-		player.xspd = 25
+		PLAYER.xspd = 25
 
-		player.visible = true
+		PLAYER.visible = true
 		if parent_found == false then
 			--texts intro
 			if event_find == false then
@@ -233,7 +233,7 @@ function SCENE.secretRoom_update(dt)
 					elseif c >= #_txt_2 then
 						flash_text_finished = true
 						txt = false
-						move = true
+						MOVE = true
 						LIGHT_VALUE = 0
 						event_find = true
 					end
@@ -242,9 +242,9 @@ function SCENE.secretRoom_update(dt)
 				if move_chair == false then
 					--finding parents
 					if screamed == 0 then
-						if player.x >= 77 and player.x <= 80 then
+						if PLAYER.x >= 77 and PLAYER.x <= 80 then
 							Sounds.floor_squeak:play()
-							move = false
+							MOVE = false
 							screamed = 1
 							timer = 3
 						end
@@ -253,7 +253,7 @@ function SCENE.secretRoom_update(dt)
 							timer = timer - 1 * dt
 							if timer <= 0 then
 								screamed = -1
-								move = true
+								MOVE = true
 							end
 						end
 					elseif screamed == -1 then
@@ -294,13 +294,13 @@ function SCENE.secretRoom_update(dt)
 
 			Sounds.rain:play()
 			Sounds.thunder:play()
-			player.img = Images.player_idle
+			PLAYER.img = Images.player_idle
 			Sounds.main_theme:stop()
-			player.xspd = 25
+			PLAYER.xspd = 25
 			c = 1
 			timer = 3
 
-			move = false
+			MOVE = false
 			ghost_event = "limp"
 		end
 	elseif ghost_event == "limp" then
@@ -325,7 +325,7 @@ function SCENE.secretRoom_update(dt)
 		end
 	elseif ghost_event == "after limp" then
 		txt = false
-		move = true
+		MOVE = true
 		ghost_event = "finished"
 		tv_light_flag = true
 
@@ -341,7 +341,7 @@ function SCENE.secretRoom_update(dt)
 			end
 		end
 	elseif ghost_event == "finished" then
-		player.state = "normal"
+		PLAYER.state = "normal"
 		flashback_epic = false
 
 		-- for i, v in ipairs(obj) do

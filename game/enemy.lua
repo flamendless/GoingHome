@@ -12,23 +12,21 @@ function Enemy:new(x,y,w,h)
 	self.count = true
 	self.chaseOn = false
 	self.spd = 25 --30
-
 	self.trigger = false
-
 end
 
 function Enemy:update(dt)
 
-	if move == false then
+	if MOVE == false then
 		self.image = enemy_idle
 	end
 
 	--lightning
 	if lStrike == true then
-		if self.x <= player.x and self.x >= player.x + player.w then
+		if self.x <= PLAYER.x and self.x >= PLAYER.x + PLAYER.w then
 			GAMEOVER = true
 		end
-		if player.x < self.x and player.x > self.x - 14 or player.x > self.x and player.x < self.x + 8 then
+		if PLAYER.x < self.x and PLAYER.x > self.x - 14 or PLAYER.x > self.x and PLAYER.x < self.x + 8 then
 			self.chaseOn = true
 		end
 	end
@@ -36,8 +34,8 @@ function Enemy:update(dt)
 	--special events
 	if ghost_event == "no escape" then
 		--collision
-		if move == true then
-			if self.x >= player.x and self.x <= player.x + player.w then
+		if MOVE == true then
+			if self.x >= PLAYER.x and self.x <= PLAYER.x + PLAYER.w then
 				self.chaseOn = false
 				GAMEOVER = true
 			else
@@ -82,12 +80,12 @@ function Enemy:update(dt)
 		if self.image == enemy_move then
 			--move towards player
 			--set image orientation
-			if self.x <= player.x then
+			if self.x <= PLAYER.x then
 				self.xscale = 1
 			else self.xscale = -1 end
 		end
 
-		if move == true and seen == true and self.count == true then
+		if MOVE == true and SEEN == true and self.count == true then
 			self.timer = self.timer - dt
 			if self.timer <= 0 then
 				self:chase(dt)
@@ -123,12 +121,12 @@ function Enemy:chase(dt)
 	self.image = enemy_move
 
 	--move towards player
-	if player.x <= self.x then --if player is in the left
+	if PLAYER.x <= self.x then --if player is in the left
 		self.x = self.x - self.spd * dt
 	else self.x = self.x + self.spd * dt end
 
 	--collision
-	if self.x >= player.x and self.x <= player.x + player.w then
+	if self.x >= PLAYER.x and self.x <= PLAYER.x + PLAYER.w then
 		self.chaseOn = false
 		GAMEOVER = true
 	end
@@ -148,21 +146,21 @@ end
 
 function Enemy:action_inside()
 	self.image = enemy_move
-	seen = true
+	SEEN = true
 	self.chaseOn = true
 end
 
 function Enemy:action_near()
 	self.image = enemy_mys
 	self.count = true
-	seen = true
+	SEEN = true
 end
 
 function Enemy:action_none()
 	if self.chaseOn == false then
 		self.image = enemy_idle
 	end
-	seen = false
+	SEEN = false
 end
 
 return Enemy

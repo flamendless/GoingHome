@@ -295,9 +295,9 @@ function epic_scene_draw()
 		if ON_MOBILE then
 			Android.lightChange(false)
 		end
-		player.visible = true
-		player.x = 14
-		player.y = 27
+		PLAYER.visible = true
+		PLAYER.x = 14
+		PLAYER.y = 27
 		parent_found = true
 		FADE_OBJ.state = true
 		currentRoom = Images["secretRoom"]
