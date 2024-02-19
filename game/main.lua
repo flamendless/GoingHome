@@ -6,6 +6,9 @@ local VERSION = "v1.0.46"
 PRO_VERSION = false
 DEBUGGING = true
 
+OS = love.system.getOS()
+ON_MOBILE = (OS == "Android") or (OS == "iOS")
+
 JSON = require("libs.json.json")
 LOADER = require("libs.love-loader")
 Inspect = require("libs.inspect.inspect")
@@ -33,8 +36,6 @@ local URLS = require("urls")
 local Shaders = require("shaders")
 local utf8 = require("utf8")
 
-OS = love.system.getOS()
-ON_MOBILE = (OS == "Android") or (OS == "iOS")
 if ON_MOBILE then
 	Android = require("gui")
 	LoveAdmob = require("love_admob")
@@ -677,7 +678,7 @@ function love.keypressed(key)
 					end
 				elseif key == "e" and MOVE then
 					--try fix for overlapping texts
-					for _, obj in ipairs(dialogue) do
+					for _, obj in ipairs(DIALOGUES) do
 						if obj.simpleMessage or obj.specialTxt then
 							return
 						end
@@ -702,8 +703,8 @@ function love.keypressed(key)
 			end
 		elseif MOVE == false then
 			love.keyboard.setKeyRepeat(false)
-			for _, v in ipairs(dialogue) do
-				for _, k in ipairs(obj) do
+			for _, v in ipairs(DIALOGUES) do
+				for _, k in ipairs(ITEMS_LIST) do
 					if v.tag == k.tag then
 						if v.state == true then
 							if key == "e" then
@@ -825,9 +826,9 @@ function check_gun()
 		local ammo_dial = Interact(false, { "It's an ammo box", "There's only one ammo here", "Load it?" },
 			{ "Yes", "No" },
 			"", "ammo")
-		table.insert(dialogue, ammo_dial)
+		table.insert(DIALOGUES, ammo_dial)
 		local ammo_item = Items(Images.ammo, Images["leftRoom"], 41, 34, "ammo")
-		table.insert(obj, ammo_item)
+		table.insert(ITEMS_LIST, ammo_item)
 		ammo_available = true
 	else
 		MOVE = true

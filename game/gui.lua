@@ -273,8 +273,8 @@ end
 
 function android.dialogue()
 	local key = android.getKey()
-	for _, v in ipairs(dialogue) do
-		for _, k in ipairs(obj) do
+	for _, v in ipairs(DIALOGUES) do
+		for _, k in ipairs(ITEMS_LIST) do
 			if (v.tag == k.tag) and v.state then
 				if key == "e" then
 					if v.n <= #v.txt then
@@ -356,11 +356,11 @@ function android.light_update(dt)
 			end
 			if left_light_flag and currentRoom == Images["leftRoom"] then
 				local img = getLeftRoom()
-				light_etc(dt, ll, img, CANVAS_CUSTOM_MASK)
+				light_etc(dt, LL, img, CANVAS_CUSTOM_MASK)
 			end
 			if right_light_flag and currentRoom == Images["rightRoom"] then
 				local img = getRightRoom()
-				light_etc(dt, rl, img, CANVAS_CUSTOM_MASK)
+				light_etc(dt, RL, img, CANVAS_CUSTOM_MASK)
 			end
 		else
 			love.graphics.draw(mainLight, 0, 0)

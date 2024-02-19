@@ -60,9 +60,9 @@ function Chair:update(dt)
 			--insert new interactable chair
 			if chair_final == false then
 		    	local chair = Items(Images.store_chair,Images["secretRoom"],self.x,34,"chair_final")
-		    	table.insert(obj,chair)
+		    	table.insert(ITEMS_LIST,chair)
 		    	local cd = Interact(false,{"With this chair","You can now reach the ladder","Go up?"},{"Yes","No"},"","chair_final")
-				table.insert(dialogue,cd)
+				table.insert(DIALOGUES,cd)
 				chair_final = true
 			end
 		end

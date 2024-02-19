@@ -247,9 +247,9 @@ function Player:checkDoors()
 
 								--insert broken revolver
 								local br_d = Interact(false,{"It's a revolver","the cylinder is broken","I can't open it","I can' tell","if its loaded","Take it?"},{"Yes","No"},"","revolver2")
-								table.insert(dialogue,br_d)
+								table.insert(DIALOGUES,br_d)
 								local br_i = Items(Images.br,Images["leftRoom"],41,34,"revolver2")
-						  		table.insert(obj,br_i)
+						  		table.insert(ITEMS_LIST,br_i)
 							end
 							if route ~= 0 then
 								PLAYER:moveRoom(PLAYER.x,Images["basementRoom"])
@@ -420,7 +420,7 @@ function Player:checkDoors()
 			SaveData.data.DOOR_LOCKED = DOOR_LOCKED
 			SaveData.save()
 
-			for k,v in pairs(dialogue) do
+			for k,v in pairs(DIALOGUES) do
 				v.maxT = 2.5
 			end
 
@@ -431,7 +431,7 @@ function Player:checkDoors()
 end
 
 function Player:checkItems()
-	for _,v in ipairs(obj) do
+	for _,v in ipairs(ITEMS_LIST) do
 		if self.x >= v.x and self.x + self.w <= v.x + v.w or
 			self.x + self.w >= v.x + v.w/6 and self.x + self.w <= v.x + v.w or
 			self.x >= v.x and self.x <= v.x + v.w - v.w/6
@@ -464,7 +464,7 @@ function Player:checkItems()
 end
 
 function Player:checkGlow()
-	for _,v in ipairs(obj) do
+	for _,v in ipairs(ITEMS_LIST) do
 		if self.x >= v.x and self.x + self.w <= v.x + v.w or
 			self.x + self.w >= v.x + v.w/6 and self.x + self.w <= v.x + v.w or
 			self.x >= v.x and self.x <= v.x + v.w - v.w/6
@@ -487,14 +487,14 @@ end
 function doorTxt(str1,str2)
 	local str1 = str1
 	local str2 = str2
-	for _,v in ipairs(dialogue) do
+	for _,v in ipairs(DIALOGUES) do
 		v:special_text(str1,str2)
 		MOVE = false
 	end
 end
 
 function leaveRoom()
-	for _,v in ipairs(dialogue) do
+	for _,v in ipairs(DIALOGUES) do
 		if v.state == true then v.state = false end
 		if v.option == true then v.option = false end
 		if v.specialTxt == true then v.specialTxt = false end

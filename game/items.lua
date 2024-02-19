@@ -45,7 +45,7 @@ end
 
 function Items:returnTag()
 	if currentRoom ~= self.room then return end
-	for k,v in pairs(dialogue) do
+	for k,v in pairs(DIALOGUES) do
 		if v.tag == self.tag then
 			if v.state == false then v.state = true end
 			-- if v.simpleMessage == true then v.simpleMessage = false end
@@ -58,7 +58,7 @@ end
 
 function Items:specialTag()
 	if currentRoom ~= self.room then return end
-	for k,v in pairs(dialogue) do
+	for k,v in pairs(DIALOGUES) do
 		if v.tag == self.tag then
 			if v.tag == "chair" then
 				if v.state == false then v.state = true end
@@ -73,7 +73,7 @@ end
 
 function Items:stillLocked()
 	if currentRoom ~= self.room then return end
-	for _,v in pairs(dialogue) do
+	for _,v in pairs(DIALOGUES) do
 		if v.tag == self.tag then
 			--if v.state == false then v.state = true end
 			--if v.simpleMessage == true then v.simpleMessage = false end
@@ -105,8 +105,8 @@ function Items:glow()
 end
 
 function Items:checkFunction()
-	for k,v in ipairs(obj) do
-		for i,o in ipairs(dialogue) do
+	for k,v in ipairs(ITEMS_LIST) do
+		for i,o in ipairs(DIALOGUES) do
 			if o.tag == v.tag then
 				if v.tag and o.tag == "head" then
 					if OBTAINABLES["cabinet"] == false then
@@ -114,9 +114,9 @@ function Items:checkFunction()
 							--sound
 							Sounds.wood_drop:play()
 							o:special_text("You've used the hammer","the painting fell")
-							table.remove(obj, k)
+							table.remove(ITEMS_LIST, k)
 							local holes = Items(Images.st_hole,Images["stairRoom"], 80, 22, "hole")
-							table.insert(obj, holes)
+							table.insert(ITEMS_LIST, holes)
 						end
 					end
 				elseif v.tag and o.tag == "ball" then
@@ -124,7 +124,7 @@ function Items:checkFunction()
 						if self.tag == v.tag then
 							Sounds.air_pump:play()
 							o:special_text("you used the air pumper","you've got the basketball")
-							table.remove(obj,k)
+							table.remove(ITEMS_LIST,k)
 							OBTAINABLES["toy"] = false
 							OBTAINABLES["gotBall"] = false
 						end
@@ -139,15 +139,15 @@ function Items:checkFunction()
 							--locked["masterRoom_mid"] = false
 							if event == "" then event = "secret_room_first" end
 							--change the image or object of the hoop
-							table.remove(obj,k)
+							table.remove(ITEMS_LIST,k)
 							local hoop_ball = Items(Images.store_hoop_ball,Images["storageRoom"],115,22,"hoop_ball")
-							table.insert(obj,hoop_ball)
+							table.insert(ITEMS_LIST,hoop_ball)
 
-							for k,v in ipairs(dialogue) do
+							for k,v in ipairs(DIALOGUES) do
 								if v.tag == "hole" then
-									table.remove(dialogue,k)
+									table.remove(DIALOGUES,k)
 									local holes_box_open = Interact(false,{"The holes look like slashes","The box is open","Check inside?"},{"Check","Leave it"},"","hole")
-									table.insert(dialogue,holes_box_open)
+									table.insert(DIALOGUES,holes_box_open)
 								end
 							end
 
@@ -172,9 +172,9 @@ function Items:checkFunction()
 							Sounds.crowbar:setLooping(false)
 
 							o:special_text("you've used the crowbar","the frame broke")
-							table.remove(obj,k)
+							table.remove(ITEMS_LIST,k)
 							local open_vault = Items(Images.open_vault,Images["secretRoom"],40,26,"open_vault")
-							table.insert(obj,open_vault)
+							table.insert(ITEMS_LIST,open_vault)
 						end
 					end
 				elseif v.tag and o.tag == "rope" then
@@ -185,11 +185,11 @@ function Items:checkFunction()
 							attic_trigger = true
 							corpse_trigger = true
 
-							table.remove(obj,k)
+							table.remove(ITEMS_LIST,k)
 							local ladder = Items(Images.ladder,Images["secretRoom"],78,20,"ladder")
-							table.insert(obj,ladder)
+							table.insert(ITEMS_LIST,ladder)
 							local lad = Interact(false,{"It leads to the attic","Climb up?"},{"Yes","No"},"","ladder")
-							table.insert(dialogue,lad)
+							table.insert(DIALOGUES,lad)
 
 						end
 					end
@@ -288,9 +288,9 @@ function Items:checkFunction()
 
 								--insert secret drawer
 								local secret_drawer = Items(Images.s_drawer,Images["masterRoom"],103,36,"secret drawer")
-								table.insert(obj,secret_drawer)
+								table.insert(ITEMS_LIST,secret_drawer)
 								local secret_drawer_dial = Interact(false,{"It's a drawer","Search in it?"},{"yes","no"},"There's nothing more here","secret drawer")
-								table.insert(dialogue,secret_drawer_dial)
+								table.insert(DIALOGUES,secret_drawer_dial)
 
 
 								do return end

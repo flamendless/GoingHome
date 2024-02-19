@@ -434,7 +434,7 @@ function gamestates.update(dt)
 			end
 		end
 
-		for _, v in pairs(dialogue) do
+		for _, v in pairs(DIALOGUES) do
 			if v.tag == "clock" then
 				if MOVE == true then
 					v.specialTxt = false
@@ -579,10 +579,10 @@ function gamestates.update(dt)
 			Sounds.clock_tick:stop()
 		end
 
-		for _, v in ipairs(obj) do
+		for _, v in ipairs(ITEMS_LIST) do
 			v:update(dt)
 		end
-		for _, v in ipairs(dialogue) do
+		for _, v in ipairs(DIALOGUES) do
 			v:update(dt)
 		end
 
@@ -1042,7 +1042,7 @@ function gamestates.draw()
 			enemy_draw()
 		end
 
-		for _, v in ipairs(obj) do
+		for _, v in ipairs(ITEMS_LIST) do
 			v:draw()
 		end
 
@@ -1170,7 +1170,7 @@ function gamestates.draw()
 		if ON_MOBILE then
 			Android.draw()
 		end
-		for _, v in ipairs(dialogue) do
+		for _, v in ipairs(DIALOGUES) do
 			v:draw()
 		end
 		if GAMEOVER == true then

@@ -39,7 +39,7 @@ end
 
 OBTAINABLES = Set({
 	"cabinet", --where to get the toy hammer
-	"toy", --where to get the air pumper
+	"toy",  --where to get the air pumper
 	"ball", --interacts with the hoop
 	"hole", -- switch inside the holes
 	"head_key",
@@ -81,3 +81,98 @@ GHOST_CHASE = false
 PLAYER = Player(0, 0, 8, 16)
 GHOST = Enemy(42, 30, 12, 14)
 MRCHAIR = Chair()
+
+
+ITEMS_LIST = {}
+DIALOGUES = {}
+RL = {}
+LL = {}
+PUZZLE_PICS = {}
+ITEMS_PROPERTIES = {
+	dynamic = {
+		"portraits",
+		"head",
+		"stand",
+		"ball",
+		"cabinet",
+		"toy",
+		"refrigerator",
+		"hoop",
+		"hole",
+		"master bed",
+		"sink",
+		"safe vault",
+		"tv",
+		"open_vault",
+		"rope",
+		"chest",
+		"clock",
+		"chair_final",
+		"chest2",
+		--gun parts
+		"shelf",
+		"candles left",
+		"candles right",
+		"trash bin",
+		"secret drawer",
+		"storage puzzle",
+		"crib",
+		"kitchen table",
+		"battery",
+		"ammo",
+		"revolver2",
+		"note"
+	},
+	static = {
+		"shoerack",
+		"shelf",
+		"portraits",
+		"displays",
+		"landscape",
+		"head",
+		"stand",
+		"bench",
+		"ball",
+		"candles left",
+		"candles right",
+		"abstract",
+		"surreal",
+		"cabinet",
+		"crib",
+		"toy",
+		"kitchen table",
+		"refrigerator",
+		"trash bin",
+		"sink",
+		"hole",
+		"storage",
+		"toolbox",
+		"store_bench",
+		"hoop",
+		"hoop_ball",
+		"master bed",
+		"tv",
+		"safe vault",
+		"rope",
+		"open_vault",
+		"open_vault2",
+		"ladder",
+		"corpse",
+		"attic_ladder",
+		"chest",
+		"clock",
+		"chair",
+		"chest2",
+		"secret drawer",
+		"storage puzzle",
+		"battery",
+		"ammo",
+	}
+}
+if ON_MOBILE then
+	for n, m in pairs(ITEMS_PROPERTIES.dynamic) do
+		if m == "battery" then
+			table.remove(ITEMS_PROPERTIES.dynamic, n)
+		end
+	end
+end

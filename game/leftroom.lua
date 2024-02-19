@@ -136,7 +136,7 @@ function left_room_update(dt)
 	end
 
 	if left_light_flag == true then
-		light_etc(dt,ll,ll_img,CANVAS_LEFT)
+		light_etc(dt,LL,ll_img,CANVAS_LEFT)
 	end
 	----------------MAIN STUFFS--------------
 	if lr_event == 1 then
@@ -267,9 +267,9 @@ function left_room_update(dt)
 
 					--insert note
 					local note_item = Interact(false,{"It's a note","It's written using blood","Read it?"},{"Yes","No"},"","note")
-					table.insert(dialogue,note_item)
+					table.insert(DIALOGUES,note_item)
 					local note_dial = Items(Images.note,Images["leftRoom"],10,40,"note")
-			  		table.insert(obj,note_dial)
+			  		table.insert(ITEMS_LIST,note_dial)
 			  		random_breathe_flag = true
 				end
 			end

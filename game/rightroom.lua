@@ -84,7 +84,7 @@ function rightroom_update(dt)
 	lightning_flash = false
 
 	if right_light_flag == true then
-		light_etc(dt, rl, rl_img, CANVAS_RIGHT)
+		light_etc(dt, RL, rl_img, CANVAS_RIGHT)
 	end
 
 	if PLAYER.x >= 23 then

@@ -256,12 +256,12 @@ function animation_set()
 			corpse_fall_anim:pauseAtEnd()
 			corpse_trigger = false
 			local corpse = Items(Images.corpse, Images["secretRoom"], 90, 40, "corpse")
-			table.insert(obj, corpse)
+			table.insert(ITEMS_LIST, corpse)
 
 			local corpse_dial = Interact(false,
 				{ "A corpse!?", "What?!...", "Why is there a corpse here!?...", "Touch it?" }, { "Yes", "No" },
 				"It's not responding", "corpse")
-			table.insert(dialogue, corpse_dial)
+			table.insert(DIALOGUES, corpse_dial)
 		end)
 
 		--clock

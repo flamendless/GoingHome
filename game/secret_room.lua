@@ -132,13 +132,13 @@ function SCENE.secretRoom_update(dt)
 				tv_light_flag = true
 				static_fade = true
 
-				for i, v in ipairs(dialogue) do
+				for i, v in ipairs(DIALOGUES) do
 					if v.tag == "tv" then
-						table.remove(dialogue, i)
+						table.remove(DIALOGUES, i)
 						local tv_open = Interact(false,
 							{ "It's just showing random pixels", "H...How?", "There's no electricity", "Turn it off?" },
 							{ "Yes", "Leave it be" }, "It won't turn off", "tv")
-						table.insert(dialogue, tv_open)
+						table.insert(DIALOGUES, tv_open)
 						tv_open_volume = true
 						tv_mute = false
 					end
@@ -185,20 +185,20 @@ function SCENE.secretRoom_update(dt)
 				MOVE = false
 				LIGHT_ON = false
 
-				for i, v in ipairs(obj) do
+				for i, v in ipairs(ITEMS_LIST) do
 					if v.tag == "hole" then
-						table.remove(obj, i)
+						table.remove(ITEMS_LIST, i)
 						break
 					end
 				end
 				local head = Items(Images.st_head, Images["stairRoom"], 80, 22, "head")
-				table.insert(obj, head)
+				table.insert(ITEMS_LIST, head)
 			end
 		end
 	elseif GHOST_EVENT == "flashback" then
 		--set previous rooms to false
 		--things to hide while in flashback
-		for _, v in ipairs(obj) do
+		for _, v in ipairs(ITEMS_LIST) do
 			for _, m in ipairs(hide) do
 				if v.tag == m then
 					v.visible = false
@@ -262,10 +262,10 @@ function SCENE.secretRoom_update(dt)
 						LIGHT_ON = true
 						if insert_chair == false then
 							local chair = Items(Images.store_chair, Images["storageRoom"], 37, 34, "chair")
-							table.insert(obj, chair)
+							table.insert(ITEMS_LIST, chair)
 							local cd = Interact(false, { "It's a chair", "What to do?" }, { "Take it", "Push it" },
 								"It's too big", "chair")
-							table.insert(dialogue, cd)
+							table.insert(DIALOGUES, cd)
 							insert_chair = true
 						end
 					end
@@ -273,17 +273,17 @@ function SCENE.secretRoom_update(dt)
 				LIGHT_ON = true
 			end
 		else
-			for i, v in ipairs(obj) do
+			for i, v in ipairs(ITEMS_LIST) do
 				if v.tag == "head" then
-					table.remove(obj, i)
+					table.remove(ITEMS_LIST, i)
 					break
 				end
 			end
 			local holes = Items(Images.st_hole, Images["stairRoom"], 80, 22, "hole")
-			table.insert(obj, holes)
+			table.insert(ITEMS_LIST, holes)
 
 			--set previous rooms configs to true
-			for _, v in ipairs(obj) do
+			for _, v in ipairs(ITEMS_LIST) do
 				for _, m in ipairs(hide) do
 					if v.tag == m then
 						v.visible = true
@@ -330,7 +330,7 @@ function SCENE.secretRoom_update(dt)
 		tv_light_flag = true
 
 		--remove corpse
-		for _, v in ipairs(obj) do
+		for _, v in ipairs(ITEMS_LIST) do
 			if v.tag == "corpse" then
 				--table.remove(obj,k)
 				v.visible = false

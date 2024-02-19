@@ -36,11 +36,11 @@ function process_doodle_puzzle(key)
 			pic_number = 1
 		end
 	elseif key == "d" then
-		if pic_number < #puzzle_pics then
+		if pic_number < #PUZZLE_PICS then
 			pic_number = pic_number + 1
 			random_page()
 		else
-			pic_number = #puzzle_pics
+			pic_number = #PUZZLE_PICS
 		end
 	end
 end
@@ -101,7 +101,7 @@ end
 
 function storage_puzzle_draw()
 	if doodle_flag == true then
-		if pic_number > 0 and pic_number < #puzzle_pics then
+		if pic_number > 0 and pic_number < #PUZZLE_PICS then
 			love.graphics.setColor(1, 1, 1, a)
 			love.graphics.draw(
 				Images.arrow,
@@ -112,7 +112,7 @@ function storage_puzzle_draw()
 				0.25
 			)
 		end
-		if pic_number <= #puzzle_pics and pic_number > 1 then
+		if pic_number <= #PUZZLE_PICS and pic_number > 1 then
 			love.graphics.setColor(1, 1, 1, a)
 			love.graphics.draw(
 				Images.arrow,
@@ -127,7 +127,7 @@ function storage_puzzle_draw()
 		--main draw
 		love.graphics.setColor(1, 1, 1, 1)
 		love.graphics.draw(
-			puzzle_pics[pic_number],
+			PUZZLE_PICS[pic_number],
 			WIDTH_HALF,
 			HEIGHT_HALF,
 			0,

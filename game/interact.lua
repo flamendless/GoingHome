@@ -176,15 +176,15 @@ end
 
 function Interact:returnChoices(choice)
 	if choice == 1 then
-		for _, v in ipairs(obj_properties.static) do
+		for _, v in ipairs(ITEMS_PROPERTIES.static) do
 			if self.tag == v then
 				self.simpleMessage = true
 			end
 		end
 
-		for _, v in ipairs(obj_properties.dynamic) do
+		for _, v in ipairs(ITEMS_PROPERTIES.dynamic) do
 			if self.tag == v then
-				for _, m in ipairs(obj) do
+				for _, m in ipairs(ITEMS_LIST) do
 					if self.tag == m.tag then
 						m:checkFunction()
 						break
@@ -200,7 +200,7 @@ function Interact:returnChoices(choice)
 		elseif self.tag == "chair" then
 			self:special_text("I will just push it", "")
 
-			for _, v in ipairs(obj) do
+			for _, v in ipairs(ITEMS_LIST) do
 				if v.tag == "chair" then
 					v.visible = false
 					break
@@ -232,8 +232,8 @@ end
 
 function Interact:checkItem()
 	for _, _ in pairs(OBTAINABLES) do
-		for _, m in ipairs(dialogue) do
-			for _, o in ipairs(obj) do
+		for _, m in ipairs(DIALOGUES) do
+			for _, o in ipairs(ITEMS_LIST) do
 				if o.tag and self.tag == "cabinet" and OBTAINABLES["cabinet"] == true then
 					m:special_text("There's a toy hammer", "You've got a toy hammer")
 					self.toRemove = "cabinet"
@@ -304,7 +304,7 @@ function Interact:checkItem()
 						if rope_trigger == 0 then
 							m:special_text("", "Something fell")
 							local rope = Items(Images.rope, Images["secretRoom"], 80, 20, "rope")
-							table.insert(obj, rope)
+							table.insert(ITEMS_LIST, rope)
 							Sounds.item_got:play()
 							self.toRemove = "open_vault"
 							OBTAINABLES["rope"] = false
@@ -343,9 +343,9 @@ function Interact:checkItem()
 					Sounds.main_theme:stop()
 					child:flipH()
 
-					for i, v2 in ipairs(obj) do
+					for i, v2 in ipairs(ITEMS_LIST) do
 						if v2.tag == "chair_final" then
-							table.remove(obj, i)
+							table.remove(ITEMS_LIST, i)
 							break
 						end
 					end
@@ -356,9 +356,9 @@ function Interact:checkItem()
 end
 
 function setRemove(item)
-	for i, o in pairs(obj_properties.dynamic) do
+	for i, o in pairs(ITEMS_PROPERTIES.dynamic) do
 		if o == item then
-			table.remove(obj_properties.dynamic, i)
+			table.remove(ITEMS_PROPERTIES.dynamic, i)
 		end
 	end
 	OBTAINABLES[item] = false
