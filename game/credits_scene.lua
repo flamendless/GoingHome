@@ -85,8 +85,9 @@ function credits_update(dt)
 				ts_vol = ts_vol - 0.05 * dt
 				if ts_vol <= 0 then
 					gamestates.nextState("title")
-					unrequire("gameStates")
-					require("gameStates")
+					RESET_STATES()
+					-- unrequire("gameStates")
+					-- require("gameStates")
 					-- love.event.quit("restart")
 				end
 			end

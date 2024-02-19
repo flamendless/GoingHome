@@ -931,6 +931,34 @@ function unrequire(m)
   -- require(m)
 end
 
+function RESET_STATES()
+	local ext = ".lua"
+	local ignore = {
+		admob_keys = 1,
+		animation = 1,
+		assets = 1,
+		conf = 1,
+		error = 1,
+		love_admob = 1,
+		main = 1,
+		save_data = 1,
+		urls = 1,
+		shaders = 1,
+		saved_data = 1,
+	}
+	local files = love.filesystem.getDirectoryItems("")
+	for _, file in ipairs(files) do
+		if file:sub(-#ext) == ext then
+			local f = file:sub(0, -(#ext + 1))
+			if not ignore[f] then
+				print("resetting:", f)
+				unrequire(f)
+				require(f)
+			end
+		end
+	end
+end
+
 function math.clamp(v, lo, hi)
 	return math.max(lo, math.min(v, hi))
 end

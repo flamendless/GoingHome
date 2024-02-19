@@ -107,20 +107,23 @@ function game_over.exit()
 				print("rewardUserWithReward callback", reward_type, reward_qty)
 				gamestates.nextState("title")
 
-				unrequire("gameStates")
-				require("gameStates")
+				RESET_STATES()
+				-- unrequire("gameStates")
+				-- require("gameStates")
 			end)
 		else
 			gamestates.nextState("title")
 			-- love.event.quit("restart")
-			unrequire("gameStates")
-			require("gameStates")
+			RESET_STATES()
+			-- unrequire("gameStates")
+			-- require("gameStates")
 		end
 	else
 		gamestates.nextState("title")
 		-- love.event.quit("restart")
-		unrequire("gameStates")
-		require("gameStates")
+		RESET_STATES()
+		-- unrequire("gameStates")
+		-- require("gameStates")
 	end
 end
 
