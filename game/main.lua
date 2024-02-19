@@ -157,7 +157,7 @@ if ON_MOBILE and not PRO_VERSION then
 
 	function ShowRewardedAds(force, cb_reward_success)
 		if LoveAdmob.shown_count.rewarded >= 3 then
-			cb_reward_success("skip", 0)
+			cb_reward_success("skipped", 0)
 			return
 		end
 
@@ -173,11 +173,16 @@ if ON_MOBILE and not PRO_VERSION then
 		if not LoveAdmob.isRewardedAdLoaded() then
 			LoveAdmob.requestRewardedAd(AdMobKeys.ids.reward)
 		end
+
 		if LoveAdmob.isRewardedAdLoaded() then
 			LoveAdmob.showRewardedAd()
 			LoveAdmob.showing.rewarded = true
 			LoveAdmob.ad_timers.rewarded = 0
 			LoveAdmob.shown_count.rewarded = LoveAdmob.shown_count.rewarded + 1
+		else
+			LoveAdmob.showing.rewarded = false
+			LoveAdmob.ad_timers.rewarded = 0
+			cb_reward_success("load_failed", 0)
 		end
 	end
 end
