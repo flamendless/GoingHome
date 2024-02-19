@@ -259,6 +259,7 @@ function gamestates.init()
 		Sounds.intro_soft:stop()
 	elseif state == "main" then
 		RESET_STATES()
+
 		Pause.init()
 		Sounds.fl_toggle:setLooping(false)
 		Sounds.fl_toggle:setVolume(1)
@@ -579,9 +580,6 @@ function gamestates.update(dt)
 			Sounds.clock_tick:stop()
 		end
 
-		for _, v in ipairs(ITEMS_LIST) do
-			v:update(dt)
-		end
 		for _, v in ipairs(DIALOGUES) do
 			v:update(dt)
 		end

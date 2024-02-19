@@ -131,7 +131,7 @@ function Interact:draw()
 				choices_xpad = 8
 				choices_y = HEIGHT_HALF - DEF_FONT_HALF
 			else
-				choices_xpad = 2
+				choices_xpad = 8
 				choices_y = HEIGHT - DEF_FONT_HALF - 8
 			end
 

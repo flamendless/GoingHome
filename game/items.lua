@@ -10,9 +10,6 @@ function Items:new(image,room,x,y,tag)
 	self.visible = true
 end
 
-function Items:update(dt)
-end
-
 function Items:draw()
 	if not self.visible then return end
 	if currentRoom ~= self.room then return end

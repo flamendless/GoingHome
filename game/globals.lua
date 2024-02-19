@@ -14,7 +14,6 @@ Gallery = require("gallery")
 require("gameStates")
 Assets = require("assets")
 
-
 require("rain_intro_scenes")
 GameOver = require("game_over")
 require("animation")

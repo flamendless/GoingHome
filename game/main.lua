@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.46"
+local VERSION = "v1.0.47"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -914,6 +914,7 @@ function RESET_STATES()
 			end
 		end
 	end
+	Assets.set()
 end
 
 function math.clamp(v, lo, hi)
