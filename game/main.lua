@@ -99,6 +99,7 @@ WIDTH_HALF = WIDTH / 2
 HEIGHT_HALF = HEIGHT / 2
 SW, SH = love.window.getDesktopDimensions()
 INTERACT = false
+TX = 0
 TY = 0
 
 -- local recording = false
@@ -254,8 +255,13 @@ function love.update(dt)
 	-- if recording then return end
 	CLOCK = CLOCK + dt
 
+	local ww, wh = love.graphics.getDimensions()
+
+	TX = (ww/2 - (WIDTH * RATIO)/2)
+	TX = math.max(0, TX)
+
 	local OFFY = (not ON_MOBILE) and 8 or 0
-	TY = (love.graphics.getHeight()/2 - (HEIGHT * RATIO)/2) - OFFY
+	TY = (wh/2 - (HEIGHT * RATIO)/2) - OFFY
 	TY = math.max(0, TY)
 
 	if not FINISHED_LOADING then
@@ -341,7 +347,7 @@ function love.draw()
 	if not ending_leave and SaveData.data.use_grayscale then
 		love.graphics.setShader(Shaders.grayscale)
 	end
-	love.graphics.draw(MAIN_CANVAS, 0, TY)
+	love.graphics.draw(MAIN_CANVAS, TX, TY)
 	love.graphics.setShader()
 
 	-- love.graphics.setColor(1, 0, 0, 1)
@@ -362,7 +368,7 @@ function love.mousepressed(x, y, button, istouch)
 	FC:mousepressed(x, y, button, istouch)
 	if not FINISHED_LOADING then return end
 	local state = gamestates.getState()
-	local mx = (x) / RATIO
+	local mx = (x - TX) / RATIO
 	local my = (y - TY) / RATIO
 	--android.mouse_gui(x,y,button,istouch)
 	if state == "gallery" then

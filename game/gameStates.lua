@@ -1403,7 +1403,7 @@ end
 
 function check_gui(gx, gy, gw, gh)
 	local mx, my = love.mouse.getPosition()
-	mx = mx / RATIO
+	mx = (mx - TX) / RATIO
 	my = (my - TY) / RATIO
 	return mx >= gx and mx <= gx + gw and my >= gy and my <= gy + gh
 end

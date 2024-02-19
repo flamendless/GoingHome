@@ -183,7 +183,7 @@ function Gallery.interactions(id, x, y)
 end
 
 function Gallery.touch(id, x, y, gui)
-	x = x / RATIO
+	x = (x - TX) / RATIO
 	y = (y - TY) / RATIO
 	return x > gui.x - gui.w / 2 and x < gui.x + gui.w and
 		y > gui.y - gui.h / 2 and y < gui.y + gui.h
