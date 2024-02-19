@@ -217,10 +217,13 @@ function gamestates.init()
 	local state = gamestates.getState()
 	if state == "gallery" then
 		Sounds.ts_theme:stop()
+		Gallery.play()
 	elseif state == "adshow" then
 		-- assets.load()
 		FC:init()
 		FC:GDPR_init()
+		-- FC:show()
+		-- FC:start()
 	elseif state == "splash" then
 		-- if pro_version then
 		-- 	assets.load()

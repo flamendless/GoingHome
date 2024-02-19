@@ -618,8 +618,8 @@ function love.keypressed(key)
 	-- end
 
 	if state == "gallery" then
+		Gallery.keypressed(key)
 		if PRO_VERSION then
-			Gallery.keypressed(key)
 			if key == "escape" then
 				Gallery.exit()
 				gamestates.nextState("title")

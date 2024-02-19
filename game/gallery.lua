@@ -27,35 +27,40 @@ function Gallery.load()
 		x = WIDTH_HALF,
 		y = HEIGHT - 10,
 		w = Images.galleryPlay:getWidth(),
-		h = Images.galleryPlay:getHeight()
+		h = Images.galleryPlay:getHeight(),
+		is_button = true,
 	}
 	gNext = {
 		img = Images.galleryNext,
 		x = gPlay.x + 24,
 		y = gPlay.y,
 		w = Images.galleryNext:getWidth(),
-		h = Images.galleryNext:getHeight()
+		h = Images.galleryNext:getHeight(),
+		is_button = true,
 	}
 	gPrevious = {
 		img = Images.galleryPrevious,
 		x = gPlay.x - 24,
 		y = gNext.y,
 		w = Images.galleryPrevious:getWidth(),
-		h = Images.galleryPrevious:getHeight()
+		h = Images.galleryPrevious:getHeight(),
+		is_button = true,
 	}
 	gVolume = {
 		img = Images.galleryVolume,
 		x = WIDTH - 16,
 		y = HEIGHT - 16,
 		w = Images.galleryVolume:getWidth(),
-		h = Images.galleryVolume:getHeight()
+		h = Images.galleryVolume:getHeight(),
+		is_button = true,
 	}
 	gSlider = {
 		img = Images.gallerySlider,
 		x = WIDTH - 16,
 		y = HEIGHT - 16,
 		w = Images.gallerySlider:getWidth(),
-		h = Images.gallerySlider:getHeight()
+		h = Images.gallerySlider:getHeight(),
+		is_button = true,
 	}
 	gExit = {
 		img = Images.return_gui,
@@ -83,8 +88,8 @@ end
 
 function Gallery.update(dt)
 	local cur = music[current]
-	local title = cur[title]
-	stringWidth = DEF_FONT:getWidth(title) / 2
+	local cur_title = cur[title]
+	stringWidth = DEF_FONT:getWidth(cur_title) / 2
 
 	isPlaying = cur[song]:isPlaying()
 	imgPlay = isPlaying == true and Images.galleryPlay or Images.galleryPause
@@ -121,7 +126,12 @@ function Gallery.draw()
 	)
 
 	for _, obj in ipairs(galleryGui) do
-		if obj.is_button and check_gui(obj.x, obj.y, obj.w, obj.h) then
+		if obj.is_button and check_gui(
+			obj.x - obj.w/2,
+			obj.y - obj.h/2,
+			obj.w,
+			obj.h
+		) then
 			love.graphics.setColor(1, 0, 0, 1)
 		else
 			love.graphics.setColor(1, 1, 1, 1)
