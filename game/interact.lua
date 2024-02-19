@@ -320,18 +320,18 @@ function Interact:checkItem()
 					--player:moveRoom(player.x,images["atticRoom"])
 					Sounds.climb:play()
 					Sounds.climb:setLooping(false)
-					fade.state = true
+					FADE_OBJ.state = true
 					currentRoom = Images["atticRoom"]
 				elseif o.tag and self.tag == "attic_ladder" then
 					--player:moveRoom(player.x,images["secretRoom"])
 					Sounds.climb:play()
 					Sounds.climb:setLooping(false)
-					fade.state = true
+					FADE_OBJ.state = true
 					currentRoom = Images["secretRoom"]
 				elseif o.tag and self.tag == "chair_final" then
 					Sounds.climb:play()
 					Sounds.climb:setLooping(false)
-					fade.state = true
+					FADE_OBJ.state = true
 					currentRoom = Images["atticRoom"]
 					move = false
 					final_flashback = true

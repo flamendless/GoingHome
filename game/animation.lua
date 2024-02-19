@@ -299,7 +299,7 @@ function epic_scene_draw()
 		player.x = 14
 		player.y = 27
 		parent_found = true
-		fade.state = true
+		FADE_OBJ.state = true
 		currentRoom = Images["secretRoom"]
 	end
 	father_anim[father_animation_count]:draw(Images.father_sheet, father_x, 26)

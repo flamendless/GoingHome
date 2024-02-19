@@ -379,7 +379,7 @@ end
 function android.light_check()
 	local near_range = Images.lightOutline:getWidth() / 2.5
 	local inside_range = Images.lightOutline:getWidth() / 3
-	if fade.state == false then
+	if FADE_OBJ.state == false then
 		if ENEMY_EXISTS == true and LIGHT_ON == true then
 			if player.x >= ghost.x - inside_range and
 				player.x <= ghost.x + inside_range then
@@ -416,14 +416,14 @@ function android.mouse_gui(x, y, button, istouch)
 		elseif state == "rain_intro" then
 			if check_gui(gui_pos.skip_x, gui_pos.skip_y, gui_pos.skip_w, gui_pos.skip_h) then
 				PRESSED = true
-				fade.state = true
+				FADE_OBJ.state = true
 				STATES = "intro"
 				gamestates.load()
 			end
 		elseif state == "intro" then
 			if check_gui(gui_pos.skip_x, gui_pos.skip_y, gui_pos.skip_w, gui_pos.skip_h) then
 				PRESSED = true
-				fade.state = true
+				FADE_OBJ.state = true
 				STATES = "main"
 				gamestates.load()
 			end

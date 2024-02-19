@@ -18,7 +18,7 @@ function Chair:update(dt)
 	end
 
 	self.glow = false
-	
+
 	if player.x + player.w < self.x + 2 and player.x + player.w > self.x then
 		if player.dir == 1 then
 			self.glow = true
@@ -29,7 +29,7 @@ function Chair:update(dt)
 			self.glow = true
 			self.push = -1
 		end
-	else 
+	else
 		self.push = 0
 		self.glow = false
 	end
@@ -66,7 +66,7 @@ function Chair:update(dt)
 		end
 	end
 
-	if fade.state == false then
+	if FADE_OBJ.state == false then
 		if love.keyboard.isDown("e") then
 			if self.glow == true then
 				if Sounds.chair_move:isPlaying() == false then
@@ -79,14 +79,14 @@ function Chair:update(dt)
 				pushing_anim = true
 			end
 		else
-			pushing_anim = false 
+			pushing_anim = false
 		end
 	else pushing_anim = false end
 
 end
 
 function Chair:keypressed(dt,key)
-	if fade.state == false then
+	if FADE_OBJ.state == false then
 		if key == "e" then
 			if self.glow == true then
 				if Sounds.chair_move:isPlaying() == false then

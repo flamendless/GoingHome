@@ -198,7 +198,6 @@ function gamestates.load()
 	RANDOM_BREATHE = true
 
 	txt = "press I for instruction"
-	fade = Fade(1, 6)
 	instruction = false
 	doors_locked = true
 	action_flag = 0
@@ -268,7 +267,7 @@ function gamestates.init()
 		Sounds.rain:play()
 		Sounds.ts_theme:stop()
 
-		fade.state = true
+		FADE_OBJ.state = true
 		move = true
 		LIGHT_VALUE = 1
 
@@ -333,7 +332,7 @@ function gamestates.update(dt)
 	end
 
 	local state = gamestates.getState()
-	fade:update(dt)
+	FADE_OBJ:update(dt)
 
 	if state == "gallery" then
 		Gallery.update(dt)
@@ -360,7 +359,7 @@ function gamestates.update(dt)
 	elseif state == "tutorial" then
 		tutorial_timer = tutorial_timer - dt
 		if tutorial_timer < 0 then
-			fade.state = true
+			FADE_OBJ.state = true
 			gamestates.nextState("main")
 		end
 	elseif state == "title" then
@@ -1217,7 +1216,7 @@ function gamestates.draw()
 		end
 	end
 
-	fade:draw()
+	FADE_OBJ:draw()
 end
 
 function gamestates.control()
@@ -1244,7 +1243,7 @@ function light_check()
 		--debugging
 
 		--inside
-		if fade.state == false then
+		if FADE_OBJ.state == false then
 			if ENEMY_EXISTS == true and LIGHT_ON == true then
 				if mx >= gx - ghost.w / 2 and mx <= gx + ghost.w + ghost.w / 2 then
 					if my >= ghost.y - ghost.h / 1.5 and my <= ghost.y + ghost.y + ghost.h / 1.5 then
@@ -1389,7 +1388,7 @@ function lightning(dt)
 	-- local duration = Sounds.lightning:getDuration("seconds")
 	local tell = Sounds.lightning:tell()
 	local amount = 0.25
-	if fade.state == false then
+	if FADE_OBJ.state == false then
 		if ending_leave_event ~= 2 then
 			if (tell >= 6 and tell <= 7) then
 				LIGHT_VALUE = Lume.lerp(LIGHT_VALUE, 0, amount)

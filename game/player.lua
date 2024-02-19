@@ -166,7 +166,7 @@ function Player:moveRoom(posX,nextRoom)
 	local nextRoom = nextRoom
 
 	if ending_leave == false then
-		fade.state = true
+		FADE_OBJ.state = true
 	end
 	self.x = posX
 	currentRoom = nextRoom

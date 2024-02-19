@@ -1,6 +1,6 @@
 local Fade = Object:extend()
 
-function Fade:new(alpha,timer)
+function Fade:new(alpha, timer)
 	self.a = alpha
 	self.t = timer
 	self.state = false
@@ -8,7 +8,7 @@ end
 
 function Fade:update(dt)
 	if self.state == true then
-		self.a = self.a-(1/self.t * dt)
+		self.a = self.a - (1 / self.t * dt)
 	end
 	if self.a <= 1 then
 		self.state = false
@@ -23,7 +23,7 @@ end
 
 function Fade:draw()
 	if self.state == true then
-		love.graphics.setColor(0,0,0,self.a)
+		love.graphics.setColor(0, 0, 0, self.a)
 		love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 	end
 end

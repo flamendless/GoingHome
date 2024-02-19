@@ -123,7 +123,7 @@ function SCENE.secretRoom_update(dt)
 			end
 		end
 	elseif event == "after_dialogue" then
-		if fade.state == false then
+		if FADE_OBJ.state == false then
 			if tv_trigger == 1 then
 				--tv jumpscare
 				Sounds.tv_loud:play()

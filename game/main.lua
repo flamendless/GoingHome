@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.43"
+local VERSION = "v1.0.44"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -67,6 +67,7 @@ DEF_FONT = love.graphics.newFont("assets/Jamboree.ttf", 8)
 DEF_FONT:setFilter("nearest", "nearest", 1)
 DEF_FONT_HEIGHT = DEF_FONT:getHeight()
 DEF_FONT_HALF = DEF_FONT_HEIGHT / 2
+FADE_OBJ = Fade(1, 6)
 
 Images = {}
 Sounds = {}
@@ -458,7 +459,7 @@ function love.mousepressed(x, y, button, istouch)
 				gui_pos.skip_h
 			) then
 			PRESSED = true
-			fade.state = true
+			FADE_OBJ.state = true
 			STATES = "intro"
 			gamestates.load()
 		end
@@ -470,13 +471,13 @@ function love.mousepressed(x, y, button, istouch)
 				gui_pos.skip_h
 			) then
 			PRESSED = true
-			fade.state = true
+			FADE_OBJ.state = true
 			STATES = "tutorial"
 			gamestates.load()
 		end
 	elseif state == "tutorial" and ON_MOBILE then
 		PRESSED = true
-		fade.state = true
+		FADE_OBJ.state = true
 		STATES = "main"
 		gamestates.load()
 	elseif state == "main" then
@@ -645,17 +646,17 @@ function love.keypressed(key)
 
 	if to_skip and state == "rain_intro" then
 		PRESSED = true
-		fade.state = true
+		FADE_OBJ.state = true
 		STATES = "intro"
 		gamestates.load()
 	elseif to_skip and state == "intro" then
 		PRESSED = true
-		fade.state = true
+		FADE_OBJ.state = true
 		STATES = "tutorial"
 		gamestates.load()
 	elseif to_skip and state == "tutorial" then
 		PRESSED = true
-		fade.state = true
+		FADE_OBJ.state = true
 		STATES = "main"
 		gamestates.load()
 	elseif state == "main" then
@@ -939,12 +940,17 @@ function RESET_STATES()
 		assets = 1,
 		conf = 1,
 		error = 1,
+		game_over = 1,
+		gui = 1,
+		interact = 1,
 		love_admob = 1,
 		main = 1,
+		pause = 1,
+		player = 1,
 		save_data = 1,
-		urls = 1,
-		shaders = 1,
 		saved_data = 1,
+		shaders = 1,
+		urls = 1,
 	}
 	local files = love.filesystem.getDirectoryItems("")
 	for _, file in ipairs(files) do
