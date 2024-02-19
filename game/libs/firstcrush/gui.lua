@@ -64,7 +64,7 @@ function fc:init()
 	self.text =
 	"\tThe game wishes to display ads. Allowing ads will help the developer earn income. If you want to support the game, please accept.\n\n\t The ads to be displayed will not use any of your personal data. This is a consensus in compliance with the GDPR.\n\n\tYou can revoke the consent anytime by going to game settings"
 	self.font = love.graphics.newFont(22)
-	self.padding = 16
+	self.padding = 8
 	self.isShow = false
 
 	self.buttons = {}
@@ -73,9 +73,11 @@ function fc:init()
 	local base = {}
 	base.count = count
 	base.x = 32
-	base.y = 32
-	base.w = love.graphics.getWidth() - (base.x * 2)
-	base.h = love.graphics.getHeight() - (base.y * 2)
+	base.y = 8
+
+	local ww, wh = love.graphics.getDimensions()
+	base.w = ww - (base.x * 2)
+	base.h = wh - (base.y * 2)
 	base.color = { 38 / 255, 38 / 255, 38 / 255 }
 
 	self:registerWindow(base)
