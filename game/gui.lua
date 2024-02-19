@@ -154,6 +154,7 @@ function android.draw()
 			love.graphics.draw(Images.gui_esc, gEsc.x, gEsc.y)
 		end
 		if ClockPuzzle.state == true then
+			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.draw(Images.gui_left, gLeft2.x, gLeft2.y)
 			love.graphics.draw(Images.gui_right, gRight2.x, gRight2.y)
 			love.graphics.draw(Images.gui_up, gUp.x, gUp.y)
