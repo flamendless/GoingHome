@@ -154,26 +154,26 @@ function SCENE.secretRoom_update(dt)
 		end
 	end
 
-	if ghost_event == "no escape" then
+	if GHOST_EVENT == "no escape" then
 		ENEMY_EXISTS = true
 		GHOST.chaseOn = true
 		GHOST.x = 64
 		GHOST.y = 30
-		ghost_event = "still no escape"
+		GHOST_EVENT = "still no escape"
 		do return end
 	end
 
-	if ghost_event == "still no escape" then
+	if GHOST_EVENT == "still no escape" then
 		ENEMY_EXISTS = true
 		GHOST.chaseOn = true
 	end
 
-	if ghost_event == "fall down" then
+	if GHOST_EVENT == "fall down" then
 		particle_update(dt)
 		ENEMY_EXISTS = false
 		LIGHT_ON = false
 		random_breathe_flag = false
-	elseif ghost_event == "lying down" then
+	elseif GHOST_EVENT == "lying down" then
 		love.mouse.setPosition(131, 326)
 
 		LIGHT_ON = true
@@ -181,7 +181,7 @@ function SCENE.secretRoom_update(dt)
 			timer = timer - 1 * dt
 			if timer <= 0 then
 				timer = 3
-				ghost_event = "flashback"
+				GHOST_EVENT = "flashback"
 				MOVE = false
 				LIGHT_ON = false
 
@@ -195,7 +195,7 @@ function SCENE.secretRoom_update(dt)
 				table.insert(obj, head)
 			end
 		end
-	elseif ghost_event == "flashback" then
+	elseif GHOST_EVENT == "flashback" then
 		--set previous rooms to false
 		--things to hide while in flashback
 		for _, v in ipairs(obj) do
@@ -301,9 +301,9 @@ function SCENE.secretRoom_update(dt)
 			timer = 3
 
 			MOVE = false
-			ghost_event = "limp"
+			GHOST_EVENT = "limp"
 		end
-	elseif ghost_event == "limp" then
+	elseif GHOST_EVENT == "limp" then
 		LIGHT_ON = false
 		ENEMY_EXISTS = false
 		LIGHT_VALUE = 1
@@ -319,14 +319,14 @@ function SCENE.secretRoom_update(dt)
 					txt = false
 					c = 1
 					timer = 3
-					ghost_event = "after limp"
+					GHOST_EVENT = "after limp"
 				end
 			end
 		end
-	elseif ghost_event == "after limp" then
+	elseif GHOST_EVENT == "after limp" then
 		txt = false
 		MOVE = true
-		ghost_event = "finished"
+		GHOST_EVENT = "finished"
 		tv_light_flag = true
 
 		--remove corpse
@@ -340,7 +340,7 @@ function SCENE.secretRoom_update(dt)
 				v.visible = false
 			end
 		end
-	elseif ghost_event == "finished" then
+	elseif GHOST_EVENT == "finished" then
 		PLAYER.state = "normal"
 		flashback_epic = false
 
@@ -367,7 +367,7 @@ function SCENE.secretRoom_update(dt)
 end
 
 function SCENE.secretRoom_draw()
-	if ghost_event == "flashback" then
+	if GHOST_EVENT == "flashback" then
 		if txt == true then
 			love.graphics.setColor(180 / 255, 180 / 255, 180 / 255, 1)
 			local subtext = _txt_2[c]
@@ -381,7 +381,7 @@ function SCENE.secretRoom_draw()
 			love.graphics.print(t1, WIDTH / 2 - DEF_FONT:getWidth(t1) / 2, 0 + DEF_FONT_HEIGHT / 4)
 			love.graphics.print(t2, WIDTH / 2 - DEF_FONT:getWidth(t2) / 2, HEIGHT - DEF_FONT_HEIGHT)
 		end
-	elseif ghost_event == "limp" then
+	elseif GHOST_EVENT == "limp" then
 		if txt == true then
 			love.graphics.setColor(1, 1, 1, 1)
 			local subtext = _txt[c]

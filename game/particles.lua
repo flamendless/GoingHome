@@ -17,7 +17,7 @@ end
 function particle_draw()
 	-- Draw the particle system at the center of the game window.
 
-	if ghost_event == "fall down" then
+	if GHOST_EVENT == "fall down" then
 		love.graphics.draw(PSYSTEM,20,19)
 	else love.graphics.draw(PSYSTEM, 90,19) end
 end
@@ -34,13 +34,13 @@ function particle_update(dt)
 		end
 	end
 
-	if ghost_event == "fall down" then
+	if GHOST_EVENT == "fall down" then
 		if timer > 0 then
 			timer = timer - 1 * dt
 		end
 		if timer <= 0 then
 			--fade.state = true
-			ghost_event = "lying down"
+			GHOST_EVENT = "lying down"
 			Sounds.body_fall:play()
 			Sounds.body_fall:setLooping(false)
 		end

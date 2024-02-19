@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.45"
+local VERSION = "v1.0.46"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -291,8 +291,8 @@ function love.draw()
 				love.graphics.print(gamestates.getState(), 8, 8)
 				-- love.graphics.print(tostring(LIGHT_VALUE), 8, 16)
 				love.graphics.print(string.format("%d x %d, %d", love.graphics.getWidth(), love.graphics.getHeight(), love.graphics.getDPIScale()), 8, 16)
-				if ghost_event then
-					love.graphics.print(tostring(ghost_event), 8, 24)
+				if GHOST_EVENT then
+					love.graphics.print(tostring(GHOST_EVENT), 8, 24)
 				end
 			love.graphics.pop()
 		end
@@ -623,8 +623,8 @@ function love.keypressed(key)
 			then
 				LIGHT_ON = not LIGHT_ON
 
-				if ghost_event == "limp" or
-					ghost_event == "flashback" or
+				if GHOST_EVENT == "limp" or
+					GHOST_EVENT == "flashback" or
 					currentRoom == Images["leftRoom"] or
 					currentRoom == Images["rightRoom"] or
 					ending_leave == true then
@@ -654,9 +654,9 @@ function love.keypressed(key)
 						-- walk:flipH()
 					end
 
-					if ghost_event == "no escape" then
-						if ghost_chase == false then
-							ghost_chase = true
+					if GHOST_EVENT == "no escape" then
+						if GHOST_CHASE == false then
+							GHOST_CHASE = true
 						end
 					end
 				elseif key == "d" then
@@ -670,9 +670,9 @@ function love.keypressed(key)
 						idle:flipH()
 						-- walk:flipH()
 					end
-					if ghost_event == "no escape" then
-						if ghost_chase == false then
-							ghost_chase = true
+					if GHOST_EVENT == "no escape" then
+						if GHOST_CHASE == false then
+							GHOST_CHASE = true
 						end
 					end
 				elseif key == "e" and MOVE then
@@ -842,8 +842,8 @@ function turnLight()
 			elseif LIGHT_ON == false then
 				LIGHT_ON = true
 			end
-			if ghost_event == "limp" or
-				ghost_event == "flashback" or
+			if GHOST_EVENT == "limp" or
+				GHOST_EVENT == "flashback" or
 				currentRoom == Images["leftRoom"] or
 				currentRoom == Images["rightRoom"] or
 				ending_leave == true then

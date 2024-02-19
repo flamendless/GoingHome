@@ -420,7 +420,7 @@ function gamestates.update(dt)
 			end)
 		end
 
-		if ghost_event == "flashback" and Sounds.tv_loud and Sounds.tv_loud:isPlaying() then
+		if GHOST_EVENT == "flashback" and Sounds.tv_loud and Sounds.tv_loud:isPlaying() then
 			Sounds.tv_loud:stop()
 		end
 
@@ -447,12 +447,12 @@ function gamestates.update(dt)
 
 		if GAMEOVER == false then
 			if event ~= "after_secret_room" and
-				ghost_event ~= "no escape" and
-				ghost_event ~= "still no escape" and
-				ghost_event ~= "fall down" and
-				ghost_event ~= "lying down" and
-				ghost_event ~= "flashback" and
-				ghost_event ~= "limp" then
+				GHOST_EVENT ~= "no escape" and
+				GHOST_EVENT ~= "still no escape" and
+				GHOST_EVENT ~= "fall down" and
+				GHOST_EVENT ~= "lying down" and
+				GHOST_EVENT ~= "flashback" and
+				GHOST_EVENT ~= "limp" then
 				if currentRoom ~= Images["basementRoom"] and
 					currentRoom ~= Images["leftRoom"] and
 					currentRoom ~= Images["rightRoom"] and
@@ -472,7 +472,7 @@ function gamestates.update(dt)
 				lightning()
 			else
 				Sounds.lightning:stop()
-				if ghost_event == "flashback" and
+				if GHOST_EVENT == "flashback" and
 					flash_text_finished == true then
 					LIGHT_VALUE = 0
 				else
@@ -589,12 +589,12 @@ function gamestates.update(dt)
 		--enemy logics
 		if DOOR_LOCKED == false then
 			if ENEMY_EXISTS == true then
-				if ghost_event ~= "no escape" then
+				if GHOST_EVENT ~= "no escape" then
 					if MOVE == true then
 						GHOST:update(dt)
 					end
 				else
-					if ghost_chase == true then
+					if GHOST_CHASE == true then
 						GHOST:update(dt)
 					end
 				end
@@ -1096,7 +1096,7 @@ function gamestates.draw()
 				HEIGHT_HALF - Images.bg:getHeight() / 2)
 			love.graphics.setColor(0, 0, 0, 1)
 			love.graphics.rectangle("fill", 0, HEIGHT_HALF + Images.bg:getHeight() / 2, WIDTH, HEIGHT)
-		elseif ghost_event == "fall down" then
+		elseif GHOST_EVENT == "fall down" then
 			particle_draw()
 			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.draw(Images.overlay, WIDTH_HALF - Images.bg:getWidth() / 2,

@@ -32,7 +32,7 @@ function Enemy:update(dt)
 	end
 
 	--special events
-	if ghost_event == "no escape" then
+	if GHOST_EVENT == "no escape" then
 		--collision
 		if MOVE == true then
 			if self.x >= PLAYER.x and self.x <= PLAYER.x + PLAYER.w then
@@ -44,7 +44,7 @@ function Enemy:update(dt)
 		else
 			self.chaseOn = false
 		end
-	elseif ghost_event == "fall down" or ghost_event == "lying down" or ghost_event == "flashback" then
+	elseif GHOST_EVENT == "fall down" or GHOST_EVENT == "lying down" or GHOST_EVENT == "flashback" then
 		ENEMY_EXISTS = false
 	end
 	----
@@ -133,7 +133,7 @@ function Enemy:chase(dt)
 
 	--avoid
 	if self.chaseOn == true then
-		if ghost_event ~= "still no escape" then
+		if GHOST_EVENT ~= "still no escape" then
 			if LIGHT_ON == false then
 				local random = math.floor(math.random(100))
 				if random <= 20 then

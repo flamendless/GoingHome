@@ -245,8 +245,8 @@ function Items:checkFunction()
 								GHOST.y = 30
 								GHOST.xscale = -1
 
-								ghost_event = "no escape"
-								ghost_chase = false
+								GHOST_EVENT = "no escape"
+								GHOST_CHASE = false
 
 								Sounds.main_theme:stop()
 								Sounds.intro_soft:stop()

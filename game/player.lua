@@ -82,7 +82,7 @@ function Player:draw()
 		if self.dead == false then
 			--if image based
 			if ending_animate == false  then
-				if ghost_event ~= "flashback" then
+				if GHOST_EVENT ~= "flashback" then
 					if player_color == false then
 						if self.isMoving == false then
 							-- idle:pauseAtStart()
@@ -205,7 +205,7 @@ function Player:checkDoors()
 			end
 		elseif checkMid then
 			if ending_leave == false then
-				if ghost_event == "flashback" then
+				if GHOST_EVENT == "flashback" then
 					doorTxt("I've just got home","I have to find mom and dad")
 				else
 					doorTxt("I've just got home","and it's raining outside.")

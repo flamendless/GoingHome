@@ -75,6 +75,8 @@ WIN_MOVE_R = true
 ENEMY_EXISTS = false
 SEEN = false
 GAMEOVER = false
+GHOST_EVENT = ""
+GHOST_CHASE = false
 
 PLAYER = Player(0, 0, 8, 16)
 GHOST = Enemy(42, 30, 12, 14)

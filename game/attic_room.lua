@@ -18,7 +18,7 @@ function SCENE.atticRoom_update(dt)
 		squeak = true
 	end
 
-	if ghost_event == "no escape" then
+	if GHOST_EVENT == "no escape" then
 		--if player goes to the far left do some falling
 		--print(player.x) --22.86
 
@@ -32,7 +32,7 @@ function SCENE.atticRoom_update(dt)
 				Sounds.floor_hole:play()
 				Sounds.floor_hole:setLooping(false)
 
-				ghost_event = "fall down"
+				GHOST_EVENT = "fall down"
 				LIGHT_ON = false
 				MOVE = false
 				PLAYER.y = -32
@@ -43,7 +43,7 @@ function SCENE.atticRoom_update(dt)
 				PLAYER.img = Images.player_down
 			end
 		end
-	elseif ghost_event == "flashback" then
+	elseif GHOST_EVENT == "flashback" then
 		if final_flashback == true then
 			LIGHT_ON = true
 			PLAYER.x = 80
