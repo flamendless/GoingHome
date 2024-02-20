@@ -12,11 +12,11 @@ function game_over.load()
 
 	timer_starts = true
 
-	Sounds.main_theme:stop()
-	Sounds.rain:stop()
-	Sounds.thunder:stop()
+	SOUNDS.main_theme:stop()
+	SOUNDS.rain:stop()
+	SOUNDS.thunder:stop()
 
-	Sounds.enemy_scream:play()
+	SOUNDS.enemy_scream:play()
 
 	LIGHT_ON = false
 
@@ -35,12 +35,12 @@ function game_over.update(dt)
 		end
 	end
 
-	local lw, lh = Images.light:getDimensions()
+	local lw, lh = IMAGES.light:getDimensions()
 	LIGHTX = PLAYER.x - lw + 4
 	LIGHTY =  PLAYER.y - lh + 4
 
 	if timer >= 8 and timer <= 9 then
-		PLAYER.img = Images.player_idle
+		PLAYER.img = IMAGES.player_idle
 		LIGHT_ON = true
 
 	end
@@ -49,7 +49,7 @@ function game_over.update(dt)
 	end
 	--
 	if timer >= 6 and timer <= 7 then
-		PLAYER.img = Images.player_red_eyes
+		PLAYER.img = IMAGES.player_red_eyes
 		LIGHT_ON = true
 	end
 	if timer >= 5 and timer <= 6 then
@@ -57,7 +57,7 @@ function game_over.update(dt)
 	end
 	--
 	if timer >= 3 and timer <= 4 then
-		PLAYER.img = Images.player_eyes_bleed
+		PLAYER.img = IMAGES.player_eyes_bleed
 		LIGHT_ON = true
 	end
 	if timer >= 2 and timer <= 3 then
@@ -65,7 +65,7 @@ function game_over.update(dt)
 	end
 	--
 	if timer >= 1 and timer <= 1.2 then
-		PLAYER.img = Images.player_dead
+		PLAYER.img = IMAGES.player_dead
 		LIGHT_ON = true
 	end
 	if timer >= 0.5 and timer <= 0.9 then
@@ -94,8 +94,8 @@ end
 
 function game_over.exit()
 	--sounds.ts_theme:play()
-	Sounds.rain:stop()
-	Sounds.main_theme:stop()
+	SOUNDS.rain:stop()
+	SOUNDS.main_theme:stop()
 	GAMEOVER = false
 	--return to title screen
 	--states = "title"
@@ -127,17 +127,17 @@ function game_over.exit()
 end
 
 function game_over.init(dt)
-	local vol = Sounds.rain:getVolume()
+	local vol = SOUNDS.rain:getVolume()
 	if vol > 0 then
 		vol = vol - 0.025 * dt
-		Sounds.rain:setVolume(vol)
-		Sounds.main_theme:setVolume(vol)
+		SOUNDS.rain:setVolume(vol)
+		SOUNDS.main_theme:setVolume(vol)
 	elseif vol <= 0 then
-		Sounds.rain:stop()
-		Sounds.main_theme:stop()
+		SOUNDS.rain:stop()
+		SOUNDS.main_theme:stop()
 	end
 
-	Sounds.thunder:stop()
+	SOUNDS.thunder:stop()
 	RANDOM_BREATHE = false
 
 end

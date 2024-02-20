@@ -1,11 +1,11 @@
 local Chair = Object:extend()
 
 function Chair:new()
-	self.img = Images.store_chair
+	self.img = IMAGES.store_chair
 	self.x, self.y = 37,34
 	if self.img then
 		self.w = self.img:getWidth()
-		self.img_glow = Images.store_chair_glow
+		self.img_glow = IMAGES.store_chair_glow
 	end
 	self.glow = false
 	self.push = 0
@@ -36,21 +36,21 @@ function Chair:update(dt)
 		self.glow = false
 	end
 
-	if currentRoom == Images["storageRoom"] then
+	if currentRoom == IMAGES["storageRoom"] then
 		if self.x + self.w/2 > WIDTH/2 then
-			PLAYER:moveRoom(PLAYER.x, Images["hallwayLeft"])
+			PLAYER:moveRoom(PLAYER.x, IMAGES["hallwayLeft"])
 		end
-	elseif currentRoom == Images["hallwayLeft"] then
+	elseif currentRoom == IMAGES["hallwayLeft"] then
 		if self.x + self.w/2 > WIDTH - 16 then
-			PLAYER:moveRoom(10,Images["masterRoom"])
+			PLAYER:moveRoom(10,IMAGES["masterRoom"])
 			self.x = PLAYER.x + PLAYER.w
 		end
-	elseif currentRoom == Images["masterRoom"] then
+	elseif currentRoom == IMAGES["masterRoom"] then
 		if self.x + self.w/2 > WIDTH/2 - 10 then
-			PLAYER:moveRoom(PLAYER.x+10,Images["secretRoom"])
+			PLAYER:moveRoom(PLAYER.x+10,IMAGES["secretRoom"])
 			self.x = PLAYER.x + PLAYER.w
 		end
-	elseif currentRoom == Images["secretRoom"] then
+	elseif currentRoom == IMAGES["secretRoom"] then
 		if self.x > 77 then
 			pushing_anim = false
 			move_chair = false
@@ -59,7 +59,7 @@ function Chair:update(dt)
 			chair_finished = true
 			--insert new interactable chair
 			if chair_final == false then
-		    	local chair = Items(Images.store_chair,Images["secretRoom"],self.x,34,"chair_final")
+		    	local chair = Items(IMAGES.store_chair,IMAGES["secretRoom"],self.x,34,"chair_final")
 		    	table.insert(ITEMS_LIST,chair)
 		    	local cd = Interact(false,{"With this chair","You can now reach the ladder","Go up?"},{"Yes","No"},"","chair_final")
 				table.insert(DIALOGUES,cd)
@@ -71,10 +71,10 @@ function Chair:update(dt)
 	if FADE_OBJ.state == false then
 		if love.keyboard.isDown("e") then
 			if self.glow == true then
-				if Sounds.chair_move:isPlaying() == false then
-					Sounds.chair_move:play()
-					Sounds.chair_move:setVolume(0.7)
-					Sounds.chair_move:setLooping(false)
+				if SOUNDS.chair_move:isPlaying() == false then
+					SOUNDS.chair_move:play()
+					SOUNDS.chair_move:setVolume(0.7)
+					SOUNDS.chair_move:setLooping(false)
 				end
 				PLAYER.x = PLAYER.x + self.push * self.vspeed * dt
 				self.x = self.x + self.push * self.vspeed * dt
@@ -91,10 +91,10 @@ function Chair:keypressed(dt,key)
 	if FADE_OBJ.state == false then
 		if key == "e" then
 			if self.glow == true then
-				if Sounds.chair_move:isPlaying() == false then
-					Sounds.chair_move:play()
-					Sounds.chair_move:setVolume(0.7)
-					Sounds.chair_move:setLooping(false)
+				if SOUNDS.chair_move:isPlaying() == false then
+					SOUNDS.chair_move:play()
+					SOUNDS.chair_move:setVolume(0.7)
+					SOUNDS.chair_move:setLooping(false)
 				end
 				PLAYER.x = PLAYER.x + self.push * self.vspeed * dt
 				self.x = self.x + self.push * self.vspeed * dt

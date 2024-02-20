@@ -236,8 +236,8 @@ function left_room_update(dt)
 					f_leave2_flag = true
 				elseif event_route[c+1] == "..." then
 					if leave_scream == false then
-						Sounds.enemy_scream:play()
-						Sounds.enemy_scream:setLooping(false)
+						SOUNDS.enemy_scream:play()
+						SOUNDS.enemy_scream:setLooping(false)
 						leave_scream = true
 						ending_animate = false
 						leave_animate = false
@@ -259,8 +259,8 @@ function left_room_update(dt)
 			if timer > 0 then
 				timer = timer - 1 * dt
 				if timer <= 0 then
-					Sounds.enemy_scream:play()
-					Sounds.enemy_scream:setLooping(false)
+					SOUNDS.enemy_scream:play()
+					SOUNDS.enemy_scream:setLooping(false)
 					lr_event = 6
 					MOVE = true
 					ending_animate = false
@@ -268,7 +268,7 @@ function left_room_update(dt)
 					--insert note
 					local note_item = Interact(false,{"It's a note","It's written using blood","Read it?"},{"Yes","No"},"","note")
 					table.insert(DIALOGUES,note_item)
-					local note_dial = Items(Images.note,Images["leftRoom"],10,40,"note")
+					local note_dial = Items(IMAGES.note,IMAGES["leftRoom"],10,40,"note")
 			  		table.insert(ITEMS_LIST,note_dial)
 			  		random_breathe_flag = true
 				end
@@ -365,34 +365,34 @@ end
 
 function father_anim_draw()
 	if _ev == 1 then
-		f1_anim:draw(Images.f1,8,25)
+		f1_anim:draw(IMAGES.f1,8,25)
 	elseif _ev == 2 then
 		if event_route == leave_convo then
 			if f_leave2_flag == true then
-				f_headbang:draw(Images.f_leave,8,25)
+				f_headbang:draw(IMAGES.f_leave,8,25)
 			else
-				f_leave:draw(Images.f_leave,8,25)
+				f_leave:draw(IMAGES.f_leave,8,25)
 			end
 		elseif event_route == him_convo then
 			if f_shot_anim_flag == true then
 				if f_shot_anim2_flag == false then
-					f_shot_anim:draw(Images.f_shot_sheet,8,25)
+					f_shot_anim:draw(IMAGES.f_shot_sheet,8,25)
 				else
-					f_shot_anim2:draw(Images.f_shot_sheet,8,25)
+					f_shot_anim2:draw(IMAGES.f_shot_sheet,8,25)
 				end
 			else
-				f1_anim:draw(Images.f1,8,25)
+				f1_anim:draw(IMAGES.f1,8,25)
 			end
 		elseif event_route == wait_convo then
 			if f_leave2_flag == true then
-				f_headbang:draw(Images.f_leave,8,25)
+				f_headbang:draw(IMAGES.f_leave,8,25)
 			else
-				f_leave:draw(Images.f_leave,8,25)
+				f_leave:draw(IMAGES.f_leave,8,25)
 			end
 		end
 	end
 	love.graphics.setColor(1, 1, 1, 1)
-	love.graphics.draw(Images.jail,0,16)
+	love.graphics.draw(IMAGES.jail,0,16)
 end
 
 

@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.48"
+local VERSION = "v1.0.49"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -19,9 +19,9 @@ Object = require("libs.classic")
 HumpTimer = require("libs.hump.timer")
 FC = require("libs.firstcrush.gui")
 
-Images = {}
-Sounds = {}
-SCENE = {}
+IMAGES = {}
+SOUNDS = {}
+SCENES = {}
 
 require("globals")
 
@@ -291,8 +291,9 @@ function love.draw()
 				love.graphics.print(VERSION, 8, 0)
 				love.graphics.print(gamestates.getState(), 8, 8)
 				-- love.graphics.print(tostring(LIGHT_VALUE), 8, 16)
-				love.graphics.print(string.format("%d x %d, %d", love.graphics.getWidth(), love.graphics.getHeight(), love.graphics.getDPIScale()), 8, 16)
+				-- love.graphics.print(string.format("%d x %d, %d", love.graphics.getWidth(), love.graphics.getHeight(), love.graphics.getDPIScale()), 8, 16)
 				if GHOST_EVENT then
+					love.graphics.print(tostring(child.flippedH), 8, 16)
 					love.graphics.print(tostring(GHOST_EVENT), 8, 24)
 				end
 			love.graphics.pop()
@@ -617,8 +618,8 @@ function love.keypressed(key)
 		gamestates.load()
 	elseif state == "main" then
 		if key == "f" then
-			if currentRoom ~= Images["rightRoom"] and
-				currentRoom ~= Images["leftRoom"] and
+			if currentRoom ~= IMAGES["rightRoom"] and
+				currentRoom ~= IMAGES["leftRoom"] and
 				ending_leave ~= true and
 				word_puzzle == false
 			then
@@ -626,12 +627,12 @@ function love.keypressed(key)
 
 				if GHOST_EVENT == "limp" or
 					GHOST_EVENT == "flashback" or
-					currentRoom == Images["leftRoom"] or
-					currentRoom == Images["rightRoom"] or
+					currentRoom == IMAGES["leftRoom"] or
+					currentRoom == IMAGES["rightRoom"] or
 					ending_leave == true then
-					Sounds.fl_toggle:stop()
+					SOUNDS.fl_toggle:stop()
 				else
-					Sounds.fl_toggle:play()
+					SOUNDS.fl_toggle:play()
 				end
 			end
 		end
@@ -655,11 +656,10 @@ function love.keypressed(key)
 						-- walk:flipH()
 					end
 
-					if GHOST_EVENT == "no escape" then
-						if GHOST_CHASE == false then
-							GHOST_CHASE = true
-						end
+					if GHOST_EVENT == "no escape" and not GHOST_CHASE then
+						GHOST_CHASE = true
 					end
+
 				elseif key == "d" then
 					if PLAYER.moveRight == true then
 						PLAYER.isMoving = true
@@ -671,11 +671,11 @@ function love.keypressed(key)
 						idle:flipH()
 						-- walk:flipH()
 					end
-					if GHOST_EVENT == "no escape" then
-						if GHOST_CHASE == false then
-							GHOST_CHASE = true
-						end
+
+					if GHOST_EVENT == "no escape" and not GHOST_CHASE then
+						GHOST_CHASE = true
 					end
+
 				elseif key == "e" and MOVE then
 					--try fix for overlapping texts
 					for _, obj in ipairs(DIALOGUES) do
@@ -684,12 +684,13 @@ function love.keypressed(key)
 						end
 					end
 
-					if currentRoom == Images.leftRoom or currentRoom == Images.rightRoom then
-						if LIGHT_ON == false then
+					if not LIGHT_ON then
+						if currentRoom == IMAGES.leftRoom or currentRoom == IMAGES.rightRoom then
 							PLAYER:checkItems()
 							PLAYER:checkDoors()
 						end
 					end
+
 					if move_chair == false then
 						if (event_find == false) and (LIGHT_ON == true) then
 							PLAYER:checkItems()
@@ -701,6 +702,7 @@ function love.keypressed(key)
 					end
 				end
 			end
+
 		elseif MOVE == false then
 			love.keyboard.setKeyRepeat(false)
 			for _, v in ipairs(DIALOGUES) do
@@ -769,8 +771,8 @@ function love.keypressed(key)
 		else
 			love.keyboard.setTextInput(true)
 			if key == "backspace" then
-				Sounds.backspace_key:play()
-				Sounds.backspace_key:setLooping(false)
+				SOUNDS.backspace_key:play()
+				SOUNDS.backspace_key:setLooping(false)
 				local byteoffset = utf8.offset(USER_INPUT, -1)
 				if byteoffset then
 					USER_INPUT = string.sub(USER_INPUT, 1, byteoffset - 1)
@@ -827,7 +829,7 @@ function check_gun()
 			{ "Yes", "No" },
 			"", "ammo")
 		table.insert(DIALOGUES, ammo_dial)
-		local ammo_item = Items(Images.ammo, Images["leftRoom"], 41, 34, "ammo")
+		local ammo_item = Items(IMAGES.ammo, IMAGES["leftRoom"], 41, 34, "ammo")
 		table.insert(ITEMS_LIST, ammo_item)
 		ammo_available = true
 	else
@@ -836,7 +838,7 @@ function check_gun()
 end
 
 function turnLight()
-	if currentRoom ~= Images["rightRoom"] and currentRoom ~= Images["leftRoom"] and ending_leave ~= true then
+	if currentRoom ~= IMAGES["rightRoom"] and currentRoom ~= IMAGES["leftRoom"] and ending_leave ~= true then
 		if word_puzzle == false then
 			if LIGHT_ON == true then
 				LIGHT_ON = false
@@ -845,12 +847,12 @@ function turnLight()
 			end
 			if GHOST_EVENT == "limp" or
 				GHOST_EVENT == "flashback" or
-				currentRoom == Images["leftRoom"] or
-				currentRoom == Images["rightRoom"] or
+				currentRoom == IMAGES["leftRoom"] or
+				currentRoom == IMAGES["rightRoom"] or
 				ending_leave == true then
-				Sounds.fl_toggle:stop()
+				SOUNDS.fl_toggle:stop()
 			else
-				Sounds.fl_toggle:play()
+				SOUNDS.fl_toggle:play()
 			end
 		end
 	end

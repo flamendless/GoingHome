@@ -16,9 +16,9 @@ end
 
 function pause.init()
 	gSound = {
-		img = Images.gui_sound,
-		w = Images.gui_sound:getWidth(),
-		h = Images.gui_sound:getHeight(),
+		img = IMAGES.gui_sound,
+		w = IMAGES.gui_sound:getWidth(),
+		h = IMAGES.gui_sound:getHeight(),
 		x = WIDTH - 24,
 		y = HEIGHT - 7 - 2
 	}
@@ -26,11 +26,11 @@ end
 
 function pause.sound(state)
 	if state == "off" then
-		gSound.img = Images.gui_sound_off
+		gSound.img = IMAGES.gui_sound_off
 		love.audio.setVolume(0)
 	elseif state == "on" then
 		love.audio.setVolume(1)
-		gSound.img = Images.gui_sound
+		gSound.img = IMAGES.gui_sound
 	end
 end
 
@@ -39,19 +39,19 @@ function pause.load()
 	MOVE = false
 	pause.flag = true
 
-	Sounds.thunder:pause()
+	SOUNDS.thunder:pause()
 	random_breathe_flag = false
-	Sounds.ts_theme:play()
-	Sounds.ts_theme:setVolume(0.3)
+	SOUNDS.ts_theme:play()
+	SOUNDS.ts_theme:setVolume(0.3)
 	lightningVol = 0
 end
 
 function pause.exit()
 	MOVE = TEMP_MOVE
 	pause.flag = false
-	Sounds.thunder:play()
+	SOUNDS.thunder:play()
 	random_breathe_flag = true
-	Sounds.ts_theme:stop()
+	SOUNDS.ts_theme:stop()
 	lightningVol = 0.3
 end
 
@@ -62,8 +62,8 @@ function pause.draw()
 	if ON_MOBILE then
 		local gSettingsBack = Android.getgui("settings_back")
 		local gQuit = Android.getgui("quit")
-		love.graphics.draw(Images.gui_sBack, gSettingsBack.x, gSettingsBack.y)
-		love.graphics.draw(Images.gui_quit, gQuit.x, gQuit.y)
+		love.graphics.draw(IMAGES.gui_sBack, gSettingsBack.x, gSettingsBack.y)
+		love.graphics.draw(IMAGES.gui_quit, gQuit.x, gQuit.y)
 	end
 	love.graphics.draw(gSound.img, gSound.x, gSound.y)
 end
@@ -72,7 +72,7 @@ function pause.mousepressed(mx, my, mb)
 	if not pause.flag then return end
 	if mb ~= 1 then return end
 	if check_gui(gSound.x, gSound.y, gSound.w, gSound.h) then
-		if gSound.img == Images.gui_sound then
+		if gSound.img == IMAGES.gui_sound then
 			pause.sound("off")
 		else
 			pause.sound("on")

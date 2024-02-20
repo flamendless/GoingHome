@@ -9,8 +9,8 @@ local pic_number = 1
 
 function storage_puzzle_text_input(t)
 	if string.len(USER_INPUT) < LEN_CORRECT then
-		Sounds.type:play()
-		Sounds.type:setLooping(false)
+		SOUNDS.type:play()
+		SOUNDS.type:setLooping(false)
 		USER_INPUT = USER_INPUT .. t
 	end
 end
@@ -48,8 +48,8 @@ end
 local function validate_input()
 	if string.lower(USER_INPUT) == CORRECT then
 		--correct
-		Sounds.vault_unlock:play()
-		Sounds.vault_unlock:setLooping(false)
+		SOUNDS.vault_unlock:play()
+		SOUNDS.vault_unlock:setLooping(false)
 		USER_INPUT = ""
 		final_puzzle_solved = true
 		storage_puzzle = false
@@ -60,8 +60,8 @@ local function validate_input()
 		end
 	else
 		--wrong
-		Sounds.wrong_input:play()
-		Sounds.wrong_input:setLooping(false)
+		SOUNDS.wrong_input:play()
+		SOUNDS.wrong_input:setLooping(false)
 		USER_INPUT = ""
 		if ON_MOBILE or DEBUGGING then
 			love.keyboard.setTextInput(false)
@@ -104,9 +104,9 @@ function storage_puzzle_draw()
 		if pic_number > 0 and pic_number < #PUZZLE_PICS then
 			love.graphics.setColor(1, 1, 1, a)
 			love.graphics.draw(
-				Images.arrow,
+				IMAGES.arrow,
 				rx,
-				HEIGHT_HALF - Images.arrow:getHeight() / 2 + 12,
+				HEIGHT_HALF - IMAGES.arrow:getHeight() / 2 + 12,
 				0,
 				0.25,
 				0.25
@@ -115,9 +115,9 @@ function storage_puzzle_draw()
 		if pic_number <= #PUZZLE_PICS and pic_number > 1 then
 			love.graphics.setColor(1, 1, 1, a)
 			love.graphics.draw(
-				Images.arrow,
+				IMAGES.arrow,
 				lx,
-				HEIGHT_HALF - Images.arrow:getHeight() / 2 + 12,
+				HEIGHT_HALF - IMAGES.arrow:getHeight() / 2 + 12,
 				0,
 				-0.25,
 				0.25
@@ -139,9 +139,9 @@ function storage_puzzle_draw()
 	end
 	if word_puzzle == true then
 		love.graphics.setColor(1, 1, 1, 1)
-		local bw, bh = Images.input_base:getDimensions()
+		local bw, bh = IMAGES.input_base:getDimensions()
 		love.graphics.draw(
-			Images.input_base,
+			IMAGES.input_base,
 			WIDTH_HALF - bw / 2,
 			HEIGHT_HALF - bh / 2
 		)

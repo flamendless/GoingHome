@@ -77,11 +77,11 @@ function ClockPuzzle.ev_enter()
 	if ClockPuzzle.hour == 10 and ClockPuzzle.minute == 2 and ClockPuzzle.second == 8 and ClockPuzzle.ampm == "pm" then
 		ClockPuzzle.solved = true
 
-		Sounds.item_got:play()
-		Sounds.main_theme:stop()
-		Sounds.intro_soft:stop()
-		Sounds.finding_home:stop()
-		Sounds.ts_theme:stop()
+		SOUNDS.item_got:play()
+		SOUNDS.main_theme:stop()
+		SOUNDS.intro_soft:stop()
+		SOUNDS.finding_home:stop()
+		SOUNDS.ts_theme:stop()
 	end
 end
 

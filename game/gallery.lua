@@ -15,59 +15,59 @@ local gPlay, gNext, gPrevious, gVolume, gSlider, gExit
 
 function Gallery.load()
 	music = {
-		{ "On The Way Home", Sounds.intro_soft },
-		{ "Peaceful Home",   Sounds.finding_home },
-		{ "A Home's Melody", Sounds.ts_theme },
-		{ "Finding Home",    Sounds.main_theme },
-		{ "Alone Home",      Sounds.they_are_gone },
+		{ "On The Way Home", SOUNDS.intro_soft },
+		{ "Peaceful Home",   SOUNDS.finding_home },
+		{ "A Home's Melody", SOUNDS.ts_theme },
+		{ "Finding Home",    SOUNDS.main_theme },
+		{ "Alone Home",      SOUNDS.they_are_gone },
 	}
 
 	gPlay = {
-		img = Images.galleryPlay,
+		img = IMAGES.galleryPlay,
 		x = WIDTH_HALF,
 		y = HEIGHT - 10,
-		w = Images.galleryPlay:getWidth(),
-		h = Images.galleryPlay:getHeight(),
+		w = IMAGES.galleryPlay:getWidth(),
+		h = IMAGES.galleryPlay:getHeight(),
 		is_button = true,
 	}
 	gNext = {
-		img = Images.galleryNext,
+		img = IMAGES.galleryNext,
 		x = gPlay.x + 24,
 		y = gPlay.y,
-		w = Images.galleryNext:getWidth(),
-		h = Images.galleryNext:getHeight(),
+		w = IMAGES.galleryNext:getWidth(),
+		h = IMAGES.galleryNext:getHeight(),
 		is_button = true,
 	}
 	gPrevious = {
-		img = Images.galleryPrevious,
+		img = IMAGES.galleryPrevious,
 		x = gPlay.x - 24,
 		y = gNext.y,
-		w = Images.galleryPrevious:getWidth(),
-		h = Images.galleryPrevious:getHeight(),
+		w = IMAGES.galleryPrevious:getWidth(),
+		h = IMAGES.galleryPrevious:getHeight(),
 		is_button = true,
 	}
 	gVolume = {
-		img = Images.galleryVolume,
+		img = IMAGES.galleryVolume,
 		x = WIDTH - 16,
 		y = HEIGHT - 16,
-		w = Images.galleryVolume:getWidth(),
-		h = Images.galleryVolume:getHeight(),
+		w = IMAGES.galleryVolume:getWidth(),
+		h = IMAGES.galleryVolume:getHeight(),
 		is_button = true,
 	}
 	gSlider = {
-		img = Images.gallerySlider,
+		img = IMAGES.gallerySlider,
 		x = WIDTH - 16,
 		y = HEIGHT - 16,
-		w = Images.gallerySlider:getWidth(),
-		h = Images.gallerySlider:getHeight(),
+		w = IMAGES.gallerySlider:getWidth(),
+		h = IMAGES.gallerySlider:getHeight(),
 		is_button = true,
 	}
 	gExit = {
-		img = Images.return_gui,
+		img = IMAGES.return_gui,
 		x = 5,
 		y = 2,
-		w = Images.gui_settings:getWidth(),
-		h = Images.gui_settings:getHeight(),
+		w = IMAGES.gui_settings:getWidth(),
+		h = IMAGES.gui_settings:getHeight(),
 		is_button = true,
 	}
 
@@ -92,7 +92,7 @@ function Gallery.update(dt)
 	stringWidth = DEF_FONT:getWidth(cur_title) / 2
 
 	isPlaying = cur[song]:isPlaying()
-	imgPlay = isPlaying == true and Images.galleryPlay or Images.galleryPause
+	imgPlay = isPlaying == true and IMAGES.galleryPlay or IMAGES.galleryPause
 	gPlay.img = imgPlay
 end
 

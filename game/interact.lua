@@ -238,23 +238,23 @@ function Interact:checkItem()
 					m:special_text("There's a toy hammer", "You've got a toy hammer")
 					self.toRemove = "cabinet"
 					--sound of item acquired
-					Sounds.item_got:play()
+					SOUNDS.item_got:play()
 				elseif o.tag and self.tag == "toy" and OBTAINABLES["toy"] == true then
 					m:special_text("There's an air pumper.", "You've got an air pumper")
 					self.toRemove = "toy"
 					--sound of item acquired
-					Sounds.item_got:play()
+					SOUNDS.item_got:play()
 				elseif o.tag and self.tag == "hoop" and OBTAINABLES["ball"] == false then
 					self.toRemove = "ball"
 					--sound of item acquired
-					Sounds.item_got:play()
+					SOUNDS.item_got:play()
 				elseif o.tag and self.tag == "hole" and OBTAINABLES["hole"] == false then
 					--self.toRemove = "hole"
 					if OBTAINABLES["head_key"] == true then
 						m:special_text("", "you've picked up the key")
 						OBTAINABLES["head_key"] = false
 						--sound of item acquired
-						Sounds.item_got:play()
+						SOUNDS.item_got:play()
 						if mid_dial == 0 then mid_dial = 1 end
 						trigger = 1
 						do return end
@@ -281,7 +281,7 @@ function Interact:checkItem()
 					--self.toRemove = ""
 					if OBTAINABLES["kitchen key"] == true then
 						m:special_text("There's a key", "it has a spatula keychain")
-						Sounds.item_got:play()
+						SOUNDS.item_got:play()
 						--self.toRemove = "master bed"
 						OBTAINABLES["kitchen key"] = false
 						if bed_trigger == 0 then
@@ -296,16 +296,16 @@ function Interact:checkItem()
 				elseif o.tag and self.tag == "tv" then
 					if tv_open_volume == true then
 						m:special_text("I'll just mute it", "")
-						Sounds.tv_loud:stop()
+						SOUNDS.tv_loud:stop()
 						tv_open_volume = false
 					end
 				elseif o.tag and self.tag == "open_vault" then
 					if OBTAINABLES["rope"] == true then
 						if rope_trigger == 0 then
 							m:special_text("", "Something fell")
-							local rope = Items(Images.rope, Images["secretRoom"], 80, 20, "rope")
+							local rope = Items(IMAGES.rope, IMAGES["secretRoom"], 80, 20, "rope")
 							table.insert(ITEMS_LIST, rope)
-							Sounds.item_got:play()
+							SOUNDS.item_got:play()
 							self.toRemove = "open_vault"
 							OBTAINABLES["rope"] = false
 							rope_trigger = 1
@@ -318,29 +318,29 @@ function Interact:checkItem()
 					end
 				elseif o.tag and self.tag == "ladder" then
 					--player:moveRoom(player.x,images["atticRoom"])
-					Sounds.climb:play()
-					Sounds.climb:setLooping(false)
+					SOUNDS.climb:play()
+					SOUNDS.climb:setLooping(false)
 					FADE_OBJ.state = true
-					currentRoom = Images["atticRoom"]
+					currentRoom = IMAGES["atticRoom"]
 				elseif o.tag and self.tag == "attic_ladder" then
 					--player:moveRoom(player.x,images["secretRoom"])
-					Sounds.climb:play()
-					Sounds.climb:setLooping(false)
+					SOUNDS.climb:play()
+					SOUNDS.climb:setLooping(false)
 					FADE_OBJ.state = true
-					currentRoom = Images["secretRoom"]
+					currentRoom = IMAGES["secretRoom"]
 				elseif o.tag and self.tag == "chair_final" then
-					Sounds.climb:play()
-					Sounds.climb:setLooping(false)
+					SOUNDS.climb:play()
+					SOUNDS.climb:setLooping(false)
 					FADE_OBJ.state = true
-					currentRoom = Images["atticRoom"]
+					currentRoom = IMAGES["atticRoom"]
 					MOVE = false
 					final_flashback = true
-					if Sounds.clock_tick:isPlaying() == false then
-						Sounds.clock_tick:play()
-						Sounds.clock_tick:setLooping(true)
-						Sounds.clock_tick:setVolume(1)
+					if SOUNDS.clock_tick:isPlaying() == false then
+						SOUNDS.clock_tick:play()
+						SOUNDS.clock_tick:setLooping(true)
+						SOUNDS.clock_tick:setVolume(1)
 					end
-					Sounds.main_theme:stop()
+					SOUNDS.main_theme:stop()
 					child:flipH()
 
 					for i, v2 in ipairs(ITEMS_LIST) do

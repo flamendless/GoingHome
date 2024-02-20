@@ -12,8 +12,8 @@ local ending_got = ""
 function credit_set_ending(ending) ending_got = ending end
 
 function credits_load()
-	Sounds.ts_theme:play()
-	Sounds.ts_theme:setLooping(true)
+	SOUNDS.ts_theme:play()
+	SOUNDS.ts_theme:setLooping(true)
 	credits_flag = true
 	random_breathe_flag = false
 
@@ -79,7 +79,7 @@ function credits_update(dt)
 			end
 		end
 	else
-		local ts = Sounds.ts_theme
+		local ts = SOUNDS.ts_theme
 		if ts:isPlaying() == true then
 			if ts_vol > 0 then
 				ts_vol = ts_vol - 0.05 * dt

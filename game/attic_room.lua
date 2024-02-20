@@ -2,16 +2,16 @@ local squeak = false
 
 local timer = 3
 
-function SCENE.atticRoom_update(dt)
+function SCENES.atticRoom_update(dt)
 	attic_clock_anim:update(dt)
-	Sounds.clock_tick:play()
-	Sounds.clock_tick:setVolume(0.5)
-	Sounds.clock_tick:setLooping(true)
+	SOUNDS.clock_tick:play()
+	SOUNDS.clock_tick:setVolume(0.5)
+	SOUNDS.clock_tick:setLooping(true)
 
 	if PLAYER.x < 10 then
 		if squeak == true then
-			Sounds.floor_squeak:play()
-			Sounds.floor_squeak:setLooping(false)
+			SOUNDS.floor_squeak:play()
+			SOUNDS.floor_squeak:setLooping(false)
 			squeak = false
 		end
 	else
@@ -29,18 +29,18 @@ function SCENE.atticRoom_update(dt)
 		else
 			if GAMEOVER == false then
 				GHOST.chaseOn = false
-				Sounds.floor_hole:play()
-				Sounds.floor_hole:setLooping(false)
+				SOUNDS.floor_hole:play()
+				SOUNDS.floor_hole:setLooping(false)
 
 				GHOST_EVENT = "fall down"
 				LIGHT_ON = false
 				MOVE = false
 				PLAYER.y = -32
 				PLAYER.grav = 1
-				currentRoom = Images["secretRoom"]
+				currentRoom = IMAGES["secretRoom"]
 
 				PLAYER.visible = false
-				PLAYER.img = Images.player_down
+				PLAYER.img = IMAGES.player_down
 			end
 		end
 	elseif GHOST_EVENT == "flashback" then
@@ -72,10 +72,10 @@ function SCENE.atticRoom_update(dt)
 			local _t = math.floor(math.random(-6, 6))
 			if _t == 1 then
 				_flag = true
-				Sounds.fl_toggle:play()
+				SOUNDS.fl_toggle:play()
 			elseif _t == -1 then
 				_flag = false
-				Sounds.fl_toggle:play()
+				SOUNDS.fl_toggle:play()
 			end
 			LIGHT_ON = _flag
 		elseif timer <= 0 then
@@ -99,9 +99,9 @@ end
 -- local txt1 = "I have to find them faster"
 -- local txt2 = "The light's running out"
 
-function SCENE.atticRoom_draw()
+function SCENES.atticRoom_draw()
 	love.graphics.setColor(1, 1, 1, 1)
-	attic_clock_anim:draw(Images.clock_anim, WIDTH / 2 - 12, 22)
+	attic_clock_anim:draw(IMAGES.clock_anim, WIDTH / 2 - 12, 22)
 
 	if flashback_epic == true then
 		epic_scene_draw()
@@ -117,13 +117,13 @@ function puzzle_update(dt)
 	if ClockPuzzle.state then
 		if ClockPuzzle.hour == 10 and ClockPuzzle.minute == 2 and ClockPuzzle.second == 8 and ClockPuzzle.ampm == "pm" then
 			ClockPuzzle.state = false
-			Sounds.item_got:play()
+			SOUNDS.item_got:play()
 			ClockPuzzle.solved = true
 			MOVE = true
-			Sounds.main_theme:stop()
-			Sounds.intro_soft:stop()
-			Sounds.finding_home:stop()
-			Sounds.ts_theme:stop()
+			SOUNDS.main_theme:stop()
+			SOUNDS.intro_soft:stop()
+			SOUNDS.finding_home:stop()
+			SOUNDS.ts_theme:stop()
 			if ON_MOBILE then
 				Android.lightChange(false)
 			end
@@ -133,8 +133,8 @@ end
 
 function puzzle_draw()
 	love.graphics.setColor(1, 1, 1, 1)
-	love.graphics.draw(Images.clock_base, WIDTH / 2 - Images.clock_base:getWidth() / 2,
-		HEIGHT_HALF - Images.clock_base:getHeight() / 2)
+	love.graphics.draw(IMAGES.clock_base, WIDTH / 2 - IMAGES.clock_base:getWidth() / 2,
+		HEIGHT_HALF - IMAGES.clock_base:getHeight() / 2)
 
 	--arrow
 	if ClockPuzzle.selected == "hour" then
@@ -158,32 +158,32 @@ function puzzle_draw()
 		c_xs = 1.25
 		c_ys = 1
 	end
-	local offY = Images.clock_digits_glow:getHeight() - Images.clock_digits:getHeight()
-	local offX = Images.clock_digits_glow:getWidth() - Images.clock_digits:getWidth()
+	local offY = IMAGES.clock_digits_glow:getHeight() - IMAGES.clock_digits:getHeight()
+	local offX = IMAGES.clock_digits_glow:getWidth() - IMAGES.clock_digits:getWidth()
 
-	love.graphics.draw(Images.clock_digits_glow, c_x, c_y, 0, c_xs, c_ys, offX / 2, offY / 2)
+	love.graphics.draw(IMAGES.clock_digits_glow, c_x, c_y, 0, c_xs, c_ys, offX / 2, offY / 2)
 
 	--love.graphics.setColor(150,100,125,255)
 	--love.graphics.rectangle("fill", width/2 - 32, height/2 - 12, 64, 24)
 
 	--hour
 	love.graphics.setColor(1, 1, 1, 1)
-	love.graphics.draw(Images.clock_digits, WIDTH / 2 - 27.5, HEIGHT_HALF - 7)
+	love.graphics.draw(IMAGES.clock_digits, WIDTH / 2 - 27.5, HEIGHT_HALF - 7)
 	love.graphics.print(ClockPuzzle.hour, WIDTH / 2 - 22 - DEF_FONT:getWidth(ClockPuzzle.hour) / 2,
 		HEIGHT_HALF - DEF_FONT_HALF)
 
 	--minute
-	love.graphics.draw(Images.clock_digits, WIDTH / 2 - 13.5, HEIGHT_HALF - 7)
+	love.graphics.draw(IMAGES.clock_digits, WIDTH / 2 - 13.5, HEIGHT_HALF - 7)
 	love.graphics.print(ClockPuzzle.minute, WIDTH / 2 - 8 - DEF_FONT:getWidth(ClockPuzzle.minute) / 2,
 		HEIGHT_HALF - DEF_FONT_HALF)
 
 	--second
-	love.graphics.draw(Images.clock_digits, WIDTH / 2 + 0.5, HEIGHT_HALF - 7)
+	love.graphics.draw(IMAGES.clock_digits, WIDTH / 2 + 0.5, HEIGHT_HALF - 7)
 	love.graphics.print(ClockPuzzle.second, WIDTH / 2 + 6 - DEF_FONT:getWidth(ClockPuzzle.second) / 2,
 		HEIGHT_HALF - DEF_FONT_HALF)
 
 	--ampm
-	love.graphics.draw(Images.clock_digits, WIDTH / 2 + 13.5, HEIGHT_HALF - 7, 0, 1.25, 1)
+	love.graphics.draw(IMAGES.clock_digits, WIDTH / 2 + 13.5, HEIGHT_HALF - 7, 0, 1.25, 1)
 	love.graphics.print(ClockPuzzle.ampm, WIDTH / 2 + 20 - DEF_FONT:getWidth(ClockPuzzle.ampm) / 2,
 		HEIGHT_HALF - DEF_FONT_HALF)
 end

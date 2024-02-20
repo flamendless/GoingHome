@@ -20,16 +20,16 @@ function Items:draw()
 			love.graphics.draw(self.image,self.x,self.y)
 		end
 	else
-		if self.image == Images["m_shoerack"] then
-			img_color = Images["m_shoerack_color"]
-		elseif self.image == Images["m_shelf"] then
-			img_color = Images["m_shelf_color"]
-		elseif self.image == Images["lr_display"] then
-			img_color = Images["lr_display_color"]
-		elseif self.image == Images["lr_portraits"] then
-			img_color = Images["lr_portraits_color"]
-		elseif self.image == Images["basement_battery"] then
-			img_color = Images["basement_battery_color"]
+		if self.image == IMAGES["m_shoerack"] then
+			img_color = IMAGES["m_shoerack_color"]
+		elseif self.image == IMAGES["m_shelf"] then
+			img_color = IMAGES["m_shelf_color"]
+		elseif self.image == IMAGES["lr_display"] then
+			img_color = IMAGES["lr_display_color"]
+		elseif self.image == IMAGES["lr_portraits"] then
+			img_color = IMAGES["lr_portraits_color"]
+		elseif self.image == IMAGES["basement_battery"] then
+			img_color = IMAGES["basement_battery_color"]
 		end
 
 		love.graphics.setColor(1, 1, 1, 1)
@@ -83,7 +83,7 @@ end
 function Items:glow()
 	if move_chair == false then
 		if currentRoom == self.room then
-			for k,v in pairs(Images) do
+			for k,v in pairs(IMAGES) do
 				if self.image == v then
 					_glow = k
 				end
@@ -92,10 +92,10 @@ function Items:glow()
 			local glow = _glow .. "_glow"
 
 			local iw, ih = self.image:getDimensions()
-			local gw, gh = Images[glow]:getDimensions()
+			local gw, gh = IMAGES[glow]:getDimensions()
 			local offX, offY = gw - iw, gh - ih
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(Images[glow],self.x,self.y,0,1,1,offX/2,offY/2)
+			love.graphics.draw(IMAGES[glow],self.x,self.y,0,1,1,offX/2,offY/2)
 			--love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
 		end
 	end
@@ -109,17 +109,17 @@ function Items:checkFunction()
 					if OBTAINABLES["cabinet"] == false then
 						if self.tag == v.tag then
 							--sound
-							Sounds.wood_drop:play()
+							SOUNDS.wood_drop:play()
 							o:special_text("You've used the hammer","the painting fell")
 							table.remove(ITEMS_LIST, k)
-							local holes = Items(Images.st_hole,Images["stairRoom"], 80, 22, "hole")
+							local holes = Items(IMAGES.st_hole,IMAGES["stairRoom"], 80, 22, "hole")
 							table.insert(ITEMS_LIST, holes)
 						end
 					end
 				elseif v.tag and o.tag == "ball" then
 					if OBTAINABLES["toy"] == false then
 						if self.tag == v.tag then
-							Sounds.air_pump:play()
+							SOUNDS.air_pump:play()
 							o:special_text("you used the air pumper","you've got the basketball")
 							table.remove(ITEMS_LIST,k)
 							OBTAINABLES["toy"] = false
@@ -129,7 +129,7 @@ function Items:checkFunction()
 				elseif v.tag and o.tag == "hoop" then
 					if OBTAINABLES["toy"] == false and OBTAINABLES["gotBall"] == false then
 						if self.tag == v.tag then
-							Sounds.ball_in_hoop:play()
+							SOUNDS.ball_in_hoop:play()
 							o:special_text("you put the ball inside","something clicked")
 							--remove a locked room
 							OBTAINABLES["hole"] = false
@@ -137,7 +137,7 @@ function Items:checkFunction()
 							if event == "" then event = "secret_room_first" end
 							--change the image or object of the hoop
 							table.remove(ITEMS_LIST,k)
-							local hoop_ball = Items(Images.store_hoop_ball,Images["storageRoom"],115,22,"hoop_ball")
+							local hoop_ball = Items(IMAGES.store_hoop_ball,IMAGES["storageRoom"],115,22,"hoop_ball")
 							table.insert(ITEMS_LIST,hoop_ball)
 
 							for k,v in ipairs(DIALOGUES) do
@@ -153,7 +153,7 @@ function Items:checkFunction()
 				elseif v.tag and o.tag == "sink" then
 					if self.tag == v.tag then
 						if OBTAINABLES["kitchen key"] == false and OBTAINABLES["crowbar"] == true then
-							Sounds.item_got:play()
+							SOUNDS.item_got:play()
 							if tv_trigger == 0 then
 								tv_trigger = 1
 							end
@@ -165,12 +165,12 @@ function Items:checkFunction()
 					if self.tag == v.tag then
 						if OBTAINABLES["crowbar"] == false then
 							--sound of crowbar hitting
-							Sounds.crowbar:play()
-							Sounds.crowbar:setLooping(false)
+							SOUNDS.crowbar:play()
+							SOUNDS.crowbar:setLooping(false)
 
 							o:special_text("you've used the crowbar","the frame broke")
 							table.remove(ITEMS_LIST,k)
-							local open_vault = Items(Images.open_vault,Images["secretRoom"],40,26,"open_vault")
+							local open_vault = Items(IMAGES.open_vault,IMAGES["secretRoom"],40,26,"open_vault")
 							table.insert(ITEMS_LIST,open_vault)
 						end
 					end
@@ -183,7 +183,7 @@ function Items:checkFunction()
 							corpse_trigger = true
 
 							table.remove(ITEMS_LIST,k)
-							local ladder = Items(Images.ladder,Images["secretRoom"],78,20,"ladder")
+							local ladder = Items(IMAGES.ladder,IMAGES["secretRoom"],78,20,"ladder")
 							table.insert(ITEMS_LIST,ladder)
 							local lad = Interact(false,{"It leads to the attic","Climb up?"},{"Yes","No"},"","ladder")
 							table.insert(DIALOGUES,lad)
@@ -196,8 +196,8 @@ function Items:checkFunction()
 						if chest_open == false then
 							if OBTAINABLES["chest"] == false then
 
-								Sounds.re_sound:play()
-								Sounds.re_sound:setLooping(false)
+								SOUNDS.re_sound:play()
+								SOUNDS.re_sound:setLooping(false)
 
 								o:special_text("You've got a key","It's for the basement")
 								chest_open = true
@@ -212,8 +212,8 @@ function Items:checkFunction()
 								if OBTAINABLES["clock"] == false then
 									OBTAINABLES["chest"] = false
 
-									Sounds.item_got:play()
-									Sounds.item_got:setLooping(false)
+									SOUNDS.item_got:play()
+									SOUNDS.item_got:setLooping(false)
 
 									o:special_text("You've used the clock key","You've opened it")
 									do return end
@@ -234,7 +234,7 @@ function Items:checkFunction()
 							if OBTAINABLES["clock"] == true then--not yet acquired
 								o:special_text("there's a key inside","you've got a clock key")
 								OBTAINABLES["clock"] = false
-								Sounds.item_got:play()
+								SOUNDS.item_got:play()
 
 								ENEMY_EXISTS = true
 								GHOST.trigger = true
@@ -245,10 +245,10 @@ function Items:checkFunction()
 								GHOST_EVENT = "no escape"
 								GHOST_CHASE = false
 
-								Sounds.main_theme:stop()
-								Sounds.intro_soft:stop()
-								Sounds.finding_home:stop()
-								Sounds.ts_theme:stop()
+								SOUNDS.main_theme:stop()
+								SOUNDS.intro_soft:stop()
+								SOUNDS.finding_home:stop()
+								SOUNDS.ts_theme:stop()
 								--sounds.they_are_gone:play()
 								--sounds.they_are_gone:setLooping(false)
 								--sounds.they_are_gone:setVolume(0.3)
@@ -264,8 +264,8 @@ function Items:checkFunction()
 				elseif v.tag and o.tag == "shelf" then
 					if self.tag == v.tag then
 						if OBTAINABLES["gun1"] == true then
-							Sounds.re_sound:play()
-							Sounds.re_sound:setLooping(false)
+							SOUNDS.re_sound:play()
+							SOUNDS.re_sound:setLooping(false)
 							o:special_text("you've got a revolver part","It's a barrel")
 							OBTAINABLES["gun1"] = false
 							temp_clock_gun = math.floor(CLOCK)
@@ -277,14 +277,14 @@ function Items:checkFunction()
 						if candles_light == false then
 							if OBTAINABLES["match"] == false then
 								--play sounds
-								Sounds.match:play()
-								Sounds.match:setLooping(false)
+								SOUNDS.match:play()
+								SOUNDS.match:setLooping(false)
 								o:special_text("You've used the matchstick","Something clicked")
 								candles_light = true
 								candles_light_flag = true
 
 								--insert secret drawer
-								local secret_drawer = Items(Images.s_drawer,Images["masterRoom"],103,36,"secret drawer")
+								local secret_drawer = Items(IMAGES.s_drawer,IMAGES["masterRoom"],103,36,"secret drawer")
 								table.insert(ITEMS_LIST,secret_drawer)
 								local secret_drawer_dial = Interact(false,{"It's a drawer","Search in it?"},{"yes","no"},"There's nothing more here","secret drawer")
 								table.insert(DIALOGUES,secret_drawer_dial)
@@ -299,8 +299,8 @@ function Items:checkFunction()
 				elseif v.tag and o.tag == "trash bin" then
 					if self.tag == v.tag then
 						if OBTAINABLES["match"] == true then
-							Sounds.re_sound:play()
-							Sounds.re_sound:setLooping(false)
+							SOUNDS.re_sound:play()
+							SOUNDS.re_sound:setLooping(false)
 							OBTAINABLES["match"] = false
 							o:special_text("There's a matchstick","You've picked it up")
 						else
@@ -311,7 +311,7 @@ function Items:checkFunction()
 					if self.tag == v.tag then
 						if OBTAINABLES["gun2"] == true then
 							OBTAINABLES["gun2"] = false
-							Sounds.re_sound:play()
+							SOUNDS.re_sound:play()
 							o:special_text("you've got a revolver part","It's a cylinder")
 							temp_clock_gun = math.floor(CLOCK)
 						else
@@ -331,7 +331,7 @@ function Items:checkFunction()
 						else
 							if OBTAINABLES["gun3"] == true then
 								o:special_text("You've got a revolver part","It's the hammer")
-								Sounds.re_sound:play()
+								SOUNDS.re_sound:play()
 								OBTAINABLES["gun3"] = false
 								temp_clock_gun = math.floor(CLOCK)
 							else
@@ -357,8 +357,8 @@ function Items:checkFunction()
 							end
 						else
 							if OBTAINABLES["revolver"] == true then
-								Sounds.re_sound:play()
-								Sounds.re_sound:setLooping(false)
+								SOUNDS.re_sound:play()
+								SOUNDS.re_sound:setLooping(false)
 								o:special_text("Done! It felt like ages.","You've got a revolver")
 								OBTAINABLES["revolver"] = false
 							else
@@ -369,8 +369,8 @@ function Items:checkFunction()
 				elseif v.tag and o.tag == "battery" then
 					if self.tag == v.tag then
 						if light_refilled == false then
-							Sounds.battery_refill:play()
-							Sounds.battery_refill:setLooping(false)
+							SOUNDS.battery_refill:play()
+							SOUNDS.battery_refill:setLooping(false)
 							o:special_text("","You've found a battery")
 							light_refilled = true
 							event_trigger_light = -2
@@ -381,8 +381,8 @@ function Items:checkFunction()
 				elseif v.tag and o.tag == "ammo" then
 					if self.tag == v.tag then
 						if ammo_picked == false then
-							Sounds.reload:play()
-							Sounds.reload:setLooping(false)
+							SOUNDS.reload:play()
+							SOUNDS.reload:setLooping(false)
 							o:special_text("","You've loaded the ammo")
 							ending_animate = true
 							reload_animate = true
@@ -394,7 +394,7 @@ function Items:checkFunction()
 				elseif v.tag and o.tag == "revolver2" then
 					if self.tag == v.tag then
 						if broken_revolver == false then
-							Sounds.item_got:play()
+							SOUNDS.item_got:play()
 							o:special_text("","")
 							broken_revolver = true
 							v.visible = false

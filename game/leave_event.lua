@@ -59,19 +59,19 @@ function leave_event_update(dt)
 	end
 
 
-	if currentRoom == Images["mainRoom"] then
-		if Sounds.knock:isPlaying() == false then
-			Sounds.knock:play()
-			Sounds.knock:setLooping(true)
+	if currentRoom == IMAGES["mainRoom"] then
+		if SOUNDS.knock:isPlaying() == false then
+			SOUNDS.knock:play()
+			SOUNDS.knock:setLooping(true)
 		end
 	end
 
 	--end room
-	if currentRoom == Images["endRoom"] then
+	if currentRoom == IMAGES["endRoom"] then
 		MOVE = false
 		random_breathe_flag = false
-		Sounds.knock:setLooping(false)
-		Sounds.knock:stop()
+		SOUNDS.knock:setLooping(false)
+		SOUNDS.knock:stop()
 		LIGHT_ON = false
 		if LIGHT_VALUE > 0 then
 			MOVE = false
@@ -97,15 +97,15 @@ function leave_event_update(dt)
 					if shotTimer >0 and shotTimer <1 then
 						if gun_click_flag == false then
 							gun_click_flag = true
-							Sounds.gun_click:play()
-							Sounds.gun_click:setLooping(false)
+							SOUNDS.gun_click:play()
+							SOUNDS.gun_click:setLooping(false)
 						end
 					elseif shotTimer <= 0 then
 						if ending_shot == 0 then
 							shotTimer = 2
 							ending_shot = 1
-							Sounds.gunshot:play()
-							Sounds.gunshot:setLooping(false)
+							SOUNDS.gunshot:play()
+							SOUNDS.gunshot:setLooping(false)
 							final_clock = seconds_to_clock(CLOCK)
 						elseif ending_shot == 1 then
 							-- sounds.ts_theme:play()
@@ -133,7 +133,7 @@ function leave_event_draw()
 	end
 
 	--end room
-	if currentRoom == Images["endRoom"] then
+	if currentRoom == IMAGES["endRoom"] then
 		if player_ending_shot == true then
 			love.graphics.setColor(0,0,0,va)
 			love.graphics.rectangle("fill",0,16,128,32)

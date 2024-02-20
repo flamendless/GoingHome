@@ -1,7 +1,7 @@
 local timer = 2
 
 function particle_set()
-	local img = Images.dust
+	local img = IMAGES.dust
 
 	PSYSTEM = love.graphics.newParticleSystem(img, 10)
 	PSYSTEM:setParticleLifetime(2, 5) -- Particles live at least 2s and at most 5s.
@@ -41,8 +41,8 @@ function particle_update(dt)
 		if timer <= 0 then
 			--fade.state = true
 			GHOST_EVENT = "lying down"
-			Sounds.body_fall:play()
-			Sounds.body_fall:setLooping(false)
+			SOUNDS.body_fall:play()
+			SOUNDS.body_fall:setLooping(false)
 		end
 	end
 end

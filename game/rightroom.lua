@@ -115,8 +115,8 @@ function rightroom_update(dt)
 					if light_timer <= 0 then
 						light_timer = light_maxTimer
 						rl_img = rl_img + 1
-						Sounds.fl_toggle:play()
-						Sounds.fl_toggle:setLooping(false)
+						SOUNDS.fl_toggle:play()
+						SOUNDS.fl_toggle:setLooping(false)
 					end
 				end
 			else
@@ -156,8 +156,8 @@ function rightroom_update(dt)
 					if event_route == wait_convo then
 						en_anim = "idle"
 						if scream_once == false then
-							Sounds.enemy_scream:play()
-							Sounds.enemy_scream:setLooping(false)
+							SOUNDS.enemy_scream:play()
+							SOUNDS.enemy_scream:setLooping(false)
 							scream_once = true
 						end
 					end
@@ -169,17 +169,17 @@ function rightroom_update(dt)
 						--player already used the ammo on him
 						if click_once == false then
 							click_once = true
-							Sounds.gun_click:play()
-							Sounds.gun_click:setLooping(false)
+							SOUNDS.gun_click:play()
+							SOUNDS.gun_click:setLooping(false)
 						end
 					elseif event_route == wait_convo then
 						--player chose wait
 						--with bullet
 						if shot_once == false then
 							shot_once = true
-							Sounds.gunshot:play()
-							Sounds.gunshot:setVolume(1)
-							Sounds.gunshot:setLooping(false)
+							SOUNDS.gunshot:play()
+							SOUNDS.gunshot:setVolume(1)
+							SOUNDS.gunshot:setLooping(false)
 							enemy_pos_x = enemy_pos_x + 10
 						end
 						--enemy dies animation
@@ -191,8 +191,8 @@ function rightroom_update(dt)
 						en_anim = "idle"
 						if click_once == false then
 							click_once = true
-							Sounds.gun_click:play()
-							Sounds.gun_click:setLooping(false)
+							SOUNDS.gun_click:play()
+							SOUNDS.gun_click:setLooping(false)
 						end
 					end
 				end
@@ -200,8 +200,8 @@ function rightroom_update(dt)
 				if ammo_available == true then
 					if event_route == him_convo then
 						if scream_once == false then
-							Sounds.enemy_scream:play()
-							Sounds.enemy_scream:setLooping(false)
+							SOUNDS.enemy_scream:play()
+							SOUNDS.enemy_scream:setLooping(false)
 							scream_once = true
 						end
 						enemy_pos_x = Lume.lerp(enemy_pos_x, PLAYER.x - 10, 0.1)
@@ -214,8 +214,8 @@ function rightroom_update(dt)
 				else
 					if event_route == wait_convo then
 						if scream_once == false then
-							Sounds.enemy_scream:play()
-							Sounds.enemy_scream:setLooping(false)
+							SOUNDS.enemy_scream:play()
+							SOUNDS.enemy_scream:setLooping(false)
 							scream_once = true
 						end
 						enemy_pos_x = Lume.lerp(enemy_pos_x, PLAYER.x - 10, 0.1)
@@ -269,11 +269,11 @@ function enemy_draw()
 	if rr_event == 2 then
 		love.graphics.setColor(1, 1, 1, 1)
 		if en_anim == "mys" then
-			enemy_mys:draw(Images.enemy_sheet, enemy_pos_x, 30)
+			enemy_mys:draw(IMAGES.enemy_sheet, enemy_pos_x, 30)
 		elseif en_anim == "idle" then
-			enemy_idle:draw(Images.enemy_sheet, enemy_pos_x, 30)
+			enemy_idle:draw(IMAGES.enemy_sheet, enemy_pos_x, 30)
 		elseif en_anim == "dies" then
-			enemy_dead:draw(Images.enemy_dead_sheet, enemy_pos_x, 30)
+			enemy_dead:draw(IMAGES.enemy_dead_sheet, enemy_pos_x, 30)
 		end
 	end
 end

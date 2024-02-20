@@ -53,19 +53,19 @@ function Enemy:update(dt)
 		ENEMY_EXISTS = false
 	end
 
-	if currentRoom == Images["hallwayLeft"] or
-		currentRoom == Images["hallwayRight"] or
-		currentRoom == Images["masterRoom"] or
-		currentRoom == Images["kitchen"] or
-		currentRoom == Images["daughterRoom"] or
-		currentRoom == Images["storageRoom"] or
-		currentRoom == Images["mainRoom"] or
-		currentRoom == Images["livingRoom"] then
+	if currentRoom == IMAGES["hallwayLeft"] or
+		currentRoom == IMAGES["hallwayRight"] or
+		currentRoom == IMAGES["masterRoom"] or
+		currentRoom == IMAGES["kitchen"] or
+		currentRoom == IMAGES["daughterRoom"] or
+		currentRoom == IMAGES["storageRoom"] or
+		currentRoom == IMAGES["mainRoom"] or
+		currentRoom == IMAGES["livingRoom"] then
 		self.trigger = true
 	end
 
 	if event == "secret_room_first" or event == "after_secret_room" or event == "after_dialogue" then
-		if currentRoom == Images["secretRoom"] then
+		if currentRoom == IMAGES["secretRoom"] then
 			ENEMY_EXISTS = false
 		end
 	end
@@ -94,9 +94,9 @@ function Enemy:update(dt)
 			end
 
 			if self.chaseOn == false then
-				Sounds.enemy_mys_sound:play()
+				SOUNDS.enemy_mys_sound:play()
 			else
-				Sounds.enemy_mys_sound:stop()
+				SOUNDS.enemy_mys_sound:stop()
 			end
 		end
 	end
@@ -105,7 +105,7 @@ function Enemy:update(dt)
 end
 
 function Enemy:draw()
-	self.image:draw(Images.enemy_sheet,self.x,self.y,self.rot,self.xscale,self.yscale,self.ox)
+	self.image:draw(IMAGES.enemy_sheet,self.x,self.y,self.rot,self.xscale,self.yscale,self.ox)
 end
 
 --enemy actions
@@ -113,8 +113,8 @@ end
 function Enemy:chase(dt)
 
 	--sounds
-	if Sounds.enemy_scream:isPlaying() == false then
-		Sounds.enemy_chase:play()
+	if SOUNDS.enemy_scream:isPlaying() == false then
+		SOUNDS.enemy_chase:play()
 	end
 	----
 

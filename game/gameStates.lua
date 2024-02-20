@@ -215,7 +215,7 @@ function gamestates.init()
 
 	local state = gamestates.getState()
 	if state == "gallery" then
-		Sounds.ts_theme:stop()
+		SOUNDS.ts_theme:stop()
 		Gallery.play()
 	elseif state == "adshow" then
 		-- assets.load()
@@ -239,9 +239,9 @@ function gamestates.init()
 		end)
 	elseif state == "title" then
 		--set music
-		Sounds.ts_theme:setLooping(true)
-		Sounds.ts_theme:play()
-		Sounds.ts_theme:setVolume(0.5)
+		SOUNDS.ts_theme:setLooping(true)
+		SOUNDS.ts_theme:play()
+		SOUNDS.ts_theme:setVolume(0.5)
 		if ON_MOBILE and not PRO_VERSION then
 			PreloadAds()
 		end
@@ -251,23 +251,23 @@ function gamestates.init()
 			love.audio.setVolume(0)
 		end
 	elseif state == "rain_intro" then
-		Sounds.ts_theme:stop()
+		SOUNDS.ts_theme:stop()
 		intro_load()
 	elseif state == "intro" then
-		Sounds.knock:play()
-		Sounds.enemy_scream:setLooping(false)
-		Sounds.intro_soft:stop()
+		SOUNDS.knock:play()
+		SOUNDS.enemy_scream:setLooping(false)
+		SOUNDS.intro_soft:stop()
 	elseif state == "main" then
 		RESET_STATES()
 
 		Pause.init()
-		Sounds.fl_toggle:setLooping(false)
-		Sounds.fl_toggle:setVolume(1)
+		SOUNDS.fl_toggle:setLooping(false)
+		SOUNDS.fl_toggle:setVolume(1)
 
-		Sounds.rain:setLooping(true)
-		Sounds.rain:setVolume(0.8)
-		Sounds.rain:play()
-		Sounds.ts_theme:stop()
+		SOUNDS.rain:setLooping(true)
+		SOUNDS.rain:setVolume(0.8)
+		SOUNDS.rain:play()
+		SOUNDS.ts_theme:stop()
 
 		FADE_OBJ.state = true
 		MOVE = true
@@ -278,7 +278,7 @@ function gamestates.init()
 		GHOST = Enemy(42, 30, 12, 14)
 		MRCHAIR = Chair()
 
-		currentRoom = Images["mainRoom"]
+		currentRoom = IMAGES["mainRoom"]
 		if not DOOR_LOCKED then
 			LOCKED["mainRoom_right"] = false
 		end
@@ -292,9 +292,9 @@ function gamestates.update(dt)
 	mx = mx / RATIO
 	my = (my + TY) / RATIO
 
-	if currentRoom == Images["leftRoom"] or
-		currentRoom == Images["rightRoom"] or
-		currentRoom == Images["basementRoom"] or
+	if currentRoom == IMAGES["leftRoom"] or
+		currentRoom == IMAGES["rightRoom"] or
+		currentRoom == IMAGES["basementRoom"] or
 		ending_leave == true then
 		ENEMY_EXISTS = false
 	end
@@ -376,8 +376,8 @@ function gamestates.update(dt)
 		end
 
 		if intro_finished == true then
-			if Sounds.unlock:isPlaying() == false then
-				Sounds.unlock:play()
+			if SOUNDS.unlock:isPlaying() == false then
+				SOUNDS.unlock:play()
 			end
 			gamestates.nextState("tutorial")
 		end
@@ -389,13 +389,13 @@ function gamestates.update(dt)
 		if thunder_play == true then
 			local c = intro_count % 2
 			if c ~= 1 then
-				Sounds.thunder:play()
+				SOUNDS.thunder:play()
 			end
 		end
 
-		if Sounds.knock:isPlaying() == false then
-			if Sounds.rain:isPlaying() == false then
-				Sounds.rain:play()
+		if SOUNDS.knock:isPlaying() == false then
+			if SOUNDS.rain:isPlaying() == false then
+				SOUNDS.rain:play()
 			end
 		end
 
@@ -421,8 +421,8 @@ function gamestates.update(dt)
 			end)
 		end
 
-		if GHOST_EVENT == "flashback" and Sounds.tv_loud and Sounds.tv_loud:isPlaying() then
-			Sounds.tv_loud:stop()
+		if GHOST_EVENT == "flashback" and SOUNDS.tv_loud and SOUNDS.tv_loud:isPlaying() then
+			SOUNDS.tv_loud:stop()
 		end
 
 		if MOVE == true then
@@ -430,7 +430,7 @@ function gamestates.update(dt)
 		end
 
 		if ending_leave == true then
-			if currentRoom ~= Images["leftRoom"] then
+			if currentRoom ~= IMAGES["leftRoom"] then
 				leave_event_update(dt)
 			end
 		end
@@ -454,25 +454,25 @@ function gamestates.update(dt)
 				GHOST_EVENT ~= "lying down" and
 				GHOST_EVENT ~= "flashback" and
 				GHOST_EVENT ~= "limp" then
-				if currentRoom ~= Images["basementRoom"] and
-					currentRoom ~= Images["leftRoom"] and
-					currentRoom ~= Images["rightRoom"] and
-					currentRoom ~= Images["storageRoom"] and
-					currentRoom ~= Images["daughterRoom"] and
-					currentRoom ~= Images["secretRoom"] and
-					currentRoom ~= Images["atticRoom"] and
-					currentRoom ~= Images["endRoom"] and
+				if currentRoom ~= IMAGES["basementRoom"] and
+					currentRoom ~= IMAGES["leftRoom"] and
+					currentRoom ~= IMAGES["rightRoom"] and
+					currentRoom ~= IMAGES["storageRoom"] and
+					currentRoom ~= IMAGES["daughterRoom"] and
+					currentRoom ~= IMAGES["secretRoom"] and
+					currentRoom ~= IMAGES["atticRoom"] and
+					currentRoom ~= IMAGES["endRoom"] and
 					ending_leave ~= true then
-					Sounds.lightning:setVolume(lightningVol)
-					if not Sounds.lightning:isPlaying() == true then
-						Sounds.lightning:play()
+					SOUNDS.lightning:setVolume(lightningVol)
+					if not SOUNDS.lightning:isPlaying() == true then
+						SOUNDS.lightning:play()
 					end
 				else
-					Sounds.lightning:setVolume(0.6)
+					SOUNDS.lightning:setVolume(0.6)
 				end
 				lightning()
 			else
-				Sounds.lightning:stop()
+				SOUNDS.lightning:stop()
 				if GHOST_EVENT == "flashback" and
 					flash_text_finished == true then
 					LIGHT_VALUE = 0
@@ -483,7 +483,7 @@ function gamestates.update(dt)
 		end
 
 		if ending_leave == true then
-			Sounds.rain:stop()
+			SOUNDS.rain:stop()
 		end
 
 		local choose = math.floor(math.random(1, 3))
@@ -494,8 +494,8 @@ function gamestates.update(dt)
 			if RANDOM_BREATHE == true then
 				RANDOM_BREATHE = false
 				Timer.after(random, function()
-					Sounds[num .. tostring(choose)]:play()
-					Sounds[num .. tostring(choose)]:setVolume(0.5)
+					SOUNDS[num .. tostring(choose)]:play()
+					SOUNDS[num .. tostring(choose)]:setVolume(0.5)
 					RANDOM_BREATHE = true
 				end)
 			end
@@ -506,11 +506,11 @@ function gamestates.update(dt)
 				--android.lightCircle()
 			elseif not ON_MOBILE and (not DEBUGGING) then
 				if event_trigger_light == -1 then
-					_lightX = mx - Images.light_small:getWidth() / 2 + math.random(-0.05, 0.05)
-					_lightY = my - Images.light_small:getHeight() / 2 + math.random(-0.05, 0.05)
+					_lightX = mx - IMAGES.light_small:getWidth() / 2 + math.random(-0.05, 0.05)
+					_lightY = my - IMAGES.light_small:getHeight() / 2 + math.random(-0.05, 0.05)
 				else
-					_lightX = mx - Images.light:getWidth() / 2 + math.random(-0.05, 0.05)
-					_lightY = my - Images.light:getHeight() / 2 + math.random(-0.05, 0.05)
+					_lightX = mx - IMAGES.light:getWidth() / 2 + math.random(-0.05, 0.05)
+					_lightY = my - IMAGES.light:getHeight() / 2 + math.random(-0.05, 0.05)
 				end
 				LIGHTX = math.clamp(_lightX, PLAYER.x - 120, PLAYER.x + 100)
 				LIGHTY = math.clamp(_lightY, PLAYER.y - 20, PLAYER.y + 0)
@@ -534,7 +534,7 @@ function gamestates.update(dt)
 			end
 		end
 
-		if currentRoom == Images["mainRoom"] then
+		if currentRoom == IMAGES["mainRoom"] then
 			--windows
 			win_left_anim:update(dt)
 			win_right_anim:update(dt)
@@ -561,23 +561,23 @@ function gamestates.update(dt)
 			if tt_update == true then
 				triggerTxt(dt)
 			end
-		elseif currentRoom == Images["leftRoom"] then
+		elseif currentRoom == IMAGES["leftRoom"] then
 			father_anim_update(dt)
-		elseif currentRoom == Images["rightRoom"] then
+		elseif currentRoom == IMAGES["rightRoom"] then
 			enemy_update(dt)
 		end
 
-		if currentRoom == Images["secretRoom"] then
-			SCENE.secretRoom_update(dt)
-			Sounds.clock_tick:stop()
-		elseif currentRoom == Images["atticRoom"] then
-			SCENE.atticRoom_update(dt)
-		elseif currentRoom == Images["leftRoom"] then
+		if currentRoom == IMAGES["secretRoom"] then
+			SCENES.secretRoom_update(dt)
+			SOUNDS.clock_tick:stop()
+		elseif currentRoom == IMAGES["atticRoom"] then
+			SCENES.atticRoom_update(dt)
+		elseif currentRoom == IMAGES["leftRoom"] then
 			left_room_update(dt)
-		elseif currentRoom == Images["rightRoom"] then
+		elseif currentRoom == IMAGES["rightRoom"] then
 			rightroom_update(dt)
 		else
-			Sounds.clock_tick:stop()
+			SOUNDS.clock_tick:stop()
 		end
 
 		for _, v in ipairs(DIALOGUES) do
@@ -610,18 +610,18 @@ function gamestates.update(dt)
 		if event_trigger_light ~= -1 then
 			if LIGHT_ON == true then
 				if BLINK == true then
-					light = Images.light2
+					light = IMAGES.light2
 				else
-					light = Images.light
+					light = IMAGES.light
 				end
 			elseif LIGHT_ON == false then
-				light = Images.light2
+				light = IMAGES.light2
 			end
 		else
 			if LIGHT_ON == true then
-				light = Images.light_small
+				light = IMAGES.light_small
 			elseif LIGHT_ON == false then
-				light = Images.light2
+				light = IMAGES.light2
 			end
 		end
 
@@ -649,14 +649,14 @@ function gamestates.update(dt)
 		end
 
 		if candles_light_flag == true then
-			if currentRoom == Images["masterRoom"] then
+			if currentRoom == IMAGES["masterRoom"] then
 				local rand = 0.05
 				local cx = 0 + (math.random(-rand, rand))
-				local cy = HEIGHT_HALF - Images.candles_light_mask:getHeight() / 2 + (math.random(-rand, rand))
+				local cy = HEIGHT_HALF - IMAGES.candles_light_mask:getHeight() / 2 + (math.random(-rand, rand))
 				love.graphics.setCanvas(CANVAS_CANDLES_FLASH)
 				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 				love.graphics.setBlendMode("multiply", "premultiplied")
-				love.graphics.draw(Images.candles_light_mask, cx, cy)
+				love.graphics.draw(IMAGES.candles_light_mask, cx, cy)
 				love.graphics.draw(light, LIGHTX, LIGHTY)
 				love.graphics.setBlendMode("alpha")
 				love.graphics.setCanvas()
@@ -685,7 +685,7 @@ local function draw_back_gui()
 	else
 		love.graphics.setColor(1, 1, 1, 1)
 	end
-	love.graphics.draw(Images.return_gui, gui_pos.b_x, gui_pos.b_y)
+	love.graphics.draw(IMAGES.return_gui, gui_pos.b_x, gui_pos.b_y)
 end
 
 function gamestates.draw()
@@ -705,20 +705,20 @@ function gamestates.draw()
 		-- love.graphics.draw(Images.adIntro, 0, 0)
 	elseif state == "splash" then
 		love.graphics.setColor(1, 1, 1, 1)
-		splash_anim:draw(Images.splash, WIDTH_HALF - 32, HEIGHT_HALF - 16)
+		splash_anim:draw(IMAGES.splash, WIDTH_HALF - 32, HEIGHT_HALF - 16)
 	elseif state == "splash2" then
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.draw(Images.wits, WIDTH_HALF - 64, HEIGHT_HALF - 32)
+		love.graphics.draw(IMAGES.wits, WIDTH_HALF - 64, HEIGHT_HALF - 32)
 	elseif state == "title" then
 		if instruction == false and about == false and questions == false and options == false then
 			--main title screen art
 			love.graphics.setColor(1, 1, 1, 1)
-			local bgw, bgh = Images.bg:getDimensions()
-			love.graphics.draw(Images.bg, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
+			local bgw, bgh = IMAGES.bg:getDimensions()
+			love.graphics.draw(IMAGES.bg, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
 
-			local ttw, tth = Images.title_text:getDimensions()
+			local ttw, tth = IMAGES.title_text:getDimensions()
 			local scale = 0.4
-			love.graphics.draw(Images.title_text, WIDTH / 4, HEIGHT_HALF - 2, 0, scale, scale, ttw / 2, tth / 2)
+			love.graphics.draw(IMAGES.title_text, WIDTH / 4, HEIGHT_HALF - 2, 0, scale, scale, ttw / 2, tth / 2)
 
 			--start
 			if cursor_pos == 1 then
@@ -733,7 +733,7 @@ function gamestates.draw()
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.start, gui_pos.start_x, gui_pos.start_y)
+			love.graphics.draw(IMAGES.start, gui_pos.start_x, gui_pos.start_y)
 
 			--exit
 			if OS ~= "iOS" then
@@ -750,7 +750,7 @@ function gamestates.draw()
 					end
 				end
 
-				love.graphics.draw(Images.exit, gui_pos.quit_x, gui_pos.quit_y)
+				love.graphics.draw(IMAGES.exit, gui_pos.quit_x, gui_pos.quit_y)
 			end
 
 			--website
@@ -766,7 +766,7 @@ function gamestates.draw()
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.website_gui, gui_pos.webx, gui_pos.weby)
+			love.graphics.draw(IMAGES.website_gui, gui_pos.webx, gui_pos.weby)
 
 			--instruction
 			if cursor_pos == 7 then
@@ -781,7 +781,7 @@ function gamestates.draw()
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.instruction_gui, gui_pos.i_x, gui_pos.i_y)
+			love.graphics.draw(IMAGES.instruction_gui, gui_pos.i_x, gui_pos.i_y)
 
 			--about
 			if cursor_pos == 6 then
@@ -796,7 +796,7 @@ function gamestates.draw()
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.about, gui_pos.a_x, gui_pos.a_y)
+			love.graphics.draw(IMAGES.about, gui_pos.a_x, gui_pos.a_y)
 
 			--questions
 			if cursor_pos == 5 then
@@ -811,7 +811,7 @@ function gamestates.draw()
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.question, gui_pos.q_x, gui_pos.q_y)
+			love.graphics.draw(IMAGES.question, gui_pos.q_x, gui_pos.q_y)
 
 			--gallery
 			if cursor_pos == 4 then
@@ -826,7 +826,7 @@ function gamestates.draw()
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.gui_gallery, gui_pos.g_x, gui_pos.g_y)
+			love.graphics.draw(IMAGES.gui_gallery, gui_pos.g_x, gui_pos.g_y)
 
 			--options
 			if cursor_pos == 3 then
@@ -841,7 +841,7 @@ function gamestates.draw()
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.options, gui_pos.options_x, gui_pos.options_y)
+			love.graphics.draw(IMAGES.options, gui_pos.options_x, gui_pos.options_y)
 
 		elseif instruction == true and about == false and questions == false then
 			draw_instructions()
@@ -944,7 +944,7 @@ function gamestates.draw()
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.twitter, gui_pos.t_x, gui_pos.t_y)
+			love.graphics.draw(IMAGES.twitter, gui_pos.t_x, gui_pos.t_y)
 
 			--paypal
 			if OS ~= "iOS" then
@@ -955,7 +955,7 @@ function gamestates.draw()
 						love.graphics.setColor(1, 1, 1, 1)
 					end
 				end
-				love.graphics.draw(Images.paypal, gui_pos.p_x, gui_pos.p_y)
+				love.graphics.draw(IMAGES.paypal, gui_pos.p_x, gui_pos.p_y)
 			end
 
 			--email
@@ -966,7 +966,7 @@ function gamestates.draw()
 					love.graphics.setColor(1, 1, 1, 1)
 				end
 			end
-			love.graphics.draw(Images.email, gui_pos.e_x, gui_pos.e_y)
+			love.graphics.draw(IMAGES.email, gui_pos.e_x, gui_pos.e_y)
 			draw_back_gui()
 		end
 		if about == true then
@@ -1004,39 +1004,39 @@ function gamestates.draw()
 	elseif state == "tutorial" then
 		draw_instructions()
 	elseif state == "main" then
-		if currentRoom == Images["mainRoom"] then
-			newRoom = Images["mainRoom_color"]
-		elseif currentRoom == Images["livingRoom"] then
-			newRoom = Images["livingRoom_color"]
-		elseif currentRoom == Images["basementRoom"] then
-			newRoom = Images["basementRoom_color"]
-		elseif currentRoom == Images["leftRoom"] then
-			newRoom = Images["leftRoom"]
-		elseif currentRoom == Images["endRoom"] then
-			newRoom = Images["endRoom"]
+		if currentRoom == IMAGES["mainRoom"] then
+			newRoom = IMAGES["mainRoom_color"]
+		elseif currentRoom == IMAGES["livingRoom"] then
+			newRoom = IMAGES["livingRoom_color"]
+		elseif currentRoom == IMAGES["basementRoom"] then
+			newRoom = IMAGES["basementRoom_color"]
+		elseif currentRoom == IMAGES["leftRoom"] then
+			newRoom = IMAGES["leftRoom"]
+		elseif currentRoom == IMAGES["endRoom"] then
+			newRoom = IMAGES["endRoom"]
 		end
 
 		love.graphics.setColor(1, 1, 1, 1)
-		local bgw, bgh = Images.bg:getDimensions()
+		local bgw, bgh = IMAGES.bg:getDimensions()
 		if ending_leave == false then
 			love.graphics.draw(currentRoom, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
 		else
 			love.graphics.draw(newRoom, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
 		end
 
-		if currentRoom == Images["mainRoom"] then
+		if currentRoom == IMAGES["mainRoom"] then
 			if ending_leave == false then
 				love.graphics.setColor(1, 1, 1, 1)
-				win_left_anim:draw(Images.window_left, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
-				win_right_anim:draw(Images.window_right, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
+				win_left_anim:draw(IMAGES.window_left, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
+				win_right_anim:draw(IMAGES.window_right, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
-				win_left_anim:draw(Images.window_left_color, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
-				win_right_anim:draw(Images.window_right_color, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
+				win_left_anim:draw(IMAGES.window_left_color, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
+				win_right_anim:draw(IMAGES.window_right_color, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
 			end
-		elseif currentRoom == Images["leftRoom"] then
+		elseif currentRoom == IMAGES["leftRoom"] then
 			father_anim_draw()
-		elseif currentRoom == Images["rightRoom"] then
+		elseif currentRoom == IMAGES["rightRoom"] then
 			enemy_draw()
 		end
 
@@ -1048,19 +1048,19 @@ function gamestates.draw()
 			PLAYER:checkGlow()
 		end
 
-		if currentRoom == Images["secretRoom"] and event == "after_dialogue" then
+		if currentRoom == IMAGES["secretRoom"] and event == "after_dialogue" then
 			if tv_light_flag == true then
 				love.graphics.setColor(1, 1, 1, 1)
-				tv_anim:draw(Images.tv_anim, 113, 27)
+				tv_anim:draw(IMAGES.tv_anim, 113, 27)
 			end
 			if corpse_trigger == true then
 				love.graphics.setColor(1, 1, 1, 1)
-				corpse_fall_anim:draw(Images.corpse_anim, 90, 20)
+				corpse_fall_anim:draw(IMAGES.corpse_anim, 90, 20)
 			end
 		end
 
-		if currentRoom == Images["atticRoom"] then
-			SCENE.atticRoom_draw()
+		if currentRoom == IMAGES["atticRoom"] then
+			SCENES.atticRoom_draw()
 		end
 
 		--enemy logics
@@ -1090,24 +1090,24 @@ function gamestates.draw()
 		if dust_trigger == true then
 			particle_draw()
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(Images.overlay, WIDTH_HALF - Images.bg:getWidth() / 2,
-				HEIGHT_HALF - Images.bg:getHeight() / 2)
+			love.graphics.draw(IMAGES.overlay, WIDTH_HALF - IMAGES.bg:getWidth() / 2,
+				HEIGHT_HALF - IMAGES.bg:getHeight() / 2)
 			love.graphics.setColor(0, 0, 0, 1)
-			love.graphics.rectangle("fill", 0, HEIGHT_HALF + Images.bg:getHeight() / 2, WIDTH, HEIGHT)
+			love.graphics.rectangle("fill", 0, HEIGHT_HALF + IMAGES.bg:getHeight() / 2, WIDTH, HEIGHT)
 		elseif GHOST_EVENT == "fall down" then
 			particle_draw()
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(Images.overlay, WIDTH_HALF - Images.bg:getWidth() / 2,
-				HEIGHT_HALF - Images.bg:getHeight() / 2)
+			love.graphics.draw(IMAGES.overlay, WIDTH_HALF - IMAGES.bg:getWidth() / 2,
+				HEIGHT_HALF - IMAGES.bg:getHeight() / 2)
 			love.graphics.setColor(0, 0, 0, 1)
-			love.graphics.rectangle("fill", 0, HEIGHT_HALF + Images.bg:getHeight() / 2, WIDTH, HEIGHT)
+			love.graphics.rectangle("fill", 0, HEIGHT_HALF + IMAGES.bg:getHeight() / 2, WIDTH, HEIGHT)
 
 			love.graphics.setColor(0, 0, 0, 1)
-			love.graphics.rectangle("fill", 0, 0, Images.bg:getWidth(), Images.bg:getHeight() / 2)
+			love.graphics.rectangle("fill", 0, 0, IMAGES.bg:getWidth(), IMAGES.bg:getHeight() / 2)
 		end
 
 		if not ON_MOBILE and (not DEBUGGING) then
-			if currentRoom == Images["secretRoom"] then
+			if currentRoom == IMAGES["secretRoom"] then
 				if tv_light_flag == true then
 					love.graphics.draw(CANVAS_TV_FLASH)
 					love.graphics.setColor(1, 1, 1, 1)
@@ -1115,7 +1115,7 @@ function gamestates.draw()
 					love.graphics.draw(CANVAS_CUSTOM_MASK)
 					love.graphics.setColor(1, 1, 1, 1)
 				end
-			elseif currentRoom == Images["masterRoom"] then
+			elseif currentRoom == IMAGES["masterRoom"] then
 				if candles_light_flag == true then
 					love.graphics.draw(CANVAS_CANDLES_FLASH)
 					love.graphics.setColor(1, 1, 1, 1)
@@ -1123,7 +1123,7 @@ function gamestates.draw()
 					love.graphics.draw(CANVAS_CUSTOM_MASK)
 					love.graphics.setColor(1, 1, 1, 1)
 				end
-			elseif currentRoom == Images["rightRoom"] then
+			elseif currentRoom == IMAGES["rightRoom"] then
 				if right_light_flag == true then
 					love.graphics.draw(CANVAS_RIGHT)
 					love.graphics.setColor(1, 1, 1, 1)
@@ -1131,7 +1131,7 @@ function gamestates.draw()
 					love.graphics.draw(CANVAS_CUSTOM_MASK)
 					love.graphics.setColor(1, 1, 1, 1)
 				end
-			elseif currentRoom == Images["leftRoom"] then
+			elseif currentRoom == IMAGES["leftRoom"] then
 				if left_light_flag == true then
 					love.graphics.draw(CANVAS_LEFT)
 					love.graphics.setColor(1, 1, 1, 1)
@@ -1145,22 +1145,22 @@ function gamestates.draw()
 			end
 		end
 
-		if currentRoom == Images["secretRoom"] then
+		if currentRoom == IMAGES["secretRoom"] then
 			if event == "after_secret_room" then
 				if text1_flag == true then
 					love.graphics.setColor(1, 1, 1, 1)
 					love.graphics.print(txt1, txt1_x, txt1_y)
 				end
 			end
-			SCENE.secretRoom_draw()
-		elseif currentRoom == Images["leftRoom"] then
+			SCENES.secretRoom_draw()
+		elseif currentRoom == IMAGES["leftRoom"] then
 			left_room_draw()
-		elseif currentRoom == Images["rightRoom"] then
+		elseif currentRoom == IMAGES["rightRoom"] then
 			rightroom_draw()
 		end
 
 		if ending_leave == true then
-			if currentRoom ~= Images["leftRoom"] then
+			if currentRoom ~= IMAGES["leftRoom"] then
 				leave_event_draw()
 			end
 		end
@@ -1311,7 +1311,7 @@ end
 
 function random_page()
 	local random = math.floor(math.random(1, 4))
-	local sound = Sounds["page" .. tostring(random)]
+	local sound = SOUNDS["page" .. tostring(random)]
 	sound:play()
 	sound:setLooping(false)
 end
@@ -1343,15 +1343,15 @@ function lightning(dt)
 	if lightning_flash == true then
 		local random = math.floor(math.random(0, 1000))
 		if random <= 5 then
-			if Sounds.lightning:isPlaying() == false then
-				Sounds.lightning:play()
-				Sounds.lightning:setVolume(lightningVol)
-				Sounds.lightning:setLooping(false)
+			if SOUNDS.lightning:isPlaying() == false then
+				SOUNDS.lightning:play()
+				SOUNDS.lightning:setVolume(lightningVol)
+				SOUNDS.lightning:setLooping(false)
 			end
 		end
 	end
 	-- local duration = Sounds.lightning:getDuration("seconds")
-	local tell = Sounds.lightning:tell()
+	local tell = SOUNDS.lightning:tell()
 	local amount = 0.25
 	if FADE_OBJ.state == false then
 		if ending_leave_event ~= 2 then
@@ -1390,9 +1390,9 @@ function triggerTxt(dt)
 			_alarm = 4
 			t = 3
 			MOVE = false
-			Sounds.enemy_scream:play()
-			Sounds.enemy_scream:setVolume(0.9)
-			Sounds.enemy_scream:setLooping(false)
+			SOUNDS.enemy_scream:play()
+			SOUNDS.enemy_scream:setVolume(0.9)
+			SOUNDS.enemy_scream:setLooping(false)
 		elseif t == 3 then
 			MOVE = true
 			tt_update = false
@@ -1412,7 +1412,7 @@ function triggerTxt_draw()
 			love.graphics.print("", WIDTH_HALF - DEF_FONT:getWidth(" ") / 2, 0 + DEF_FONT_HEIGHT / 4)
 			love.graphics.print("", WIDTH_HALF - DEF_FONT:getWidth(" ") / 2, HEIGHT - DEF_FONT_HEIGHT)
 		elseif t == 3 then
-			if Sounds.enemy_scream:isPlaying() == false then
+			if SOUNDS.enemy_scream:isPlaying() == false then
 				love.graphics.print(as, WIDTH_HALF - DEF_FONT:getWidth(as) / 2, 0 + DEF_FONT_HEIGHT / 4)
 				love.graphics.print(as2, WIDTH_HALF - DEF_FONT:getWidth(as2) / 2, HEIGHT - DEF_FONT_HEIGHT)
 			end

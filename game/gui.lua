@@ -103,9 +103,9 @@ function android.get_light_pos() return lx, ly end
 function android.update(dt)
 	local state = gamestates.getState()
 	if state ~= "main" then return end
-	if not Images.lightOutline then return end
+	if not IMAGES.lightOutline then return end
 
-	local lo_w, lo_h = Images.lightOutline:getDimensions()
+	local lo_w, lo_h = IMAGES.lightOutline:getDimensions()
 
 	lx = PLAYER.x - lo_w / 2 + math.random(-0.05, 0.05)
 	ly = PLAYER.y - lo_h / 2.5 + math.random(-0.05, 0.05)
@@ -139,31 +139,31 @@ function android.draw()
 		love.graphics.setColor(1, 1, 1, 1)
 		--android.light_draw()
 		if MOVE == true or doodle_flag == true then
-			love.graphics.draw(Images.gui_left, gLeft.x, gLeft.y)
-			love.graphics.draw(Images.gui_right, gRight.x, gRight.y)
-			love.graphics.draw(Images.gui_light, gLight.x, gLight.y)
-			love.graphics.draw(Images.gui_act, gAct.x, gAct.y)
-			love.graphics.draw(Images.gui_settings, gSettings.x, gSettings.y)
+			love.graphics.draw(IMAGES.gui_left, gLeft.x, gLeft.y)
+			love.graphics.draw(IMAGES.gui_right, gRight.x, gRight.y)
+			love.graphics.draw(IMAGES.gui_light, gLight.x, gLight.y)
+			love.graphics.draw(IMAGES.gui_act, gAct.x, gAct.y)
+			love.graphics.draw(IMAGES.gui_settings, gSettings.x, gSettings.y)
 		else
 			love.graphics.setColor(1, 1, 1, 50 / 255)
-			love.graphics.draw(Images.gui_left, gLeft.x, gLeft.y)
-			love.graphics.draw(Images.gui_right, gRight.x, gRight.y)
-			love.graphics.draw(Images.gui_act, gAct.x, gAct.y)
+			love.graphics.draw(IMAGES.gui_left, gLeft.x, gLeft.y)
+			love.graphics.draw(IMAGES.gui_right, gRight.x, gRight.y)
+			love.graphics.draw(IMAGES.gui_act, gAct.x, gAct.y)
 		end
 		if word_puzzle then
-			love.graphics.draw(Images.gui_esc, gEsc.x, gEsc.y)
+			love.graphics.draw(IMAGES.gui_esc, gEsc.x, gEsc.y)
 		end
 		if ClockPuzzle.state == true then
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(Images.gui_left, gLeft2.x, gLeft2.y)
-			love.graphics.draw(Images.gui_right, gRight2.x, gRight2.y)
-			love.graphics.draw(Images.gui_up, gUp.x, gUp.y)
-			love.graphics.draw(Images.gui_down, gDown.x, gDown.y)
-			love.graphics.draw(Images.gui_enter, gEnter.x, gEnter.y)
-			love.graphics.draw(Images.gui_esc, gEsc.x, gEsc.y)
+			love.graphics.draw(IMAGES.gui_left, gLeft2.x, gLeft2.y)
+			love.graphics.draw(IMAGES.gui_right, gRight2.x, gRight2.y)
+			love.graphics.draw(IMAGES.gui_up, gUp.x, gUp.y)
+			love.graphics.draw(IMAGES.gui_down, gDown.x, gDown.y)
+			love.graphics.draw(IMAGES.gui_enter, gEnter.x, gEnter.y)
+			love.graphics.draw(IMAGES.gui_esc, gEsc.x, gEsc.y)
 		end
 		if doodle_flag == true then
-			love.graphics.draw(Images.gui_esc, gEsc.x, gEsc.y)
+			love.graphics.draw(IMAGES.gui_esc, gEsc.x, gEsc.y)
 		end
 	end
 end
@@ -329,13 +329,13 @@ function android.getKey() return androidKey end
 
 function android.light_update(dt)
 	if changed == false then
-		if light == Images.light then
-			mainLight = Images.lightOutline
-		elseif light == Images.light2 then
-			mainLight = Images.light2
+		if light == IMAGES.light then
+			mainLight = IMAGES.lightOutline
+		elseif light == IMAGES.light2 then
+			mainLight = IMAGES.light2
 		end
 	else
-		mainLight = Images.light3
+		mainLight = IMAGES.light3
 	end
 
 	if ON_MOBILE then
@@ -344,21 +344,21 @@ function android.light_update(dt)
 		love.graphics.setBlendMode("multiply", "premultiplied")
 		if changed == false then
 			love.graphics.draw(mainLight, lx, ly)
-			if candles_light_flag and currentRoom == Images["masterRoom"] then
+			if candles_light_flag and currentRoom == IMAGES["masterRoom"] then
 				local rand = 0.05
 				local cx = 0 + (math.random(-rand, rand))
-				local cy = HEIGHT_HALF - Images.candles_light_mask:getHeight() / 2 + (math.random(-rand, rand))
-				love.graphics.draw(Images.candles_light_mask, cx, cy)
+				local cy = HEIGHT_HALF - IMAGES.candles_light_mask:getHeight() / 2 + (math.random(-rand, rand))
+				love.graphics.draw(IMAGES.candles_light_mask, cx, cy)
 			end
-			if tv_light_flag and currentRoom == Images["secretRoom"] then
+			if tv_light_flag and currentRoom == IMAGES["secretRoom"] then
 				local tx, ty = 104, 11
-				love.graphics.draw(Images.tv_light, tx, ty)
+				love.graphics.draw(IMAGES.tv_light, tx, ty)
 			end
-			if left_light_flag and currentRoom == Images["leftRoom"] then
+			if left_light_flag and currentRoom == IMAGES["leftRoom"] then
 				local img = getLeftRoom()
 				light_etc(dt, LL, img, CANVAS_CUSTOM_MASK)
 			end
-			if right_light_flag and currentRoom == Images["rightRoom"] then
+			if right_light_flag and currentRoom == IMAGES["rightRoom"] then
 				local img = getRightRoom()
 				light_etc(dt, RL, img, CANVAS_CUSTOM_MASK)
 			end
@@ -377,8 +377,8 @@ function android.light_draw()
 end
 
 function android.light_check()
-	local near_range = Images.lightOutline:getWidth() / 2.5
-	local inside_range = Images.lightOutline:getWidth() / 3
+	local near_range = IMAGES.lightOutline:getWidth() / 2.5
+	local inside_range = IMAGES.lightOutline:getWidth() / 3
 	if FADE_OBJ.state == false then
 		if ENEMY_EXISTS == true and LIGHT_ON == true then
 			if PLAYER.x >= GHOST.x - inside_range and
