@@ -293,7 +293,9 @@ function love.draw()
 				-- love.graphics.print(tostring(LIGHT_VALUE), 8, 16)
 				-- love.graphics.print(string.format("%d x %d, %d", love.graphics.getWidth(), love.graphics.getHeight(), love.graphics.getDPIScale()), 8, 16)
 				if GHOST_EVENT then
-					love.graphics.print(tostring(child.flippedH), 8, 16)
+					if child then
+						love.graphics.print(tostring(child.flippedH), 8, 16)
+					end
 					love.graphics.print(tostring(GHOST_EVENT), 8, 24)
 				end
 			love.graphics.pop()
