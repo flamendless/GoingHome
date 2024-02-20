@@ -1298,7 +1298,7 @@ function skip_draw()
 	love.graphics.setColor(1, 1, 1, skip_alpha)
 	local skip_text
 	if ON_MOBILE then
-		skip_text = "tap to skip"
+		skip_text = "double tap to skip"
 	else
 		skip_text = "press any key to skip"
 	end
@@ -1429,16 +1429,5 @@ function seconds_to_clock(seconds)
 		local mins = string.format("%02.f", math.floor(seconds / 60 - (hours * 60)))
 		local secs = string.format("%02.f", math.floor(seconds - hours * 3600 - mins * 60))
 		return hours .. ":" .. mins .. ":" .. secs
-	end
-end
-
-function dev_draw()
-	if DEBUGGING then
-		love.graphics.push()
-		love.graphics.scale(1 / 4)
-		love.graphics.setColor(1, 0, 0, 1)
-		love.graphics.setFont(DEF_FONT)
-		love.graphics.print("DEV VERSION", WIDTH * 3.65, HEIGHT * 3.8)
-		love.graphics.pop()
 	end
 end

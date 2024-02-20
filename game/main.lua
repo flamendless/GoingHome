@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.50"
+local VERSION = "v1.0.51"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -35,6 +35,8 @@ love.mouse.setCursor(cursor)
 local URLS = require("urls")
 local Shaders = require("shaders")
 local utf8 = require("utf8")
+
+local rain_intro_tap_timer = 0
 
 if ON_MOBILE then
 	Android = require("gui")
@@ -411,7 +413,21 @@ function love.mousepressed(x, y, button, istouch)
 
 		end
 	elseif state == "rain_intro" then
-		if ON_MOBILE or check_gui(
+		if ON_MOBILE then
+			if rain_intro_tap_timer == 0 then
+				rain_intro_tap_timer = CLOCK
+			else
+				local diff = CLOCK - rain_intro_tap_timer
+				rain_intro_tap_timer = CLOCK
+				print(diff)
+				if diff <= 0.25 then
+					PRESSED = true
+					FADE_OBJ.state = true
+					STATES = "intro"
+					gamestates.load()
+				end
+			end
+		elseif check_gui(
 				gui_pos.skip_x,
 				gui_pos.skip_y,
 				gui_pos.skip_w,
@@ -423,17 +439,17 @@ function love.mousepressed(x, y, button, istouch)
 			gamestates.load()
 		end
 	elseif state == "intro" then
-		if ON_MOBILE or check_gui(
-				gui_pos.skip_x,
-				gui_pos.skip_y,
-				gui_pos.skip_w,
-				gui_pos.skip_h
-			) then
-			PRESSED = true
-			FADE_OBJ.state = true
-			STATES = "tutorial"
-			gamestates.load()
-		end
+		-- if ON_MOBILE or check_gui(
+		-- 		gui_pos.skip_x,
+		-- 		gui_pos.skip_y,
+		-- 		gui_pos.skip_w,
+		-- 		gui_pos.skip_h
+		-- 	) then
+		-- 	PRESSED = true
+		-- 	FADE_OBJ.state = true
+		-- 	STATES = "tutorial"
+		-- 	gamestates.load()
+		-- end
 	elseif state == "tutorial" and ON_MOBILE then
 		PRESSED = true
 		FADE_OBJ.state = true
@@ -919,6 +935,7 @@ function RESET_STATES()
 		end
 	end
 	Assets.set()
+	rain_intro_tap_timer = 0
 end
 
 function math.clamp(v, lo, hi)
