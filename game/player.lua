@@ -98,10 +98,11 @@ function Player:draw()
 					else
 						if self.right == true then
 							walk_right:resume()
+							walk_right:draw(player_sheet, self.x, self.y)
 						elseif self.left == true then
 							walk_left:resume()
+							walk_left:draw(player_sheet, self.x, self.y)
 						end
-						walk_left:draw(player_sheet, self.x, self.y)
 					end
 				else
 					if final_flashback == false then
