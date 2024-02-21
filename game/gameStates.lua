@@ -310,13 +310,11 @@ function gamestates.update(dt)
 			if adTimer > 0 then
 				adTimer = adTimer - 1 * dt
 				if adTimer <= 0 then
-					STATES = "splash"
-					gamestates.load()
+					gamestates.nextState("splash")
 				end
 			end
 		else
-			STATES = "splash"
-			gamestates.load()
+			gamestates.nextState("splash")
 		end
 	elseif state == "splash" then
 		splash_anim:update(dt)
@@ -1188,8 +1186,7 @@ end
 
 function gamestates.control()
 	if instruction == false and about == false and questions == false and options == false then
-		STATES = "rain_intro"
-		gamestates.load()
+		gamestates.nextState("rain_intro")
 	end
 end
 

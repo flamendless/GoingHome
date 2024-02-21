@@ -135,8 +135,7 @@ function intro_update(dt)
 
 	if not SOUNDS.intro_soft:isPlaying() then
 		FADE_OBJ.state = true
-		STATES = "intro"
-		gamestates.load()
+		gamestates.nextState("intro")
 		SOUNDS.intro_soft:stop()
 	end
 
