@@ -9,6 +9,8 @@ local lx, ly = 0, 0
 
 local gLeft, gRight, gLeft2, gRight2, gUp, gDown, gEnter, gEsc, gLight, gAct, gSettings, gSettingsBack, gQuit
 
+local rain_intro_tap_timer = 0
+
 function android.load()
 	gLeft = {
 		x = 4,
@@ -174,6 +176,18 @@ function android.touchpressed(id, x, y)
 		love.keypressed("e")
 	elseif state == "gallery" then
 		Gallery.interactions(id, x, y)
+	elseif ON_MOBILE and state == "rain_intro" then
+		if rain_intro_tap_timer == 0 then
+			rain_intro_tap_timer = CLOCK
+		else
+			local diff = CLOCK - rain_intro_tap_timer
+			rain_intro_tap_timer = CLOCK
+			if diff <= 0.25 then
+				PRESSED = true
+				FADE_OBJ.state = true
+				gamestates.nextState("intro")
+			end
+		end
 	elseif state == "main" and not Pause.flag then
 		if MOVE == true then
 			if guiCheck_touch(id, x, y, gLeft) then
@@ -417,15 +431,13 @@ function android.mouse_gui(x, y, button, istouch)
 			if check_gui(gui_pos.skip_x, gui_pos.skip_y, gui_pos.skip_w, gui_pos.skip_h) then
 				PRESSED = true
 				FADE_OBJ.state = true
-				STATES = "intro"
-				gamestates.load()
+				gamestates.nextState("intro")
 			end
 		elseif state == "intro" then
 			if check_gui(gui_pos.skip_x, gui_pos.skip_y, gui_pos.skip_w, gui_pos.skip_h) then
 				PRESSED = true
 				FADE_OBJ.state = true
-				STATES = "main"
-				gamestates.load()
+				gamestates.nextState("main")
 			end
 		end
 	end

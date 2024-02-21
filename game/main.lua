@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.52"
+local VERSION = "v1.0.53"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -35,8 +35,6 @@ love.mouse.setCursor(cursor)
 local URLS = require("urls")
 local Shaders = require("shaders")
 local utf8 = require("utf8")
-
-local rain_intro_tap_timer = 0
 
 if ON_MOBILE then
 	Android = require("gui")
@@ -413,29 +411,15 @@ function love.mousepressed(x, y, button, istouch)
 
 		end
 	elseif state == "rain_intro" then
-		if ON_MOBILE then
-			if rain_intro_tap_timer == 0 then
-				rain_intro_tap_timer = CLOCK
-			else
-				local diff = CLOCK - rain_intro_tap_timer
-				rain_intro_tap_timer = CLOCK
-				if diff <= 0.25 then
-					PRESSED = true
-					FADE_OBJ.state = true
-					STATES = "intro"
-					gamestates.load()
-				end
-			end
-		elseif check_gui(
-				gui_pos.skip_x,
-				gui_pos.skip_y,
-				gui_pos.skip_w,
-				gui_pos.skip_h
-			) then
+		if check_gui(
+			gui_pos.skip_x,
+			gui_pos.skip_y,
+			gui_pos.skip_w,
+			gui_pos.skip_h
+		) then
 			PRESSED = true
 			FADE_OBJ.state = true
-			STATES = "intro"
-			gamestates.load()
+			gamestates.nextState("intro")
 		end
 	elseif state == "intro" then
 		-- if ON_MOBILE or check_gui(
@@ -452,8 +436,7 @@ function love.mousepressed(x, y, button, istouch)
 	elseif state == "tutorial" and ON_MOBILE then
 		PRESSED = true
 		FADE_OBJ.state = true
-		STATES = "main"
-		gamestates.load()
+		gamestates.nextState("main")
 	elseif state == "main" then
 		Pause.mousepressed(mx, my, button)
 	end
@@ -621,18 +604,15 @@ function love.keypressed(key)
 	if to_skip and state == "rain_intro" then
 		PRESSED = true
 		FADE_OBJ.state = true
-		STATES = "intro"
-		gamestates.load()
+		gamestates.nextState("intro")
 	elseif to_skip and state == "intro" then
 		PRESSED = true
 		FADE_OBJ.state = true
-		STATES = "tutorial"
-		gamestates.load()
+		gamestates.nextState("tutorial")
 	elseif to_skip and state == "tutorial" then
 		PRESSED = true
 		FADE_OBJ.state = true
-		STATES = "main"
-		gamestates.load()
+		gamestates.nextState("main")
 	elseif state == "main" then
 		if key == "f" then
 			if currentRoom ~= IMAGES["rightRoom"] and
