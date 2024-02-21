@@ -317,13 +317,13 @@ function android.endingDialogue()
 		elseif key == "d" then
 			e_c = 2
 		elseif key == "e" then
-			if route == 1 then
+			if ROUTE == 1 then
 				if e_c == 1 then
 					event_route = him_convo
 				elseif e_c == 2 then
 					event_route = wait_convo
 				end
-			elseif route == 2 then
+			elseif ROUTE == 2 then
 				if e_c == 1 then
 					event_route = leave_convo
 				elseif e_c == 2 then

@@ -76,6 +76,7 @@ SEEN = false
 GAMEOVER = false
 GHOST_EVENT = ""
 GHOST_CHASE = false
+TEMP_CLOCK_GUN = -1
 
 PLAYER = Player(0, 0, 8, 16)
 GHOST = Enemy(42, 30, 12, 14)

@@ -266,7 +266,7 @@ function Items:checkFunction()
 							SOUNDS.re_sound:setLooping(false)
 							o:special_text("you've got a revolver part", "It's a barrel")
 							OBTAINABLES["gun1"] = false
-							temp_clock_gun = math.floor(CLOCK)
+							TEMP_CLOCK_GUN = math.floor(CLOCK)
 						end
 					end
 				elseif v.tag and o.tag == "candles left" or v.tag and o.tag == "candles right" then
@@ -312,7 +312,7 @@ function Items:checkFunction()
 							OBTAINABLES["gun2"] = false
 							SOUNDS.re_sound:play()
 							o:special_text("you've got a revolver part", "It's a cylinder")
-							temp_clock_gun = math.floor(CLOCK)
+							TEMP_CLOCK_GUN = math.floor(CLOCK)
 						else
 							o:special_text("", "There's nothing more here")
 						end
@@ -332,7 +332,7 @@ function Items:checkFunction()
 								o:special_text("You've got a revolver part", "It's the hammer")
 								SOUNDS.re_sound:play()
 								OBTAINABLES["gun3"] = false
-								temp_clock_gun = math.floor(CLOCK)
+								TEMP_CLOCK_GUN = math.floor(CLOCK)
 							else
 								o:special_text("", "There's nothing more here")
 							end

@@ -213,21 +213,20 @@ function Player:checkDoors()
 				if OBTAINABLES["chest"] == false then
 					if basement_unlocked == true then
 						if ending == false then
-							if ammo_available == true then
+							if AMMO_AVAILABLE == true then
 								if gun_obtained == true then
 									table.insert(ending_options, "Shoot Him")
 									table.insert(ending_options, "Wait")
-									route = 1
+									ROUTE = 1
 								else
 									doorTxt("", "I must rebuild the gun first.")
 								end
 							else
 								table.insert(ending_options, "Leave Him")
 								table.insert(ending_options, "Wait")
-								route = 2
+								ROUTE = 2
 
-								--insert broken revolver
-								local br_d = Interact(
+								local dialogue_broken_revolver = Interact(
 									false,
 									{
 										"It's a revolver",
@@ -241,11 +240,11 @@ function Player:checkDoors()
 									"",
 									"revolver2"
 								)
-								table.insert(DIALOGUES, br_d)
-								local br_i = Items(IMAGES.br, IMAGES["leftRoom"], 41, 34, "revolver2")
-								table.insert(ITEMS_LIST, br_i)
+								table.insert(DIALOGUES, dialogue_broken_revolver)
+								local item_broken_revolver = Items(IMAGES.br, IMAGES["leftRoom"], 41, 34, "revolver2")
+								table.insert(ITEMS_LIST, item_broken_revolver)
 							end
-							if route ~= 0 then
+							if ROUTE ~= 0 then
 								PLAYER:moveRoom(PLAYER.x, IMAGES["basementRoom"])
 								SOUNDS.rain:stop()
 								thunder_play = false

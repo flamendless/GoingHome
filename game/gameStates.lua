@@ -55,7 +55,7 @@ gun_complete = 0
 gun_rebuild = false
 lr_event = 0
 light_refilled = false
-ammo_available = false
+AMMO_AVAILABLE = false
 ammo_picked = false
 ending = false
 ending_animate = false
@@ -90,7 +90,7 @@ fade_to_black = false
 ending_wait = false
 flash_text_finished = false
 gun_obtained = false
-route = 0
+ROUTE = 0
 l, r = 0, 0
 adTimer = 5
 
@@ -670,11 +670,11 @@ function gamestates.update(dt)
 		end
 	end
 
-	if temp_clock_gun ~= nil then
+	if TEMP_CLOCK_GUN ~= -1 then
 		MOVE = false
-		if temp_clock_gun < CLOCK - 3 then
+		if TEMP_CLOCK_GUN < (CLOCK - 3) then
 			check_gun()
-			temp_clock_gun = nil
+			TEMP_CLOCK_GUN = -1
 		end
 	end
 end

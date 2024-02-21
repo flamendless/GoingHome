@@ -97,7 +97,7 @@ function rightroom_update(dt)
 			elseif event_route == leave_convo then
 				credit_set_ending("leaving home")
 			elseif event_route == wait_convo then
-				if ammo_available == true then
+				if AMMO_AVAILABLE == true then
 					credit_set_ending("saving home")
 				else
 					credit_set_ending("dying home")
@@ -152,7 +152,7 @@ function rightroom_update(dt)
 			elseif n == 19 then
 				enemy_pos_x = Lume.lerp(enemy_pos_x, 33, 0.1)
 			elseif n == 21 then
-				if ammo_available == true then
+				if AMMO_AVAILABLE == true then
 					if event_route == wait_convo then
 						en_anim = "idle"
 						if scream_once == false then
@@ -163,7 +163,7 @@ function rightroom_update(dt)
 					end
 				end
 			elseif n - 1 == 22 then
-				if ammo_available == true then
+				if AMMO_AVAILABLE == true then
 					--player has gun with ammo
 					if event_route == him_convo then
 						--player already used the ammo on him
@@ -197,7 +197,7 @@ function rightroom_update(dt)
 					end
 				end
 			elseif n == 25 then
-				if ammo_available == true then
+				if AMMO_AVAILABLE == true then
 					if event_route == him_convo then
 						if scream_once == false then
 							SOUNDS.enemy_scream:play()

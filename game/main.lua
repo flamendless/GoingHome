@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.53"
+local VERSION = "v1.0.54"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -214,11 +214,11 @@ function love.update(dt)
 
 	local ww, wh = love.graphics.getDimensions()
 
-	TX = (ww/2 - (WIDTH * RATIO)/2)
+	TX = (ww / 2 - (WIDTH * RATIO) / 2)
 	TX = math.max(0, TX)
 
 	local OFFY = (not ON_MOBILE) and 8 or 0
-	TY = (wh/2 - (HEIGHT * RATIO)/2) - OFFY
+	TY = (wh / 2 - (HEIGHT * RATIO) / 2) - OFFY
 	TY = math.max(0, TY)
 
 	if not FINISHED_LOADING then
@@ -254,52 +254,52 @@ end
 
 function love.draw()
 	love.graphics.setCanvas(MAIN_CANVAS)
-		love.graphics.clear()
-		love.graphics.push()
-			love.graphics.scale(RATIO, RATIO)
-			if FINISHED_LOADING then
-				-- if shaders_test or enemy_exists then
-				-- 	love.graphics.setShader(Shaders.palette_swap)
-				-- end
+	love.graphics.clear()
+	love.graphics.push()
+	love.graphics.scale(RATIO, RATIO)
+	if FINISHED_LOADING then
+		-- if shaders_test or enemy_exists then
+		-- 	love.graphics.setShader(Shaders.palette_swap)
+		-- end
 
-				gamestates.draw()
-				Pause.draw()
+		gamestates.draw()
+		Pause.draw()
 
-				love.graphics.setShader()
+		love.graphics.setShader()
 
-				if FC:getState() then FC:draw() end
-			else
-				local percent = 0
-				if LOADER.resourceCount ~= 0 then
-					percent = LOADER.loadedCount / LOADER.resourceCount
-				end
-				love.graphics.setColor(1, 1, 1, 0.58)
-				love.graphics.setFont(DEF_FONT)
-				local str_loading = ("Loading..%d%%"):format(percent * 100)
-				love.graphics.print(str_loading, WIDTH_HALF - DEF_FONT:getWidth(str_loading) / 2, HEIGHT - DEF_FONT_HEIGHT)
-
-				local scale = 0.4
-				love.graphics.draw(img_loading, WIDTH_HALF, HEIGHT_HALF, 0, scale, scale, lsw / 2, lsh / 2)
-			end
-		love.graphics.pop()
-
-		if DEBUGGING then
-			love.graphics.push()
-				love.graphics.scale(RATIO / 2, RATIO / 2)
-				love.graphics.setColor(1, 0, 0, 1)
-				love.graphics.setFont(DEF_FONT)
-				love.graphics.print(VERSION, 8, 0)
-				love.graphics.print(gamestates.getState(), 8, 8)
-				-- love.graphics.print(tostring(LIGHT_VALUE), 8, 16)
-				-- love.graphics.print(string.format("%d x %d, %d", love.graphics.getWidth(), love.graphics.getHeight(), love.graphics.getDPIScale()), 8, 16)
-				if GHOST_EVENT then
-					if child then
-						love.graphics.print(tostring(child.flippedH), 8, 16)
-					end
-					love.graphics.print(tostring(GHOST_EVENT), 8, 24)
-				end
-			love.graphics.pop()
+		if FC:getState() then FC:draw() end
+	else
+		local percent = 0
+		if LOADER.resourceCount ~= 0 then
+			percent = LOADER.loadedCount / LOADER.resourceCount
 		end
+		love.graphics.setColor(1, 1, 1, 0.58)
+		love.graphics.setFont(DEF_FONT)
+		local str_loading = ("Loading..%d%%"):format(percent * 100)
+		love.graphics.print(str_loading, WIDTH_HALF - DEF_FONT:getWidth(str_loading) / 2, HEIGHT - DEF_FONT_HEIGHT)
+
+		local scale = 0.4
+		love.graphics.draw(img_loading, WIDTH_HALF, HEIGHT_HALF, 0, scale, scale, lsw / 2, lsh / 2)
+	end
+	love.graphics.pop()
+
+	if DEBUGGING then
+		love.graphics.push()
+		love.graphics.scale(RATIO / 2, RATIO / 2)
+		love.graphics.setColor(1, 0, 0, 1)
+		love.graphics.setFont(DEF_FONT)
+		love.graphics.print(VERSION, 8, 0)
+		love.graphics.print(gamestates.getState(), 8, 8)
+		-- love.graphics.print(tostring(LIGHT_VALUE), 8, 16)
+		-- love.graphics.print(string.format("%d x %d, %d", love.graphics.getWidth(), love.graphics.getHeight(), love.graphics.getDPIScale()), 8, 16)
+		if GHOST_EVENT then
+			if child then
+				love.graphics.print(tostring(child.flippedH), 8, 16)
+			end
+			love.graphics.print(tostring(GHOST_EVENT), 8, 24)
+		end
+		love.graphics.pop()
+	end
 
 	love.graphics.setCanvas()
 
@@ -378,7 +378,6 @@ function love.mousepressed(x, y, button, istouch)
 						SaveData.toggle_opts(i)
 					end
 				end
-
 			elseif questions then
 				local url
 				if check_gui(gui_pos.t_x, gui_pos.t_y, gui_pos.t_w, gui_pos.t_h) then
@@ -408,15 +407,14 @@ function love.mousepressed(x, y, button, istouch)
 					options = false
 				end
 			end
-
 		end
 	elseif state == "rain_intro" then
 		if check_gui(
-			gui_pos.skip_x,
-			gui_pos.skip_y,
-			gui_pos.skip_w,
-			gui_pos.skip_h
-		) then
+				gui_pos.skip_x,
+				gui_pos.skip_y,
+				gui_pos.skip_w,
+				gui_pos.skip_h
+			) then
 			PRESSED = true
 			FADE_OBJ.state = true
 			gamestates.nextState("intro")
@@ -539,13 +537,13 @@ function love.keyreleased(key)
 	elseif key == "d" then
 		e_c = 2
 	elseif key == "e" then
-		if route == 1 then
+		if ROUTE == 1 then
 			if e_c == 1 then
 				event_route = him_convo
 			elseif e_c == 2 then
 				event_route = wait_convo
 			end
-		elseif route == 2 then
+		elseif ROUTE == 2 then
 			if e_c == 1 then
 				event_route = leave_convo
 			elseif e_c == 2 then
@@ -656,7 +654,6 @@ function love.keypressed(key)
 					if GHOST_EVENT == "no escape" and not GHOST_CHASE then
 						GHOST_CHASE = true
 					end
-
 				elseif key == "d" then
 					if PLAYER.moveRight == true then
 						PLAYER.isMoving = true
@@ -672,7 +669,6 @@ function love.keypressed(key)
 					if GHOST_EVENT == "no escape" and not GHOST_CHASE then
 						GHOST_CHASE = true
 					end
-
 				elseif key == "e" and MOVE then
 					--try fix for overlapping texts
 					for _, obj in ipairs(DIALOGUES) do
@@ -699,7 +695,6 @@ function love.keypressed(key)
 					end
 				end
 			end
-
 		elseif MOVE == false then
 			love.keyboard.setKeyRepeat(false)
 			for _, v in ipairs(DIALOGUES) do
@@ -732,13 +727,13 @@ function love.keypressed(key)
 				elseif key == "d" then
 					e_c = 2
 				elseif key == "e" then
-					if route == 1 then
+					if ROUTE == 1 then
 						if e_c == 1 then
 							event_route = him_convo
 						elseif e_c == 2 then
 							event_route = wait_convo
 						end
-					elseif route == 2 then
+					elseif ROUTE == 2 then
 						if e_c == 1 then
 							event_route = leave_convo
 						elseif e_c == 2 then
@@ -822,13 +817,17 @@ function check_gun()
 		OBTAINABLES["gun2"] == false and
 		OBTAINABLES["gun3"] == false then
 		doorTxt("I have all the parts", "I need a table to rebuild it")
-		local ammo_dial = Interact(false, { "It's an ammo box", "There's only one ammo here", "Load it?" },
+		local dialogue_ammo = Interact(
+			false,
+			{ "It's an ammo box", "There's only one ammo here", "Load it?" },
 			{ "Yes", "No" },
-			"", "ammo")
-		table.insert(DIALOGUES, ammo_dial)
-		local ammo_item = Items(IMAGES.ammo, IMAGES["leftRoom"], 41, 34, "ammo")
-		table.insert(ITEMS_LIST, ammo_item)
-		ammo_available = true
+			"",
+			"ammo"
+		)
+		table.insert(DIALOGUES, dialogue_ammo)
+		local item_ammo = Items(IMAGES.ammo, IMAGES["leftRoom"], 41, 34, "ammo")
+		table.insert(ITEMS_LIST, item_ammo)
+		AMMO_AVAILABLE = true
 	else
 		MOVE = true
 	end
@@ -876,9 +875,9 @@ function love.touchmoved(id, x, y)
 end
 
 function unrequire(m)
-  package.loaded[m] = nil
-  _G[m] = nil
-  -- require(m)
+	package.loaded[m] = nil
+	_G[m] = nil
+	-- require(m)
 end
 
 function RESET_STATES()
@@ -904,7 +903,7 @@ function RESET_STATES()
 	}
 	local files = love.filesystem.getDirectoryItems("")
 	for _, file in ipairs(files) do
-		if file:sub(-#ext) == ext then
+		if file:sub(- #ext) == ext then
 			local f = file:sub(0, -(#ext + 1))
 			if not ignore[f] then
 				print("resetting:", f)

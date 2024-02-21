@@ -11,7 +11,7 @@ convo = {
 	 "It's you that caused everthing!",
 	 "You are one crazy son!",
 	 "She was still alive!",
-	 "Y-you've ended here misery!",
+	 "Y-you've ended her misery!",
 	 "Y-you took it, didn't you?",
 	 "HAHAHAHA! ",
 	 "You thought you could 'save'",
@@ -141,7 +141,7 @@ function left_room_update(dt)
 	----------------MAIN STUFFS--------------
 	if lr_event == 1 then
 		left_light_flag = true
-		if ammo_available == false then
+		if AMMO_AVAILABLE == false then
 			if broken_revolver == true then
 				lr_event = 2
 			end
@@ -181,7 +181,7 @@ function left_room_update(dt)
 		end
 	elseif lr_event == 3 then
 
-		if ammo_available == true then
+		if AMMO_AVAILABLE == true then
 			--route 1
 			ending_animate = true
 			shoot_pose_animate = true
