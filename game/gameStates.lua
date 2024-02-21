@@ -436,7 +436,7 @@ function gamestates.update(dt)
 			end
 		end
 
-		for _, v in pairs(DIALOGUES) do
+		for _, v in ipairs(DIALOGUES) do
 			if v.tag == "clock" then
 				if MOVE == true then
 					v.specialTxt = false

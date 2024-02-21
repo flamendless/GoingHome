@@ -414,7 +414,7 @@ function Player:checkDoors()
 			SaveData.data.DOOR_LOCKED = DOOR_LOCKED
 			SaveData.save()
 
-			for k, v in pairs(DIALOGUES) do
+			for _, v in ipairs(DIALOGUES) do
 				v.maxT = 2.5
 			end
 		elseif checkRight then
