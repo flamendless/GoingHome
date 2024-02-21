@@ -3,8 +3,8 @@
 --@flam8studio
 
 local VERSION = "v1.0.54"
-PRO_VERSION = false
-DEBUGGING = true
+PRO_VERSION = true
+DEBUGGING = false
 
 OS = love.system.getOS()
 ON_MOBILE = (OS == "Android") or (OS == "iOS")
