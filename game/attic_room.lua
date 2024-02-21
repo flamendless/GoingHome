@@ -5,7 +5,7 @@ local timer = 3
 function SCENES.atticRoom_update(dt)
 	attic_clock_anim:update(dt)
 	SOUNDS.clock_tick:play()
-	SOUNDS.clock_tick:setVolume(0.5)
+	SOUNDS.clock_tick:setVolume(0.7)
 	SOUNDS.clock_tick:setLooping(true)
 
 	if PLAYER.x < 10 then

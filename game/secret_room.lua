@@ -65,7 +65,7 @@ function SCENES.secretRoom_update(dt)
 		LIGHT_ON = false
 		RANDOM_BREATHE = false
 		MOVE = false
-		SOUNDS.rain:setVolume(0.3)
+		SOUNDS.rain:setVolume(0.45)
 		SOUNDS.main_theme:setVolume(0)
 		SOUNDS.finding_home:setVolume(0)
 		SOUNDS.main_theme:stop()
@@ -214,7 +214,7 @@ function SCENES.secretRoom_update(dt)
 		PLAYER.img = IMAGES.player_child_idle
 		SOUNDS.main_theme:play()
 		SOUNDS.main_theme:setLooping(false)
-		SOUNDS.main_theme:setVolume(0.3)
+		SOUNDS.main_theme:setVolume(0.6)
 		PLAYER.xspd = 25
 
 		PLAYER.visible = true

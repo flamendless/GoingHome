@@ -93,6 +93,7 @@ gun_obtained = false
 route = 0
 l, r = 0, 0
 adTimer = 5
+
 local adTxts = {
 	"Please Allow Ads to support",
 	"The Developer. Ads will be",
@@ -101,7 +102,7 @@ local adTxts = {
 	"the adless version",
 }
 local adTxt = table.concat(adTxts, "\n")
-lightningVol = 0.3
+lightningVol = 0.5
 
 local tutorial_timer = 5
 
@@ -241,7 +242,7 @@ function gamestates.init()
 		--set music
 		SOUNDS.ts_theme:setLooping(true)
 		SOUNDS.ts_theme:play()
-		SOUNDS.ts_theme:setVolume(0.5)
+		SOUNDS.ts_theme:setVolume(0.6)
 		if ON_MOBILE and not PRO_VERSION then
 			PreloadAds()
 		end
@@ -468,7 +469,7 @@ function gamestates.update(dt)
 						SOUNDS.lightning:play()
 					end
 				else
-					SOUNDS.lightning:setVolume(0.6)
+					SOUNDS.lightning:setVolume(0.7)
 				end
 				lightning()
 			else
@@ -494,8 +495,9 @@ function gamestates.update(dt)
 			if RANDOM_BREATHE == true then
 				RANDOM_BREATHE = false
 				Timer.after(random, function()
-					SOUNDS[num .. tostring(choose)]:play()
-					SOUNDS[num .. tostring(choose)]:setVolume(0.5)
+					local key = num .. tostring(choose)
+					SOUNDS[key]:play()
+					SOUNDS[key]:setVolume(0.65)
 					RANDOM_BREATHE = true
 				end)
 			end
@@ -1391,7 +1393,7 @@ function triggerTxt(dt)
 			t = 3
 			MOVE = false
 			SOUNDS.enemy_scream:play()
-			SOUNDS.enemy_scream:setVolume(0.9)
+			SOUNDS.enemy_scream:setVolume(0.6)
 			SOUNDS.enemy_scream:setLooping(false)
 		elseif t == 3 then
 			MOVE = true

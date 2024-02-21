@@ -171,12 +171,14 @@ function Gallery.prev()
 end
 
 function Gallery.increase()
-	volume = volume < 1 and volume + 0.1 or 1
+	volume = volume + 0.1
+	volume = math.min(volume, 1)
 	love.audio.setVolume(volume)
 end
 
 function Gallery.decrease()
-	volume = volume > 0 and volume - 0.1 or 0
+	volume = volume - 0.1
+	volume = math.max(volume, 0)
 	love.audio.setVolume(volume)
 end
 

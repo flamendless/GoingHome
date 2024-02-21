@@ -29,8 +29,8 @@ function pause.sound(state)
 		gSound.img = IMAGES.gui_sound_off
 		love.audio.setVolume(0)
 	elseif state == "on" then
-		love.audio.setVolume(1)
 		gSound.img = IMAGES.gui_sound
+		love.audio.setVolume(1)
 	end
 end
 
@@ -42,7 +42,7 @@ function pause.load()
 	SOUNDS.thunder:pause()
 	random_breathe_flag = false
 	SOUNDS.ts_theme:play()
-	SOUNDS.ts_theme:setVolume(0.3)
+	SOUNDS.ts_theme:setVolume(0.45)
 	lightningVol = 0
 end
 
@@ -52,7 +52,7 @@ function pause.exit()
 	SOUNDS.thunder:play()
 	random_breathe_flag = true
 	SOUNDS.ts_theme:stop()
-	lightningVol = 0.3
+	lightningVol = 0.5
 end
 
 function pause.draw()

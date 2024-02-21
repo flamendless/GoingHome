@@ -73,7 +73,7 @@ function Chair:update(dt)
 			if self.glow == true then
 				if SOUNDS.chair_move:isPlaying() == false then
 					SOUNDS.chair_move:play()
-					SOUNDS.chair_move:setVolume(0.7)
+					SOUNDS.chair_move:setVolume(0.8)
 					SOUNDS.chair_move:setLooping(false)
 				end
 				PLAYER.x = PLAYER.x + self.push * self.vspeed * dt

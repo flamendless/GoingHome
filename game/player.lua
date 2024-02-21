@@ -227,9 +227,20 @@ function Player:checkDoors()
 								route = 2
 
 								--insert broken revolver
-								local br_d = Interact(false,
-									{ "It's a revolver", "the cylinder is broken", "I can't open it", "I can' tell",
-										"if its loaded", "Take it?" }, { "Yes", "No" }, "", "revolver2")
+								local br_d = Interact(
+									false,
+									{
+										"It's a revolver",
+										"the cylinder is broken",
+										"I can't open it",
+										"I can' tell",
+										"if it's loaded",
+										"Take it?",
+									},
+									{"Yes", "No"},
+									"",
+									"revolver2"
+								)
 								table.insert(DIALOGUES, br_d)
 								local br_i = Items(IMAGES.br, IMAGES["leftRoom"], 41, 34, "revolver2")
 								table.insert(ITEMS_LIST, br_i)

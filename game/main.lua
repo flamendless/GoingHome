@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.51"
+local VERSION = "v1.0.52"
 PRO_VERSION = false
 DEBUGGING = true
 
@@ -419,7 +419,6 @@ function love.mousepressed(x, y, button, istouch)
 			else
 				local diff = CLOCK - rain_intro_tap_timer
 				rain_intro_tap_timer = CLOCK
-				print(diff)
 				if diff <= 0.25 then
 					PRESSED = true
 					FADE_OBJ.state = true
