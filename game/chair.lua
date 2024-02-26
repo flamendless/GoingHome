@@ -14,7 +14,6 @@ function Chair:new()
 end
 
 function Chair:update(dt)
-
 	if self.x < 16 then
 		self.x = 16
 	end
@@ -52,7 +51,7 @@ function Chair:update(dt)
 		end
 	elseif currentRoom == IMAGES["secretRoom"] then
 		if self.x > 77 then
-			pushing_anim = false
+			PUSHING_ANIM = false
 			move_chair = false
 			self.exists = false
 			event_find = false
@@ -78,12 +77,12 @@ function Chair:update(dt)
 				end
 				PLAYER.x = PLAYER.x + self.push * self.vspeed * dt
 				self.x = self.x + self.push * self.vspeed * dt
-				pushing_anim = true
+				PUSHING_ANIM = true
 			end
 		else
-			pushing_anim = false
+			PUSHING_ANIM = false
 		end
-	else pushing_anim = false end
+	else PUSHING_ANIM = false end
 
 end
 
@@ -98,12 +97,12 @@ function Chair:keypressed(dt,key)
 				end
 				PLAYER.x = PLAYER.x + self.push * self.vspeed * dt
 				self.x = self.x + self.push * self.vspeed * dt
-				pushing_anim = true
+				PUSHING_ANIM = true
 			end
 		else
-			pushing_anim = false
+			PUSHING_ANIM = false
 		end
-	else pushing_anim = false end
+	else PUSHING_ANIM = false end
 end
 
 function Chair:draw()

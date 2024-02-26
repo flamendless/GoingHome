@@ -77,10 +77,9 @@ GAMEOVER = false
 GHOST_EVENT = ""
 GHOST_CHASE = false
 TEMP_CLOCK_GUN = -1
-
-PLAYER = Player(0, 0, 8, 16)
-GHOST = Enemy(42, 30, 12, 14)
-MRCHAIR = Chair()
+ENDING_LEAVE = false
+PUSHING_ANIM = false
+ENDING_ANIMATE = false
 
 
 ITEMS_LIST = {}

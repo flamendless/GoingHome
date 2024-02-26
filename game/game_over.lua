@@ -9,17 +9,12 @@ local message = false
 local go_text = "The Fear Caught Up With You"
 
 function game_over.load()
-
 	timer_starts = true
-
 	SOUNDS.main_theme:stop()
 	SOUNDS.rain:stop()
 	SOUNDS.thunder:stop()
-
 	SOUNDS.enemy_scream:play()
-
 	LIGHT_ON = false
-
 	PLAYER.dead = true
 end
 
@@ -139,7 +134,6 @@ function game_over.init(dt)
 
 	SOUNDS.thunder:stop()
 	RANDOM_BREATHE = false
-
 end
 
 return game_over

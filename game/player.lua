@@ -25,7 +25,7 @@ end
 
 function Player:update(dt)
 	local state = gamestates.getState()
-	if ending_leave == false then
+	if ENDING_LEAVE == false then
 		if self.y < HEIGHT - 20 - self.h then
 			self.y = self.y + self.grav
 		end
@@ -44,11 +44,11 @@ function Player:update(dt)
 		end
 	end
 
-	if pushing_anim == true then
+	if PUSHING_ANIM == true then
 		player_push:update(dt)
 	end
 
-	if ending_animate == true then
+	if ENDING_ANIMATE == true then
 		if reload_animate == true then
 			reload_anim:update(dt)
 		end
@@ -84,7 +84,7 @@ function Player:draw()
 	--love.graphics.rectangle("fill", self.x,self.y, self.w, self.h)
 	if self.visible == true then
 		if self.dead == false then
-			if ending_animate == false then
+			if ENDING_ANIMATE == false then
 				if GHOST_EVENT ~= "flashback" then
 					local player_sheet
 					if player_color == false then
@@ -106,7 +106,7 @@ function Player:draw()
 					end
 				else
 					if final_flashback == false then
-						if pushing_anim == false then
+						if PUSHING_ANIM == false then
 							if self.isMoving == false then
 								child:pauseAtStart()
 							else
@@ -146,7 +146,7 @@ function Player:draw()
 end
 
 function Player:moveRoom(posX, nextRoom)
-	if ending_leave == false then
+	if ENDING_LEAVE == false then
 		FADE_OBJ.state = true
 	end
 	self.x = posX
@@ -174,7 +174,7 @@ function Player:checkDoors()
 		if checkLeft then
 			PLAYER:moveRoom(right, IMAGES["livingRoom"])
 		elseif checkRight then
-			if ending_leave == false then
+			if ENDING_LEAVE == false then
 				if LOCKED["mainRoom_right"] == false then
 					PLAYER:moveRoom(left, IMAGES["kitchen"])
 				else
@@ -185,7 +185,7 @@ function Player:checkDoors()
 				doorTxt("I must not go there", "I have to go to work")
 			end
 		elseif checkMid then
-			if ending_leave == false then
+			if ENDING_LEAVE == false then
 				if GHOST_EVENT == "flashback" then
 					doorTxt("I've just got home", "I have to find mom and dad")
 				else
@@ -201,7 +201,7 @@ function Player:checkDoors()
 		--living room
 	elseif currentRoom == IMAGES["livingRoom"] then
 		if checkLeft then
-			if ending_leave == false and ending_shoot == false then
+			if ENDING_LEAVE == false and ending_shoot == false then
 				PLAYER:moveRoom(right, IMAGES["stairRoom"])
 			else
 				doorTxt("I must not go there", "I have to go to work")
@@ -209,7 +209,7 @@ function Player:checkDoors()
 		elseif checkRight then
 			PLAYER:moveRoom(left, IMAGES["mainRoom"])
 		elseif checkMid then
-			if ending_leave == false or ending_shoot == false or ending_shoot == false then
+			if ENDING_LEAVE == false or ending_shoot == false or ending_shoot == false then
 				if OBTAINABLES["chest"] == false then
 					if basement_unlocked == true then
 						if ending == false then
@@ -268,7 +268,7 @@ function Player:checkDoors()
 		--basement room
 	elseif currentRoom == IMAGES["basementRoom"] then
 		if checkMid then
-			if ending_leave == false and ending_shoot == false then
+			if ENDING_LEAVE == false and ending_shoot == false then
 				if basement_lock == true then
 					doorTxt("It's locked from the other side", "I Guess there's no turning back")
 					SOUNDS.locked:play()
@@ -278,15 +278,15 @@ function Player:checkDoors()
 			elseif ending_shoot == true then
 				doorTxt("It's locked from the other side", "I Guess there's no turning back")
 				SOUNDS.locked:play()
-			elseif ending_leave == true then
+			elseif ENDING_LEAVE == true then
 				PLAYER:moveRoom(self.x, IMAGES["livingRoom"])
 			end
 		elseif checkLeft then
-			if ending_leave == false and ending_shoot == false then
+			if ENDING_LEAVE == false and ending_shoot == false then
 				PLAYER:moveRoom(right, IMAGES["leftRoom"])
 			elseif ending_shoot == true then
 				PLAYER:moveRoom(right, IMAGES["leftRoom"])
-			elseif ending_leave == true then
+			elseif ENDING_LEAVE == true then
 				doorTxt("I must not go there", "I have to go to work")
 			end
 
@@ -294,7 +294,7 @@ function Player:checkDoors()
 				lr_event = 1
 			end
 		elseif checkRight then
-			if ending_leave == false and ending_shoot == false and ending_wait == false then
+			if ENDING_LEAVE == false and ending_shoot == false and ending_wait == false then
 				if rightroom_unlocked == true then
 					PLAYER:moveRoom(left, IMAGES["rightRoom"])
 				else
@@ -304,7 +304,7 @@ function Player:checkDoors()
 				end
 			elseif ending_shoot == true then
 				PLAYER:moveRoom(left, IMAGES["rightRoom"])
-			elseif ending_leave == true then
+			elseif ENDING_LEAVE == true then
 				doorTxt("I have to hurry", "I have to go to work")
 			elseif ending_wait == true then
 				PLAYER:moveRoom(left, IMAGES["rightRoom"])

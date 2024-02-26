@@ -2,7 +2,8 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.54"
+local VERSION = "v1.0.55"
+local MOBILE_VERSION = "3"
 PRO_VERSION = true
 DEBUGGING = false
 
@@ -38,23 +39,19 @@ local utf8 = require("utf8")
 
 if ON_MOBILE then
 	Android = require("gui")
-	LoveAdmob = require("love_admob")
-	LoveAdmob.debugging = DEBUGGING
+
+	if not PRO_VERSION then
+		LoveAdmob = require("love_admob")
+		LoveAdmob.debugging = DEBUGGING
+		AdMobKeys = require("admob_keys")
+		AdMobKeys.test = DEBUGGING
+	end
 
 	if PRO_VERSION then
-		VERSION = VERSION .. "-android-pro"
+		VERSION = VERSION .. "-android-pro-" .. MOBILE_VERSION
 	else
 		VERSION = VERSION .. "-android"
 	end
-
-	AdMobKeys = require("admob_keys")
-	AdMobKeys.test = DEBUGGING
-
-	-- LoveAdmob.rewardUserWithReward = function(reward_type, reward_qty)
-	-- 	print("rewardUserWithReward callback", reward_type, reward_qty)
-	-- 	if reward_qty == 1 and reward_type == "Reward" then
-	-- 	end
-	-- end
 end
 
 FADE_OBJ = Fade(1, 6)
@@ -157,6 +154,9 @@ end
 
 function love.load()
 	print("VERSION:", VERSION)
+	if ON_MOBILE then
+		print("MOBILE VERSION:", MOBILE_VERSION)
+	end
 	SaveData.load()
 
 	if PRO_VERSION then
@@ -304,7 +304,7 @@ function love.draw()
 	love.graphics.setCanvas()
 
 	love.graphics.setColor(1, 1, 1, 1)
-	if not ending_leave and SaveData.data.use_grayscale then
+	if not ENDING_LEAVE and SaveData.data.use_grayscale then
 		love.graphics.setShader(Shaders.grayscale)
 	end
 	love.graphics.draw(MAIN_CANVAS, TX, TY)
@@ -615,7 +615,7 @@ function love.keypressed(key)
 		if key == "f" then
 			if currentRoom ~= IMAGES["rightRoom"] and
 				currentRoom ~= IMAGES["leftRoom"] and
-				ending_leave ~= true and
+				ENDING_LEAVE ~= true and
 				word_puzzle == false
 			then
 				LIGHT_ON = not LIGHT_ON
@@ -624,7 +624,7 @@ function love.keypressed(key)
 					GHOST_EVENT == "flashback" or
 					currentRoom == IMAGES["leftRoom"] or
 					currentRoom == IMAGES["rightRoom"] or
-					ending_leave == true then
+					ENDING_LEAVE == true then
 					SOUNDS.fl_toggle:stop()
 				else
 					SOUNDS.fl_toggle:play()
@@ -638,7 +638,7 @@ function love.keypressed(key)
 
 		if MOVE == true then
 			love.keyboard.setKeyRepeat(true)
-			if pushing_anim == false then
+			if PUSHING_ANIM == false then
 				if key == "a" then
 					if PLAYER.moveLeft == true then
 						PLAYER.isMoving = true
@@ -834,7 +834,7 @@ function check_gun()
 end
 
 function turnLight()
-	if currentRoom ~= IMAGES["rightRoom"] and currentRoom ~= IMAGES["leftRoom"] and ending_leave ~= true then
+	if currentRoom ~= IMAGES["rightRoom"] and currentRoom ~= IMAGES["leftRoom"] and ENDING_LEAVE ~= true then
 		if word_puzzle == false then
 			if LIGHT_ON == true then
 				LIGHT_ON = false
@@ -845,7 +845,7 @@ function turnLight()
 				GHOST_EVENT == "flashback" or
 				currentRoom == IMAGES["leftRoom"] or
 				currentRoom == IMAGES["rightRoom"] or
-				ending_leave == true then
+				ENDING_LEAVE == true then
 				SOUNDS.fl_toggle:stop()
 			else
 				SOUNDS.fl_toggle:play()
@@ -889,7 +889,6 @@ function RESET_STATES()
 		conf = 1,
 		error = 1,
 		gallery = 1,
-		game_over = 1,
 		gui = 1,
 		interact = 1,
 		love_admob = 1,
@@ -912,8 +911,26 @@ function RESET_STATES()
 			end
 		end
 	end
-	Assets.set()
-	rain_intro_tap_timer = 0
+
+	ON_LOAD_ASSETS()
+end
+
+function ON_LOAD_ASSETS()
+	local state = gamestates.getState()
+	print("loaded", state)
+	light = IMAGES.light
+
+	Gallery.load()
+	animation_set()
+
+	if state == "main" then
+		particle_set()
+		Assets.set()
+	end
+
+	Assets.init_gui_pos()
+	gamestates.init()
+	FINISHED_LOADING = true
 end
 
 function math.clamp(v, lo, hi)

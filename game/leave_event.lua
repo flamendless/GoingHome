@@ -79,13 +79,13 @@ function leave_event_update(dt)
 			if LIGHT_VALUE <= 0 then
 				LIGHT_VALUE = 0
 				--activate the player panic animation
-				ending_animate = true
+				ENDING_ANIMATE = true
 				ending_final = -1
 			end
 		elseif LIGHT_VALUE <= 0 then
 			LIGHT_VALUE = 0
 			--activate the player panic animation
-			ending_animate = true
+			ENDING_ANIMATE = true
 			ending_final = -1
 		end
 		if player_ending_shot == true then

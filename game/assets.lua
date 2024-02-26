@@ -310,7 +310,8 @@ function assets.load()
 			table.remove(p, i)
 		end
 
-		gamestates.init()
+		ON_LOAD_ASSETS()
+		-- gamestates.init()
 		return
 	end
 
@@ -324,26 +325,10 @@ function assets.load()
 		LOADER.newSource(SOUNDS, key, path, kind)
 	end
 	print("will load", gamestates.getState(), "with # of assets:", #LOADER.getPending())
+
 	LOADER.start(function()
-		print("loaded", state)
-		light = IMAGES.light
-
-		Gallery.load()
-		animation_set()
-
-
-		if state == "main" then
-			particle_set()
-			assets.set()
-		end
-
-		assets.init_gui_pos()
-
+		ON_LOAD_ASSETS()
 		loaded[textures_to_load] = true
-
-		gamestates.init()
-
-		FINISHED_LOADING = true
 	end)
 end
 

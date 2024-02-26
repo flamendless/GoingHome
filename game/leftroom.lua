@@ -183,11 +183,11 @@ function left_room_update(dt)
 
 		if AMMO_AVAILABLE == true then
 			--route 1
-			ending_animate = true
+			ENDING_ANIMATE = true
 			shoot_pose_animate = true
 		else
 			--route 2
-			ending_animate = true
+			ENDING_ANIMATE = true
 			leave_animate = true
 		end
 
@@ -212,7 +212,7 @@ function left_room_update(dt)
 			end
 			if event_route == leave_convo then
 				if (event_route[c+1] == "S-stop! Leave me alone!") then
-					ending_animate = false
+					ENDING_ANIMATE = false
 				elseif event_route[c] == "" then
 					f_leave2_flag = true
 					lr_event = 5
@@ -226,11 +226,11 @@ function left_room_update(dt)
 				end
 			elseif event_route == wait_convo then
 				if event_route[c-1] == 	"could be with her!" then
-					ending_animate = true
+					ENDING_ANIMATE = true
 					wait_animate = true
 					shoot_pose_animate = false
 				elseif event_route[c] == "Are you listening to me!" then
-					ending_animate = true
+					ENDING_ANIMATE = true
 					wait_animate = false
 					leave_animate = true
 					f_leave2_flag = true
@@ -239,7 +239,7 @@ function left_room_update(dt)
 						SOUNDS.enemy_scream:play()
 						SOUNDS.enemy_scream:setLooping(false)
 						leave_scream = true
-						ending_animate = false
+						ENDING_ANIMATE = false
 						leave_animate = false
 						lr_event = 5
 					end
@@ -249,7 +249,7 @@ function left_room_update(dt)
 	elseif lr_event == 5 then
 		if event_route == leave_convo then
 			basement_lock = false
-			ending_leave = true
+			ENDING_LEAVE = true
 			ending_leave_event = 1
 		elseif event_route == him_convo then
 			basement_lock = false
@@ -263,7 +263,7 @@ function left_room_update(dt)
 					SOUNDS.enemy_scream:setLooping(false)
 					lr_event = 6
 					MOVE = true
-					ending_animate = false
+					ENDING_ANIMATE = false
 
 					--insert note
 					local note_item = Interact(false,{"It's a note","It's written using blood","Read it?"},{"Yes","No"},"","note")

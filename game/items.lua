@@ -14,7 +14,7 @@ function Items:draw()
 	if not self.visible then return end
 	if currentRoom ~= self.room then return end
 
-	if ending_leave == false then
+	if ENDING_LEAVE == false then
 		love.graphics.setColor(1, 1, 1, 1)
 		if currentRoom == self.room then
 			love.graphics.draw(self.image, self.x, self.y)
@@ -383,7 +383,7 @@ function Items:checkFunction()
 							SOUNDS.reload:play()
 							SOUNDS.reload:setLooping(false)
 							o:special_text("", "You've loaded the ammo")
-							ending_animate = true
+							ENDING_ANIMATE = true
 							reload_animate = true
 							ammo_picked = true
 						else

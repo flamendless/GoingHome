@@ -111,7 +111,7 @@ function animation_set()
 		reload_anim = Anim8.newAnimation(_reload("1-4", 1), 0.3, function()
 			reload_anim:pauseAtStart()
 			reload_animate = false
-			ending_animate = false
+			ENDING_ANIMATE = false
 		end)
 
 		local _leave = Anim8.newGrid(8, 16, IMAGES.leave_sheet:getDimensions())

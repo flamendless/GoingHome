@@ -1,5 +1,7 @@
 gamestates = {}
 
+local GAMEOVER_FLAG = 0
+
 about = false
 options = false
 questions = false
@@ -34,7 +36,6 @@ ClockPuzzle.state = false
 
 move_chair = false
 
-pushing_anim = false
 chair_final = false
 final_flashback = false
 random_breathe_flag = true
@@ -58,13 +59,11 @@ light_refilled = false
 AMMO_AVAILABLE = false
 ammo_picked = false
 ending = false
-ending_animate = false
 shoot_pose_animate = false
 reload_animate = false
 bullet_fired = false
 leave_animate = false
 basement_lock = true
-ending_leave = false
 ending_leave_event = 0
 player_color = false
 
@@ -193,7 +192,7 @@ end
 
 function gamestates.load()
 	tutorial_timer = 5
-	go_flag = 0
+	GAMEOVER_FLAG = 0
 	mid_dial = 0
 
 	RANDOM_BREATHE = true
@@ -259,8 +258,6 @@ function gamestates.init()
 		SOUNDS.enemy_scream:setLooping(false)
 		SOUNDS.intro_soft:stop()
 	elseif state == "main" then
-		RESET_STATES()
-
 		Pause.init()
 		SOUNDS.fl_toggle:setLooping(false)
 		SOUNDS.fl_toggle:setVolume(1)
@@ -296,7 +293,7 @@ function gamestates.update(dt)
 	if currentRoom == IMAGES["leftRoom"] or
 		currentRoom == IMAGES["rightRoom"] or
 		currentRoom == IMAGES["basementRoom"] or
-		ending_leave == true then
+		ENDING_LEAVE == true then
 		ENEMY_EXISTS = false
 	end
 
@@ -428,7 +425,7 @@ function gamestates.update(dt)
 			PLAYER:movement(dt)
 		end
 
-		if ending_leave == true then
+		if ENDING_LEAVE == true then
 			if currentRoom ~= IMAGES["leftRoom"] then
 				leave_event_update(dt)
 			end
@@ -461,7 +458,7 @@ function gamestates.update(dt)
 					currentRoom ~= IMAGES["secretRoom"] and
 					currentRoom ~= IMAGES["atticRoom"] and
 					currentRoom ~= IMAGES["endRoom"] and
-					ending_leave ~= true then
+					ENDING_LEAVE ~= true then
 					SOUNDS.lightning:setVolume(lightningVol)
 					if not SOUNDS.lightning:isPlaying() == true then
 						SOUNDS.lightning:play()
@@ -481,7 +478,7 @@ function gamestates.update(dt)
 			end
 		end
 
-		if ending_leave == true then
+		if ENDING_LEAVE == true then
 			SOUNDS.rain:stop()
 		end
 
@@ -626,16 +623,16 @@ function gamestates.update(dt)
 		end
 
 		if GAMEOVER == true then
-			if go_flag == 0 then
-				go_flag = 1
+			if GAMEOVER_FLAG == 0 then
+				GAMEOVER_FLAG = 1
 			end
 			GameOver.update(dt)
 		end
 
-		if go_flag == 1 then
+		if GAMEOVER_FLAG == 1 then
 			MOVE = false
 			GameOver.load()
-			go_flag = -1
+			GAMEOVER_FLAG = -1
 		end
 
 
@@ -645,7 +642,7 @@ function gamestates.update(dt)
 		end
 
 		if MRCHAIR.exists == false then
-			pushing_anim = false
+			PUSHING_ANIM = false
 		end
 
 		if candles_light_flag == true then
@@ -1018,14 +1015,14 @@ function gamestates.draw()
 
 		love.graphics.setColor(1, 1, 1, 1)
 		local bgw, bgh = IMAGES.bg:getDimensions()
-		if ending_leave == false then
+		if ENDING_LEAVE == false then
 			love.graphics.draw(currentRoom, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
 		else
 			love.graphics.draw(newRoom, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
 		end
 
 		if currentRoom == IMAGES["mainRoom"] then
-			if ending_leave == false then
+			if ENDING_LEAVE == false then
 				love.graphics.setColor(1, 1, 1, 1)
 				win_left_anim:draw(IMAGES.window_left, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
 				win_right_anim:draw(IMAGES.window_right, WIDTH_HALF - bgw / 2, HEIGHT_HALF - bgh / 2)
@@ -1044,7 +1041,7 @@ function gamestates.draw()
 			v:draw()
 		end
 
-		if ending_leave == false then
+		if ENDING_LEAVE == false then
 			PLAYER:checkGlow()
 		end
 
@@ -1159,7 +1156,7 @@ function gamestates.draw()
 			rightroom_draw()
 		end
 
-		if ending_leave == true then
+		if ENDING_LEAVE == true then
 			if currentRoom ~= IMAGES["leftRoom"] then
 				leave_event_draw()
 			end
