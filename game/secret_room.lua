@@ -149,7 +149,7 @@ function SCENES.secretRoom_update(dt)
 		if dust_trigger == true then
 			particle_update(dt)
 		end
-		if corpse_trigger == true then
+		if CORPSE_TRIGGER == true then
 			corpse_fall_anim:update(dt)
 		end
 	end

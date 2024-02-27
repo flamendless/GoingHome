@@ -41,7 +41,7 @@ function SaveData.load()
 			SaveData.data[k] = v
 		end
 	end
-	SaveData.get_opts()
+	local _ = SaveData.get_opts()
 
 	if SaveData.data.door_locked == false then
 		DOOR_LOCKED = false

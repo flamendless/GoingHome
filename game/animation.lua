@@ -252,7 +252,7 @@ function animation_set()
 			SOUNDS.body_fall:play()
 			SOUNDS.body_fall:setLooping(false)
 			corpse_fall_anim:pauseAtEnd()
-			corpse_trigger = false
+			CORPSE_TRIGGER = false
 			local corpse = Items(IMAGES.corpse, IMAGES["secretRoom"], 90, 40, "corpse")
 			table.insert(ITEMS_LIST, corpse)
 

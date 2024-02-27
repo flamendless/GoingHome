@@ -181,7 +181,7 @@ function Items:checkFunction()
 							--body falls with rats and dust
 							dust_trigger = true
 							attic_trigger = true
-							corpse_trigger = true
+							CORPSE_TRIGGER = true
 
 							table.remove(ITEMS_LIST, k)
 							local ladder = Items(IMAGES.ladder, IMAGES["secretRoom"], 78, 20, "ladder")

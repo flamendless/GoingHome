@@ -1050,7 +1050,7 @@ function gamestates.draw()
 				love.graphics.setColor(1, 1, 1, 1)
 				tv_anim:draw(IMAGES.tv_anim, 113, 27)
 			end
-			if corpse_trigger == true then
+			if CORPSE_TRIGGER == true then
 				love.graphics.setColor(1, 1, 1, 1)
 				corpse_fall_anim:draw(IMAGES.corpse_anim, 90, 20)
 			end
@@ -1398,17 +1398,18 @@ function triggerTxt(dt)
 end
 
 function triggerTxt_draw()
-	local as = "What was that?!"
-	local as2 = "I have to find them quick!"
 	if tt_draw == true then
 		if t == 1 then
 			love.graphics.print(tt_txt, WIDTH_HALF - DEF_FONT:getWidth(tt_txt) / 2, 0 + DEF_FONT_HEIGHT / 4)
 			love.graphics.print(tt_txt2, WIDTH_HALF - DEF_FONT:getWidth(tt_txt2) / 2, HEIGHT - DEF_FONT_HEIGHT)
 		elseif t == 2 then
-			love.graphics.print("", WIDTH_HALF - DEF_FONT:getWidth(" ") / 2, 0 + DEF_FONT_HEIGHT / 4)
-			love.graphics.print("", WIDTH_HALF - DEF_FONT:getWidth(" ") / 2, HEIGHT - DEF_FONT_HEIGHT)
+			local fw = DEF_FONT:getWidth(" ") / 2
+			love.graphics.print("", WIDTH_HALF - fw, 0 + DEF_FONT_HEIGHT / 4)
+			love.graphics.print("", WIDTH_HALF - fw, HEIGHT - DEF_FONT_HEIGHT)
 		elseif t == 3 then
 			if SOUNDS.enemy_scream:isPlaying() == false then
+				local as = "What was that?!"
+				local as2 = "I have to find them quick!"
 				love.graphics.print(as, WIDTH_HALF - DEF_FONT:getWidth(as) / 2, 0 + DEF_FONT_HEIGHT / 4)
 				love.graphics.print(as2, WIDTH_HALF - DEF_FONT:getWidth(as2) / 2, HEIGHT - DEF_FONT_HEIGHT)
 			end

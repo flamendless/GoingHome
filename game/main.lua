@@ -2,8 +2,8 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.55"
-local MOBILE_VERSION = "3"
+local VERSION = "v1.0.56"
+local MOBILE_VERSION = "4"
 PRO_VERSION = true
 DEBUGGING = false
 
@@ -913,6 +913,7 @@ function RESET_STATES()
 	end
 
 	ON_LOAD_ASSETS()
+	SaveData.load()
 end
 
 function ON_LOAD_ASSETS()
