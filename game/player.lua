@@ -439,7 +439,7 @@ function Player:checkItems()
 					v:specialTag()
 				end
 			else
-				if (v.tag == "chair" or v.tag == "chair_final") and v.visible then
+				if v.visible and (v.tag == "chair" or v.tag == "chair_final") then
 					if event_find == false then
 						if DOOR_LOCKED == false then
 							v:returnTag()

@@ -3,6 +3,7 @@ local shout_count = 1
 local done = false
 local shout_again = false
 local stop_walk = false
+
 mother_gone = false
 
 father_animation_count = 1
@@ -23,7 +24,6 @@ function animation_set()
 			--states = "title"
 			SPLASH_FINISHED = true
 		end)
-
 	elseif state == "intro" or state == "rain_intro" then
 		--moving car
 		local _car = Anim8.newGrid(32, 48, IMAGES.car_moving:getDimensions())
@@ -40,7 +40,6 @@ function animation_set()
 		--in house
 		local _ih = Anim8.newGrid(128, 32, IMAGES.in_house:getDimensions())
 		ih_anim = Anim8.newAnimation(_ih("1-10", 1), 0.1, "pauseAtEnd")
-
 	elseif state == "main" then
 		--window left
 		local curtain_dur = 0.3
@@ -253,12 +252,28 @@ function animation_set()
 			SOUNDS.body_fall:setLooping(false)
 			corpse_fall_anim:pauseAtEnd()
 			CORPSE_TRIGGER = false
+
+			for i = #ITEMS_LIST, 1, -1 do
+				if ITEMS_LIST[i].tag == "corpse" then
+					table.remove(ITEMS_LIST, i)
+				end
+			end
+			for i = #DIALOGUES, 1, -1 do
+				if DIALOGUES[i].tag == "corpse" then
+					table.remove(DIALOGUES, i)
+				end
+			end
+
 			local corpse = Items(IMAGES.corpse, IMAGES["secretRoom"], 90, 40, "corpse")
 			table.insert(ITEMS_LIST, corpse)
 
-			local corpse_dial = Interact(false,
-				{ "A corpse!?", "What?!...", "Why is there a corpse here!?...", "Touch it?" }, { "Yes", "No" },
-				"It's not responding", "corpse")
+			local corpse_dial = Interact(
+				false,
+				{ "A corpse!?", "What?!...", "Why is there a corpse here!?...", "Touch it?" },
+				{ "Yes", "No" },
+				"It's not responding",
+				"corpse"
+			)
 			table.insert(DIALOGUES, corpse_dial)
 		end)
 

@@ -27,6 +27,7 @@ bed_trigger = 0
 tv_light_flag = false
 rope_trigger = 0
 attic_trigger = false
+dust_trigger = false
 chest_open = false
 crowbar_broken = false
 
@@ -201,7 +202,6 @@ function gamestates.load()
 	instruction = false
 	doors_locked = true
 	action_flag = 0
-	tt_update = false
 
 	intro_count = 1
 	intro_timer = 2.5
@@ -515,7 +515,7 @@ function gamestates.update(dt)
 				love.graphics.setCanvas(CANVAS_CUSTOM_MASK)
 				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 				love.graphics.setBlendMode("multiply", "premultiplied")
-				love.graphics.draw(light, LIGHTX, LIGHTY)
+				love.graphics.draw(TEX_LIGHT, LIGHTX, LIGHTY)
 				love.graphics.setBlendMode("alpha")
 				love.graphics.setCanvas()
 			end
@@ -553,9 +553,9 @@ function gamestates.update(dt)
 			if action_flag == 1 then
 				action_flag = -1
 				MOVE = false
-				tt_update = true
+				TT_UPDATE = true
 			end
-			if tt_update == true then
+			if TT_UPDATE == true then
 				triggerTxt(dt)
 			end
 		elseif currentRoom == IMAGES["leftRoom"] then
@@ -607,18 +607,18 @@ function gamestates.update(dt)
 		if event_trigger_light ~= -1 then
 			if LIGHT_ON == true then
 				if BLINK == true then
-					light = IMAGES.light2
+					TEX_LIGHT = IMAGES.light2
 				else
-					light = IMAGES.light
+					TEX_LIGHT = IMAGES.light
 				end
 			elseif LIGHT_ON == false then
-				light = IMAGES.light2
+				TEX_LIGHT = IMAGES.light2
 			end
 		else
 			if LIGHT_ON == true then
-				light = IMAGES.light_small
+				TEX_LIGHT = IMAGES.light_small
 			elseif LIGHT_ON == false then
-				light = IMAGES.light2
+				TEX_LIGHT = IMAGES.light2
 			end
 		end
 
@@ -654,7 +654,7 @@ function gamestates.update(dt)
 				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 				love.graphics.setBlendMode("multiply", "premultiplied")
 				love.graphics.draw(IMAGES.candles_light_mask, cx, cy)
-				love.graphics.draw(light, LIGHTX, LIGHTY)
+				love.graphics.draw(TEX_LIGHT, LIGHTX, LIGHTY)
 				love.graphics.setBlendMode("alpha")
 				love.graphics.setCanvas()
 			end
@@ -1173,7 +1173,7 @@ function gamestates.draw()
 		end
 
 		--trigger txt
-		if tt_draw == true then
+		if TT_DRAW == true then
 			triggerTxt_draw()
 		end
 	end
@@ -1325,7 +1325,7 @@ function light_etc(dt, img_table, img_var, canvas)
 		local lx, ly = Android.get_light_pos()
 		love.graphics.draw(mainLight, lx, ly)
 	elseif not ON_MOBILE and (not DEBUGGING) then
-		love.graphics.draw(light, LIGHTX, LIGHTY)
+		love.graphics.draw(TEX_LIGHT, LIGHTX, LIGHTY)
 	end
 	love.graphics.setBlendMode("alpha")
 	love.graphics.setCanvas()
@@ -1376,7 +1376,7 @@ function triggerTxt(dt)
 
 	if _alarm > 0 then
 		_alarm = _alarm - 1 * dt
-		tt_draw = true
+		TT_DRAW = true
 	elseif _alarm <= 0 then
 		if t == 1 then
 			_alarm = 2
@@ -1391,14 +1391,14 @@ function triggerTxt(dt)
 			SOUNDS.enemy_scream:setLooping(false)
 		elseif t == 3 then
 			MOVE = true
-			tt_update = false
-			tt_draw = false
+			TT_UPDATE = false
+			TT_DRAW = false
 		end
 	end
 end
 
 function triggerTxt_draw()
-	if tt_draw == true then
+	if TT_DRAW == true then
 		if t == 1 then
 			love.graphics.print(tt_txt, WIDTH_HALF - DEF_FONT:getWidth(tt_txt) / 2, 0 + DEF_FONT_HEIGHT / 4)
 			love.graphics.print(tt_txt2, WIDTH_HALF - DEF_FONT:getWidth(tt_txt2) / 2, HEIGHT - DEF_FONT_HEIGHT)

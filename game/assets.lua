@@ -333,12 +333,8 @@ function assets.load()
 end
 
 function assets.set()
-	for i, _ in ipairs(ITEMS_LIST) do
-		ITEMS_LIST[i] = nil
-	end
-	for i, _ in ipairs(DIALOGUES) do
-		DIALOGUES[i] = nil
-	end
+	ITEMS_LIST = {}
+	DIALOGUES = {}
 
 	assets.item_set()
 	assets.dialogue_set()

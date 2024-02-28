@@ -1,8 +1,8 @@
 local Items = Object:extend()
 
 function Items:new(image, room, x, y, tag)
-	self.x = x -- w/2
-	self.y = y -- h/2
+	self.x = x
+	self.y = y
 	self.image = image
 	self.w, self.h = self.image:getDimensions()
 	self.room = room

@@ -2,6 +2,9 @@ local timer = 2
 
 function particle_set()
 	local img = IMAGES.dust
+	if not img then
+		return
+	end
 
 	PSYSTEM = love.graphics.newParticleSystem(img, 10)
 	PSYSTEM:setParticleLifetime(2, 5) -- Particles live at least 2s and at most 5s.

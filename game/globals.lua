@@ -81,6 +81,8 @@ ENDING_LEAVE = false
 PUSHING_ANIM = false
 ENDING_ANIMATE = false
 CORPSE_TRIGGER = false
+TT_UPDATE = false
+TT_DRAW = false
 
 
 ITEMS_LIST = {}

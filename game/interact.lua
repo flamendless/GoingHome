@@ -102,6 +102,10 @@ function Interact:update(dt)
 		end
 	end
 
+	if ON_MOBILE and Android and not self.specialTxt then
+		Android.set_hidden(false)
+	end
+
 	if self._door == true then
 		self.timer = self.timer - 1 * dt
 		if self.timer <= 0 then
@@ -228,6 +232,10 @@ function Interact:special_text(str1, str2)
 	self.sp_1 = str1
 	self.sp_2 = str2
 	self.sp_2_show = false
+
+	if ON_MOBILE and Android then
+		Android.set_hidden(true)
+	end
 end
 
 function Interact:checkItem()

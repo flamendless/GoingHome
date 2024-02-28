@@ -77,7 +77,7 @@ function pause.mousepressed(mx, my, mb)
 		else
 			pause.sound("on")
 		end
-	else
+	elseif Android then
 		local gSettingsBack = Android.getgui("settings_back")
 		local gQuit = Android.getgui("quit")
 		if check_gui(gSettingsBack.x, gSettingsBack.y, gSettingsBack.w, gSettingsBack.h) then

@@ -202,7 +202,6 @@ function SCENES.secretRoom_update(dt)
 			for _, m in ipairs(hide) do
 				if v.tag == m then
 					v.visible = false
-					break
 				end
 			end
 		end
@@ -287,7 +286,6 @@ function SCENES.secretRoom_update(dt)
 				for _, m in ipairs(hide) do
 					if v.tag == m then
 						v.visible = true
-						break
 					end
 				end
 			end
@@ -329,10 +327,8 @@ function SCENES.secretRoom_update(dt)
 		GHOST_EVENT = "finished"
 		tv_light_flag = true
 
-		--remove corpse
 		for _, v in ipairs(ITEMS_LIST) do
 			if v.tag == "corpse" then
-				--table.remove(obj,k)
 				v.visible = false
 			elseif v.tag == "st_hole" then
 				v.visible = false
@@ -343,23 +339,14 @@ function SCENES.secretRoom_update(dt)
 	elseif GHOST_EVENT == "finished" then
 		PLAYER.state = "normal"
 		flashback_epic = false
-
-		-- for i, v in ipairs(obj) do
-		-- 	if v.tag == "head" then
-		-- 		table.remove(obj, i)
-		-- 		break
-		-- 	end
-		-- end
-		-- local holes = Items(images.st_hole,images["stairRoom"], 80, 22, "hole")
-		-- table.insert(obj, holes)
 	end
-	--tv illum
+
 	if tv_light_flag == true then
 		love.graphics.setCanvas(CANVAS_TV_FLASH)
 		love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 		love.graphics.setBlendMode("multiply", "premultiplied")
 		love.graphics.draw(IMAGES.tv_light, 104, 11)
-		love.graphics.draw(light, LIGHTX, LIGHTY)
+		love.graphics.draw(TEX_LIGHT, LIGHTX, LIGHTY)
 		love.graphics.setBlendMode("alpha")
 		love.graphics.setCanvas()
 		tv_anim:update(dt)

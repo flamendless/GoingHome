@@ -1,5 +1,7 @@
 local android = {}
 
+local hidden = false
+
 local androidKey
 local leftHold, rightHold = false, false
 -- androidInteract = false
@@ -137,36 +139,37 @@ end
 
 function android.draw()
 	local state = gamestates.getState()
-	if (not GAMEOVER) and (state == "main") then
+	if GAMEOVER or hidden or state ~= "main" then
+		return
+	end
+
+	love.graphics.setColor(1, 1, 1, 1)
+	if MOVE == true or doodle_flag == true then
+		love.graphics.draw(IMAGES.gui_left, gLeft.x, gLeft.y)
+		love.graphics.draw(IMAGES.gui_right, gRight.x, gRight.y)
+		love.graphics.draw(IMAGES.gui_light, gLight.x, gLight.y)
+		love.graphics.draw(IMAGES.gui_act, gAct.x, gAct.y)
+		love.graphics.draw(IMAGES.gui_settings, gSettings.x, gSettings.y)
+	else
+		love.graphics.setColor(1, 1, 1, 50 / 255)
+		love.graphics.draw(IMAGES.gui_left, gLeft.x, gLeft.y)
+		love.graphics.draw(IMAGES.gui_right, gRight.x, gRight.y)
+		love.graphics.draw(IMAGES.gui_act, gAct.x, gAct.y)
+	end
+	if word_puzzle then
+		love.graphics.draw(IMAGES.gui_esc, gEsc.x, gEsc.y)
+	end
+	if ClockPuzzle.state == true then
 		love.graphics.setColor(1, 1, 1, 1)
-		--android.light_draw()
-		if MOVE == true or doodle_flag == true then
-			love.graphics.draw(IMAGES.gui_left, gLeft.x, gLeft.y)
-			love.graphics.draw(IMAGES.gui_right, gRight.x, gRight.y)
-			love.graphics.draw(IMAGES.gui_light, gLight.x, gLight.y)
-			love.graphics.draw(IMAGES.gui_act, gAct.x, gAct.y)
-			love.graphics.draw(IMAGES.gui_settings, gSettings.x, gSettings.y)
-		else
-			love.graphics.setColor(1, 1, 1, 50 / 255)
-			love.graphics.draw(IMAGES.gui_left, gLeft.x, gLeft.y)
-			love.graphics.draw(IMAGES.gui_right, gRight.x, gRight.y)
-			love.graphics.draw(IMAGES.gui_act, gAct.x, gAct.y)
-		end
-		if word_puzzle then
-			love.graphics.draw(IMAGES.gui_esc, gEsc.x, gEsc.y)
-		end
-		if ClockPuzzle.state == true then
-			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(IMAGES.gui_left, gLeft2.x, gLeft2.y)
-			love.graphics.draw(IMAGES.gui_right, gRight2.x, gRight2.y)
-			love.graphics.draw(IMAGES.gui_up, gUp.x, gUp.y)
-			love.graphics.draw(IMAGES.gui_down, gDown.x, gDown.y)
-			love.graphics.draw(IMAGES.gui_enter, gEnter.x, gEnter.y)
-			love.graphics.draw(IMAGES.gui_esc, gEsc.x, gEsc.y)
-		end
-		if doodle_flag == true then
-			love.graphics.draw(IMAGES.gui_esc, gEsc.x, gEsc.y)
-		end
+		love.graphics.draw(IMAGES.gui_left, gLeft2.x, gLeft2.y)
+		love.graphics.draw(IMAGES.gui_right, gRight2.x, gRight2.y)
+		love.graphics.draw(IMAGES.gui_up, gUp.x, gUp.y)
+		love.graphics.draw(IMAGES.gui_down, gDown.x, gDown.y)
+		love.graphics.draw(IMAGES.gui_enter, gEnter.x, gEnter.y)
+		love.graphics.draw(IMAGES.gui_esc, gEsc.x, gEsc.y)
+	end
+	if doodle_flag == true then
+		love.graphics.draw(IMAGES.gui_esc, gEsc.x, gEsc.y)
 	end
 end
 
@@ -343,9 +346,9 @@ function android.getKey() return androidKey end
 
 function android.light_update(dt)
 	if changed == false then
-		if light == IMAGES.light then
+		if TEX_LIGHT == IMAGES.light then
 			mainLight = IMAGES.lightOutline
-		elseif light == IMAGES.light2 then
+		elseif TEX_LIGHT == IMAGES.light2 then
 			mainLight = IMAGES.light2
 		end
 	else
@@ -441,6 +444,10 @@ function android.mouse_gui(x, y, button, istouch)
 			end
 		end
 	end
+end
+
+function android.set_hidden(bool)
+	hidden = bool
 end
 
 return android

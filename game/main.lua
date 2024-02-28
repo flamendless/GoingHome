@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.56"
+local VERSION = "v1.0.58"
 local MOBILE_VERSION = "4"
 PRO_VERSION = true
 DEBUGGING = false
@@ -557,21 +557,13 @@ function love.keyreleased(key)
 end
 
 function love.keypressed(key)
-	-- if key == "f9" then recording = not recording end
+	-- if key == "g" then RESET_STATES() end
+
 	if not FINISHED_LOADING then return end
-	local dt = love.timer.getDelta()
 	local state = gamestates.getState()
 	if ON_MOBILE then
 		Android.setKey(key)
 	end
-
-	-- if state == "title" then
-	--  if pro_version then
-	-- 	if key == "g" then
-	-- 		gamestates.nextState("gallery")
-	-- 	end
-	--  end
-	-- end
 
 	if state == "gallery" then
 		Gallery.keypressed(key)
@@ -884,18 +876,14 @@ function RESET_STATES()
 	local ext = ".lua"
 	local ignore = {
 		admob_keys = 1,
-		animation = 1,
-		assets = 1,
 		conf = 1,
 		error = 1,
 		gallery = 1,
 		gui = 1,
-		interact = 1,
 		love_admob = 1,
 		main = 1,
 		pause = 1,
-		player = 1,
-		save_data = 1,
+		-- player = 1,
 		saved_data = 1,
 		shaders = 1,
 		urls = 1,
@@ -919,7 +907,7 @@ end
 function ON_LOAD_ASSETS()
 	local state = gamestates.getState()
 	print("loaded", state)
-	light = IMAGES.light
+	TEX_LIGHT = IMAGES.light
 
 	Gallery.load()
 	animation_set()

@@ -4,7 +4,6 @@ local timer = 10
 local timer_starts = false
 local splash = false
 local message = false
--- local alpha = 100
 
 local go_text = "The Fear Caught Up With You"
 
@@ -88,36 +87,23 @@ function game_over.draw()
 end
 
 function game_over.exit()
-	--sounds.ts_theme:play()
 	SOUNDS.rain:stop()
 	SOUNDS.main_theme:stop()
 	GAMEOVER = false
-	--return to title screen
-	--states = "title"
-	--gamestates.load()
 	if PRO_VERSION == false then
 		if ON_MOBILE then
 			ShowRewardedAds(true, function(reward_type, reward_qty)
 				print("rewardUserWithReward callback", reward_type, reward_qty)
 				gamestates.nextState("title")
-
 				RESET_STATES()
-				-- unrequire("gameStates")
-				-- require("gameStates")
 			end)
 		else
 			gamestates.nextState("title")
-			-- love.event.quit("restart")
 			RESET_STATES()
-			-- unrequire("gameStates")
-			-- require("gameStates")
 		end
 	else
 		gamestates.nextState("title")
-		-- love.event.quit("restart")
 		RESET_STATES()
-		-- unrequire("gameStates")
-		-- require("gameStates")
 	end
 end
 
