@@ -1,6 +1,6 @@
-local android = {}
-
-local hidden = false
+local android = {
+	hidden = false
+}
 
 local androidKey
 local leftHold, rightHold = false, false
@@ -139,7 +139,7 @@ end
 
 function android.draw()
 	local state = gamestates.getState()
-	if GAMEOVER or hidden or state ~= "main" then
+	if GAMEOVER or android.hidden or (state ~= "main") then
 		return
 	end
 
@@ -444,10 +444,6 @@ function android.mouse_gui(x, y, button, istouch)
 			end
 		end
 	end
-end
-
-function android.set_hidden(bool)
-	hidden = bool
 end
 
 return android

@@ -579,6 +579,13 @@ function gamestates.update(dt)
 
 		for _, v in ipairs(DIALOGUES) do
 			v:update(dt)
+			if ON_MOBILE and Android then
+				if v.simpleMessage or v.specialTxt then
+					Android.hidden = true
+				else
+					Android.hidden = false
+				end
+			end
 		end
 
 		--enemy logics

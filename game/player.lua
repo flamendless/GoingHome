@@ -410,7 +410,7 @@ function Player:checkDoors()
 			LOCKED["mainRoom_right"] = false
 			DOOR_LOCKED = false
 
-			SaveData.data.DOOR_LOCKED = DOOR_LOCKED
+			SaveData.data.door_locked = false
 			SaveData.save()
 
 			for _, v in ipairs(DIALOGUES) do
