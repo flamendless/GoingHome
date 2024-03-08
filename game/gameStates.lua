@@ -258,6 +258,7 @@ function gamestates.init()
 		SOUNDS.enemy_scream:setLooping(false)
 		SOUNDS.intro_soft:stop()
 	elseif state == "main" then
+		SaveData.load()
 		Pause.init()
 		SOUNDS.fl_toggle:setLooping(false)
 		SOUNDS.fl_toggle:setVolume(1)

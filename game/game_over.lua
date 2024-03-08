@@ -90,6 +90,7 @@ function game_over.exit()
 	SOUNDS.rain:stop()
 	SOUNDS.main_theme:stop()
 	GAMEOVER = false
+	SaveData.save()
 	if PRO_VERSION == false then
 		if ON_MOBILE then
 			ShowRewardedAds(true, function(reward_type, reward_qty)
