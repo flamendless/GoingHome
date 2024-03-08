@@ -45,6 +45,7 @@ function SaveData.load()
 
 	if SaveData.data.door_locked == false then
 		DOOR_LOCKED = false
+		LOCKED["mainRoom_right"] = false
 	end
 	print("SaveData loaded")
 end
