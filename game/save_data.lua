@@ -43,8 +43,9 @@ function SaveData.load()
 	end
 	local _ = SaveData.get_opts()
 
-	if SaveData.data.door_locked ~= nil then
-		DOOR_LOCKED = SaveData.data.door_locked
+	if SaveData.data.door_locked == false then
+		DOOR_LOCKED = false
+		LOCKED["mainRoom_right"] = false
 	end
 	print("SaveData loaded")
 end
