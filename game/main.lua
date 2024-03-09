@@ -2,8 +2,8 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.62"
-local MOBILE_VERSION = "5"
+local VERSION = "v1.0.63"
+local MOBILE_VERSION = "6"
 PRO_VERSION = true
 DEBUGGING = false
 
@@ -343,7 +343,7 @@ function love.mousepressed(x, y, button, istouch)
 						love.event.quit()
 					end
 				elseif check_gui(gui_pos.webx, gui_pos.weby, gui_pos.webw, gui_pos.webh) then
-					if ON_MOBILE then
+					if ON_MOBILE and LoveAdmob then
 						if LoveAdmob.isInterstitialLoaded() == true then
 							LoveAdmob.showInterstitial()
 						end
