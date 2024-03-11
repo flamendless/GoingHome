@@ -1,7 +1,10 @@
 local timer = 2
 
 function particle_set()
-	local img = Images.dust
+	local img = IMAGES.dust
+	if not img then
+		return
+	end
 
 	PSYSTEM = love.graphics.newParticleSystem(img, 10)
 	PSYSTEM:setParticleLifetime(2, 5) -- Particles live at least 2s and at most 5s.
@@ -17,7 +20,7 @@ end
 function particle_draw()
 	-- Draw the particle system at the center of the game window.
 
-	if ghost_event == "fall down" then
+	if GHOST_EVENT == "fall down" then
 		love.graphics.draw(PSYSTEM,20,19)
 	else love.graphics.draw(PSYSTEM, 90,19) end
 end
@@ -34,15 +37,15 @@ function particle_update(dt)
 		end
 	end
 
-	if ghost_event == "fall down" then
+	if GHOST_EVENT == "fall down" then
 		if timer > 0 then
 			timer = timer - 1 * dt
 		end
 		if timer <= 0 then
 			--fade.state = true
-			ghost_event = "lying down"
-			Sounds.body_fall:play()
-			Sounds.body_fall:setLooping(false)
+			GHOST_EVENT = "lying down"
+			SOUNDS.body_fall:play()
+			SOUNDS.body_fall:setLooping(false)
 		end
 	end
 end

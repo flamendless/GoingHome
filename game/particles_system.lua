@@ -2,7 +2,7 @@ ParticleSystem = {}
 
 function ParticleSystem:init()
 	PSYSTEM = {}
-	PSYSTEM.rain = love.graphics.newParticleSystem(Images.rain,1000)
+	PSYSTEM.rain = love.graphics.newParticleSystem(IMAGES.rain,1000)
 	PSYSTEM.rain:setParticleLifetime(1,3)
 	PSYSTEM.rain:setEmissionRate(1000)
 	PSYSTEM.rain:setSizeVariation(1)

@@ -53,6 +53,7 @@
 ## Special thanks to the following:
 * **Ian Plaus** - Beta tester
 * **Conrad Reyes** - Pixel artist
+* **Kurt Russell De Asis** - Android QA tester
 
 
 

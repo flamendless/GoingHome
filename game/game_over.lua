@@ -1,30 +1,24 @@
-game_over = {}
+local game_over = {}
 
 local timer = 10
 local timer_starts = false
 local splash = false
--- local alpha = 100
+local message = false
 
 local go_text = "The Fear Caught Up With You"
 
 function game_over.load()
-
 	timer_starts = true
-
-	Sounds.main_theme:stop()
-	Sounds.rain:stop()
-	Sounds.thunder:stop()
-
-	Sounds.enemy_scream:play()
-
+	SOUNDS.main_theme:stop()
+	SOUNDS.rain:stop()
+	SOUNDS.thunder:stop()
+	SOUNDS.enemy_scream:play()
 	LIGHT_ON = false
-
-	player.dead = true
+	PLAYER.dead = true
 end
 
 function game_over.update(dt)
-
-	enemy_exists = false
+	ENEMY_EXISTS = false
 	game_over.init(dt)
 
 	if timer_starts == true then
@@ -35,13 +29,12 @@ function game_over.update(dt)
 		end
 	end
 
-	lightX = player.x - Images.light:getWidth()/2 + 4
-	lightY =  player.y - Images.light:getHeight()/2 + 4
-
-
+	local lw, lh = IMAGES.light:getDimensions()
+	LIGHTX = PLAYER.x - lw + 4
+	LIGHTY =  PLAYER.y - lh + 4
 
 	if timer >= 8 and timer <= 9 then
-		player.img = Images.player_idle
+		PLAYER.img = IMAGES.player_idle
 		LIGHT_ON = true
 
 	end
@@ -50,7 +43,7 @@ function game_over.update(dt)
 	end
 	--
 	if timer >= 6 and timer <= 7 then
-		player.img = Images.player_red_eyes
+		PLAYER.img = IMAGES.player_red_eyes
 		LIGHT_ON = true
 	end
 	if timer >= 5 and timer <= 6 then
@@ -58,7 +51,7 @@ function game_over.update(dt)
 	end
 	--
 	if timer >= 3 and timer <= 4 then
-		player.img = Images.player_eyes_bleed
+		PLAYER.img = IMAGES.player_eyes_bleed
 		LIGHT_ON = true
 	end
 	if timer >= 2 and timer <= 3 then
@@ -66,7 +59,7 @@ function game_over.update(dt)
 	end
 	--
 	if timer >= 1 and timer <= 1.2 then
-		player.img = Images.player_dead
+		PLAYER.img = IMAGES.player_dead
 		LIGHT_ON = true
 	end
 	if timer >= 0.5 and timer <= 0.9 then
@@ -94,48 +87,40 @@ function game_over.draw()
 end
 
 function game_over.exit()
-	--sounds.ts_theme:play()
-	Sounds.rain:stop()
-	Sounds.main_theme:stop()
-	gameover = false
-	--return to title screen
-	--states = "title"
-	--gamestates.load()
-	if pro_version == false then
-		if OS == "Android" then
-			if love.system.isInterstitialLoaded() == true then
-				love.system.showInterstitial()
-				love.event.quit("restart")
-			else
-				love.event.quit("restart")
-			end
+	SOUNDS.rain:stop()
+	SOUNDS.main_theme:stop()
+	GAMEOVER = false
+	SaveData.save()
+	if PRO_VERSION == false then
+		if ON_MOBILE then
+			ShowRewardedAds(true, function(reward_type, reward_qty)
+				print("rewardUserWithReward callback", reward_type, reward_qty)
+				gamestates.nextState("title")
+				RESET_STATES()
+			end)
 		else
-			love.event.quit("restart")
+			gamestates.nextState("title")
+			RESET_STATES()
 		end
 	else
-		love.event.quit("restart")
+		gamestates.nextState("title")
+		RESET_STATES()
 	end
 end
 
 function game_over.init(dt)
-	local vol = Sounds.rain:getVolume()
+	local vol = SOUNDS.rain:getVolume()
 	if vol > 0 then
 		vol = vol - 0.025 * dt
-		Sounds.rain:setVolume(vol)
-		Sounds.main_theme:setVolume(vol)
+		SOUNDS.rain:setVolume(vol)
+		SOUNDS.main_theme:setVolume(vol)
 	elseif vol <= 0 then
-		Sounds.rain:stop()
-		Sounds.main_theme:stop()
+		SOUNDS.rain:stop()
+		SOUNDS.main_theme:stop()
 	end
 
-	Sounds.thunder:stop()
-	random_breathe = false
-
+	SOUNDS.thunder:stop()
+	RANDOM_BREATHE = false
 end
 
-function unrequire(m)
-  package.loaded[m] = nil
-  _G[m] = nil
-  require(m)
-end
-
+return game_over

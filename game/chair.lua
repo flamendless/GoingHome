@@ -1,10 +1,12 @@
 local Chair = Object:extend()
 
 function Chair:new()
-	self.img = Images.store_chair
+	self.img = IMAGES.store_chair
 	self.x, self.y = 37,34
-	self.w = self.img:getWidth()
-	self.img_glow = Images.store_chair_glow
+	if self.img then
+		self.w = self.img:getWidth()
+		self.img_glow = IMAGES.store_chair_glow
+	end
 	self.glow = false
 	self.push = 0
 	self.vspeed = 10
@@ -12,96 +14,95 @@ function Chair:new()
 end
 
 function Chair:update(dt)
-
 	if self.x < 16 then
 		self.x = 16
 	end
 
 	self.glow = false
-	
-	if player.x + player.w < self.x + 2 and player.x + player.w > self.x then
-		if player.dir == 1 then
+
+	if PLAYER.x + PLAYER.w < self.x + 2 and PLAYER.x + PLAYER.w > self.x then
+		if PLAYER.dir == 1 then
 			self.glow = true
 			self.push = 1
 		end
-	elseif player.x > self.x + self.w - 2 and player.x < self.x + self.w then
-		if player.dir == -1 then
+	elseif PLAYER.x > self.x + self.w - 2 and PLAYER.x < self.x + self.w then
+		if PLAYER.dir == -1 then
 			self.glow = true
 			self.push = -1
 		end
-	else 
+	else
 		self.push = 0
 		self.glow = false
 	end
 
-	if currentRoom == Images["storageRoom"] then
+	if currentRoom == IMAGES["storageRoom"] then
 		if self.x + self.w/2 > WIDTH/2 then
-			player:moveRoom(player.x, Images["hallwayLeft"])
+			PLAYER:moveRoom(PLAYER.x, IMAGES["hallwayLeft"])
 		end
-	elseif currentRoom == Images["hallwayLeft"] then
+	elseif currentRoom == IMAGES["hallwayLeft"] then
 		if self.x + self.w/2 > WIDTH - 16 then
-			player:moveRoom(10,Images["masterRoom"])
-			self.x = player.x + player.w
+			PLAYER:moveRoom(10,IMAGES["masterRoom"])
+			self.x = PLAYER.x + PLAYER.w
 		end
-	elseif currentRoom == Images["masterRoom"] then
+	elseif currentRoom == IMAGES["masterRoom"] then
 		if self.x + self.w/2 > WIDTH/2 - 10 then
-			player:moveRoom(player.x+10,Images["secretRoom"])
-			self.x = player.x + player.w
+			PLAYER:moveRoom(PLAYER.x+10,IMAGES["secretRoom"])
+			self.x = PLAYER.x + PLAYER.w
 		end
-	elseif currentRoom == Images["secretRoom"] then
+	elseif currentRoom == IMAGES["secretRoom"] then
 		if self.x > 77 then
-			pushing_anim = false
+			PUSHING_ANIM = false
 			move_chair = false
 			self.exists = false
 			event_find = false
 			chair_finished = true
 			--insert new interactable chair
 			if chair_final == false then
-		    	local chair = Items(Images.store_chair,Images["secretRoom"],self.x,34,"chair_final")
-		    	table.insert(obj,chair)
+		    	local chair = Items(IMAGES.store_chair,IMAGES["secretRoom"],self.x,34,"chair_final")
+		    	table.insert(ITEMS_LIST,chair)
 		    	local cd = Interact(false,{"With this chair","You can now reach the ladder","Go up?"},{"Yes","No"},"","chair_final")
-				table.insert(dialogue,cd)
+				table.insert(DIALOGUES,cd)
 				chair_final = true
 			end
 		end
 	end
 
-	if fade.state == false then
+	if FADE_OBJ.state == false then
 		if love.keyboard.isDown("e") then
 			if self.glow == true then
-				if Sounds.chair_move:isPlaying() == false then
-					Sounds.chair_move:play()
-					Sounds.chair_move:setVolume(0.7)
-					Sounds.chair_move:setLooping(false)
+				if SOUNDS.chair_move:isPlaying() == false then
+					SOUNDS.chair_move:play()
+					SOUNDS.chair_move:setVolume(0.8)
+					SOUNDS.chair_move:setLooping(false)
 				end
-				player.x = player.x + self.push * self.vspeed * dt
+				PLAYER.x = PLAYER.x + self.push * self.vspeed * dt
 				self.x = self.x + self.push * self.vspeed * dt
-				pushing_anim = true
+				PUSHING_ANIM = true
 			end
 		else
-			pushing_anim = false 
+			PUSHING_ANIM = false
 		end
-	else pushing_anim = false end
+	else PUSHING_ANIM = false end
 
 end
 
 function Chair:keypressed(dt,key)
-	if fade.state == false then
+	if FADE_OBJ.state == false then
 		if key == "e" then
 			if self.glow == true then
-				if Sounds.chair_move:isPlaying() == false then
-					Sounds.chair_move:play()
-					Sounds.chair_move:setVolume(0.7)
-					Sounds.chair_move:setLooping(false)
+				if SOUNDS.chair_move:isPlaying() == false then
+					SOUNDS.chair_move:play()
+					SOUNDS.chair_move:setVolume(0.7)
+					SOUNDS.chair_move:setLooping(false)
 				end
-				player.x = player.x + self.push * self.vspeed * dt
+				PLAYER.x = PLAYER.x + self.push * self.vspeed * dt
 				self.x = self.x + self.push * self.vspeed * dt
-				pushing_anim = true
+				PUSHING_ANIM = true
 			end
 		else
-			pushing_anim = false
+			PUSHING_ANIM = false
 		end
-	else pushing_anim = false end
+	else PUSHING_ANIM = false end
 end
 
 function Chair:draw()

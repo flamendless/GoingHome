@@ -12,63 +12,61 @@ function Enemy:new(x,y,w,h)
 	self.count = true
 	self.chaseOn = false
 	self.spd = 25 --30
-
 	self.trigger = false
-
 end
 
 function Enemy:update(dt)
 
-	if move == false then
+	if MOVE == false then
 		self.image = enemy_idle
 	end
 
 	--lightning
 	if lStrike == true then
-		if self.x <= player.x and self.x >= player.x + player.w then
-			gameover = true
+		if self.x <= PLAYER.x and self.x >= PLAYER.x + PLAYER.w then
+			GAMEOVER = true
 		end
-		if player.x < self.x and player.x > self.x - 14 or player.x > self.x and player.x < self.x + 8 then
+		if PLAYER.x < self.x and PLAYER.x > self.x - 14 or PLAYER.x > self.x and PLAYER.x < self.x + 8 then
 			self.chaseOn = true
 		end
 	end
 
 	--special events
-	if ghost_event == "no escape" then
+	if GHOST_EVENT == "no escape" then
 		--collision
-		if move == true then
-			if self.x >= player.x and self.x <= player.x + player.w then
+		if MOVE == true then
+			if self.x >= PLAYER.x and self.x <= PLAYER.x + PLAYER.w then
 				self.chaseOn = false
-				gameover = true
+				GAMEOVER = true
 			else
 				self.chaseOn = true
 			end
 		else
 			self.chaseOn = false
 		end
-	elseif ghost_event == "fall down" or ghost_event == "lying down" or ghost_event == "flashback" then
-		enemy_exists = false
+	elseif GHOST_EVENT == "fall down" or GHOST_EVENT == "lying down" or GHOST_EVENT == "flashback" then
+		ENEMY_EXISTS = false
 	end
 	----
 
 	if self.trigger == false then
-		enemy_exists = false
+		ENEMY_EXISTS = false
 	end
 
-	if currentRoom == Images["hallwayLeft"] or
-		currentRoom == Images["hallwayRight"] or
-		currentRoom == Images["masterRoom"] or
-		currentRoom == Images["kitchen"] or
-		currentRoom == Images["daughterRoom"] or
-		currentRoom == Images["storageRoom"] or
-		currentRoom == Images["mainRoom"] or
-		currentRoom == Images["livingRoom"] then
+	if currentRoom == IMAGES["hallwayLeft"] or
+		currentRoom == IMAGES["hallwayRight"] or
+		currentRoom == IMAGES["masterRoom"] or
+		currentRoom == IMAGES["kitchen"] or
+		currentRoom == IMAGES["daughterRoom"] or
+		currentRoom == IMAGES["storageRoom"] or
+		currentRoom == IMAGES["mainRoom"] or
+		currentRoom == IMAGES["livingRoom"] then
 		self.trigger = true
 	end
 
 	if event == "secret_room_first" or event == "after_secret_room" or event == "after_dialogue" then
-		if currentRoom == Images["secretRoom"] then
-			enemy_exists = false
+		if currentRoom == IMAGES["secretRoom"] then
+			ENEMY_EXISTS = false
 		end
 	end
 
@@ -78,16 +76,16 @@ function Enemy:update(dt)
 
 	self.image:update(dt)
 
-	if enemy_exists == true then
+	if ENEMY_EXISTS == true then
 		if self.image == enemy_move then
 			--move towards player
 			--set image orientation
-			if self.x <= player.x then
+			if self.x <= PLAYER.x then
 				self.xscale = 1
 			else self.xscale = -1 end
 		end
 
-		if move == true and seen == true and self.count == true then
+		if MOVE == true and SEEN == true and self.count == true then
 			self.timer = self.timer - dt
 			if self.timer <= 0 then
 				self:chase(dt)
@@ -96,9 +94,9 @@ function Enemy:update(dt)
 			end
 
 			if self.chaseOn == false then
-				Sounds.enemy_mys_sound:play()
+				SOUNDS.enemy_mys_sound:play()
 			else
-				Sounds.enemy_mys_sound:stop()
+				SOUNDS.enemy_mys_sound:stop()
 			end
 		end
 	end
@@ -107,7 +105,7 @@ function Enemy:update(dt)
 end
 
 function Enemy:draw()
-	self.image:draw(Images.enemy_sheet,self.x,self.y,self.rot,self.xscale,self.yscale,self.ox)
+	self.image:draw(IMAGES.enemy_sheet,self.x,self.y,self.rot,self.xscale,self.yscale,self.ox)
 end
 
 --enemy actions
@@ -115,27 +113,27 @@ end
 function Enemy:chase(dt)
 
 	--sounds
-	if Sounds.enemy_scream:isPlaying() == false then
-		Sounds.enemy_chase:play()
+	if SOUNDS.enemy_scream:isPlaying() == false then
+		SOUNDS.enemy_chase:play()
 	end
 	----
 
 	self.image = enemy_move
 
 	--move towards player
-	if player.x <= self.x then --if player is in the left
+	if PLAYER.x <= self.x then --if player is in the left
 		self.x = self.x - self.spd * dt
 	else self.x = self.x + self.spd * dt end
 
 	--collision
-	if self.x >= player.x and self.x <= player.x + player.w then
+	if self.x >= PLAYER.x and self.x <= PLAYER.x + PLAYER.w then
 		self.chaseOn = false
-		gameover = true
+		GAMEOVER = true
 	end
 
 	--avoid
 	if self.chaseOn == true then
-		if ghost_event ~= "still no escape" then
+		if GHOST_EVENT ~= "still no escape" then
 			if LIGHT_ON == false then
 				local random = math.floor(math.random(100))
 				if random <= 20 then
@@ -148,21 +146,21 @@ end
 
 function Enemy:action_inside()
 	self.image = enemy_move
-	seen = true
+	SEEN = true
 	self.chaseOn = true
 end
 
 function Enemy:action_near()
 	self.image = enemy_mys
 	self.count = true
-	seen = true
+	SEEN = true
 end
 
 function Enemy:action_none()
 	if self.chaseOn == false then
 		self.image = enemy_idle
 	end
-	seen = false
+	SEEN = false
 end
 
 return Enemy

@@ -16,3 +16,6 @@ url = https://github.com/airstruck/knife.git
 [submodule "game/libs/json"]
 	path = game/libs/json
 	url = https://github.com/rxi/json.lua
+[submodule "game/libs/inspect"]
+	path = game/libs/inspect
+	url = https://github.com/kikito/inspect.lua

@@ -60,8 +60,8 @@ end
 
 function intro_update(dt)
 	if not has_played then
-		Sounds.intro_soft:play()
-		Sounds.intro_soft:setLooping(false)
+		SOUNDS.intro_soft:play()
+		SOUNDS.intro_soft:setLooping(false)
 		has_played = true
 	end
 
@@ -71,7 +71,7 @@ function intro_update(dt)
 		if fade_alpha >= 1 then
 			in_house_show = false
 			text_flag = false
-			Sounds.intro_soft:stop()
+			SOUNDS.intro_soft:stop()
 		end
 	end
 
@@ -133,11 +133,10 @@ function intro_update(dt)
 		end
 	end
 
-	if not Sounds.intro_soft:isPlaying() then
-		fade.state = true
-		STATES = "intro"
-		gamestates.load()
-		Sounds.intro_soft:stop()
+	if not SOUNDS.intro_soft:isPlaying() then
+		FADE_OBJ.state = true
+		gamestates.nextState("intro")
+		SOUNDS.intro_soft:stop()
 	end
 
 	if text_flag == true then
@@ -157,19 +156,19 @@ function intro_draw()
 	--car moving
 	if car_show == true then
 		love.graphics.setColor(1, 1, 1, car_alpha)
-		car_anim:draw(Images.car_moving,WIDTH - 32 - 16,HEIGHT_HALF - 24)
+		car_anim:draw(IMAGES.car_moving,WIDTH - 32 - 16,HEIGHT_HALF - 24)
 	end
 
 	--in house
 	if in_house_show == true then
 	love.graphics.setColor(1, 1, 1, 1)
-		ih_anim:draw(Images.in_house,0,0)
+		ih_anim:draw(IMAGES.in_house,0,0)
 	end
 
 	--player door
 	if pd_show == true then
 		love.graphics.setColor(1, 1, 1, pd_alpha)
-		pd_anim:draw(Images.player_door,WIDTH/2 - 32 - 8, HEIGHT_HALF - 12)
+		pd_anim:draw(IMAGES.player_door,WIDTH/2 - 32 - 8, HEIGHT_HALF - 12)
 	end
 
 	--texts
