@@ -2,8 +2,9 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.63"
+local VERSION = "v1.0.65"
 local MOBILE_VERSION = "6"
+local DESKTOP_VERSION = "6"
 PRO_VERSION = true
 DEBUGGING = false
 
@@ -80,7 +81,7 @@ local function toggle_fs()
 end
 
 if not DEBUGGING and not ON_MOBILE then
-	toggle_fs()
+	-- toggle_fs()
 end
 
 -- pauseFlag = false
@@ -156,6 +157,8 @@ function love.load()
 	print("VERSION:", VERSION)
 	if ON_MOBILE then
 		print("MOBILE VERSION:", MOBILE_VERSION)
+	else
+		print("DESKTOP VERSION:", DESKTOP_VERSION)
 	end
 	SaveData.load()
 
@@ -557,7 +560,10 @@ function love.keyreleased(key)
 end
 
 function love.keypressed(key)
-	-- if key == "g" then RESET_STATES() end
+	-- if key == "g" then
+	-- 	gamestates.nextState("title")
+	-- 	RESET_STATES()
+	-- end
 
 	if not FINISHED_LOADING then return end
 	local state = gamestates.getState()
@@ -898,6 +904,10 @@ function RESET_STATES()
 				require(f)
 			end
 		end
+	end
+
+	for _, v in pairs(SOUNDS) do
+		v:stop()
 	end
 
 	ON_LOAD_ASSETS()

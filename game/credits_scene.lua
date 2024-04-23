@@ -86,9 +86,6 @@ function credits_update(dt)
 				if ts_vol <= 0 then
 					gamestates.nextState("title")
 					RESET_STATES()
-					-- unrequire("gameStates")
-					-- require("gameStates")
-					-- love.event.quit("restart")
 				end
 			end
 			ts:setVolume(ts_vol)
@@ -153,6 +150,7 @@ function credits_draw()
 		-- 	love.graphics.print(t,width/2 - tw/2, height/2 - th/2)
 		-- 	timer_to_use = maxTimer
 		-- end
+
 	elseif n >= start and n < (start + 5 - 1) then
 		timer_to_use = minTimer
 		dynamic_print(29)
