@@ -3,7 +3,7 @@
 --@flam8studio
 
 local VERSION = "v1.0.66"
-local MOBILE_VERSION = "6"
+local MOBILE_VERSION = "7"
 local DESKTOP_VERSION = "6"
 PRO_VERSION = true
 DEBUGGING = false
