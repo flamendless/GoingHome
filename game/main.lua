@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.65"
+local VERSION = "v1.0.66"
 local MOBILE_VERSION = "6"
 local DESKTOP_VERSION = "6"
 PRO_VERSION = true
@@ -904,10 +904,6 @@ function RESET_STATES()
 				require(f)
 			end
 		end
-	end
-
-	for _, v in pairs(SOUNDS) do
-		v:stop()
 	end
 
 	ON_LOAD_ASSETS()

@@ -84,6 +84,8 @@ function credits_update(dt)
 			if ts_vol > 0 then
 				ts_vol = ts_vol - 0.05 * dt
 				if ts_vol <= 0 then
+					ts:setLooping(false)
+					ts:stop()
 					gamestates.nextState("title")
 					RESET_STATES()
 				end

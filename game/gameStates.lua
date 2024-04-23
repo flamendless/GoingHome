@@ -238,6 +238,10 @@ function gamestates.init()
 			gamestates.nextState("title")
 		end)
 	elseif state == "title" then
+		for _, v in pairs(SOUNDS) do
+			v:stop()
+		end
+
 		--set music
 		SOUNDS.ts_theme:setLooping(true)
 		SOUNDS.ts_theme:play()
@@ -251,12 +255,15 @@ function gamestates.init()
 			love.audio.setVolume(0)
 		end
 	elseif state == "rain_intro" then
+		SOUNDS.ts_theme:setLooping(false)
 		SOUNDS.ts_theme:stop()
 		intro_load()
+
 	elseif state == "intro" then
 		SOUNDS.knock:play()
 		SOUNDS.enemy_scream:setLooping(false)
 		SOUNDS.intro_soft:stop()
+
 	elseif state == "main" then
 		SaveData.load()
 		Pause.init()
