@@ -294,9 +294,9 @@ end
 function gamestates.getState() return STATES end
 
 function gamestates.update(dt)
-	local mx, my = love.mouse.getPosition()
-	mx = mx / RATIO
-	my = (my + TY) / RATIO
+	local mx, my = MOUSE_X, MOUSE_Y
+	mx = mx / RATIO_X
+	my = my / RATIO_Y
 
 	if currentRoom == IMAGES["leftRoom"] or
 		currentRoom == IMAGES["rightRoom"] or

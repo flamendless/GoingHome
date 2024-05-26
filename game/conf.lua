@@ -1,10 +1,11 @@
 function love.conf(t)
-	t.window.width = 1024
-	t.window.height = 512
+	t.window.width = 0
+	t.window.height = 0
 	t.window.resizable = false
 	t.window.title = "Going Home: Revisited"
 	t.window.icon = "assets/icon.png"
 	t.window.fullscreen = true
+	t.window.fullscreentype = "exclusive"
 
 	t.version = "11.5"
 	t.identity = "GoingHomeRevisited"
