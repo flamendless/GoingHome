@@ -31,8 +31,8 @@ love.graphics.setDefaultFilter("nearest", "nearest", 1)
 local img_loading = love.graphics.newImage("assets/loading.png")
 local lsw, lsh = img_loading:getDimensions()
 
-local cursor = love.mouse.newCursor("assets/cursor.png")
-love.mouse.setCursor(cursor)
+cursorImage = love.graphics.newImage("assets/cursor.png")
+love.mouse.setVisible(false)
 
 local URLS = require("urls")
 local Shaders = require("shaders")
@@ -76,7 +76,8 @@ MAIN_CANVAS = love.graphics.newCanvas(love.graphics.getDimensions())
 local function toggle_fs()
 	love.window.setFullscreen(not love.window.getFullscreen())
 	local g_width, g_height = love.graphics.getDimensions()
-	RATIO = math.min(g_width / WIDTH, g_height / HEIGHT)
+	RATIO_X, RATIO_Y = g_width / WIDTH, g_height / HEIGHT
+	RATIO = math.min(RATIO_X, RATIO_Y)
 	MAIN_CANVAS = love.graphics.newCanvas(love.graphics.getDimensions())
 end
 
@@ -171,7 +172,8 @@ function love.load()
 	CLOCK = 0 --game timer
 
 	local g_width, g_height = love.graphics.getDimensions()
-	RATIO = math.min(g_width / WIDTH, g_height / HEIGHT)
+	RATIO_X, RATIO_Y = g_width / WIDTH, g_height / HEIGHT
+	RATIO = math.min(RATIO_X, RATIO_Y)
 	PRESSED = false
 	love.keyboard.setKeyRepeat(true)
 
@@ -212,6 +214,8 @@ function love.load()
 end
 
 function love.update(dt)
+	MOUSE_X, MOUSE_Y = love.mouse.getPosition()
+
 	-- if recording then return end
 	CLOCK = CLOCK + dt
 
@@ -243,7 +247,7 @@ function love.update(dt)
 				if SaveData.data.hide_cursor then
 					love.mouse.setVisible(false)
 				else
-					love.mouse.setVisible(true)
+					love.mouse.setVisible(false)
 				end
 			end
 
@@ -312,6 +316,7 @@ function love.draw()
 	end
 	love.graphics.draw(MAIN_CANVAS, TX, TY)
 	love.graphics.setShader()
+    love.graphics.draw(cursorImage, MOUSE_X, MOUSE_Y)
 
 	-- love.graphics.setColor(1, 0, 0, 1)
 	-- local ry = love.graphics.getHeight()/2 - (HEIGHT*RATIO)/2
