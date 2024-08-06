@@ -1,4 +1,8 @@
-gamestates = {}
+local Shaders = require("shaders")
+
+gamestates = {
+	difficulty_idx = 1,
+}
 
 local GAMEOVER_FLAG = 0
 
@@ -106,6 +110,11 @@ lightningVol = 0.5
 
 local tutorial_timer = 5
 
+local txt_diff_explain = {
+	"With enough benevolence, survive.",
+	"Not for the faint, scarce hope.",
+}
+
 local intro_txt = {
 	"",
 	"...",
@@ -212,6 +221,9 @@ end
 
 function gamestates.init()
 	SaveData.load()
+	if SaveData.data.difficulty_idx then
+		gamestates.difficulty_idx = SaveData.data.difficulty_idx
+	end
 
 	local state = gamestates.getState()
 	if state == "gallery" then
@@ -361,8 +373,13 @@ function gamestates.update(dt)
 		else
 			cursor_select = true
 		end
+
+	elseif state == "difficulty_select" then
+		gamestates.heartbeat_timer:update(dt)
+
 	elseif state == "rain_intro" then
 		intro_update(dt)
+
 	elseif state == "intro" then
 		intro_timer = intro_timer - 1 * dt
 
@@ -858,6 +875,7 @@ function gamestates.draw()
 		elseif instruction == true and about == false and questions == false then
 			draw_instructions()
 			draw_back_gui()
+
 		elseif options then
 			love.graphics.setColor(0, 0, 0, 0)
 			love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
@@ -903,6 +921,7 @@ function gamestates.draw()
 			end
 
 			draw_back_gui()
+
 		elseif instruction == false and questions == true and about == false then
 			--questions/support/contacts
 			love.graphics.setColor(0, 0, 0, 0)
@@ -1001,13 +1020,76 @@ function gamestates.draw()
 			end
 			draw_back_gui()
 		end
+
+	elseif state == "difficulty_select" then
+		love.graphics.setColor(0, 0, 0, 1)
+		love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
+
+		local imgh = IMAGES["basementRoom"]:getHeight()
+
+		love.graphics.setShader(Shaders.grayscale)
+		love.graphics.setColor(1, 1, 1, 1)
+		love.graphics.draw(
+			IMAGES["basementRoom"],
+			0,
+			HEIGHT_HALF - imgh/2
+		)
+		love.graphics.setShader()
+
+		love.graphics.setFont(DEF_FONT)
+
+		local txt_diff = "COURAGE FACTOR"
+		love.graphics.setColor(1, 0, 0, 1)
+		love.graphics.print(
+			txt_diff,
+			WIDTH_HALF - DEF_FONT:getWidth(txt_diff) / 2,
+			4
+		)
+
+		local txt_explain = txt_diff_explain[gamestates.difficulty_idx]
+		love.graphics.setColor(1, 1, 1, 1)
+		love.graphics.printf(
+			txt_explain,
+			8,
+			HEIGHT_HALF - imgh/2 + DEF_FONT_HALF,
+			WIDTH - 16,
+			"center"
+		)
+
+		local diffs = {
+			"ORDINARY",
+			"DETERMINED",
+		}
+
+		for i, diff in ipairs(diffs) do
+			if i == gamestates.difficulty_idx then
+				love.graphics.setColor(1, 0, 0, 1)
+			else
+				love.graphics.setColor(1, 1, 1, 1)
+			end
+			local x
+			if i == 1 then
+				x = WIDTH_HALF - DEF_FONT:getWidth(diff) - 8
+			elseif i == 2 then
+				x = WIDTH_HALF + 8
+			end
+			love.graphics.print(
+				diff,
+				x,
+				HEIGHT_HALF + imgh/2 + 4
+			)
+		end
+
 	elseif state == "intro" then
 		love.graphics.setColor(0, 0, 0, 1)
 		love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
 		love.graphics.setFont(DEF_FONT)
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.print(intro_txt[intro_count], WIDTH_HALF - DEF_FONT:getWidth(intro_txt[intro_count]) / 2,
-			HEIGHT_HALF - DEF_FONT_HALF)
+		love.graphics.print(
+			intro_txt[intro_count],
+			WIDTH_HALF - DEF_FONT:getWidth(intro_txt[intro_count]) / 2,
+			HEIGHT_HALF - DEF_FONT_HALF
+		)
 		skip_draw()
 	elseif state == "gallery" then
 		Gallery.draw()
@@ -1198,7 +1280,8 @@ end
 
 function gamestates.control()
 	if instruction == false and about == false and questions == false and options == false then
-		gamestates.nextState("rain_intro")
+		-- gamestates.nextState("rain_intro")
+		gamestates.nextState("difficulty_select")
 	end
 end
 

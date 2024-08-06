@@ -5,6 +5,7 @@ local SaveData = {
 		door_locked = true,
 		music_sounds = true,
 		hide_cursor = false,
+		difficulty_idx = 1,
 	},
 }
 

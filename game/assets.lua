@@ -40,7 +40,9 @@ local textures = {
 		{ "exit",            "assets/exit.png" },
 		{ "bg",              "assets/images/bg.png" },
 		{ "title_text",      "assets/images/title_text.png" },
+		{ "basementRoom",    "assets/images/basementRoom.png" },
 	},
+
 	intro = {
 		{ "car_moving",  "assets/images/intro_1-sheet.png" },
 		{ "player_door", "assets/images/intro_2-sheet.png" },
@@ -213,6 +215,8 @@ local textures = {
 		{ "basementRoom_color",     "assets/images/basementRoom_color.png" },
 		{ "window_left_color",      "assets/images/window_left-sheet_color.png" },
 		{ "window_right_color",     "assets/images/window_right-sheet_color.png" },
+		{ "battery",                "assets/images/battery.png" },
+		{ "battery_glow",           "assets/images/battery_glow.png" },
 	}
 }
 
@@ -240,6 +244,7 @@ local sources = {
 		{ "thunder",      "assets/audio/thunder.ogg",      "static" },
 		{ "unlock",       "assets/audio/unlock.ogg",       "static" },
 	},
+
 	main = {
 		{ "smash_head",      "assets/audio/smash_head.ogg",     "static" },
 		{ "grunt",           "assets/audio/grunt.ogg",          "static" },
@@ -292,7 +297,7 @@ function assets.load()
 	local state = gamestates.getState()
 	local textures_to_load, sources_to_load
 
-	if (state == "adshow") or (state == "splash") or (state == "splash2") or (state == "title") or (state == "gallery") then
+	if (state == "adshow") or (state == "splash") or (state == "splash2") or (state == "title") or (state == "gallery") or (state == "difficulty_select") then
 		textures_to_load = textures.init
 		sources_to_load = sources.init
 	elseif (state == "rain_intro") or (state == "intro") or (state == "tutorial") then
@@ -302,7 +307,6 @@ function assets.load()
 		textures_to_load = textures.main
 		sources_to_load = sources.main
 	end
-
 
 	if loaded[textures_to_load] then
 		local p = LOADER.getPending()
@@ -528,7 +532,7 @@ function assets.dialogue_set()
 		{ "Break it", "Leave it be" }, "I must not. It's expensive", "displays")
 	local landscape = Interact(false,
 		{ "A painting of a landscape", "It's my relaxation", "and my inspiration", "Stare at it?" }, { "Yes",
-		"No" }, "It's beautiful", "landscape")
+			"No" }, "It's beautiful", "landscape")
 	local head = Interact(false, { "A portrait of an animal head", "it's a lion", "It's quite broken", "Break it?" },
 		{ "Yes", "No" }, "Quite fragile, I may be able to break it", "head")
 	local stand = Interact(false,

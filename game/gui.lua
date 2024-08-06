@@ -191,7 +191,7 @@ function android.touchpressed(id, x, y)
 				gamestates.nextState("intro")
 			end
 		end
-	elseif state == "main" and not Pause.flag then
+	elseif not Pause.flag and state == "main" then
 		if MOVE == true then
 			if guiCheck_touch(id, x, y, gLeft) then
 				love.keypressed("a")

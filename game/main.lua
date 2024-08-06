@@ -2,9 +2,9 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.0.66"
-local MOBILE_VERSION = "7"
-local DESKTOP_VERSION = "6"
+local VERSION = "v1.1.0"
+local MOBILE_VERSION = "8"
+local DESKTOP_VERSION = "7"
 PRO_VERSION = true
 DEBUGGING = false
 
@@ -481,6 +481,23 @@ function love.keyreleased(key)
 		if key == "return" or key == "e" then
 			PRESSED = false
 		end
+	elseif state == "difficulty_select" then
+		if key == "w" or key == "a" then
+			gamestates.difficulty_idx = gamestates.difficulty_idx - 1
+			if gamestates.difficulty_idx <= 0 then
+				gamestates.difficulty_idx = 2
+			end
+		elseif key == "s" or key == "d" then
+			gamestates.difficulty_idx = gamestates.difficulty_idx + 1
+			if gamestates.difficulty_idx > 2 then
+				gamestates.difficulty_idx = 1
+			end
+		elseif key == "return" or key == "e" then
+			SaveData.data.difficulty_idx = gamestates.difficulty_idx
+			SaveData.save()
+			gamestates.nextState("rain_intro")
+		end
+
 	elseif state == "title" then
 		if (instruction == false and about == false and questions == false and options == false) and cursor_select then
 			--1 start
