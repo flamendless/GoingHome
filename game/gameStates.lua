@@ -266,6 +266,31 @@ function gamestates.init()
 		else
 			love.audio.setVolume(0)
 		end
+
+	elseif state == "difficulty_select" then
+		gamestates.heartbeat_timer = HumpTimer:new()
+		gamestates.heartbeat_timer:every(1.25, function()
+			if SOUNDS.heartbeat:isPlaying() then return end
+
+			local r = Lume.weightedchoice({play = 40, wait = 60})
+			if r == "play" then
+				SOUNDS.heartbeat:play()
+			else
+				local r2 = Lume.weightedchoice({play = 25, wait = 75})
+				if r2 == "play" then
+					SOUNDS.heartbeat:setVolume(Lume.random(0.1, 1))
+					SOUNDS.heartbeat:play()
+				end
+			end
+		end)
+
+		SOUNDS.ts_theme:setLooping(false)
+		SOUNDS.ts_theme:stop()
+
+		SOUNDS.heartbeat:setLooping(false)
+		SOUNDS.heartbeat:setVolume(1)
+		SOUNDS.heartbeat:play()
+
 	elseif state == "rain_intro" then
 		SOUNDS.ts_theme:setLooping(false)
 		SOUNDS.ts_theme:stop()

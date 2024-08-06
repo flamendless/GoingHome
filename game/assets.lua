@@ -236,7 +236,9 @@ local sources = {
 		{ "ts_theme",      "assets/audio/ts_bgm.ogg",        "stream" },
 		{ "main_theme",    "assets/audio/finding_home.ogg",  "stream" },
 		{ "they_are_gone", "assets/audio/they_are_gone.ogg", "stream" },
+		{ "heartbeat",     "assets/audio/heartbeat.ogg", "static" },
 	},
+
 	intro = {
 		{ "knock",        "assets/audio/knock.ogg",        "static" },
 		{ "enemy_scream", "assets/audio/enemy_scream.ogg", "static" },

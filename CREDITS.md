@@ -41,6 +41,7 @@
 * **loopbasedmusic**: [rain_near_smooth ](http://www.freesound.org/people/loopbasedmusic/sounds/157487/)
 * **snaginneb**:  [gruntsound](http://www.freesound.org/people/snaginneb/sounds/90164/)
 * **pfranzen**: [smashing head on wall](http://www.freesound.org/people/pfranzen/sounds/377157/)
+* **mitchelk**: [heartbeat](https://freesound.org/people/mitchelk/sounds/136723/)
 
 ## Thanks also for the following devs for their libraries/modules provided for free, and with awesome documentations
 
@@ -54,6 +55,3 @@
 * **Ian Plaus** - Beta tester
 * **Conrad Reyes** - Pixel artist
 * **Kurt Russell De Asis** - Android QA tester
-
-
-
