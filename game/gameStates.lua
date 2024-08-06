@@ -283,13 +283,12 @@ function gamestates.init()
 				end
 			end
 		end)
-
-		SOUNDS.ts_theme:setLooping(false)
-		SOUNDS.ts_theme:stop()
-
 		SOUNDS.heartbeat:setLooping(false)
 		SOUNDS.heartbeat:setVolume(1)
 		SOUNDS.heartbeat:play()
+
+		SOUNDS.ts_theme:setLooping(false)
+		SOUNDS.ts_theme:stop()
 
 	elseif state == "rain_intro" then
 		SOUNDS.ts_theme:setLooping(false)
@@ -325,6 +324,25 @@ function gamestates.init()
 		if not DOOR_LOCKED then
 			LOCKED["mainRoom_right"] = false
 		end
+
+		gamestates.heartbeat_timer = HumpTimer:new()
+		gamestates.heartbeat_timer:every(2, function()
+			if SOUNDS.heartbeat:isPlaying() then return end
+
+			local r = Lume.weightedchoice({play = 20, wait = 80})
+			if r == "play" then
+				SOUNDS.heartbeat:play()
+			else
+				local r2 = Lume.weightedchoice({play = 10, wait = 90})
+				if r2 == "play" then
+					SOUNDS.heartbeat:setVolume(Lume.random(0.3, 1))
+					SOUNDS.heartbeat:play()
+				end
+			end
+		end)
+		SOUNDS.heartbeat:setLooping(false)
+		SOUNDS.heartbeat:setVolume(1)
+		SOUNDS.heartbeat:play()
 	end
 end
 
@@ -450,6 +468,8 @@ function gamestates.update(dt)
 		-----MAIN-------
 	elseif state == "main" then
 		--windows
+		gamestates.heartbeat_timer:update(dt)
+
 		win_left_anim:update(dt)
 		win_right_anim:update(dt)
 		Timer.update(dt)
