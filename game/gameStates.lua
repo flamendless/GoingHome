@@ -1,13 +1,4 @@
-local Shaders = require("shaders")
-
-gamestates = {
-	difficulty_idx = 1,
-}
-
-local diffs = {
-	"ORDINARY",
-	"DETERMINED",
-}
+gamestates = {}
 
 local GAMEOVER_FLAG = 0
 
@@ -115,11 +106,6 @@ lightningVol = 0.5
 
 local tutorial_timer = 5
 
-local txt_diff_explain = {
-	"With enough benevolence, survive.",
-	"Not for the faint, scarce hope.",
-}
-
 local intro_txt = {
 	"",
 	"...",
@@ -215,7 +201,7 @@ function gamestates.load()
 	txt = "press I for instruction"
 	instruction = false
 	doors_locked = true
-	action_flag = 0
+	ACTION_FLAG = 0
 
 	intro_count = 1
 	intro_timer = 2.5
@@ -227,7 +213,7 @@ end
 function gamestates.init()
 	SaveData.load()
 	if SaveData.data.difficulty_idx then
-		gamestates.difficulty_idx = SaveData.data.difficulty_idx
+		DifficultySelect.idx = SaveData.data.difficulty_idx
 	end
 
 	local state = gamestates.getState()
@@ -424,19 +410,7 @@ function gamestates.update(dt)
 
 	elseif state == "difficulty_select" then
 		gamestates.heartbeat_timer:update(dt)
-
-		local imgh = IMAGES["basementRoom"]:getHeight()
-		local dw1 = DEF_FONT:getWidth(diffs[1])
-		local dw2 = DEF_FONT:getWidth(diffs[2])
-		local dx1 = WIDTH_HALF - dw1 - 8
-		local dx2 = WIDTH_HALF + 8
-		local dy = HEIGHT_HALF + imgh/2 + 4
-
-		if check_gui(dx1, dy, dw1, DEF_FONT_HEIGHT) then
-			gamestates.difficulty_idx = 1
-		elseif check_gui(dx2, dy, dw2, DEF_FONT_HEIGHT) then
-			gamestates.difficulty_idx = 2
-		end
+		local _ = DifficultySelect.interact()
 
 	elseif state == "rain_intro" then
 		intro_update(dt)
@@ -485,9 +459,7 @@ function gamestates.update(dt)
 
 		-----MAIN-------
 	elseif state == "main" then
-		--windows
 		gamestates.heartbeat_timer:update(dt)
-
 		win_left_anim:update(dt)
 		win_right_anim:update(dt)
 		Timer.update(dt)
@@ -527,8 +499,6 @@ function gamestates.update(dt)
 			end
 		end
 
-
-		Timer.update(dt)
 
 		if GAMEOVER == false then
 			if event ~= "after_secret_room" and
@@ -587,21 +557,22 @@ function gamestates.update(dt)
 		end
 
 		if GAMEOVER == false then
-			if ON_MOBILE or DEBUGGING then
-				--android.lightCircle()
-			elseif not ON_MOBILE and (not DEBUGGING) then
+			if not ON_MOBILE and (not DEBUGGING) then
+				local lx, ly
 				if event_trigger_light == -1 then
-					_lightX = mx - IMAGES.light_small:getWidth() / 2 + math.random(-0.05, 0.05)
-					_lightY = my - IMAGES.light_small:getHeight() / 2 + math.random(-0.05, 0.05)
+					local lsw, lsh = IMAGES.light_small:getDimensions()
+					lx = mx - lsw / 2 + math.random(-0.05, 0.05)
+					ly = my - lsh / 2 + math.random(-0.05, 0.05)
 				else
-					_lightX = mx - IMAGES.light:getWidth() / 2 + math.random(-0.05, 0.05)
-					_lightY = my - IMAGES.light:getHeight() / 2 + math.random(-0.05, 0.05)
+					local lw, lh = IMAGES.light:getDimensions()
+					lx = mx - lw / 2 + math.random(-0.05, 0.05)
+					ly = my - lh / 2 + math.random(-0.05, 0.05)
 				end
-				LIGHTX = math.clamp(_lightX, PLAYER.x - 120, PLAYER.x + 100)
-				LIGHTY = math.clamp(_lightY, PLAYER.y - 20, PLAYER.y + 0)
+				LIGHTX = math.clamp(lx, PLAYER.x - 120, PLAYER.x + 100)
+				LIGHTY = math.clamp(ly, PLAYER.y - 20, PLAYER.y + 0)
 
 				love.graphics.setCanvas(CANVAS_CUSTOM_MASK)
-				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
+				love.graphics.clear(1, 0, 0, LIGHT_VALUE)
 				love.graphics.setBlendMode("multiply", "premultiplied")
 				love.graphics.draw(TEX_LIGHT, LIGHTX, LIGHTY)
 				love.graphics.setBlendMode("alpha")
@@ -638,8 +609,8 @@ function gamestates.update(dt)
 				end)
 			end
 
-			if action_flag == 1 then
-				action_flag = -1
+			if ACTION_FLAG == 1 then
+				ACTION_FLAG = -1
 				MOVE = false
 				TT_UPDATE = true
 			end
@@ -729,7 +700,6 @@ function gamestates.update(dt)
 			GameOver.load()
 			GAMEOVER_FLAG = -1
 		end
-
 
 		--it's mr. chair's time!
 		if move_chair == true then
@@ -1085,58 +1055,7 @@ function gamestates.draw()
 		end
 
 	elseif state == "difficulty_select" then
-		love.graphics.setColor(0, 0, 0, 1)
-		love.graphics.rectangle("fill", 0, 0, WIDTH, HEIGHT)
-
-		local imgh = IMAGES["basementRoom"]:getHeight()
-
-		love.graphics.setShader(Shaders.grayscale)
-		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.draw(
-			IMAGES["basementRoom"],
-			0,
-			HEIGHT_HALF - imgh/2
-		)
-		love.graphics.setShader()
-
-		love.graphics.setFont(DEF_FONT)
-
-		local txt_diff = "COURAGE FACTOR"
-		love.graphics.setColor(1, 0, 0, 1)
-		love.graphics.print(
-			txt_diff,
-			WIDTH_HALF - DEF_FONT:getWidth(txt_diff) / 2,
-			4
-		)
-
-		local txt_explain = txt_diff_explain[gamestates.difficulty_idx]
-		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.printf(
-			txt_explain,
-			8,
-			HEIGHT_HALF - imgh/2 + DEF_FONT_HALF,
-			WIDTH - 16,
-			"center"
-		)
-
-		for i, diff in ipairs(diffs) do
-			if i == gamestates.difficulty_idx then
-				love.graphics.setColor(1, 0, 0, 1)
-			else
-				love.graphics.setColor(1, 1, 1, 1)
-			end
-			local x
-			if i == 1 then
-				x = WIDTH_HALF - DEF_FONT:getWidth(diff) - 8
-			elseif i == 2 then
-				x = WIDTH_HALF + 8
-			end
-			love.graphics.print(
-				diff,
-				x,
-				HEIGHT_HALF + imgh/2 + 4
-			)
-		end
+		DifficultySelect.draw()
 
 	elseif state == "intro" then
 		love.graphics.setColor(0, 0, 0, 1)

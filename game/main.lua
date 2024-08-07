@@ -341,79 +341,84 @@ function love.mousepressed(x, y, button, istouch)
 	--android.mouse_gui(x,y,button,istouch)
 	if state == "gallery" then
 		Gallery.interactions(nil, x, y)
-	elseif state == "title" then
-		if button == 1 then
-			if instruction == false and about == false and questions == false and not options then
-				if check_gui(gui_pos.start_x, gui_pos.start_y, gui_pos.start_w, gui_pos.start_h) then
-					gamestates.control()
-				elseif check_gui(gui_pos.quit_x, gui_pos.quit_y, gui_pos.quit_w, gui_pos.quit_h) then
-					if OS ~= "iOS" then
-						love.event.quit()
+
+	elseif button == 1 and state == "difficulty_select" then
+		local was_interacted = DifficultySelect.interact()
+		if was_interacted then
+			DifficultySelect.goto_next()
+		end
+
+	elseif button == 1 and state == "title" then
+		if instruction == false and about == false and questions == false and not options then
+			if check_gui(gui_pos.start_x, gui_pos.start_y, gui_pos.start_w, gui_pos.start_h) then
+				gamestates.control()
+			elseif check_gui(gui_pos.quit_x, gui_pos.quit_y, gui_pos.quit_w, gui_pos.quit_h) then
+				if OS ~= "iOS" then
+					love.event.quit()
+				end
+			elseif check_gui(gui_pos.webx, gui_pos.weby, gui_pos.webw, gui_pos.webh) then
+				if ON_MOBILE and LoveAdmob then
+					if LoveAdmob.isInterstitialLoaded() == true then
+						LoveAdmob.showInterstitial()
 					end
-				elseif check_gui(gui_pos.webx, gui_pos.weby, gui_pos.webw, gui_pos.webh) then
-					if ON_MOBILE and LoveAdmob then
-						if LoveAdmob.isInterstitialLoaded() == true then
-							LoveAdmob.showInterstitial()
-						end
-					else
-						love.system.openURL(URLS.game_page)
-					end
-				elseif check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
-					gamestates.nextState("gallery")
-				elseif check_gui(gui_pos.options_x, gui_pos.options_y, gui_pos.options_w, gui_pos.options_h) then
-					options = not options
-				elseif check_gui(gui_pos.q_x, gui_pos.q_y, gui_pos.q_w, gui_pos.q_h) then
-					questions = not questions
-				elseif check_gui(gui_pos.a_x, gui_pos.a_y, gui_pos.a_w, gui_pos.a_h) then
-					about = not about
-				elseif check_gui(gui_pos.i_x, gui_pos.i_y, gui_pos.i_w, gui_pos.i_h) then
-					instruction = not instruction
+				else
+					love.system.openURL(URLS.game_page)
+				end
+			elseif check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
+				gamestates.nextState("gallery")
+			elseif check_gui(gui_pos.options_x, gui_pos.options_y, gui_pos.options_w, gui_pos.options_h) then
+				options = not options
+			elseif check_gui(gui_pos.q_x, gui_pos.q_y, gui_pos.q_w, gui_pos.q_h) then
+				questions = not questions
+			elseif check_gui(gui_pos.a_x, gui_pos.a_y, gui_pos.a_w, gui_pos.a_h) then
+				about = not about
+			elseif check_gui(gui_pos.i_x, gui_pos.i_y, gui_pos.i_w, gui_pos.i_h) then
+				instruction = not instruction
+			end
+		end
+
+		if options then
+			local base_y = 1 + DEF_FONT_HEIGHT
+			local rw = 8
+			for i, item in ipairs(SaveData.get_opts()) do
+				local str = item.str
+				local by = base_y + DEF_FONT_HEIGHT * (i - 1)
+				local rx = WIDTH - 16 - rw / 2
+				local ry = by + rw / 4
+
+				if check_gui(16, by, DEF_FONT:getWidth(str), DEF_FONT_HEIGHT) or
+					check_gui(rx, ry, rw, rw)
+				then
+					SaveData.toggle_opts(i)
 				end
 			end
-
-			if options then
-				local base_y = 1 + DEF_FONT_HEIGHT
-				local rw = 8
-				for i, item in ipairs(SaveData.get_opts()) do
-					local str = item.str
-					local by = base_y + DEF_FONT_HEIGHT * (i - 1)
-					local rx = WIDTH - 16 - rw / 2
-					local ry = by + rw / 4
-
-					if check_gui(16, by, DEF_FONT:getWidth(str), DEF_FONT_HEIGHT) or
-						check_gui(rx, ry, rw, rw)
-					then
-						SaveData.toggle_opts(i)
-					end
+		elseif questions then
+			local url
+			if check_gui(gui_pos.t_x, gui_pos.t_y, gui_pos.t_w, gui_pos.t_h) then
+				url = URLS.twitter
+			elseif check_gui(gui_pos.p_x, gui_pos.p_y, gui_pos.p_w, gui_pos.p_h) then
+				if OS ~= "iOS" then
+					url = URLS.paypal
 				end
-			elseif questions then
-				local url
-				if check_gui(gui_pos.t_x, gui_pos.t_y, gui_pos.t_w, gui_pos.t_h) then
-					url = URLS.twitter
-				elseif check_gui(gui_pos.p_x, gui_pos.p_y, gui_pos.p_w, gui_pos.p_h) then
-					if OS ~= "iOS" then
-						url = URLS.paypal
-					end
-				elseif check_gui(gui_pos.e_x, gui_pos.e_y, gui_pos.e_w, gui_pos.e_h) then
-					url = URLS.mailto
-				end
-
-				if url then
-					love.system.openURL(url)
-				end
+			elseif check_gui(gui_pos.e_x, gui_pos.e_y, gui_pos.e_w, gui_pos.e_h) then
+				url = URLS.mailto
 			end
 
-			if instruction or about or questions or options then
-				if check_gui(gui_pos.b_x, gui_pos.b_y, gui_pos.b_w, gui_pos.b_h) then
-					if options then
-						SaveData.save()
-					end
+			if url then
+				love.system.openURL(url)
+			end
+		end
 
-					instruction = false
-					about = false
-					questions = false
-					options = false
+		if instruction or about or questions or options then
+			if check_gui(gui_pos.b_x, gui_pos.b_y, gui_pos.b_w, gui_pos.b_h) then
+				if options then
+					SaveData.save()
 				end
+
+				instruction = false
+				about = false
+				questions = false
+				options = false
 			end
 		end
 	elseif state == "rain_intro" then
@@ -482,21 +487,7 @@ function love.keyreleased(key)
 			PRESSED = false
 		end
 	elseif state == "difficulty_select" then
-		if key == "w" or key == "a" then
-			gamestates.difficulty_idx = gamestates.difficulty_idx - 1
-			if gamestates.difficulty_idx <= 0 then
-				gamestates.difficulty_idx = 2
-			end
-		elseif key == "s" or key == "d" then
-			gamestates.difficulty_idx = gamestates.difficulty_idx + 1
-			if gamestates.difficulty_idx > 2 then
-				gamestates.difficulty_idx = 1
-			end
-		elseif key == "return" or key == "e" then
-			SaveData.data.difficulty_idx = gamestates.difficulty_idx
-			SaveData.save()
-			gamestates.nextState("rain_intro")
-		end
+		DifficultySelect.keyreleased(key)
 
 	elseif state == "title" then
 		if (instruction == false and about == false and questions == false and options == false) and CURSOR_SELECT then

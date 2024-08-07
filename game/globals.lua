@@ -12,6 +12,7 @@ ClockPuzzle = require("clock_puzzle")
 Gallery = require("gallery")
 
 require("gameStates")
+DifficultySelect = require("difficulty_select")
 Assets = require("assets")
 
 require("rain_intro_scenes")
