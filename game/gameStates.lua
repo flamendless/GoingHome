@@ -4,6 +4,11 @@ gamestates = {
 	difficulty_idx = 1,
 }
 
+local diffs = {
+	"ORDINARY",
+	"DETERMINED",
+}
+
 local GAMEOVER_FLAG = 0
 
 about = false
@@ -419,6 +424,19 @@ function gamestates.update(dt)
 
 	elseif state == "difficulty_select" then
 		gamestates.heartbeat_timer:update(dt)
+
+		local imgh = IMAGES["basementRoom"]:getHeight()
+		local dw1 = DEF_FONT:getWidth(diffs[1])
+		local dw2 = DEF_FONT:getWidth(diffs[2])
+		local dx1 = WIDTH_HALF - dw1 - 8
+		local dx2 = WIDTH_HALF + 8
+		local dy = HEIGHT_HALF + imgh/2 + 4
+
+		if check_gui(dx1, dy, dw1, DEF_FONT_HEIGHT) then
+			gamestates.difficulty_idx = 1
+		elseif check_gui(dx2, dy, dw2, DEF_FONT_HEIGHT) then
+			gamestates.difficulty_idx = 2
+		end
 
 	elseif state == "rain_intro" then
 		intro_update(dt)
@@ -1100,11 +1118,6 @@ function gamestates.draw()
 			WIDTH - 16,
 			"center"
 		)
-
-		local diffs = {
-			"ORDINARY",
-			"DETERMINED",
-		}
 
 		for i, diff in ipairs(diffs) do
 			if i == gamestates.difficulty_idx then
