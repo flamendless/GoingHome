@@ -509,37 +509,37 @@ function love.keyreleased(key)
 			--7 instructions
 			--8 website
 			if key == "w" or key == "up" then
-				cursor_pos = 1
+				CURSOR_POS = 1
 			elseif key == "s" or key == "down" then
-				cursor_pos = 2
+				CURSOR_POS = 2
 			elseif key == "d" or key == "right" then
-				cursor_pos = cursor_pos + 1
+				CURSOR_POS = CURSOR_POS + 1
 			elseif key == "a" or key == "left" then
-				cursor_pos = cursor_pos - 1
+				CURSOR_POS = CURSOR_POS - 1
 			elseif key == "return" or key == "e" then
-				if cursor_pos == 1 then
+				if CURSOR_POS == 1 then
 					gamestates.control()
-				elseif cursor_pos == 2 then
+				elseif CURSOR_POS == 2 then
 					love.event.quit()
-				elseif cursor_pos == 3 then
+				elseif CURSOR_POS == 3 then
 					options = true
-				elseif cursor_pos == 4 then
+				elseif CURSOR_POS == 4 then
 					gamestates.nextState("gallery")
-				elseif cursor_pos == 5 then
+				elseif CURSOR_POS == 5 then
 					questions = true
-				elseif cursor_pos == 6 then
+				elseif CURSOR_POS == 6 then
 					about = true
-				elseif cursor_pos == 7 then
+				elseif CURSOR_POS == 7 then
 					instruction = true
-				elseif cursor_pos == 8 then
+				elseif CURSOR_POS == 8 then
 					love.system.openURL(URLS.game_page)
 				end
 			end
 
-			if cursor_pos > 8 then
-				cursor_pos = 8
-			elseif cursor_pos < 0 then
-				cursor_pos = 0
+			if CURSOR_POS > 8 then
+				CURSOR_POS = 8
+			elseif CURSOR_POS < 0 then
+				CURSOR_POS = 0
 			end
 		end
 		if key == "escape" then

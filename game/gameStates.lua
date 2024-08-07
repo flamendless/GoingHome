@@ -77,7 +77,7 @@ lightning_flash = true
 
 mouse_select = false
 cursor_select = false
-cursor_pos = 0
+CURSOR_POS = 0
 ending_final = 0
 player_ending_shot = false
 ending_shot = 0
@@ -411,7 +411,7 @@ function gamestates.update(dt)
 		end
 
 		if mouse_select == true then
-			cursor_pos = 0
+			CURSOR_POS = 0
 			cursor_select = false
 		else
 			cursor_select = true
@@ -795,7 +795,7 @@ function gamestates.draw()
 			love.graphics.draw(IMAGES.title_text, WIDTH / 4, HEIGHT_HALF - 2, 0, scale, scale, ttw / 2, tth / 2)
 
 			--start
-			if cursor_pos == 1 then
+			if CURSOR_POS == 1 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
@@ -811,7 +811,7 @@ function gamestates.draw()
 
 			--exit
 			if OS ~= "iOS" then
-				if cursor_pos == 2 then
+				if CURSOR_POS == 2 then
 					love.graphics.setColor(1, 0, 0, 1)
 				else
 					love.graphics.setColor(1, 1, 1, 1)
@@ -828,7 +828,7 @@ function gamestates.draw()
 			end
 
 			--website
-			if cursor_pos == 8 then
+			if CURSOR_POS == 8 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
@@ -843,7 +843,7 @@ function gamestates.draw()
 			love.graphics.draw(IMAGES.website_gui, gui_pos.webx, gui_pos.weby)
 
 			--instruction
-			if cursor_pos == 7 then
+			if CURSOR_POS == 7 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
@@ -858,7 +858,7 @@ function gamestates.draw()
 			love.graphics.draw(IMAGES.instruction_gui, gui_pos.i_x, gui_pos.i_y)
 
 			--about
-			if cursor_pos == 6 then
+			if CURSOR_POS == 6 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
@@ -873,7 +873,7 @@ function gamestates.draw()
 			love.graphics.draw(IMAGES.about, gui_pos.a_x, gui_pos.a_y)
 
 			--questions
-			if cursor_pos == 5 then
+			if CURSOR_POS == 5 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
@@ -888,7 +888,7 @@ function gamestates.draw()
 			love.graphics.draw(IMAGES.question, gui_pos.q_x, gui_pos.q_y)
 
 			--gallery
-			if cursor_pos == 4 then
+			if CURSOR_POS == 4 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
@@ -903,7 +903,7 @@ function gamestates.draw()
 			love.graphics.draw(IMAGES.gui_gallery, gui_pos.g_x, gui_pos.g_y)
 
 			--options
-			if cursor_pos == 3 then
+			if CURSOR_POS == 3 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
@@ -1006,7 +1006,7 @@ function gamestates.draw()
 			)
 
 			--questions
-			if cursor_pos == 3 then
+			if CURSOR_POS == 3 then
 				love.graphics.setColor(1, 0, 0, 1)
 			else
 				love.graphics.setColor(1, 1, 1, 1)
