@@ -499,7 +499,7 @@ function love.keyreleased(key)
 		end
 
 	elseif state == "title" then
-		if (instruction == false and about == false and questions == false and options == false) and cursor_select then
+		if (instruction == false and about == false and questions == false and options == false) and CURSOR_SELECT then
 			--1 start
 			--2 quit
 			--3 options

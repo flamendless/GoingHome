@@ -75,8 +75,8 @@ player_color = false
 thunder_play = true
 lightning_flash = true
 
-mouse_select = false
-cursor_select = false
+local mouse_select = false
+CURSOR_SELECT = false
 CURSOR_POS = 0
 ending_final = 0
 player_ending_shot = false
@@ -412,9 +412,9 @@ function gamestates.update(dt)
 
 		if mouse_select == true then
 			CURSOR_POS = 0
-			cursor_select = false
+			CURSOR_SELECT = false
 		else
-			cursor_select = true
+			CURSOR_SELECT = true
 		end
 
 	elseif state == "difficulty_select" then
