@@ -15,7 +15,7 @@ local txt_diff_explain = {
 }
 
 function DifficultySelect.goto_next()
-	SaveData.data.difficulty_idx = gamestates.difficulty_idx
+	SaveData.data.difficulty_idx = DifficultySelect.idx
 	SaveData.save()
 	gamestates.nextState("rain_intro")
 end
@@ -42,7 +42,7 @@ function DifficultySelect.interact()
 end
 
 function DifficultySelect.enter()
-	SaveData.data.difficulty_idx = gamestates.difficulty_idx
+	SaveData.data.difficulty_idx = DifficultySelect.idx
 	SaveData.save()
 	gamestates.nextState("rain_intro")
 end
@@ -104,14 +104,14 @@ end
 
 function DifficultySelect.keyreleased(key)
 	if key == "w" or key == "a" then
-		gamestates.difficulty_idx = gamestates.difficulty_idx - 1
-		if gamestates.difficulty_idx <= 0 then
-			gamestates.difficulty_idx = 2
+		DifficultySelect.idx = DifficultySelect.idx - 1
+		if DifficultySelect.idx <= 0 then
+			DifficultySelect.idx = 2
 		end
 	elseif key == "s" or key == "d" then
-		gamestates.difficulty_idx = gamestates.difficulty_idx + 1
-		if gamestates.difficulty_idx > 2 then
-			gamestates.difficulty_idx = 1
+		DifficultySelect.idx = DifficultySelect.idx + 1
+		if DifficultySelect.idx > 2 then
+			DifficultySelect.idx = 1
 		end
 	elseif key == "return" or key == "e" then
 		DifficultySelect.goto_next()
