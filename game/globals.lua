@@ -13,6 +13,7 @@ Gallery = require("gallery")
 
 require("gameStates")
 DifficultySelect = require("difficulty_select")
+BatteriesManager = require("batteries_manager")
 Assets = require("assets")
 
 require("rain_intro_scenes")

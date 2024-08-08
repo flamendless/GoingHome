@@ -3,8 +3,8 @@ local Player = Object:extend()
 function Player:new(x, y, w, h)
 	self.x = x - w / 2
 	self.y = y - h / 2
-	self.w = w
-	self.h = h
+	self.w = w --8
+	self.h = h --16
 	self.grav = 1
 	self.xspd = 20
 	self.moveLeft = true
@@ -151,6 +151,10 @@ function Player:moveRoom(posX, nextRoom)
 	end
 	self.x = posX
 	currentRoom = nextRoom
+
+	if DifficultySelect.idx == 2 then
+		BatteriesManager.randomize()
+	end
 
 	if currentRoom == IMAGES["hallwayRight"] then
 		l = 6

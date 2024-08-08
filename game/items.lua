@@ -81,23 +81,29 @@ function Items:stillLocked()
 end
 
 function Items:glow()
-	if move_chair == false then
-		if currentRoom == self.room then
-			for k, v in pairs(IMAGES) do
-				if self.image == v then
-					_glow = k
-				end
-			end
+	if move_chair then return end
 
-			local glow = _glow .. "_glow"
-
-			local iw, ih = self.image:getDimensions()
-			local gw, gh = IMAGES[glow]:getDimensions()
-			local offX, offY = gw - iw, gh - ih
-			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.draw(IMAGES[glow], self.x, self.y, 0, 1, 1, offX / 2, offY / 2)
-			--love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
+	if DifficultySelect.idx == 2 then
+		if BatteriesManager.has_collision then
+			return
 		end
+	end
+
+	if currentRoom == self.room then
+		for k, v in pairs(IMAGES) do
+			if self.image == v then
+				_glow = k
+			end
+		end
+
+		local glow = _glow .. "_glow"
+
+		local iw, ih = self.image:getDimensions()
+		local gw, gh = IMAGES[glow]:getDimensions()
+		local offX, offY = gw - iw, gh - ih
+		love.graphics.setColor(1, 1, 1, 1)
+		love.graphics.draw(IMAGES[glow], self.x, self.y, 0, 1, 1, offX / 2, offY / 2)
+		--love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
 	end
 end
 

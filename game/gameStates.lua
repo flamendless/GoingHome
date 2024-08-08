@@ -459,6 +459,9 @@ function gamestates.update(dt)
 
 		-----MAIN-------
 	elseif state == "main" then
+		if DifficultySelect.idx == 2 then
+			BatteriesManager.update(dt)
+		end
 		gamestates.heartbeat_timer:update(dt)
 		win_left_anim:update(dt)
 		win_right_anim:update(dt)
@@ -572,7 +575,7 @@ function gamestates.update(dt)
 				LIGHTY = math.clamp(ly, PLAYER.y - 20, PLAYER.y + 0)
 
 				love.graphics.setCanvas(CANVAS_CUSTOM_MASK)
-				love.graphics.clear(1, 0, 0, LIGHT_VALUE)
+				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 				love.graphics.setBlendMode("multiply", "premultiplied")
 				love.graphics.draw(TEX_LIGHT, LIGHTX, LIGHTY)
 				love.graphics.setBlendMode("alpha")
@@ -1113,6 +1116,10 @@ function gamestates.draw()
 
 		for _, v in ipairs(ITEMS_LIST) do
 			v:draw()
+		end
+
+		if DifficultySelect.idx == 2 then
+			BatteriesManager.draw()
 		end
 
 		if ENDING_LEAVE == false then
