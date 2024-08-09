@@ -426,12 +426,15 @@ function Player:checkDoors()
 	end
 end
 
+function Player:check_collision(other)
+	return self.x >= other.x and self.x + self.w <= other.x + other.w or
+		self.x + self.w >= other.x + other.w / 6 and self.x + self.w <= other.x + other.w or
+		self.x >= other.x and self.x <= other.x + other.w - other.w / 6
+end
+
 function Player:checkItems()
 	for _, v in ipairs(ITEMS_LIST) do
-		if self.x >= v.x and self.x + self.w <= v.x + v.w or
-			self.x + self.w >= v.x + v.w / 6 and self.x + self.w <= v.x + v.w or
-			self.x >= v.x and self.x <= v.x + v.w - v.w / 6
-		then
+		if self:check_collision(v) then
 			if self.state == "normal" and v.visible then
 				if event_find == false then
 					if DOOR_LOCKED == false then
@@ -442,17 +445,15 @@ function Player:checkItems()
 				else
 					v:specialTag()
 				end
-			else
-				if v.visible and (v.tag == "chair" or v.tag == "chair_final") then
-					if event_find == false then
-						if DOOR_LOCKED == false then
-							v:returnTag()
-						else
-							v:stillLocked()
-						end
+			elseif v.visible and (v.tag == "chair" or v.tag == "chair_final") then
+				if event_find == false then
+					if DOOR_LOCKED == false then
+						v:returnTag()
 					else
-						v:specialTag()
+						v:stillLocked()
 					end
+				else
+					v:specialTag()
 				end
 			end
 		end

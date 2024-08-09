@@ -48,7 +48,7 @@ function leave_event_update(dt)
 		end
 	elseif ending_leave_event == 2 then
 		if LIGHT_VALUE > 0 then
-			LIGHT_VALUE = LIGHT_VALUE - 60 * dt
+			LIGHT_VALUE = LIGHT_VALUE - 0.6 * dt
 			if LIGHT_VALUE <= 0 then
 				LIGHT_VALUE = 0
 				MOVE = true
@@ -75,7 +75,7 @@ function leave_event_update(dt)
 		LIGHT_ON = false
 		if LIGHT_VALUE > 0 then
 			MOVE = false
-			LIGHT_VALUE = LIGHT_VALUE - 60 * dt
+			LIGHT_VALUE = LIGHT_VALUE - 0.6 * dt
 			if LIGHT_VALUE <= 0 then
 				LIGHT_VALUE = 0
 				--activate the player panic animation

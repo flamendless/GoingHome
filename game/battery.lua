@@ -1,11 +1,12 @@
 local Battery = Object:extend()
 
-function Battery:new(x, y, r)
+function Battery:new(charge, x, y, r)
 	self.image = IMAGES.battery
 	self.image_glow = IMAGES.battery_glow
 
 	self.w, self.h = self.image:getDimensions()
 
+	self.charge = charge
 	self.x = x
 	self.y = y
 	self.r = r

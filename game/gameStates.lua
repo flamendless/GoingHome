@@ -294,6 +294,9 @@ function gamestates.init()
 	elseif state == "main" then
 		SaveData.load()
 		Pause.init()
+		if DifficultySelect.idx == 2 then
+			BatteriesManager.init()
+		end
 		SOUNDS.fl_toggle:setLooping(false)
 		SOUNDS.fl_toggle:setVolume(1)
 
@@ -718,6 +721,7 @@ function gamestates.update(dt)
 				local rand = 0.05
 				local cx = 0 + (math.random(-rand, rand))
 				local cy = HEIGHT_HALF - IMAGES.candles_light_mask:getHeight() / 2 + (math.random(-rand, rand))
+
 				love.graphics.setCanvas(CANVAS_CANDLES_FLASH)
 				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 				love.graphics.setBlendMode("multiply", "premultiplied")
@@ -1399,6 +1403,7 @@ function light_etc(dt, img_table, img_var, canvas)
 	local r = 0.05
 	local x = 0 + (math.random(-r, r))
 	local y = HEIGHT_HALF - img_table[img_var]:getHeight() / 2 + (math.random(-r, r))
+
 	love.graphics.setCanvas(canvas)
 	love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 	love.graphics.setBlendMode("multiply", "premultiplied")
@@ -1411,10 +1416,6 @@ function light_etc(dt, img_table, img_var, canvas)
 	end
 	love.graphics.setBlendMode("alpha")
 	love.graphics.setCanvas()
-
-	function getLightEtc()
-		return x, y
-	end
 end
 
 function lightning(dt)

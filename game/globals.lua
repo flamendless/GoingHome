@@ -67,7 +67,7 @@ LOCKED = Set {
 }
 
 MOVE = false
-LIGHT_VALUE = 100
+LIGHT_VALUE = 1
 LIGHT_BLINK = true
 LIGHT_ON = false
 BLINK = false

@@ -688,6 +688,13 @@ function love.keypressed(key)
 						end
 					end
 
+					if DifficultySelect.idx == 2 then
+						local has_interact = BatteriesManager.check_interact()
+						if has_interact then
+							return
+						end
+					end
+
 					if not LIGHT_ON then
 						if currentRoom == IMAGES.leftRoom or currentRoom == IMAGES.rightRoom then
 							PLAYER:checkItems()
