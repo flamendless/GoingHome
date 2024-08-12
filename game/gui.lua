@@ -316,20 +316,20 @@ function android.endingDialogue()
 	local key = android.getKey()
 	if lr_event == 3 then
 		if key == "a" then
-			e_c = 1
+			E_C = 1
 		elseif key == "d" then
-			e_c = 2
+			E_C = 2
 		elseif key == "e" then
 			if ROUTE == 1 then
-				if e_c == 1 then
+				if E_C == 1 then
 					event_route = him_convo
-				elseif e_c == 2 then
+				elseif E_C == 2 then
 					event_route = wait_convo
 				end
 			elseif ROUTE == 2 then
-				if e_c == 1 then
+				if E_C == 1 then
 					event_route = leave_convo
-				elseif e_c == 2 then
+				elseif E_C == 2 then
 					event_route = wait_convo
 				end
 			end
@@ -372,8 +372,7 @@ function android.light_update(dt)
 				love.graphics.draw(IMAGES.tv_light, tx, ty)
 			end
 			if left_light_flag and currentRoom == IMAGES["leftRoom"] then
-				local img = getLeftRoom()
-				light_etc(dt, LL, img, CANVAS_CUSTOM_MASK)
+				light_etc(dt, LL, LL_IMG, CANVAS_CUSTOM_MASK)
 			end
 			if right_light_flag and currentRoom == IMAGES["rightRoom"] then
 				local img = getRightRoom()

@@ -2,7 +2,7 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.1.4"
+local VERSION = "v1.1.6"
 local MOBILE_VERSION = "8"
 local DESKTOP_VERSION = "8"
 PRO_VERSION = true
@@ -565,20 +565,20 @@ function love.keyreleased(key)
 	if lr_event ~= 3 then return end
 
 	if key == "a" then
-		e_c = 1
+		E_C = 1
 	elseif key == "d" then
-		e_c = 2
+		E_C = 2
 	elseif key == "e" then
 		if ROUTE == 1 then
-			if e_c == 1 then
+			if E_C == 1 then
 				event_route = him_convo
-			elseif e_c == 2 then
+			elseif E_C == 2 then
 				event_route = wait_convo
 			end
 		elseif ROUTE == 2 then
-			if e_c == 1 then
+			if E_C == 1 then
 				event_route = leave_convo
-			elseif e_c == 2 then
+			elseif E_C == 2 then
 				event_route = wait_convo
 			end
 		end
@@ -757,20 +757,20 @@ function love.keypressed(key)
 
 			if lr_event == 3 then
 				if key == "a" then
-					e_c = 1
+					E_C = 1
 				elseif key == "d" then
-					e_c = 2
+					E_C = 2
 				elseif key == "e" then
 					if ROUTE == 1 then
-						if e_c == 1 then
+						if E_C == 1 then
 							event_route = him_convo
-						elseif e_c == 2 then
+						elseif E_C == 2 then
 							event_route = wait_convo
 						end
 					elseif ROUTE == 2 then
-						if e_c == 1 then
+						if E_C == 1 then
 							event_route = leave_convo
-						elseif e_c == 2 then
+						elseif E_C == 2 then
 							event_route = wait_convo
 						end
 					end

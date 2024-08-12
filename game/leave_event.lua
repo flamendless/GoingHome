@@ -2,24 +2,24 @@ local timer = 3
 local maxTimer = 3
 local c = 1
 local text1 = {
-	 "",
-	 "",
-	 "It's already morning",
-	 "Down there...",
-	 "That felt like eternity",
-	 "I don't know what to do..",
-	 "...",
-	 "I know mother would",
-	 "not like it if",
-	 "I kill or dispose him",
-	 "...",
-	 "I must prepare for work",
-	 "It's true",
-	 "...",
-	 "I am just alone",
-	 "",
-	 "Everyday it's like this",
-	 "Going home...",
+	"",
+	"",
+	"It's already morning",
+	"Down there...",
+	"That felt like eternity",
+	"I don't know what to do..",
+	"...",
+	"I know mother would",
+	"not like it if",
+	"I kill or dispose him",
+	"...",
+	"I must prepare for work",
+	"It's true",
+	"...",
+	"I am just alone",
+	"",
+	"Everyday it's like this",
+	"Going home...",
 	"for me...",
 	"is going insane..",
 	"more and more...",
@@ -58,6 +58,11 @@ function leave_event_update(dt)
 		end
 	end
 
+	if DifficultySelect.idx == 2 then
+		if ending_leave_event == 1 or ending_leave_event == 2 then
+			BatteriesManager.current_charge = 1
+		end
+	end
 
 	if currentRoom == IMAGES["mainRoom"] then
 		if SOUNDS.knock:isPlaying() == false then
@@ -94,7 +99,7 @@ function leave_event_update(dt)
 			elseif va >= 1 then
 				if shotTimer > 0 then
 					shotTimer = shotTimer - 1 * dt
-					if shotTimer >0 and shotTimer <1 then
+					if shotTimer > 0 and shotTimer < 1 then
 						if gun_click_flag == false then
 							gun_click_flag = true
 							SOUNDS.gun_click:play()
@@ -126,21 +131,20 @@ end
 
 function leave_event_draw()
 	if ending_leave_event == 1 then
-		love.graphics.setColor(0,0,0,1)
-		love.graphics.rectangle("fill",0,16,128,32)
+		love.graphics.setColor(0, 0, 0, 1)
+		love.graphics.rectangle("fill", 0, 16, 128, 32)
 		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.print(text1[c],WIDTH/2 - DEF_FONT:getWidth(text1[c])/2, HEIGHT_HALF - DEF_FONT_HALF)
+		love.graphics.print(text1[c], WIDTH / 2 - DEF_FONT:getWidth(text1[c]) / 2, HEIGHT_HALF - DEF_FONT_HALF)
 	end
 
 	--end room
 	if currentRoom == IMAGES["endRoom"] then
 		if player_ending_shot == true then
-			love.graphics.setColor(0,0,0,va)
-			love.graphics.rectangle("fill",0,16,128,32)
+			love.graphics.setColor(0, 0, 0, va)
+			love.graphics.rectangle("fill", 0, 16, 128, 32)
 		end
 		if credits_flag == true then
 			credits_draw()
 		end
 	end
 end
-

@@ -1,20 +1,20 @@
 convo = {
-	 "",
-	 "",
-	 "Have I gotten any mercy?",
-	 "What brings you here?",
-	 "Family? You only got us!",
-	 "We're your family!",
-	 "Hahaha!",
-	 "Are you insane?",
-	 "You've killed her!",
-	 "It's you that caused everthing!",
-	 "You are one crazy son!",
-	 "She was still alive!",
-	 "Y-you've ended her misery!",
-	 "Y-you took it, didn't you?",
-	 "HAHAHAHA! ",
-	 "You thought you could 'save'",
+	"",
+	"",
+	"Have I gotten any mercy?",
+	"What brings you here?",
+	"Family? You only got us!",
+	"We're your family!",
+	"Hahaha!",
+	"Are you insane?",
+	"You've killed her!",
+	"It's you that caused everthing!",
+	"You are one crazy son!",
+	"She was still alive!",
+	"Y-you've ended her misery!",
+	"Y-you took it, didn't you?",
+	"HAHAHAHA! ",
+	"You thought you could 'save'",
 	"her with your foolishness!",
 	"you thought you could repa--",
 	"",
@@ -54,9 +54,6 @@ him_convo = {
 	"",
 	"",
 }
-
-local a = 0
-local flash = false
 
 wait_convo = {
 	"",
@@ -112,31 +109,24 @@ leave_convo = {
 	"",
 	""
 }
-local flash = false
 
-ending_options = {}
+ENDING_OPTIONS = {}
 
 local c = 1
 local timer = 6
 local maxTimer = 6
 local show_top = false
 local show_bot = false
-e_c = 1
+E_C = 1
 
-ll_img = 1
-_ev = 0
-local wait_ev = 0
+LL_IMG = 1
+_EV = 0
 
 
 
 function left_room_update(dt)
-
-	function getLeftRoom()
-		return ll_img
-	end
-
 	if left_light_flag == true then
-		light_etc(dt,LL,ll_img,CANVAS_LEFT)
+		light_etc(dt, LL, LL_IMG, CANVAS_LEFT)
 	end
 	----------------MAIN STUFFS--------------
 	if lr_event == 1 then
@@ -150,12 +140,11 @@ function left_room_update(dt)
 				lr_event = 2
 			end
 		end
-
 	elseif lr_event == 2 then
 		MOVE = false
 
-		ll_img = 2
-		_ev = 1
+		LL_IMG = 2
+		_EV = 1
 
 		if c < #convo - 2 then
 			if timer > 0 then
@@ -180,7 +169,6 @@ function left_room_update(dt)
 			left_light_flag = true
 		end
 	elseif lr_event == 3 then
-
 		if AMMO_AVAILABLE == true then
 			--route 1
 			ENDING_ANIMATE = true
@@ -190,11 +178,8 @@ function left_room_update(dt)
 			ENDING_ANIMATE = true
 			leave_animate = true
 		end
-
-
 	elseif lr_event == 4 then
-
-		_ev = 2
+		_EV = 2
 
 		if c < #event_route - 2 then
 			if timer > 0 then
@@ -211,7 +196,7 @@ function left_room_update(dt)
 				end
 			end
 			if event_route == leave_convo then
-				if (event_route[c+1] == "S-stop! Leave me alone!") then
+				if (event_route[c + 1] == "S-stop! Leave me alone!") then
 					ENDING_ANIMATE = false
 				elseif event_route[c] == "" then
 					f_leave2_flag = true
@@ -225,7 +210,7 @@ function left_room_update(dt)
 					f_shot_anim_flag = true
 				end
 			elseif event_route == wait_convo then
-				if event_route[c-1] == 	"could be with her!" then
+				if event_route[c - 1] == "could be with her!" then
 					ENDING_ANIMATE = true
 					wait_animate = true
 					shoot_pose_animate = false
@@ -234,7 +219,7 @@ function left_room_update(dt)
 					wait_animate = false
 					leave_animate = true
 					f_leave2_flag = true
-				elseif event_route[c+1] == "..." then
+				elseif event_route[c + 1] == "..." then
 					if leave_scream == false then
 						SOUNDS.enemy_scream:play()
 						SOUNDS.enemy_scream:setLooping(false)
@@ -266,11 +251,12 @@ function left_room_update(dt)
 					ENDING_ANIMATE = false
 
 					--insert note
-					local note_item = Interact(false,{"It's a note","It's written using blood","Read it?"},{"Yes","No"},"","note")
-					table.insert(DIALOGUES,note_item)
-					local note_dial = Items(IMAGES.note,IMAGES["leftRoom"],10,40,"note")
-			  		table.insert(ITEMS_LIST,note_dial)
-			  		random_breathe_flag = true
+					local note_item = Interact(false, { "It's a note", "It's written using blood", "Read it?" },
+						{ "Yes", "No" }, "", "note")
+					table.insert(DIALOGUES, note_item)
+					local note_dial = Items(IMAGES.note, IMAGES["leftRoom"], 10, 40, "note")
+					table.insert(ITEMS_LIST, note_dial)
+					random_breathe_flag = true
 				end
 			end
 		elseif event_route == wait_convo then
@@ -284,59 +270,51 @@ function left_room_update(dt)
 end
 
 function left_room_draw()
-
 	if lr_event == 2 then
-
-		love.graphics.setColor(100/255, 100/255, 100/255, 1)
+		love.graphics.setColor(100 / 255, 100 / 255, 100 / 255, 1)
 
 		if show_top == true then
-			love.graphics.print(convo[c],WIDTH/2 - DEF_FONT:getWidth(convo[c])/2, DEF_FONT_HALF - 3)
+			love.graphics.print(convo[c], WIDTH / 2 - DEF_FONT:getWidth(convo[c]) / 2, DEF_FONT_HALF - 3)
 		end
 		if show_bot == true then
-			love.graphics.print(convo[c+1],WIDTH/2 - DEF_FONT:getWidth(convo[c+1])/2, HEIGHT - DEF_FONT_HEIGHT - 2)
+			love.graphics.print(convo[c + 1], WIDTH / 2 - DEF_FONT:getWidth(convo[c + 1]) / 2,
+				HEIGHT - DEF_FONT_HEIGHT - 2)
 		end
 
 		love.graphics.setColor(1, 1, 1, 1)
-
-
 	elseif lr_event == 3 then
-		if e_c == 1 then
-			love.graphics.setColor(1,0,0,1)
-		else
-			love.graphics.setColor(1, 1, 1, 1)
-		end
-		love.graphics.print(ending_options[1],DEF_FONT:getWidth(ending_options[1])/2 - 10,HEIGHT - DEF_FONT_HEIGHT - 2)
-		if e_c == 2 then
+		if E_C == 1 then
 			love.graphics.setColor(1, 0, 0, 1)
 		else
 			love.graphics.setColor(1, 1, 1, 1)
 		end
-		love.graphics.print(ending_options[2],WIDTH - DEF_FONT:getWidth(ending_options[2]) - 6,HEIGHT - DEF_FONT_HEIGHT - 2)
+		love.graphics.print(ENDING_OPTIONS[1], DEF_FONT:getWidth(ENDING_OPTIONS[1]) / 2 - 10,
+			HEIGHT - DEF_FONT_HEIGHT - 2)
+		if E_C == 2 then
+			love.graphics.setColor(1, 0, 0, 1)
+		else
+			love.graphics.setColor(1, 1, 1, 1)
+		end
+		love.graphics.print(ENDING_OPTIONS[2], WIDTH - DEF_FONT:getWidth(ENDING_OPTIONS[2]) - 6,
+			HEIGHT - DEF_FONT_HEIGHT - 2)
 
-	--choices
+		--choices
 	elseif lr_event == 4 then
-		love.graphics.setColor(100/255, 100/255, 100/255, 1)
+		love.graphics.setColor(100 / 255, 100 / 255, 100 / 255, 1)
 		if show_top == true then
-			love.graphics.print(event_route[c],WIDTH/2 - DEF_FONT:getWidth(event_route[c])/2, DEF_FONT_HALF - 3)
+			love.graphics.print(event_route[c], WIDTH / 2 - DEF_FONT:getWidth(event_route[c]) / 2, DEF_FONT_HALF - 3)
 		end
 		if show_bot == true then
-			love.graphics.print(event_route[c+1],WIDTH/2 - DEF_FONT:getWidth(event_route[c+1])/2, HEIGHT - DEF_FONT_HEIGHT - 2)
+			love.graphics.print(event_route[c + 1], WIDTH / 2 - DEF_FONT:getWidth(event_route[c + 1]) / 2,
+				HEIGHT - DEF_FONT_HEIGHT - 2)
 		end
-
-	--ending sequences
-	elseif lr_event == 5 then
-		if event_route == him_convo then
-
-		end
-	elseif lr_event == 6 then
-
 	end
 end
 
 function father_anim_update(dt)
-	if _ev == 1 then
+	if _EV == 1 then
 		f1_anim:update(dt)
-	elseif _ev == 2 then
+	elseif _EV == 2 then
 		if event_route == leave_convo then
 			if f_leave2_flag == true then
 				f_headbang:update(dt)
@@ -364,36 +342,33 @@ function father_anim_update(dt)
 end
 
 function father_anim_draw()
-	if _ev == 1 then
-		f1_anim:draw(IMAGES.f1,8,25)
-	elseif _ev == 2 then
+	if _EV == 1 then
+		f1_anim:draw(IMAGES.f1, 8, 25)
+	elseif _EV == 2 then
 		if event_route == leave_convo then
 			if f_leave2_flag == true then
-				f_headbang:draw(IMAGES.f_leave,8,25)
+				f_headbang:draw(IMAGES.f_leave, 8, 25)
 			else
-				f_leave:draw(IMAGES.f_leave,8,25)
+				f_leave:draw(IMAGES.f_leave, 8, 25)
 			end
 		elseif event_route == him_convo then
 			if f_shot_anim_flag == true then
 				if f_shot_anim2_flag == false then
-					f_shot_anim:draw(IMAGES.f_shot_sheet,8,25)
+					f_shot_anim:draw(IMAGES.f_shot_sheet, 8, 25)
 				else
-					f_shot_anim2:draw(IMAGES.f_shot_sheet,8,25)
+					f_shot_anim2:draw(IMAGES.f_shot_sheet, 8, 25)
 				end
 			else
-				f1_anim:draw(IMAGES.f1,8,25)
+				f1_anim:draw(IMAGES.f1, 8, 25)
 			end
 		elseif event_route == wait_convo then
 			if f_leave2_flag == true then
-				f_headbang:draw(IMAGES.f_leave,8,25)
+				f_headbang:draw(IMAGES.f_leave, 8, 25)
 			else
-				f_leave:draw(IMAGES.f_leave,8,25)
+				f_leave:draw(IMAGES.f_leave, 8, 25)
 			end
 		end
 	end
 	love.graphics.setColor(1, 1, 1, 1)
-	love.graphics.draw(IMAGES.jail,0,16)
+	love.graphics.draw(IMAGES.jail, 0, 16)
 end
-
-
-

@@ -21,12 +21,11 @@ function BatteriesManager.randomize()
 	local chance = love.math.random()
 	if chance <= 0.6 then return end
 
-	local charge = love.math.random(0.15, 0.2)
 	local x = Lume.random(8, WIDTH - 32)
 	local y = HEIGHT - 24
 	local r = 0
 
-	BatteriesManager.current_battery = Battery(charge, x, y, r)
+	BatteriesManager.current_battery = Battery(x, y, r)
 end
 
 function BatteriesManager.update(dt)
@@ -52,9 +51,7 @@ function BatteriesManager.check_interact()
 		return false
 	end
 
-	BatteriesManager.current_charge = BatteriesManager.current_charge + BatteriesManager.current_battery.charge
-	BatteriesManager.current_charge = math.clamp(BatteriesManager.current_charge, 0.0, 1.0)
-
+	BatteriesManager.current_charge = 1
 	BatteriesManager.current_battery = nil
 	BatteriesManager.has_collision = false
 

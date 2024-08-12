@@ -219,15 +219,15 @@ function Player:checkDoors()
 						if ending == false then
 							if AMMO_AVAILABLE == true then
 								if gun_obtained == true then
-									table.insert(ending_options, "Shoot Him")
-									table.insert(ending_options, "Wait")
+									table.insert(ENDING_OPTIONS, "Shoot Him")
+									table.insert(ENDING_OPTIONS, "Wait")
 									ROUTE = 1
 								else
 									doorTxt("", "I must rebuild the gun first.")
 								end
 							else
-								table.insert(ending_options, "Leave Him")
-								table.insert(ending_options, "Wait")
+								table.insert(ENDING_OPTIONS, "Leave Him")
+								table.insert(ENDING_OPTIONS, "Wait")
 								ROUTE = 2
 
 								local dialogue_broken_revolver = Interact(
