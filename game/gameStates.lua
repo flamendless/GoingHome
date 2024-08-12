@@ -7,12 +7,14 @@ options = false
 questions = false
 DOOR_LOCKED = true
 
+local light_rad = 16
+
 if DEBUGGING then
 	DOOR_LOCKED = false
 end
 
 --
-lStrike = false
+LIGHTNING_STRIKE = false
 local _alarm = 3
 local tt_txt = "Where are they?"
 local tt_txt2 = "I have to look for them"
@@ -69,7 +71,7 @@ ending_leave_event = 0
 player_color = false
 
 thunder_play = true
-lightning_flash = true
+LIGHTNING_FLASH = true
 
 local mouse_select = false
 CURSOR_SELECT = false
@@ -188,6 +190,35 @@ local function draw_instructions()
 		love.graphics.setColor(1, 0, 0, 1)
 		love.graphics.print(last_str, WIDTH_HALF - DEF_FONT:getWidth(last_str) / 2, y + DEF_FONT_HEIGHT)
 		love.graphics.setColor(1, 1, 1, 1)
+	end
+end
+
+local function exec_lightning()
+	if LIGHTNING_FLASH == true then
+		local random = math.floor(math.random(0, 1000))
+		if random <= 5 then
+			if SOUNDS.lightning:isPlaying() == false then
+				SOUNDS.lightning:play()
+				SOUNDS.lightning:setVolume(lightningVol)
+				SOUNDS.lightning:setLooping(false)
+			end
+		end
+	end
+
+	local tell = SOUNDS.lightning:tell()
+	if FADE_OBJ.state == false and ending_leave_event ~= 2 then
+		local amount = 0.25
+		if (tell >= 6 and tell <= 7) then
+			LIGHT_VALUE = Lume.lerp(LIGHT_VALUE, 0, amount)
+			LIGHT_VALUE = math.clamp(LIGHT_VALUE, 0, 1)
+			LIGHTNING_STRIKE = true
+		else
+			LIGHT_VALUE = Lume.lerp(LIGHT_VALUE, 1, amount)
+			LIGHT_VALUE = math.clamp(LIGHT_VALUE, 0, 1)
+			LIGHTNING_STRIKE = false
+		end
+	else
+		LIGHT_VALUE = 1
 	end
 end
 
@@ -530,7 +561,7 @@ function gamestates.update(dt)
 				else
 					SOUNDS.lightning:setVolume(0.7)
 				end
-				lightning()
+				exec_lightning()
 			else
 				SOUNDS.lightning:stop()
 				if GHOST_EVENT == "flashback" and
@@ -564,23 +595,40 @@ function gamestates.update(dt)
 
 		if GAMEOVER == false then
 			if not ON_MOBILE and (not DEBUGGING) then
-				local lx, ly
+				local img
 				if event_trigger_light == -1 then
-					local lsw, lsh = IMAGES.light_small:getDimensions()
-					lx = mx - lsw / 2 + math.random(-0.05, 0.05)
-					ly = my - lsh / 2 + math.random(-0.05, 0.05)
+					img = IMAGES.light_small
 				else
-					local lw, lh = IMAGES.light:getDimensions()
-					lx = mx - lw / 2 + math.random(-0.05, 0.05)
-					ly = my - lh / 2 + math.random(-0.05, 0.05)
+					img = IMAGES.light
 				end
-				LIGHTX = math.clamp(lx, PLAYER.x - 120, PLAYER.x + 100)
-				LIGHTY = math.clamp(ly, PLAYER.y - 20, PLAYER.y + 0)
+
+				local scale = 1
+				if DifficultySelect.idx == 2 then
+					scale = BatteriesManager.current_charge
+					scale = math.max(scale, 0.4)
+				end
+
+				local lw, lh = img:getDimensions()
+				lw = lw * scale
+				lh = lh * scale
+
+				local lx = mx - lw / 2 + math.random(-0.05, 0.05)
+				local ly = my - lh / 2 + math.random(-0.05, 0.05)
+
+				if DifficultySelect.idx == 2 then
+					LIGHTX = math.clamp(lx, PLAYER.x - 40, PLAYER.x + 35)
+					LIGHTY = math.clamp(ly, PLAYER.y - 15, PLAYER.y + 10)
+				else
+					LIGHTX = math.clamp(lx, PLAYER.x - 120, PLAYER.x + 100)
+					LIGHTY = math.clamp(ly, PLAYER.y - 20, PLAYER.y + 0)
+				end
 
 				love.graphics.setCanvas(CANVAS_CUSTOM_MASK)
 				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
+
 				love.graphics.setBlendMode("multiply", "premultiplied")
-				love.graphics.draw(TEX_LIGHT, LIGHTX, LIGHTY)
+				love.graphics.draw(TEX_LIGHT, LIGHTX, LIGHTY, 0, scale, scale)
+
 				love.graphics.setBlendMode("alpha")
 				love.graphics.setCanvas()
 			end
@@ -1418,35 +1466,6 @@ function light_etc(dt, img_table, img_var, canvas)
 	love.graphics.setCanvas()
 end
 
-function lightning(dt)
-	if lightning_flash == true then
-		local random = math.floor(math.random(0, 1000))
-		if random <= 5 then
-			if SOUNDS.lightning:isPlaying() == false then
-				SOUNDS.lightning:play()
-				SOUNDS.lightning:setVolume(lightningVol)
-				SOUNDS.lightning:setLooping(false)
-			end
-		end
-	end
-	-- local duration = Sounds.lightning:getDuration("seconds")
-	local tell = SOUNDS.lightning:tell()
-	local amount = 0.25
-	if FADE_OBJ.state == false then
-		if ending_leave_event ~= 2 then
-			if (tell >= 6 and tell <= 7) then
-				LIGHT_VALUE = Lume.lerp(LIGHT_VALUE, 0, amount)
-				lStrike = true
-			else
-				LIGHT_VALUE = Lume.lerp(LIGHT_VALUE, 1, amount)
-				lStrike = false
-			end
-		end
-	else
-		LIGHT_VALUE = 1
-	end
-end
-
 function check_gui(gx, gy, gw, gh)
 	local mx, my = love.mouse.getPosition()
 	mx = (mx - TX) / RATIO
@@ -1510,4 +1529,7 @@ function seconds_to_clock(seconds)
 		local secs = string.format("%02.f", math.floor(seconds - hours * 3600 - mins * 60))
 		return hours .. ":" .. mins .. ":" .. secs
 	end
+end
+
+function gamestates.keypressed(key)
 end

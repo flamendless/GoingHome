@@ -7,6 +7,7 @@ local MOBILE_VERSION = "8"
 local DESKTOP_VERSION = "7"
 PRO_VERSION = true
 DEBUGGING = false
+local debug_battery = false
 
 OS = love.system.getOS()
 ON_MOBILE = (OS == "Android") or (OS == "iOS")
@@ -317,6 +318,21 @@ function love.draw()
 	love.graphics.draw(MAIN_CANVAS, TX, TY)
 	love.graphics.setShader()
     love.graphics.draw(cursorImage, MOUSE_X, MOUSE_Y)
+
+	if debug_battery and DifficultySelect.idx == 2 then
+		love.graphics.push()
+		love.graphics.setColor(1, 0, 0, 1)
+		local scale = LIGHT_VALUE
+		if DifficultySelect.idx == 2 then
+			-- lv = 1 - (LIGHT_VALUE * BatteriesManager.current_charge)
+			scale = BatteriesManager.current_charge
+			scale = math.max(scale, 0.4)
+		end
+		love.graphics.scale(4, 4)
+		-- love.graphics.print("LV: " .. lv, 8, 8)
+		love.graphics.print("SCALE: " .. scale, 8, 8)
+		love.graphics.pop()
+	end
 
 	-- love.graphics.setColor(1, 0, 0, 1)
 	-- local ry = love.graphics.getHeight()/2 - (HEIGHT*RATIO)/2

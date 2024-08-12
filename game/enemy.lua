@@ -22,7 +22,7 @@ function Enemy:update(dt)
 	end
 
 	--lightning
-	if lStrike == true then
+	if LIGHTNING_STRIKE == true then
 		if self.x <= PLAYER.x and self.x >= PLAYER.x + PLAYER.w then
 			GAMEOVER = true
 		end

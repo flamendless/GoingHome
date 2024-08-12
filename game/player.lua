@@ -252,7 +252,7 @@ function Player:checkDoors()
 								PLAYER:moveRoom(PLAYER.x, IMAGES["basementRoom"])
 								SOUNDS.rain:stop()
 								thunder_play = false
-								lightning_flash = false
+								LIGHTNING_FLASH = false
 							end
 						end
 					else

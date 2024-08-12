@@ -81,7 +81,7 @@ local function convo_draw()
 end
 
 function rightroom_update(dt)
-	lightning_flash = false
+	LIGHTNING_FLASH = false
 
 	if right_light_flag == true then
 		light_etc(dt, RL, rl_img, CANVAS_RIGHT)
