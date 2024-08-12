@@ -594,26 +594,14 @@ function gamestates.update(dt)
 					img = IMAGES.light
 				end
 
-				local scale = 1
-				if DifficultySelect.idx == 2 then
-					scale = BatteriesManager.current_charge
-					scale = math.max(scale, 0.4)
-				end
-
+				local scale = BatteriesManager.get_light_scale()
 				local lw, lh = img:getDimensions()
 				lw = lw * scale
 				lh = lh * scale
 
 				local lx = mx - lw / 2 + math.random(-0.05, 0.05)
 				local ly = my - lh / 2 + math.random(-0.05, 0.05)
-
-				if DifficultySelect.idx == 2 then
-					LIGHTX = math.clamp(lx, PLAYER.x - 40, PLAYER.x + 35)
-					LIGHTY = math.clamp(ly, PLAYER.y - 15, PLAYER.y + 10)
-				else
-					LIGHTX = math.clamp(lx, PLAYER.x - 120, PLAYER.x + 100)
-					LIGHTY = math.clamp(ly, PLAYER.y - 20, PLAYER.y + 0)
-				end
+				CLAMP_LIGHT(lx, ly)
 
 				love.graphics.setCanvas(CANVAS_CUSTOM_MASK)
 				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
@@ -767,17 +755,8 @@ function gamestates.update(dt)
 				love.graphics.setBlendMode("multiply", "premultiplied")
 				love.graphics.draw(IMAGES.candles_light_mask, cx, cy)
 
-				local scale = 1
-				if DifficultySelect.idx == 2 then
-					scale = BatteriesManager.current_charge
-					scale = math.max(scale, 0.4)
-					LIGHTX = math.clamp(LIGHTX, PLAYER.x - 40, PLAYER.x + 35)
-					LIGHTY = math.clamp(LIGHTY, PLAYER.y - 15, PLAYER.y + 10)
-				else
-					LIGHTX = math.clamp(LIGHTX, PLAYER.x - 120, PLAYER.x + 100)
-					LIGHTY = math.clamp(LIGHTY, PLAYER.y - 20, PLAYER.y + 0)
-				end
-
+				local scale = BatteriesManager.get_light_scale()
+				CLAMP_LIGHT()
 				love.graphics.draw(TEX_LIGHT, LIGHTX, LIGHTY, 0, scale, scale)
 
 				love.graphics.setBlendMode("alpha")
@@ -1468,7 +1447,9 @@ function light_etc(dt, img_table, img_var, canvas)
 		local lx, ly = Android.get_light_pos()
 		love.graphics.draw(mainLight, lx, ly)
 	elseif not ON_MOBILE and (not DEBUGGING) then
-		love.graphics.draw(TEX_LIGHT, LIGHTX, LIGHTY)
+		local scale = BatteriesManager.get_light_scale()
+		CLAMP_LIGHT()
+		love.graphics.draw(TEX_LIGHT, LIGHTX, LIGHTY, 0, scale, scale)
 	end
 	love.graphics.setBlendMode("alpha")
 	love.graphics.setCanvas()

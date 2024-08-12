@@ -69,4 +69,13 @@ function BatteriesManager.draw()
 	BatteriesManager.current_battery:draw()
 end
 
+function BatteriesManager.get_light_scale()
+	local scale = 1
+	if DifficultySelect.idx == 2 then
+		scale = BatteriesManager.current_charge
+		scale = math.max(scale, 0.4)
+	end
+	return scale
+end
+
 return BatteriesManager

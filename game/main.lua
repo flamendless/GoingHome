@@ -2,9 +2,9 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.1.0"
+local VERSION = "v1.1.4"
 local MOBILE_VERSION = "8"
-local DESKTOP_VERSION = "7"
+local DESKTOP_VERSION = "8"
 PRO_VERSION = true
 DEBUGGING = false
 local debug_battery = false
@@ -970,4 +970,16 @@ end
 
 function math.wrap(v, lo, hi)
 	return (v - lo) % (hi - lo) + lo
+end
+
+function CLAMP_LIGHT(lx, ly)
+	lx = lx or LIGHTX
+	ly = ly or LIGHTY
+	if DifficultySelect.idx == 2 then
+		LIGHTX = math.clamp(lx, PLAYER.x - 40, PLAYER.x + 35)
+		LIGHTY = math.clamp(ly, PLAYER.y - 15, PLAYER.y + 10)
+	else
+		LIGHTX = math.clamp(lx, PLAYER.x - 120, PLAYER.x + 100)
+		LIGHTY = math.clamp(ly, PLAYER.y - 20, PLAYER.y + 0)
+	end
 end
