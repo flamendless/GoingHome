@@ -1,10 +1,9 @@
 local Battery = require("battery")
 
 local BatteriesManager = {
-	batteries = {},
+	current_battery = nil,
 	current_charge = 1,
 	has_collision = false,
-	collision_idx = 0,
 }
 
 function BatteriesManager.init()
@@ -17,6 +16,8 @@ function BatteriesManager.init()
 end
 
 function BatteriesManager.randomize()
+	BatteriesManager.current_battery = nil
+
 	local chance = love.math.random()
 	if chance <= 0.6 then return end
 
@@ -25,27 +26,20 @@ function BatteriesManager.randomize()
 	local y = HEIGHT - 24
 	local r = 0
 
-	local battery = Battery(charge, x, y, r)
-	table.insert(BatteriesManager.batteries, battery)
+	BatteriesManager.current_battery = Battery(charge, x, y, r)
 end
 
 function BatteriesManager.update(dt)
 	BatteriesManager.timer:update(dt)
 
 	BatteriesManager.has_collision = false
-	BatteriesManager.collision_idx = 0
 
-	for _, battery in ipairs(BatteriesManager.batteries) do
-		battery.colliding = false
-	end
+	if not BatteriesManager.current_battery then return end
 
-	for idx, battery in ipairs(BatteriesManager.batteries) do
-		if PLAYER:check_collision(battery) then
-			battery.colliding = true
-			BatteriesManager.has_collision = true
-			BatteriesManager.collision_idx = idx
-			break
-		end
+	BatteriesManager.current_battery.colliding = false
+	if PLAYER:check_collision(BatteriesManager.current_battery) then
+		BatteriesManager.current_battery.colliding = true
+		BatteriesManager.has_collision = true
 	end
 end
 
@@ -54,16 +48,14 @@ function BatteriesManager.check_interact()
 		return false
 	end
 
-	local battery = BatteriesManager.batteries[BatteriesManager.collision_idx]
-	if not battery then
+	if not BatteriesManager.current_battery then
 		return false
 	end
 
-	BatteriesManager.current_charge = BatteriesManager.current_charge + battery.charge
+	BatteriesManager.current_charge = BatteriesManager.current_charge + BatteriesManager.current_battery.charge
 	BatteriesManager.current_charge = math.clamp(BatteriesManager.current_charge, 0.0, 1.0)
 
-	table.remove(BatteriesManager.batteries, BatteriesManager.collision_idx)
-	BatteriesManager.collision_idx = 0
+	BatteriesManager.current_battery = nil
 	BatteriesManager.has_collision = false
 
 	SOUNDS.re_sound:play()
@@ -73,9 +65,8 @@ function BatteriesManager.check_interact()
 end
 
 function BatteriesManager.draw()
-	for _, battery in ipairs(BatteriesManager.batteries) do
-		battery:draw()
-	end
+	if not BatteriesManager.current_battery then return end
+	BatteriesManager.current_battery:draw()
 end
 
 return BatteriesManager
