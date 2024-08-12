@@ -328,6 +328,10 @@ function gamestates.init()
 		if DifficultySelect.idx == 2 then
 			BatteriesManager.init()
 		end
+		SOUNDS.ts_theme:stop()
+		SOUNDS.knock:stop()
+		SOUNDS.intro_soft:stop()
+
 		SOUNDS.fl_toggle:setLooping(false)
 		SOUNDS.fl_toggle:setVolume(1)
 
@@ -774,7 +778,20 @@ function gamestates.update(dt)
 				love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 				love.graphics.setBlendMode("multiply", "premultiplied")
 				love.graphics.draw(IMAGES.candles_light_mask, cx, cy)
-				love.graphics.draw(TEX_LIGHT, LIGHTX, LIGHTY)
+
+				local scale = 1
+				if DifficultySelect.idx == 2 then
+					scale = BatteriesManager.current_charge
+					scale = math.max(scale, 0.4)
+					LIGHTX = math.clamp(LIGHTX, PLAYER.x - 40, PLAYER.x + 35)
+					LIGHTY = math.clamp(LIGHTY, PLAYER.y - 15, PLAYER.y + 10)
+				else
+					LIGHTX = math.clamp(LIGHTX, PLAYER.x - 120, PLAYER.x + 100)
+					LIGHTY = math.clamp(LIGHTY, PLAYER.y - 20, PLAYER.y + 0)
+				end
+
+				love.graphics.draw(TEX_LIGHT, LIGHTX, LIGHTY, 0, scale, scale)
+
 				love.graphics.setBlendMode("alpha")
 				love.graphics.setCanvas()
 			end
