@@ -249,7 +249,6 @@ function gamestates.init()
 
 	local state = gamestates.getState()
 	if state == "gallery" then
-		SOUNDS.ts_theme:stop()
 		Gallery.play()
 	elseif state == "adshow" then
 		-- assets.load()
@@ -272,10 +271,6 @@ function gamestates.init()
 			gamestates.nextState("title")
 		end)
 	elseif state == "title" then
-		for _, v in pairs(SOUNDS) do
-			v:stop()
-		end
-
 		--set music
 		SOUNDS.ts_theme:setLooping(true)
 		SOUNDS.ts_theme:play()
@@ -310,17 +305,14 @@ function gamestates.init()
 		SOUNDS.heartbeat:play()
 
 		SOUNDS.ts_theme:setLooping(false)
-		SOUNDS.ts_theme:stop()
 
 	elseif state == "rain_intro" then
 		SOUNDS.ts_theme:setLooping(false)
-		SOUNDS.ts_theme:stop()
 		intro_load()
 
 	elseif state == "intro" then
 		SOUNDS.knock:play()
 		SOUNDS.enemy_scream:setLooping(false)
-		SOUNDS.intro_soft:stop()
 
 	elseif state == "main" then
 		SaveData.load()
@@ -328,9 +320,6 @@ function gamestates.init()
 		if DifficultySelect.idx == 2 then
 			BatteriesManager.init()
 		end
-		SOUNDS.ts_theme:stop()
-		SOUNDS.knock:stop()
-		SOUNDS.intro_soft:stop()
 
 		SOUNDS.fl_toggle:setLooping(false)
 		SOUNDS.fl_toggle:setVolume(1)
@@ -338,7 +327,6 @@ function gamestates.init()
 		SOUNDS.rain:setLooping(true)
 		SOUNDS.rain:setVolume(0.8)
 		SOUNDS.rain:play()
-		SOUNDS.ts_theme:stop()
 
 		FADE_OBJ.state = true
 		MOVE = true
@@ -1340,6 +1328,9 @@ end
 
 function gamestates.nextState(state)
 	print(string.format("%s -> %s", STATES, state))
+	for _, v in pairs(SOUNDS) do
+		v:stop()
+	end
 	STATES = state
 	gamestates.load()
 end

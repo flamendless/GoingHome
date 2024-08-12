@@ -89,6 +89,7 @@ end
 function game_over.exit()
 	SOUNDS.rain:stop()
 	SOUNDS.main_theme:stop()
+	SOUNDS.thunder:stop()
 	GAMEOVER = false
 	SaveData.save()
 	if PRO_VERSION == false then
