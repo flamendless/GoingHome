@@ -2,12 +2,12 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.1.6"
+local VERSION = "v1.1.8"
 local MOBILE_VERSION = "8"
 local DESKTOP_VERSION = "8"
 PRO_VERSION = true
 DEBUGGING = false
-local debug_battery = false
+local debug_battery = true
 
 OS = love.system.getOS()
 ON_MOBILE = (OS == "Android") or (OS == "iOS")
@@ -322,15 +322,13 @@ function love.draw()
 	if debug_battery and DifficultySelect.idx == 2 then
 		love.graphics.push()
 		love.graphics.setColor(1, 0, 0, 1)
-		local scale = LIGHT_VALUE
-		if DifficultySelect.idx == 2 then
-			-- lv = 1 - (LIGHT_VALUE * BatteriesManager.current_charge)
-			scale = BatteriesManager.current_charge
-			scale = math.max(scale, 0.4)
-		end
-		love.graphics.scale(4, 4)
-		-- love.graphics.print("LV: " .. lv, 8, 8)
-		love.graphics.print("SCALE: " .. scale, 8, 8)
+		local scale = BatteriesManager.get_light_scale()
+		love.graphics.scale(2, 2)
+		love.graphics.print("Battery: " .. scale, 8, 8)
+		love.graphics.print("Light: " .. tostring(LIGHT_ON), 8, 16)
+		love.graphics.print("LV: " .. LIGHT_VALUE, 8, 24)
+		love.graphics.print("ELE: " .. ENDING_LEAVE_EVENT, 8, 32)
+		love.graphics.print("MOVE: " .. tostring(MOVE), 8, 40)
 		love.graphics.pop()
 	end
 
@@ -639,6 +637,9 @@ function love.keypressed(key)
 		FADE_OBJ.state = true
 		gamestates.nextState("main")
 	elseif state == "main" then
+		if debug_battery and key == "b" then
+			BatteriesManager.current_charge = 1
+		end
 		if key == "f" then
 			if currentRoom ~= IMAGES["rightRoom"] and
 				currentRoom ~= IMAGES["leftRoom"] and

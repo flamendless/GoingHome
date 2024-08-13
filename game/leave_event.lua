@@ -30,7 +30,7 @@ local shotTimer = 2
 
 
 function leave_event_update(dt)
-	if ending_leave_event == 1 then
+	if ENDING_LEAVE_EVENT == 1 then
 		player_color = true
 		LIGHT_ON = false
 		LIGHT_VALUE = 1
@@ -44,9 +44,9 @@ function leave_event_update(dt)
 				end
 			end
 		else
-			ending_leave_event = 2
+			ENDING_LEAVE_EVENT = 2
 		end
-	elseif ending_leave_event == 2 then
+	elseif ENDING_LEAVE_EVENT == 2 then
 		if LIGHT_VALUE > 0 then
 			LIGHT_VALUE = LIGHT_VALUE - 0.6 * dt
 			if LIGHT_VALUE <= 0 then
@@ -55,12 +55,6 @@ function leave_event_update(dt)
 			end
 		else
 			LIGHT_ON = true
-		end
-	end
-
-	if DifficultySelect.idx == 2 then
-		if ending_leave_event == 1 or ending_leave_event == 2 then
-			BatteriesManager.current_charge = 1
 		end
 	end
 
@@ -130,7 +124,7 @@ function leave_event_update(dt)
 end
 
 function leave_event_draw()
-	if ending_leave_event == 1 then
+	if ENDING_LEAVE_EVENT == 1 then
 		love.graphics.setColor(0, 0, 0, 1)
 		love.graphics.rectangle("fill", 0, 16, 128, 32)
 		love.graphics.setColor(1, 1, 1, 1)

@@ -67,7 +67,7 @@ reload_animate = false
 bullet_fired = false
 leave_animate = false
 basement_lock = true
-ending_leave_event = 0
+ENDING_LEAVE_EVENT = 0
 player_color = false
 
 thunder_play = true
@@ -206,16 +206,22 @@ local function exec_lightning()
 	end
 
 	local tell = SOUNDS.lightning:tell()
-	if FADE_OBJ.state == false and ending_leave_event ~= 2 then
+	if FADE_OBJ.state == false and ENDING_LEAVE_EVENT ~= 2 then
 		local amount = 0.25
 		if (tell >= 6 and tell <= 7) then
 			LIGHT_VALUE = Lume.lerp(LIGHT_VALUE, 0, amount)
 			LIGHT_VALUE = math.clamp(LIGHT_VALUE, 0, 1)
 			LIGHTNING_STRIKE = true
+			if DifficultySelect.idx == 2 then
+				BatteriesManager.cache()
+			end
 		else
 			LIGHT_VALUE = Lume.lerp(LIGHT_VALUE, 1, amount)
 			LIGHT_VALUE = math.clamp(LIGHT_VALUE, 0, 1)
 			LIGHTNING_STRIKE = false
+			if DifficultySelect.idx == 2 then
+				BatteriesManager.restore()
+			end
 		end
 	else
 		LIGHT_VALUE = 1

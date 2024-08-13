@@ -235,7 +235,7 @@ function left_room_update(dt)
 		if event_route == leave_convo then
 			basement_lock = false
 			ENDING_LEAVE = true
-			ending_leave_event = 1
+			ENDING_LEAVE_EVENT = 1
 		elseif event_route == him_convo then
 			basement_lock = false
 			ending_shoot = true
