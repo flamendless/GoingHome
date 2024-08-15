@@ -2,12 +2,12 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.1.8"
+local VERSION = "v1.1.9"
 local MOBILE_VERSION = "8"
 local DESKTOP_VERSION = "8"
 PRO_VERSION = true
 DEBUGGING = false
-local debug_battery = true
+local debug_battery = false
 
 OS = love.system.getOS()
 ON_MOBILE = (OS == "Android") or (OS == "iOS")
@@ -323,12 +323,15 @@ function love.draw()
 		love.graphics.push()
 		love.graphics.setColor(1, 0, 0, 1)
 		local scale = BatteriesManager.get_light_scale()
-		love.graphics.scale(2, 2)
+		love.graphics.scale(3, 3)
 		love.graphics.print("Battery: " .. scale, 8, 8)
 		love.graphics.print("Light: " .. tostring(LIGHT_ON), 8, 16)
 		love.graphics.print("LV: " .. LIGHT_VALUE, 8, 24)
 		love.graphics.print("ELE: " .. ENDING_LEAVE_EVENT, 8, 32)
 		love.graphics.print("MOVE: " .. tostring(MOVE), 8, 40)
+		love.graphics.print("PES: " .. tostring(player_ending_shot), 8, 48)
+		love.graphics.print("EL: " .. tostring(ENDING_LEAVE), 8, 56)
+		love.graphics.print("LREV: " .. tostring(lr_event), 8, 64)
 		love.graphics.pop()
 	end
 
@@ -637,9 +640,26 @@ function love.keypressed(key)
 		FADE_OBJ.state = true
 		gamestates.nextState("main")
 	elseif state == "main" then
-		if debug_battery and key == "b" then
-			BatteriesManager.current_charge = 1
+		if debug_battery then
+			if key == "l" then
+				LIGHT_ON = not LIGHT_ON
+				SOUNDS.item_got:play()
+				return
+			elseif key == "m" then
+				MOVE = not MOVE
+				SOUNDS.item_got:play()
+				return
+			elseif key == "v" then
+				LIGHT_VALUE = 1
+				SOUNDS.item_got:play()
+				return
+			elseif key == "c" then
+				LIGHT_VALUE = 0
+				SOUNDS.item_got:play()
+				return
+			end
 		end
+
 		if key == "f" then
 			if currentRoom ~= IMAGES["rightRoom"] and
 				currentRoom ~= IMAGES["leftRoom"] and

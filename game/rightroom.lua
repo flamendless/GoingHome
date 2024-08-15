@@ -140,7 +140,7 @@ function rightroom_update(dt)
 			elseif n == 15 then
 				--player shoot pose
 				ENDING_ANIMATE = true
-				ending_final = 0
+				ENDING_FINAL = 0
 				shoot_pose_animate = true
 				if p_flip_once == false then
 					p_flip_once = true
@@ -206,7 +206,7 @@ function rightroom_update(dt)
 						end
 						enemy_pos_x = Lume.lerp(enemy_pos_x, PLAYER.x - 10, 0.1)
 						ENDING_ANIMATE = true
-						ending_final = -2
+						ENDING_FINAL = -2
 					elseif event_route == wait_convo then
 						ENDING_ANIMATE = false
 						shoot_pose_animate = false
@@ -220,7 +220,7 @@ function rightroom_update(dt)
 						end
 						enemy_pos_x = Lume.lerp(enemy_pos_x, PLAYER.x - 10, 0.1)
 						ENDING_ANIMATE = true
-						ending_final = -2
+						ENDING_FINAL = -2
 					end
 				end
 			end

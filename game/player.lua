@@ -62,9 +62,9 @@ function Player:update(dt)
 		if wait_animate == true then
 			wait_anim:update(dt)
 		end
-		if ending_final == -1 then
+		if ENDING_FINAL == -1 then
 			player_panic:update(dt)
-		elseif ending_final == -2 then
+		elseif ENDING_FINAL == -2 then
 			player_killed:update(dt)
 		end
 	end
@@ -119,7 +119,7 @@ function Player:draw()
 					end
 				end
 			else
-				if ending_final == 0 then
+				if ENDING_FINAL == 0 then
 					if reload_animate == true then
 						reload_anim:draw(IMAGES.reload_sheet, self.x, self.y)
 					elseif shoot_pose_animate == true then
@@ -129,9 +129,9 @@ function Player:draw()
 					elseif wait_animate == true then
 						wait_anim:draw(IMAGES.shoot_pose_sheet, PLAYER.x, PLAYER.y)
 					end
-				elseif ending_final == -1 then
+				elseif ENDING_FINAL == -1 then
 					player_panic:draw(IMAGES.player_panic_sheet, self.x, self.y)
-				elseif ending_final == -2 then
+				elseif ENDING_FINAL == -2 then
 					player_killed:draw(IMAGES.player_killed_sheet, self.x, self.y)
 				end
 			end
@@ -197,7 +197,7 @@ function Player:checkDoors()
 				end
 				SOUNDS.locked:play()
 			else
-				LIGHT_VALUE = 1
+				-- LIGHT_VALUE = 1
 				PLAYER:moveRoom(8, IMAGES["endRoom"])
 				PLAYER.y = 22
 			end

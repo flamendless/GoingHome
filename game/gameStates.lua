@@ -76,7 +76,7 @@ LIGHTNING_FLASH = true
 local mouse_select = false
 CURSOR_SELECT = false
 CURSOR_POS = 0
-ending_final = 0
+ENDING_FINAL = 0
 player_ending_shot = false
 ending_shot = 0
 broken_revolver = false
@@ -223,8 +223,6 @@ local function exec_lightning()
 				BatteriesManager.restore()
 			end
 		end
-	else
-		LIGHT_VALUE = 1
 	end
 end
 
@@ -543,15 +541,16 @@ function gamestates.update(dt)
 				GHOST_EVENT ~= "lying down" and
 				GHOST_EVENT ~= "flashback" and
 				GHOST_EVENT ~= "limp" then
-				if currentRoom ~= IMAGES["basementRoom"] and
+				if ENDING_LEAVE ~= true and
+					currentRoom ~= IMAGES["basementRoom"] and
 					currentRoom ~= IMAGES["leftRoom"] and
 					currentRoom ~= IMAGES["rightRoom"] and
 					currentRoom ~= IMAGES["storageRoom"] and
 					currentRoom ~= IMAGES["daughterRoom"] and
 					currentRoom ~= IMAGES["secretRoom"] and
 					currentRoom ~= IMAGES["atticRoom"] and
-					currentRoom ~= IMAGES["endRoom"] and
-					ENDING_LEAVE ~= true then
+					currentRoom ~= IMAGES["endRoom"]
+				then
 					SOUNDS.lightning:setVolume(lightningVol)
 					if not SOUNDS.lightning:isPlaying() == true then
 						SOUNDS.lightning:play()
@@ -1440,7 +1439,7 @@ function random_page()
 end
 
 function light_etc(dt, img_table, img_var, canvas)
-	LIGHT_ON = false
+	-- LIGHT_ON = false
 	local r = 0.05
 	local x = 0 + (math.random(-r, r))
 	local y = HEIGHT_HALF - img_table[img_var]:getHeight() / 2 + (math.random(-r, r))

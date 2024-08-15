@@ -45,17 +45,13 @@ function leave_event_update(dt)
 			end
 		else
 			ENDING_LEAVE_EVENT = 2
+			LIGHT_VALUE = 0
+			MOVE = true
 		end
 	elseif ENDING_LEAVE_EVENT == 2 then
-		if LIGHT_VALUE > 0 then
-			LIGHT_VALUE = LIGHT_VALUE - 60 * dt
-			if LIGHT_VALUE <= 0 then
-				LIGHT_VALUE = 0
-				MOVE = true
-			end
-		else
-			LIGHT_ON = true
-		end
+		LIGHT_VALUE = 0
+		LIGHT_ON = false
+		BatteriesManager.current_charge = 1
 	end
 
 	if currentRoom == IMAGES["mainRoom"] then
@@ -72,52 +68,36 @@ function leave_event_update(dt)
 		SOUNDS.knock:setLooping(false)
 		SOUNDS.knock:stop()
 		LIGHT_ON = false
-		if LIGHT_VALUE > 0 then
-			MOVE = false
-			LIGHT_VALUE = LIGHT_VALUE - 60 * dt
-			if LIGHT_VALUE <= 0 then
-				LIGHT_VALUE = 0
-				--activate the player panic animation
-				ENDING_ANIMATE = true
-				ending_final = -1
-			end
-		elseif LIGHT_VALUE <= 0 then
-			LIGHT_VALUE = 0
-			--activate the player panic animation
-			ENDING_ANIMATE = true
-			ending_final = -1
-		end
+		ENDING_ANIMATE = true
+		ENDING_FINAL = -1
+		LIGHT_VALUE = 0
 		if player_ending_shot == true then
-			if va < 1 then
-				va = va + 500 * dt
-			elseif va >= 1 then
-				if shotTimer > 0 then
-					shotTimer = shotTimer - 1 * dt
-					if shotTimer > 0 and shotTimer < 1 then
-						if gun_click_flag == false then
-							gun_click_flag = true
-							SOUNDS.gun_click:play()
-							SOUNDS.gun_click:setLooping(false)
-						end
-					elseif shotTimer <= 0 then
-						if ending_shot == 0 then
-							shotTimer = 2
-							ending_shot = 1
-							SOUNDS.gunshot:play()
-							SOUNDS.gunshot:setLooping(false)
-							final_clock = seconds_to_clock(CLOCK)
-						elseif ending_shot == 1 then
-							-- sounds.ts_theme:play()
-							-- sounds.ts_theme:setLooping(true)
-							ending_shot = -1
-							credit_set_ending("leaving home")
-							credits_load()
-						end
+			va = va + 0.5 * dt
+			if va >= 1 and shotTimer > 0 then
+				shotTimer = shotTimer - 1 * dt
+				if shotTimer > 0 and shotTimer < 1 then
+					if gun_click_flag == false then
+						gun_click_flag = true
+						SOUNDS.gun_click:play()
+						SOUNDS.gun_click:setLooping(false)
+					end
+				elseif shotTimer <= 0 then
+					if ending_shot == 0 then
+						shotTimer = 2
+						ending_shot = 1
+						SOUNDS.gunshot:play()
+						SOUNDS.gunshot:setLooping(false)
+						final_clock = seconds_to_clock(CLOCK)
+					elseif ending_shot == 1 then
+						ending_shot = -1
+						credit_set_ending("leaving home")
+						credits_load()
 					end
 				end
 			end
 		end
 	end
+
 	if credits_flag == true then
 		credits_update(dt)
 	end
@@ -131,7 +111,6 @@ function leave_event_draw()
 		love.graphics.print(text1[c], WIDTH / 2 - DEF_FONT:getWidth(text1[c]) / 2, HEIGHT_HALF - DEF_FONT_HALF)
 	end
 
-	--end room
 	if currentRoom == IMAGES["endRoom"] then
 		if player_ending_shot == true then
 			love.graphics.setColor(0, 0, 0, va)

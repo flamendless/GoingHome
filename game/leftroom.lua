@@ -264,7 +264,7 @@ function left_room_update(dt)
 			MOVE = true
 		end
 	elseif lr_event == 6 then
-		LIGHT_VALUE = 1
+		LIGHT_VALUE = 0
 		left_light_flag = true
 	end
 end
