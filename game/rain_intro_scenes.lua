@@ -83,7 +83,7 @@ function intro_update(dt)
 		end
 	end
 
-	skip_button:update(dt)
+	-- skip_button:update(dt)
 	-- if pressed == true then
 	-- 	skip_button_glow:update(dt)
 	-- end

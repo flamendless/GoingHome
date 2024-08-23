@@ -370,9 +370,16 @@ end
 function gamestates.getState() return STATES end
 
 function gamestates.update(dt)
-	local mx, my = MOUSE_X, MOUSE_Y
-	mx = mx / RATIO_X
-	my = my / RATIO_Y
+	local mx, my
+	if ON_MOBILE then
+		mx, my = love.mouse.getPosition()
+		mx = mx / RATIO
+		my = (my + TY) / RATIO
+	else
+		mx, my = MOUSE_X, MOUSE_Y
+		mx = mx / RATIO_X
+		my = my / RATIO_Y
+	end
 
 	if currentRoom == IMAGES["leftRoom"] or
 		currentRoom == IMAGES["rightRoom"] or
@@ -485,7 +492,7 @@ function gamestates.update(dt)
 			end
 		end
 
-		skip_button:update(dt)
+		-- skip_button:update(dt)
 
 		-----MAIN-------
 	elseif state == "main" then
@@ -1098,6 +1105,9 @@ function gamestates.draw()
 			draw_back_gui()
 		end
 
+	elseif state == "gallery" then
+		Gallery.draw()
+
 	elseif state == "difficulty_select" then
 		DifficultySelect.draw()
 
@@ -1112,8 +1122,6 @@ function gamestates.draw()
 			HEIGHT_HALF - DEF_FONT_HALF
 		)
 		skip_draw()
-	elseif state == "gallery" then
-		Gallery.draw()
 	elseif state == "rain_intro" then
 		intro_draw()
 	elseif state == "tutorial" then
@@ -1523,7 +1531,4 @@ function seconds_to_clock(seconds)
 		local secs = string.format("%02.f", math.floor(seconds - hours * 3600 - mins * 60))
 		return hours .. ":" .. mins .. ":" .. secs
 	end
-end
-
-function gamestates.keypressed(key)
 end

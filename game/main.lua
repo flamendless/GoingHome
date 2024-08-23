@@ -7,7 +7,7 @@ local MOBILE_VERSION = "8"
 local DESKTOP_VERSION = "8"
 PRO_VERSION = true
 DEBUGGING = false
-local debug_battery = false
+local debug_overlay = true
 
 OS = love.system.getOS()
 ON_MOBILE = (OS == "Android") or (OS == "iOS")
@@ -41,6 +41,7 @@ local utf8 = require("utf8")
 
 if ON_MOBILE then
 	Android = require("gui")
+	Android.debug_overlay = debug_overlay
 
 	if not PRO_VERSION then
 		LoveAdmob = require("love_admob")
@@ -50,9 +51,9 @@ if ON_MOBILE then
 	end
 
 	if PRO_VERSION then
-		VERSION = VERSION .. "-android-pro-" .. MOBILE_VERSION
+		VERSION = VERSION .. "-android-pro-v" .. MOBILE_VERSION
 	else
-		VERSION = VERSION .. "-android"
+		VERSION = VERSION .. "-android-v" .. MOBILE_VERSION
 	end
 end
 
@@ -77,13 +78,13 @@ MAIN_CANVAS = love.graphics.newCanvas(love.graphics.getDimensions())
 local function toggle_fs()
 	love.window.setFullscreen(not love.window.getFullscreen())
 	local g_width, g_height = love.graphics.getDimensions()
-	RATIO_X, RATIO_Y = g_width / WIDTH, g_height / HEIGHT
-	RATIO = math.min(RATIO_X, RATIO_Y)
+	if ON_MOBILE then
+		RATIO = math.min(g_width / WIDTH, g_height / HEIGHT)
+	else
+		RATIO_X, RATIO_Y = g_width / WIDTH, g_height / HEIGHT
+		RATIO = math.min(RATIO_X, RATIO_Y)
+	end
 	MAIN_CANVAS = love.graphics.newCanvas(love.graphics.getDimensions())
-end
-
-if not DEBUGGING and not ON_MOBILE then
-	-- toggle_fs()
 end
 
 -- pauseFlag = false
@@ -173,8 +174,14 @@ function love.load()
 	CLOCK = 0 --game timer
 
 	local g_width, g_height = love.graphics.getDimensions()
-	RATIO_X, RATIO_Y = g_width / WIDTH, g_height / HEIGHT
-	RATIO = math.min(RATIO_X, RATIO_Y)
+
+	if ON_MOBILE then
+		RATIO = math.min(g_width / WIDTH, g_height / HEIGHT)
+	else
+		RATIO_X, RATIO_Y = g_width / WIDTH, g_height / HEIGHT
+		RATIO = math.min(RATIO_X, RATIO_Y)
+	end
+
 	PRESSED = false
 	love.keyboard.setKeyRepeat(true)
 
@@ -215,9 +222,10 @@ function love.load()
 end
 
 function love.update(dt)
-	MOUSE_X, MOUSE_Y = love.mouse.getPosition()
+	if not ON_MOBILE then
+		MOUSE_X, MOUSE_Y = love.mouse.getPosition()
+	end
 
-	-- if recording then return end
 	CLOCK = CLOCK + dt
 
 	local ww, wh = love.graphics.getDimensions()
@@ -291,24 +299,6 @@ function love.draw()
 	end
 	love.graphics.pop()
 
-	if DEBUGGING then
-		love.graphics.push()
-		love.graphics.scale(RATIO / 2, RATIO / 2)
-		love.graphics.setColor(1, 0, 0, 1)
-		love.graphics.setFont(DEF_FONT)
-		love.graphics.print(VERSION, 8, 0)
-		love.graphics.print(gamestates.getState(), 8, 8)
-		-- love.graphics.print(tostring(LIGHT_VALUE), 8, 16)
-		-- love.graphics.print(string.format("%d x %d, %d", love.graphics.getWidth(), love.graphics.getHeight(), love.graphics.getDPIScale()), 8, 16)
-		if GHOST_EVENT then
-			if child then
-				love.graphics.print(tostring(child.flippedH), 8, 16)
-			end
-			love.graphics.print(tostring(GHOST_EVENT), 8, 24)
-		end
-		love.graphics.pop()
-	end
-
 	love.graphics.setCanvas()
 
 	love.graphics.setColor(1, 1, 1, 1)
@@ -317,21 +307,25 @@ function love.draw()
 	end
 	love.graphics.draw(MAIN_CANVAS, TX, TY)
 	love.graphics.setShader()
-    love.graphics.draw(cursorImage, MOUSE_X, MOUSE_Y)
 
-	if debug_battery and DifficultySelect.idx == 2 then
+	if not ON_MOBILE then
+		love.graphics.draw(cursorImage, MOUSE_X, MOUSE_Y)
+	end
+
+	if debug_overlay then
 		love.graphics.push()
 		love.graphics.setColor(1, 0, 0, 1)
 		local scale = BatteriesManager.get_light_scale()
 		love.graphics.scale(3, 3)
-		love.graphics.print("Battery: " .. scale, 8, 8)
-		love.graphics.print("Light: " .. tostring(LIGHT_ON), 8, 16)
-		love.graphics.print("LV: " .. LIGHT_VALUE, 8, 24)
-		love.graphics.print("ELE: " .. ENDING_LEAVE_EVENT, 8, 32)
-		love.graphics.print("MOVE: " .. tostring(MOVE), 8, 40)
-		love.graphics.print("PES: " .. tostring(player_ending_shot), 8, 48)
-		love.graphics.print("EL: " .. tostring(ENDING_LEAVE), 8, 56)
-		love.graphics.print("LREV: " .. tostring(lr_event), 8, 64)
+		love.graphics.print(VERSION, 8, 0)
+		love.graphics.print("Difficulty: " .. DifficultySelect.idx, 8, 8)
+		love.graphics.print("Battery: " .. scale, 8, 16)
+		love.graphics.print("Ratio: " .. RATIO, 8, 24)
+
+		if ON_MOBILE and PLAYER then
+			love.graphics.print("PA: " .. PLAYER.android, 8, 32)
+		end
+
 		love.graphics.pop()
 	end
 
@@ -355,7 +349,7 @@ function love.mousepressed(x, y, button, istouch)
 	local state = gamestates.getState()
 	local mx = (x - TX) / RATIO
 	local my = (y - TY) / RATIO
-	--android.mouse_gui(x,y,button,istouch)
+
 	if state == "gallery" then
 		Gallery.interactions(nil, x, y)
 
@@ -365,7 +359,7 @@ function love.mousepressed(x, y, button, istouch)
 			DifficultySelect.goto_next()
 		end
 
-	elseif button == 1 and state == "title" then
+	elseif state == "title" and button == 1 then
 		if instruction == false and about == false and questions == false and not options then
 			if check_gui(gui_pos.start_x, gui_pos.start_y, gui_pos.start_w, gui_pos.start_h) then
 				gamestates.control()
@@ -438,17 +432,21 @@ function love.mousepressed(x, y, button, istouch)
 				options = false
 			end
 		end
+
 	elseif state == "rain_intro" then
-		if check_gui(
-				gui_pos.skip_x,
-				gui_pos.skip_y,
-				gui_pos.skip_w,
-				gui_pos.skip_h
-			) then
-			PRESSED = true
-			FADE_OBJ.state = true
-			gamestates.nextState("intro")
-		end
+		-- if ON_MOBILE then
+		-- 	Android.touchpressed(nil, x, y)
+		-- end
+		-- if check_gui(
+		-- 		gui_pos.skip_x,
+		-- 		gui_pos.skip_y,
+		-- 		gui_pos.skip_w,
+		-- 		gui_pos.skip_h
+		-- 	) then
+		-- 	PRESSED = true
+		-- 	FADE_OBJ.state = true
+		-- 	gamestates.nextState("intro")
+		-- end
 	elseif state == "intro" then
 		-- if ON_MOBILE or check_gui(
 		-- 		gui_pos.skip_x,
@@ -640,26 +638,6 @@ function love.keypressed(key)
 		FADE_OBJ.state = true
 		gamestates.nextState("main")
 	elseif state == "main" then
-		if debug_battery then
-			if key == "l" then
-				LIGHT_ON = not LIGHT_ON
-				SOUNDS.item_got:play()
-				return
-			elseif key == "m" then
-				MOVE = not MOVE
-				SOUNDS.item_got:play()
-				return
-			elseif key == "v" then
-				LIGHT_VALUE = 1
-				SOUNDS.item_got:play()
-				return
-			elseif key == "c" then
-				LIGHT_VALUE = 0
-				SOUNDS.item_got:play()
-				return
-			end
-		end
-
 		if key == "f" then
 			if currentRoom ~= IMAGES["rightRoom"] and
 				currentRoom ~= IMAGES["leftRoom"] and
@@ -919,15 +897,15 @@ function love.touchreleased(id, x, y)
 	Android.touchreleased(id, x, y)
 end
 
-function love.touchmoved(id, x, y)
-	if not ON_MOBILE then return end
-	--local state = gamestates.getState()
-	--if state == "gallery" then
-	--if pro_version then
-	--Gallery.touchmoved(id,x,y)
-	--end
-	--end
-end
+-- function love.touchmoved(id, x, y)
+-- 	if not ON_MOBILE then return end
+-- 	--local state = gamestates.getState()
+-- 	--if state == "gallery" then
+-- 	--if pro_version then
+-- 	--Gallery.touchmoved(id,x,y)
+-- 	--end
+-- 	--end
+-- end
 
 function unrequire(m)
 	package.loaded[m] = nil

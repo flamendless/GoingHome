@@ -1,12 +1,11 @@
 local android = {
-	hidden = false
+	hidden = false,
+	debug_overlay = false,
 }
 
 local androidKey
 local leftHold, rightHold = false, false
--- androidInteract = false
 local changed = false
--- local temp_light = 0
 local lx, ly = 0, 0
 
 local gLeft, gRight, gLeft2, gRight2, gUp, gDown, gEnter, gEsc, gLight, gAct, gSettings, gSettingsBack, gQuit
@@ -145,8 +144,31 @@ function android.draw()
 
 	love.graphics.setColor(1, 1, 1, 1)
 	if MOVE == true or doodle_flag == true then
+		if leftHold then
+			love.graphics.setColor(1, 0, 0, 1)
+		else
+			love.graphics.setColor(1, 1, 1, 1)
+		end
 		love.graphics.draw(IMAGES.gui_left, gLeft.x, gLeft.y)
+
+		if android.debug_overlay then
+			love.graphics.setColor(1, 0, 0, 1)
+			love.graphics.rectangle("line", gLeft.x, gLeft.y, gLeft.w, gLeft.h)
+		end
+
+		if rightHold then
+			love.graphics.setColor(1, 0, 0, 1)
+		else
+			love.graphics.setColor(1, 1, 1, 1)
+		end
 		love.graphics.draw(IMAGES.gui_right, gRight.x, gRight.y)
+
+		if android.debug_overlay then
+			love.graphics.setColor(1, 0, 0, 1)
+			love.graphics.rectangle("line", gRight.x, gRight.y, gRight.w, gRight.h)
+		end
+
+		love.graphics.setColor(1, 1, 1, 1)
 		love.graphics.draw(IMAGES.gui_light, gLight.x, gLight.y)
 		love.graphics.draw(IMAGES.gui_act, gAct.x, gAct.y)
 		love.graphics.draw(IMAGES.gui_settings, gSettings.x, gSettings.y)
@@ -185,10 +207,10 @@ function android.touchpressed(id, x, y)
 		else
 			local diff = CLOCK - rain_intro_tap_timer
 			rain_intro_tap_timer = CLOCK
-			if diff <= 0.25 then
+			if diff <= 0.5 then
 				PRESSED = true
 				FADE_OBJ.state = true
-				gamestates.nextState("intro")
+				gamestates.nextState("tutorial")
 			end
 		end
 	elseif not Pause.flag and state == "main" then
@@ -289,10 +311,10 @@ function guiCheck_touch(id, x, y, gui)
 end
 
 function android.dialogue()
-	local key = android.getKey()
 	for _, v in ipairs(DIALOGUES) do
 		for _, k in ipairs(ITEMS_LIST) do
 			if (v.tag == k.tag) and v.state then
+				local key = android.getKey()
 				if key == "e" then
 					if v.n <= #v.txt then
 						v.n = v.n + 1
@@ -313,29 +335,29 @@ function android.dialogue()
 end
 
 function android.endingDialogue()
+	if lr_event ~= 3 then return end
+
 	local key = android.getKey()
-	if lr_event == 3 then
-		if key == "a" then
-			E_C = 1
-		elseif key == "d" then
-			E_C = 2
-		elseif key == "e" then
-			if ROUTE == 1 then
-				if E_C == 1 then
-					event_route = him_convo
-				elseif E_C == 2 then
-					event_route = wait_convo
-				end
-			elseif ROUTE == 2 then
-				if E_C == 1 then
-					event_route = leave_convo
-				elseif E_C == 2 then
-					event_route = wait_convo
-				end
+	if key == "a" then
+		E_C = 1
+	elseif key == "d" then
+		E_C = 2
+	elseif key == "e" then
+		if ROUTE == 1 then
+			if E_C == 1 then
+				event_route = him_convo
+			elseif E_C == 2 then
+				event_route = wait_convo
 			end
-			if event_route ~= nil then
-				lr_event = 4
+		elseif ROUTE == 2 then
+			if E_C == 1 then
+				event_route = leave_convo
+			elseif E_C == 2 then
+				event_route = wait_convo
 			end
+		end
+		if event_route ~= nil then
+			lr_event = 4
 		end
 	end
 end
