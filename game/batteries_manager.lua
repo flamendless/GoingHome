@@ -4,7 +4,6 @@ local BatteriesManager = {
 	current_battery = nil,
 	current_charge = 1,
 	has_collision = false,
-	cached = 0,
 }
 
 function BatteriesManager.init()
@@ -44,11 +43,11 @@ function BatteriesManager.update(dt)
 end
 
 function BatteriesManager.check_interact()
-	if (not BatteriesManager.has_collision) or (BatteriesManager.current_charge >= 1.0) then
-		return false
-	end
-
-	if not BatteriesManager.current_battery then
+	if (
+		(not BatteriesManager.current_battery) or
+		(not BatteriesManager.has_collision) or
+		(BatteriesManager.current_charge >= 1.0)
+	) then
 		return false
 	end
 
@@ -74,17 +73,6 @@ function BatteriesManager.get_light_scale()
 		scale = math.max(scale, 0.4)
 	end
 	return scale
-end
-
-function BatteriesManager.cache()
-	if BatteriesManager.cached ~= 0 then return end
-	BatteriesManager.cached = BatteriesManager.current_charge
-end
-
-function BatteriesManager.restore()
-	if BatteriesManager.cached == 0 then return end
-	BatteriesManager.current_charge = BatteriesManager.cached
-	BatteriesManager.cached = 0
 end
 
 return BatteriesManager

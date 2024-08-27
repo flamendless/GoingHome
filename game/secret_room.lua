@@ -238,7 +238,7 @@ function SCENES.secretRoom_update(dt)
 					end
 				end
 			elseif event_find == true then
-				if move_chair == false then
+				if MOVE_CHAIR == false then
 					--finding parents
 					if screamed == 0 then
 						if PLAYER.x >= 77 and PLAYER.x <= 80 then

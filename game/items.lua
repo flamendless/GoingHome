@@ -81,7 +81,7 @@ function Items:stillLocked()
 end
 
 function Items:glow()
-	if move_chair then return end
+	if MOVE_CHAIR then return end
 
 	if DifficultySelect.idx == 2 then
 		if BatteriesManager.has_collision then

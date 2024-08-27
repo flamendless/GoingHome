@@ -37,7 +37,7 @@ event = ""
 
 ClockPuzzle.state = false
 
-move_chair = false
+MOVE_CHAIR = false
 
 chair_final = false
 final_flashback = false
@@ -205,23 +205,17 @@ local function exec_lightning()
 		end
 	end
 
-	local tell = SOUNDS.lightning:tell()
 	if FADE_OBJ.state == false and ENDING_LEAVE_EVENT ~= 2 then
-		local amount = 0.25
+		local tell = SOUNDS.lightning:tell()
+		local AMOUNT = 0.25
 		if (tell >= 6 and tell <= 7) then
-			LIGHT_VALUE = Lume.lerp(LIGHT_VALUE, 0, amount)
+			LIGHT_VALUE = Lume.smooth(LIGHT_VALUE, 0, AMOUNT)
 			LIGHT_VALUE = math.clamp(LIGHT_VALUE, 0, 1)
 			LIGHTNING_STRIKE = true
-			if DifficultySelect.idx == 2 then
-				BatteriesManager.cache()
-			end
 		else
-			LIGHT_VALUE = Lume.lerp(LIGHT_VALUE, 1, amount)
+			LIGHT_VALUE = Lume.smooth(LIGHT_VALUE, 1, AMOUNT)
 			LIGHT_VALUE = math.clamp(LIGHT_VALUE, 0, 1)
 			LIGHTNING_STRIKE = false
-			if DifficultySelect.idx == 2 then
-				BatteriesManager.restore()
-			end
 		end
 	end
 end
@@ -748,7 +742,7 @@ function gamestates.update(dt)
 		end
 
 		--it's mr. chair's time!
-		if move_chair == true then
+		if MOVE_CHAIR == true then
 			MRCHAIR:update(dt)
 		end
 
@@ -1196,7 +1190,7 @@ function gamestates.draw()
 			light_check()
 		end
 
-		if move_chair == true then
+		if MOVE_CHAIR == true then
 			MRCHAIR:draw()
 		end
 

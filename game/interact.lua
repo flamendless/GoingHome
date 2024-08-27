@@ -210,7 +210,7 @@ function Interact:returnChoices(choice)
 			self.state = false
 			MOVE = true
 			self.option = false
-			move_chair = true
+			MOVE_CHAIR = true
 		else
 			self.state = false
 			MOVE = true

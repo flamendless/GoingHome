@@ -318,6 +318,8 @@ function love.draw()
 			local touch_ids = love.touch.getTouches()
 			for _, touch_id in ipairs(touch_ids) do
 				local tx, ty = love.touch.getPosition(touch_id)
+				tx = (tx - TX) / RATIO
+				ty = (ty - TY) / RATIO
 				love.graphics.circle("fill", tx, ty, 2)
 			end
 		end
@@ -330,6 +332,9 @@ function love.draw()
 		love.graphics.print("Difficulty: " .. DifficultySelect.idx, 8, 8)
 		love.graphics.print("Battery: " .. scale, 8, 16)
 		love.graphics.print(string.format("TX, TY, R: %d, %d, %.2f", TX, TY, RATIO), 8, 24)
+		if MOVE_CHAIR then
+			love.graphics.print("Chair: " .. MOVE_CHAIR, 8, 32)
+		end
 		love.graphics.pop()
 	end
 
@@ -721,7 +726,7 @@ function love.keypressed(key)
 						end
 					end
 
-					if move_chair == false then
+					if MOVE_CHAIR == false then
 						if (event_find == false) and (LIGHT_ON == true) then
 							PLAYER:checkItems()
 							PLAYER:checkDoors()

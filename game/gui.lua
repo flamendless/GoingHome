@@ -132,11 +132,13 @@ function android.update(dt)
 		PLAYER.android = 0
 	end
 
-	if move_chair then
+	if MOVE_CHAIR then
 		local touches = love.touch.getTouches()
-		for i, id in ipairs(touches) do
-			local x, y = love.touch.getPosition(id)
-			if guiCheck_touch(id, x, y, gAct) then
+		for _, touch_id in ipairs(touches) do
+			local tx, ty = love.touch.getPosition(touch_id)
+			tx = (tx - TX) / RATIO
+			ty = (ty - TY) / RATIO
+			if guiCheck_touch(touch_id, tx, ty, gAct) then
 				MRCHAIR:keypressed(dt, "e")
 			end
 		end
