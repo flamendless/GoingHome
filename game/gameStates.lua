@@ -1458,7 +1458,8 @@ function light_etc(dt, img_table, img_var, canvas)
 	love.graphics.draw(img_table[img_var], x, y)
 	if (ON_MOBILE or DEBUGGING) and Android then
 		local lx, ly = Android.get_light_pos()
-		love.graphics.draw(mainLight, lx, ly)
+		local scale = BatteriesManager.get_light_scale()
+		love.graphics.draw(mainLight, lx, ly, 0, scale, scale)
 	elseif not ON_MOBILE and (not DEBUGGING) then
 		local scale = BatteriesManager.get_light_scale()
 		CLAMP_LIGHT()

@@ -179,4 +179,5 @@ if ON_MOBILE then
 			table.remove(ITEMS_PROPERTIES.dynamic, n)
 		end
 	end
+	TOUCH_X, TOUCH_Y = 0, 0
 end

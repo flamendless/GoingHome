@@ -313,6 +313,15 @@ function love.draw()
 	end
 
 	if debug_overlay then
+		if ON_MOBILE then
+			love.graphics.setColor(1, 0, 0, 1)
+			local touch_ids = love.touch.getTouches()
+			for _, touch_id in ipairs(touch_ids) do
+				local tx, ty = love.touch.getPosition(touch_id)
+				love.graphics.circle("fill", tx, ty, 2)
+			end
+		end
+
 		love.graphics.push()
 		love.graphics.setColor(1, 0, 0, 1)
 		local scale = BatteriesManager.get_light_scale()
@@ -320,12 +329,7 @@ function love.draw()
 		love.graphics.print(VERSION, 8, 0)
 		love.graphics.print("Difficulty: " .. DifficultySelect.idx, 8, 8)
 		love.graphics.print("Battery: " .. scale, 8, 16)
-		love.graphics.print("Ratio: " .. RATIO, 8, 24)
-
-		if ON_MOBILE and PLAYER then
-			love.graphics.print("PA: " .. PLAYER.android, 8, 32)
-		end
-
+		love.graphics.print(string.format("TX, TY, R: %d, %d, %.2f", TX, TY, RATIO), 8, 24)
 		love.graphics.pop()
 	end
 
@@ -889,12 +893,16 @@ end
 
 function love.touchpressed(id, x, y)
 	if not FINISHED_LOADING then return end
-	Android.touchpressed(id, x, y)
+	local tx = (x - TX) / RATIO
+	local ty = (y - TY) / RATIO
+	Android.touchpressed(id, tx, ty)
 end
 
 function love.touchreleased(id, x, y)
 	if not FINISHED_LOADING then return end
-	Android.touchreleased(id, x, y)
+	local tx = (x - TX) / RATIO
+	local ty = (y - TY) / RATIO
+	Android.touchreleased(id, tx, ty)
 end
 
 -- function love.touchmoved(id, x, y)

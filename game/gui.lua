@@ -110,8 +110,15 @@ function android.update(dt)
 
 	local lo_w, lo_h = IMAGES.lightOutline:getDimensions()
 
-	lx = PLAYER.x - lo_w / 2 + math.random(-0.05, 0.05)
-	ly = PLAYER.y - lo_h / 2.5 + math.random(-0.05, 0.05)
+	if DifficultySelect.idx == 2 then
+		local scale = BatteriesManager.get_light_scale()
+		lx = PLAYER.x + PLAYER.w / 2 - lo_w * scale / 2 + math.random(-0.05, 0.05)
+		ly = PLAYER.y + PLAYER.h / 2 - lo_h * scale / 2 + math.random(-0.05, 0.05)
+	else
+		lx = PLAYER.x - lo_w / 2 + math.random(-0.05, 0.05)
+		ly = PLAYER.y - lo_h / 2.5 + math.random(-0.05, 0.05)
+	end
+
 	android.light_update(dt)
 	if MOVE == false then
 		PLAYER.android = 0
@@ -300,8 +307,8 @@ function android.touchreleased(id, x, y)
 end
 
 function guiCheck_touch(id, x, y, gui)
-	x = x / RATIO
-	y = (y - TY) / RATIO
+	-- x = x / RATIO
+	-- y = (y - TY) / RATIO
 	return (
 		x > gui.x and
 		x < gui.x + gui.w and
@@ -378,11 +385,12 @@ function android.light_update(dt)
 	end
 
 	if ON_MOBILE then
+		local scale = BatteriesManager.get_light_scale()
 		love.graphics.setCanvas(CANVAS_CUSTOM_MASK)
 		love.graphics.clear(0, 0, 0, LIGHT_VALUE)
 		love.graphics.setBlendMode("multiply", "premultiplied")
 		if changed == false then
-			love.graphics.draw(mainLight, lx, ly)
+			love.graphics.draw(mainLight, lx, ly, 0, scale, scale)
 			if candles_light_flag and currentRoom == IMAGES["masterRoom"] then
 				local rand = 0.05
 				local cx = 0 + (math.random(-rand, rand))
@@ -395,8 +403,7 @@ function android.light_update(dt)
 			end
 			if left_light_flag and currentRoom == IMAGES["leftRoom"] then
 				light_etc(dt, LL, LL_IMG, CANVAS_CUSTOM_MASK)
-			end
-			if right_light_flag and currentRoom == IMAGES["rightRoom"] then
+			elseif right_light_flag and currentRoom == IMAGES["rightRoom"] then
 				local img = getRightRoom()
 				light_etc(dt, RL, img, CANVAS_CUSTOM_MASK)
 			end
