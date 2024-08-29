@@ -7,7 +7,7 @@ local MOBILE_VERSION = "8"
 local DESKTOP_VERSION = "8"
 PRO_VERSION = true
 DEBUGGING = false
-local debug_overlay = true
+local debug_overlay = false
 
 OS = love.system.getOS()
 ON_MOBILE = (OS == "Android") or (OS == "iOS")
@@ -333,7 +333,7 @@ function love.draw()
 		love.graphics.print("Battery: " .. scale, 8, 16)
 		love.graphics.print(string.format("TX, TY, R: %d, %d, %.2f", TX, TY, RATIO), 8, 24)
 		if MOVE_CHAIR then
-			love.graphics.print("Chair: " .. MOVE_CHAIR, 8, 32)
+			love.graphics.print("Chair: " .. tostring(MOVE_CHAIR), 8, 32)
 		end
 		love.graphics.pop()
 	end
@@ -988,8 +988,12 @@ function CLAMP_LIGHT(lx, ly)
 	lx = lx or LIGHTX
 	ly = ly or LIGHTY
 	if DifficultySelect.idx == 2 then
-		LIGHTX = math.clamp(lx, PLAYER.x - 40, PLAYER.x + 35)
-		LIGHTY = math.clamp(ly, PLAYER.y - 15, PLAYER.y + 10)
+		if lx then
+			LIGHTX = math.clamp(lx, PLAYER.x - 40, PLAYER.x + 35)
+		end
+		if ly then
+			LIGHTY = math.clamp(ly, PLAYER.y - 15, PLAYER.y + 10)
+		end
 	else
 		LIGHTX = math.clamp(lx, PLAYER.x - 120, PLAYER.x + 100)
 		LIGHTY = math.clamp(ly, PLAYER.y - 20, PLAYER.y + 0)
