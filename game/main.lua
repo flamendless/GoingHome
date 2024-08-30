@@ -6,7 +6,7 @@ local VERSION = "v1.1.9d"
 local MOBILE_VERSION = "8d"
 local DESKTOP_VERSION = "8"
 PRO_VERSION = false
-DEBUGGING = false
+DEBUGGING = true
 local debug_overlay = true
 
 OS = love.system.getOS()
@@ -47,7 +47,7 @@ if ON_MOBILE then
 		LoveAdmob = require("love_admob")
 		LoveAdmob.debugging = DEBUGGING
 		AdMobKeys = require("admob_keys")
-		AdMobKeys.test = DEBUGGING
+		AdMobKeys.init(DEBUGGING)
 	end
 
 	if PRO_VERSION then
@@ -92,35 +92,36 @@ TEMP_MOVE = false
 
 if ON_MOBILE and not PRO_VERSION then
 	function PreloadAds()
+		print("Preloading ads")
 		LoveAdmob.createBanner(AdMobKeys.ids.banner, "bottom")
 		LoveAdmob.requestInterstitial(AdMobKeys.ids.inter)
 		LoveAdmob.requestRewardedAd(AdMobKeys.ids.reward)
 	end
 
 	function ShowBannerAds()
-		if math.floor(LoveAdmob.ad_timers.banner) % 5 ~= 0 then return end
 		if FC:validate() ~= "accept" then return end
-		LoveAdmob.createBanner(AdMobKeys.ids.banner, "bottom")
-		LoveAdmob.showBanner()
-		LoveAdmob.ad_timers.banner = 0
+		if LoveAdmob.ad_timers.banner >= 5 then
+			-- LoveAdmob.createBanner(AdMobKeys.ids.banner, "bottom")
+			LoveAdmob.showBanner()
+			LoveAdmob.ad_timers.banner = 0
+		end
 	end
 
 	function ShowInterstitialAds()
-		if LoveAdmob.shown_count.interstitial >= 3 then
-			return
-		end
-
-		if LoveAdmob.showing.interstitial then return end
-		if math.floor(LoveAdmob.ad_timers.interstitial) % 5 ~= 0 then return end
+		if LoveAdmob.shown_count.interstitial >= 3 then return end
 		if FC:validate() ~= "accept" then return end
-		if not LoveAdmob.isInterstitialLoaded() then
-			LoveAdmob.requestInterstitial(AdMobKeys.ids.inter)
-		end
-		if LoveAdmob.isInterstitialLoaded() then
-			LoveAdmob.showInterstitial()
-			LoveAdmob.showing.interstitial = true
-			LoveAdmob.ad_timers.interstitial = 0
-			LoveAdmob.shown_count.interstitial = LoveAdmob.shown_count.interstitial + 1
+		if LoveAdmob.showing.interstitial then return end
+
+		if LoveAdmob.ad_timers.interstitial >= 5 then
+			if not LoveAdmob.isInterstitialLoaded() then
+				LoveAdmob.requestInterstitial(AdMobKeys.ids.inter)
+			end
+			if LoveAdmob.isInterstitialLoaded() then
+				LoveAdmob.showInterstitial()
+				LoveAdmob.showing.interstitial = true
+				LoveAdmob.ad_timers.interstitial = 0
+				LoveAdmob.shown_count.interstitial = LoveAdmob.shown_count.interstitial + 1
+			end
 		end
 	end
 
@@ -136,7 +137,7 @@ if ON_MOBILE and not PRO_VERSION then
 
 		if not force then
 			if LoveAdmob.showing.rewarded then return end
-			if math.floor(LoveAdmob.ad_timers.rewarded) % 5 ~= 0 then return end
+			if LoveAdmob.ad_timers.rewarded < 5 then return end
 		end
 		if FC:validate() ~= "accept" then return end
 		if not LoveAdmob.isRewardedAdLoaded() then
@@ -335,9 +336,16 @@ function love.draw()
 		love.graphics.print("Difficulty: " .. DifficultySelect.idx, 8, 8)
 		love.graphics.print("Battery: " .. scale, 8, 16)
 		love.graphics.print(string.format("TX, TY, R: %d, %d, %.2f", TX, TY, RATIO), 8, 24)
-		if MOVE_CHAIR then
-			love.graphics.print("Chair: " .. tostring(MOVE_CHAIR), 8, 32)
+
+		if ON_MOBILE and not PRO_VERSION then
+			love.graphics.print(string.format(
+				"banner: %.2f, inter: %.2f, rewarded: %.2f",
+				LoveAdmob.ad_timers.banner,
+				LoveAdmob.ad_timers.interstitial,
+				LoveAdmob.ad_timers.rewarded
+			), 8, 32)
 		end
+
 		love.graphics.pop()
 	end
 

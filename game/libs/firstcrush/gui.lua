@@ -4,6 +4,7 @@ local fc = {
 	_VERSION = "0.1",
 }
 
+local pressed = ""
 local dpi = love.window.getDPIScale()
 if OS == "Android" then
 	dpi = dpi / 1.5
@@ -36,7 +37,10 @@ end
 
 function fc:validate()
 	if love.filesystem.getInfo("gdrp") then
-		return love.filesystem.read("gdrp")
+		local content = love.filesystem.read("gdrp")
+		return content
+	else
+		return pressed
 	end
 end
 
@@ -45,15 +49,17 @@ function fc:GDPR_init()
 	self:addWindow()
 
 	self:addButton("I Agree", function()
+		pressed = "accept"
 		if love.filesystem.getInfo("gdrp") then
-			love.filesystem.write("gdrp", "accept")
+			love.filesystem.write("gdrp", pressed)
 		end
 		self:hide()
 	end)
 
 	self:addButton("I Refuse", function()
+		pressed = "refuse"
 		if love.filesystem.getInfo("gdrp") then
-			love.filesystem.write("gdrp", "refuse")
+			love.filesystem.write("gdrp", pressed)
 		end
 		self:hide()
 	end)
@@ -62,8 +68,6 @@ function fc:GDPR_init()
 	self:start()
 
 	if LoveAdmob then
-		local device_lang = LoveAdmob.getDeviceLanguage()
-		print("device language", device_lang)
 		LoveAdmob.changeEUConsent()
 	end
 end
