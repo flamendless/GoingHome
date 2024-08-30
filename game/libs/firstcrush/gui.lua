@@ -27,8 +27,8 @@ end
 
 function fc:GDPR_check()
 	if love.filesystem.getInfo("gdrp") then
-		local _gdrp = love.filesystem.read("gdrp")
-		if _gdrp == "accept" then
+		local content = love.filesystem.read("gdrp")
+		if content == "accept" then
 			SHOW_GDPR = false
 		end
 	end
@@ -43,18 +43,27 @@ end
 function fc:GDPR_init()
 	if SHOW_GDPR == false then return end
 	self:addWindow()
+
 	self:addButton("I Agree", function()
-		love.filesystem.write("gdrp", "accept")
+		if love.filesystem.getInfo("gdrp") then
+			love.filesystem.write("gdrp", "accept")
+		end
 		self:hide()
 	end)
+
 	self:addButton("I Refuse", function()
-		love.filesystem.write("gdrp", "refuse")
+		if love.filesystem.getInfo("gdrp") then
+			love.filesystem.write("gdrp", "refuse")
+		end
 		self:hide()
 	end)
+
 	self:show()
 	self:start()
 
 	if LoveAdmob then
+		local device_lang = LoveAdmob.getDeviceLanguage()
+		print("device language", device_lang)
 		LoveAdmob.changeEUConsent()
 	end
 end
@@ -159,17 +168,31 @@ end
 local thread = [[
 	local isRunning = true
 	while (isRunning) do
-		if love.thread.getChannel("state"):pop() == false then
+		local c = love.thread.getChannel("state")
+		if not c then
+			print("THREAD: failed to get channel")
+			isRunning = false
+			break
+		end
+
+		if not c:pop() then
 			print("stopped")
 			isRunning = false
 			break
 		end
 	end
+	print("thread done running")
 ]]
 
 function fc:start()
 	local t = love.thread.newThread(thread)
 	local c = love.thread.getChannel("state")
+
+	if not t then
+		print("Failed to create thread")
+		return
+	end
+
 	t:start()
 	self.thread = t
 	self.channel = c

@@ -2,12 +2,12 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.1.9"
-local MOBILE_VERSION = "8"
+local VERSION = "v1.1.9d"
+local MOBILE_VERSION = "8d"
 local DESKTOP_VERSION = "8"
-PRO_VERSION = true
+PRO_VERSION = false
 DEBUGGING = false
-local debug_overlay = false
+local debug_overlay = true
 
 OS = love.system.getOS()
 ON_MOBILE = (OS == "Android") or (OS == "iOS")
@@ -282,8 +282,9 @@ function love.draw()
 		Pause.draw()
 
 		love.graphics.setShader()
-
-		if FC:getState() then FC:draw() end
+		if FC:getState() then
+			FC:draw()
+		end
 	else
 		local percent = 0
 		if LOADER.resourceCount ~= 0 then
@@ -313,6 +314,7 @@ function love.draw()
 	end
 
 	if debug_overlay then
+		love.graphics.setFont(DEF_FONT)
 		if ON_MOBILE then
 			love.graphics.setColor(1, 0, 0, 1)
 			local touch_ids = love.touch.getTouches()
@@ -325,6 +327,7 @@ function love.draw()
 		end
 
 		love.graphics.push()
+		love.graphics.origin()
 		love.graphics.setColor(1, 0, 0, 1)
 		local scale = BatteriesManager.get_light_scale()
 		love.graphics.scale(3, 3)
