@@ -6,8 +6,8 @@ local VERSION = "v1.1.9d"
 local MOBILE_VERSION = "8d"
 local DESKTOP_VERSION = "8"
 PRO_VERSION = false
-DEBUGGING = true
-local debug_overlay = true
+DEBUGGING = false
+local debug_overlay = false
 
 OS = love.system.getOS()
 ON_MOBILE = (OS == "Android") or (OS == "iOS")
