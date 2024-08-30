@@ -385,6 +385,12 @@ function gamestates.update(dt)
 	local state = gamestates.getState()
 	FADE_OBJ:update(dt)
 
+	if ON_MOBILE and (not PRO_VERSION) then
+		if state ~= "title" then
+			HideBannerAds()
+		end
+	end
+
 	if state == "gallery" then
 		Gallery.update(dt)
 	elseif state == "adshow" then

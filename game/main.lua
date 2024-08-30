@@ -94,18 +94,23 @@ if ON_MOBILE and not PRO_VERSION then
 	function PreloadAds()
 		print("Preloading ads")
 		LoveAdmob.createBanner(AdMobKeys.ids.banner, "bottom")
-		LoveAdmob.requestInterstitial(AdMobKeys.ids.inter)
-		LoveAdmob.requestRewardedAd(AdMobKeys.ids.reward)
+		-- LoveAdmob.requestInterstitial(AdMobKeys.ids.inter)
+		-- LoveAdmob.requestRewardedAd(AdMobKeys.ids.reward)
 	end
 
 	function ShowBannerAds()
 		if FC:validate() ~= "accept" then return end
 		if LoveAdmob.ad_timers.banner >= 5 then
-			print("ShowBannerAds")
-			-- LoveAdmob.createBanner(AdMobKeys.ids.banner, "bottom")
+			LoveAdmob.createBanner(AdMobKeys.ids.banner, "bottom")
 			LoveAdmob.showBanner()
 			LoveAdmob.ad_timers.banner = 0
 		end
+	end
+
+	function HideBannerAds()
+		if FC:validate() ~= "accept" then return end
+		LoveAdmob.hideBanner()
+		LoveAdmob.ad_timers.banner = 0
 	end
 
 	function ShowInterstitialAds()
