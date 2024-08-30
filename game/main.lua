@@ -94,8 +94,8 @@ if ON_MOBILE and not PRO_VERSION then
 	function PreloadAds()
 		print("Preloading ads")
 		LoveAdmob.createBanner(AdMobKeys.ids.banner, "bottom")
-		-- LoveAdmob.requestInterstitial(AdMobKeys.ids.inter)
-		-- LoveAdmob.requestRewardedAd(AdMobKeys.ids.reward)
+		LoveAdmob.requestInterstitial(AdMobKeys.ids.inter)
+		LoveAdmob.requestRewardedAd(AdMobKeys.ids.reward)
 	end
 
 	function ShowBannerAds()
