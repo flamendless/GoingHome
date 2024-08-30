@@ -101,6 +101,7 @@ if ON_MOBILE and not PRO_VERSION then
 	function ShowBannerAds()
 		if FC:validate() ~= "accept" then return end
 		if LoveAdmob.ad_timers.banner >= 5 then
+			print("ShowBannerAds")
 			-- LoveAdmob.createBanner(AdMobKeys.ids.banner, "bottom")
 			LoveAdmob.showBanner()
 			LoveAdmob.ad_timers.banner = 0

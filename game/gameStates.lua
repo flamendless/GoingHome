@@ -94,7 +94,7 @@ flash_text_finished = false
 gun_obtained = false
 ROUTE = 0
 l, r = 0, 0
-adTimer = 5
+adTimer = 3
 
 local adTxts = {
 	"Please Allow Ads to support",
@@ -390,7 +390,7 @@ function gamestates.update(dt)
 	elseif state == "adshow" then
 		if ON_MOBILE then
 			if adTimer > 0 then
-				adTimer = adTimer - 1 * dt
+				adTimer = adTimer - dt
 				if adTimer <= 0 then
 					gamestates.nextState("splash")
 				end
