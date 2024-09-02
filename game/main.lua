@@ -2,8 +2,8 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.1.9d"
-local MOBILE_VERSION = "8d"
+local VERSION = "v1.1.11d"
+local MOBILE_VERSION = "11d"
 local DESKTOP_VERSION = "8"
 PRO_VERSION = false
 DEBUGGING = false
@@ -93,7 +93,7 @@ TEMP_MOVE = false
 if ON_MOBILE and not PRO_VERSION then
 	function PreloadAds()
 		print("Preloading ads")
-		LoveAdmob.createBanner(AdMobKeys.ids.banner, "bottom")
+		LoveAdmob.createBanner(AdMobKeys.ids.banner, "top")
 		LoveAdmob.requestInterstitial(AdMobKeys.ids.inter)
 		LoveAdmob.requestRewardedAd(AdMobKeys.ids.reward)
 	end
@@ -101,7 +101,7 @@ if ON_MOBILE and not PRO_VERSION then
 	function ShowBannerAds()
 		if FC:validate() ~= "accept" then return end
 		if LoveAdmob.ad_timers.banner >= 5 then
-			LoveAdmob.createBanner(AdMobKeys.ids.banner, "bottom")
+			LoveAdmob.createBanner(AdMobKeys.ids.banner, "top")
 			LoveAdmob.showBanner()
 			LoveAdmob.ad_timers.banner = 0
 		end

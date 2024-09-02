@@ -94,16 +94,16 @@ flash_text_finished = false
 gun_obtained = false
 ROUTE = 0
 l, r = 0, 0
-adTimer = 3
+adTimer = 0.5
 
-local adTxts = {
-	"Please Allow Ads to support",
-	"The Developer. Ads will be",
-	"unintrusive and shown",
-	"minimally, or buy",
-	"the adless version",
-}
-local adTxt = table.concat(adTxts, "\n")
+-- local adTxts = {
+-- 	"Please Allow Ads to support",
+-- 	"The Developer. Ads will be",
+-- 	"unintrusive and shown",
+-- 	"minimally, or buy",
+-- 	"the adless version",
+-- }
+-- local adTxt = table.concat(adTxts, "\n")
 lightningVol = 0.5
 
 local tutorial_timer = 5
@@ -808,13 +808,13 @@ function gamestates.draw()
 
 	local state = gamestates.getState()
 	if ON_MOBILE and state == "adshow" then
-		love.graphics.setColor(1, 1, 1, 1)
-		love.graphics.printf(
-			adTxt,
-			0, 4,
-			WIDTH,
-			"center"
-		)
+		-- love.graphics.setColor(1, 1, 1, 1)
+		-- love.graphics.printf(
+		-- 	adTxt,
+		-- 	0, 4,
+		-- 	WIDTH,
+		-- 	"center"
+		-- )
 		-- love.graphics.draw(Images.adIntro, 0, 0)
 	elseif state == "splash" then
 		love.graphics.setColor(1, 1, 1, 1)
