@@ -2,8 +2,8 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.1.11d"
-local MOBILE_VERSION = "11d"
+local VERSION = "v1.1.13d"
+local MOBILE_VERSION = "13d"
 local DESKTOP_VERSION = "8"
 PRO_VERSION = false
 DEBUGGING = false
@@ -395,14 +395,39 @@ function love.mousepressed(x, y, button, istouch)
 				end
 			elseif check_gui(gui_pos.webx, gui_pos.weby, gui_pos.webw, gui_pos.webh) then
 				if ON_MOBILE and LoveAdmob then
-					if LoveAdmob.isInterstitialLoaded() == true then
-						LoveAdmob.showInterstitial()
+					local pressedbutton = love.window.showMessageBox(
+						"This will show a rewarded ad to support the developers",
+						"This will show a rewarded ad to support the developers",
+						{"Proceed", "Cancel"}
+					)
+					if pressedbutton == 1 then
+						ShowRewardedAds(true, function(reward_type, reward_qty)
+							print("rewardUserWithReward callback", reward_type, reward_qty)
+						end)
 					end
+					-- if LoveAdmob.isInterstitialLoaded() == true then
+					-- 	LoveAdmob.showInterstitial()
+					-- end
 				else
 					love.system.openURL(URLS.game_page)
 				end
 			elseif check_gui(gui_pos.g_x, gui_pos.g_y, gui_pos.g_w, gui_pos.g_h) then
-				gamestates.nextState("gallery")
+				if ON_MOBILE then
+					if PRO_VERSION then
+						gamestates.nextState("gallery")
+					else
+						local pressedbutton = love.window.showMessageBox(
+							"Music gallery is only available in the paid version",
+							"Music gallery is only available in the paid version",
+							{"Check paid version", "Back"}
+						)
+						if pressedbutton == 1 then
+							love.system.openURL(URLS.android_paid)
+						end
+					end
+				else
+					gamestates.nextState("gallery")
+				end
 			elseif check_gui(gui_pos.options_x, gui_pos.options_y, gui_pos.options_w, gui_pos.options_h) then
 				options = not options
 			elseif check_gui(gui_pos.q_x, gui_pos.q_y, gui_pos.q_w, gui_pos.q_h) then
