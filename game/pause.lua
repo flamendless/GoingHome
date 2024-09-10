@@ -85,10 +85,18 @@ function pause.mousepressed(mx, my, mb)
 		elseif check_gui(gQuit.x, gQuit.y, gQuit.w, gQuit.h) then
 			pause.toggle()
 			if ON_MOBILE and not PRO_VERSION then
-				ShowRewardedAds(function(reward_type, reward_qty)
-					print("rewardUserWithReward callback", reward_type, reward_qty)
-					gamestates.nextState("title")
-				end)
+				local pressedbutton = love.window.showMessageBox(
+					"This will show a rewarded ad to support the developers",
+					"This will show a rewarded ad to support the developers",
+					{"Proceed", "Cancel"}
+				)
+				if pressedbutton == 1 then
+					LoveAdmob.poll_rewarded = true
+					ShowRewardedAds(function(reward_type, reward_qty)
+						print("rewardUserWithReward callback", reward_type, reward_qty)
+						gamestates.nextState("title")
+					end)
+				end
 			else
 				gamestates.nextState("title")
 			end
