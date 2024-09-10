@@ -85,7 +85,7 @@ function pause.mousepressed(mx, my, mb)
 		elseif check_gui(gQuit.x, gQuit.y, gQuit.w, gQuit.h) then
 			pause.toggle()
 			if ON_MOBILE and not PRO_VERSION then
-				ShowRewardedAds(true, function(reward_type, reward_qty)
+				ShowRewardedAds(function(reward_type, reward_qty)
 					print("rewardUserWithReward callback", reward_type, reward_qty)
 					gamestates.nextState("title")
 				end)

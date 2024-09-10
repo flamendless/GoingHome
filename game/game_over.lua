@@ -94,7 +94,7 @@ function game_over.exit()
 	SaveData.save()
 	if PRO_VERSION == false then
 		if ON_MOBILE then
-			ShowRewardedAds(true, function(reward_type, reward_qty)
+			ShowRewardedAds(function(reward_type, reward_qty)
 				print("rewardUserWithReward callback", reward_type, reward_qty)
 				gamestates.nextState("title")
 				RESET_STATES()

@@ -2,8 +2,8 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.1.14d"
-local MOBILE_VERSION = "14d"
+local VERSION = "v1.1.15d"
+local MOBILE_VERSION = "15d"
 local DESKTOP_VERSION = "8"
 PRO_VERSION = false
 DEBUGGING = false
@@ -113,37 +113,16 @@ if ON_MOBILE and not PRO_VERSION then
 		LoveAdmob.ad_timers.banner = 0
 	end
 
-	function ShowInterstitialAds()
-		if LoveAdmob.shown_count.interstitial >= 3 then return end
-		if FC:validate() ~= "accept" then return end
-		if LoveAdmob.showing.interstitial then return end
-
-		if LoveAdmob.ad_timers.interstitial >= 5 then
-			if not LoveAdmob.isInterstitialLoaded() then
-				LoveAdmob.requestInterstitial(AdMobKeys.ids.inter)
-			end
-			if LoveAdmob.isInterstitialLoaded() then
-				LoveAdmob.showInterstitial()
-				LoveAdmob.showing.interstitial = true
-				LoveAdmob.ad_timers.interstitial = 0
-				LoveAdmob.shown_count.interstitial = LoveAdmob.shown_count.interstitial + 1
-			end
-		end
-	end
-
 	function ShowRewardedAdsCallback(reward_type, reward_qty)
 		print("rewardUserWithReward callback", reward_type, reward_qty)
-		LoveAdmob.poll_rewarded = false
+		if reward_type ~= "load_failed" then
+			LoveAdmob.poll_rewarded = false
+		end
 	end
 
-	function ShowRewardedAds(force, cb_reward_success)
+	function ShowRewardedAds(cb_reward_success)
 		if cb_reward_success then
 			LoveAdmob.rewardUserWithReward = cb_reward_success
-		end
-
-		if not force then
-			if LoveAdmob.showing.rewarded then return end
-			if LoveAdmob.ad_timers.rewarded < 5 then return end
 		end
 
 		if FC:validate() ~= "accept" then return end
@@ -151,16 +130,15 @@ if ON_MOBILE and not PRO_VERSION then
 			LoveAdmob.requestRewardedAd(AdMobKeys.ids.reward)
 		end
 
-		if LoveAdmob.isRewardedAdLoaded() then
+		local loaded = LoveAdmob.isRewardedAdLoaded()
+		LoveAdmob.showing.rewarded = loaded
+		if loaded then
 			LoveAdmob.showRewardedAd()
-			LoveAdmob.showing.rewarded = true
-			LoveAdmob.ad_timers.rewarded = 0
 			LoveAdmob.shown_count.rewarded = LoveAdmob.shown_count.rewarded + 1
 		else
-			LoveAdmob.showing.rewarded = false
-			LoveAdmob.ad_timers.rewarded = 0
 			cb_reward_success("load_failed", 0)
 		end
+		LoveAdmob.ad_timers.rewarded = 0
 	end
 end
 
@@ -262,7 +240,7 @@ function love.update(dt)
 			local state = gamestates.getState()
 			if ON_MOBILE and (not PRO_VERSION) and (state == "title") then
 				if LoveAdmob and LoveAdmob.poll_rewarded then
-					ShowRewardedAds(true, ShowRewardedAdsCallback)
+					ShowRewardedAds(ShowRewardedAdsCallback)
 				end
 			elseif (not ON_MOBILE) and (state == "main") then
 				if SaveData.data.hide_cursor then
@@ -407,7 +385,7 @@ function love.mousepressed(x, y, button, istouch)
 					)
 					if pressedbutton == 1 then
 						LoveAdmob.poll_rewarded = true
-						ShowRewardedAds(true, ShowRewardedAdsCallback)
+						ShowRewardedAds(ShowRewardedAdsCallback)
 					end
 					-- if LoveAdmob.isInterstitialLoaded() == true then
 					-- 	LoveAdmob.showInterstitial()
