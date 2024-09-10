@@ -3,6 +3,7 @@ local love_admob = require("admob")
 love_admob.timer = 0
 love_admob.updateTime = 1 --Seconds
 love_admob.debugging = false
+love_admob.poll_rewarded = false
 
 love_admob.ad_timers = {
 	banner = 0,

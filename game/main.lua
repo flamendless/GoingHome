@@ -2,8 +2,8 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.1.13d"
-local MOBILE_VERSION = "13d"
+local VERSION = "v1.1.14d"
+local MOBILE_VERSION = "14d"
 local DESKTOP_VERSION = "8"
 PRO_VERSION = false
 DEBUGGING = false
@@ -131,12 +131,12 @@ if ON_MOBILE and not PRO_VERSION then
 		end
 	end
 
-	function ShowRewardedAds(force, cb_reward_success)
-		if LoveAdmob.shown_count.rewarded >= 3 then
-			cb_reward_success("skipped", 0)
-			return
-		end
+	function ShowRewardedAdsCallback(reward_type, reward_qty)
+		print("rewardUserWithReward callback", reward_type, reward_qty)
+		LoveAdmob.poll_rewarded = false
+	end
 
+	function ShowRewardedAds(force, cb_reward_success)
 		if cb_reward_success then
 			LoveAdmob.rewardUserWithReward = cb_reward_success
 		end
@@ -145,6 +145,7 @@ if ON_MOBILE and not PRO_VERSION then
 			if LoveAdmob.showing.rewarded then return end
 			if LoveAdmob.ad_timers.rewarded < 5 then return end
 		end
+
 		if FC:validate() ~= "accept" then return end
 		if not LoveAdmob.isRewardedAdLoaded() then
 			LoveAdmob.requestRewardedAd(AdMobKeys.ids.reward)
@@ -259,11 +260,15 @@ function love.update(dt)
 			FC:update(dt)
 		else
 			local state = gamestates.getState()
-			if state == "main" then
+			if ON_MOBILE and (not PRO_VERSION) and (state == "title") then
+				if LoveAdmob and LoveAdmob.poll_rewarded then
+					ShowRewardedAds(true, ShowRewardedAdsCallback)
+				end
+			elseif (not ON_MOBILE) and (state == "main") then
 				if SaveData.data.hide_cursor then
 					love.mouse.setVisible(false)
 				else
-					love.mouse.setVisible(false)
+					love.mouse.setVisible(true)
 				end
 			end
 
@@ -401,9 +406,8 @@ function love.mousepressed(x, y, button, istouch)
 						{"Proceed", "Cancel"}
 					)
 					if pressedbutton == 1 then
-						ShowRewardedAds(true, function(reward_type, reward_qty)
-							print("rewardUserWithReward callback", reward_type, reward_qty)
-						end)
+						LoveAdmob.poll_rewarded = true
+						ShowRewardedAds(true, ShowRewardedAdsCallback)
 					end
 					-- if LoveAdmob.isInterstitialLoaded() == true then
 					-- 	LoveAdmob.showInterstitial()
