@@ -2,8 +2,8 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.1.16d"
-local MOBILE_VERSION = "16d"
+local VERSION = "v1.1.17d"
+local MOBILE_VERSION = "17d"
 local DESKTOP_VERSION = "8"
 PRO_VERSION = false
 DEBUGGING = false
@@ -133,6 +133,7 @@ if ON_MOBILE and not PRO_VERSION then
 		local loaded = LoveAdmob.isRewardedAdLoaded()
 		LoveAdmob.showing.rewarded = loaded
 		if loaded then
+			LoveAdmob.poll_rewarded = false
 			LoveAdmob.showRewardedAd()
 			LoveAdmob.shown_count.rewarded = LoveAdmob.shown_count.rewarded + 1
 		else
