@@ -2,8 +2,8 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.1.17d"
-local MOBILE_VERSION = "17d"
+local VERSION = "v1.1.18d"
+local MOBILE_VERSION = "18d"
 local DESKTOP_VERSION = "8"
 PRO_VERSION = false
 DEBUGGING = false
@@ -1020,7 +1020,11 @@ function CLAMP_LIGHT(lx, ly)
 			LIGHTY = math.clamp(ly, PLAYER.y - 15, PLAYER.y + 10)
 		end
 	else
-		LIGHTX = math.clamp(lx, PLAYER.x - 120, PLAYER.x + 100)
-		LIGHTY = math.clamp(ly, PLAYER.y - 20, PLAYER.y + 0)
+		if lx then
+			LIGHTX = math.clamp(lx, PLAYER.x - 120, PLAYER.x + 100)
+		end
+		if ly then
+			LIGHTY = math.clamp(ly, PLAYER.y - 20, PLAYER.y + 0)
+		end
 	end
 end
