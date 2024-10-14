@@ -2,8 +2,8 @@
 --@flamendless
 --@flam8studio
 
-local VERSION = "v1.1.18d"
-local MOBILE_VERSION = "18d"
+local VERSION = "v1.1.19d"
+local MOBILE_VERSION = "19d"
 local DESKTOP_VERSION = "8"
 PRO_VERSION = false
 DEBUGGING = false
