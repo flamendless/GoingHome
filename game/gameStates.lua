@@ -145,8 +145,7 @@ local instruction_texts_mobile = {
 
 local str_about = {
 	"About:",
-	"Game By: @flamendless",
-	"Programmer: Brandon Lim-it",
+	"Game By: Brandon Lim-it",
 	"Artist: Conrad Reyes",
 	"QA: Ian Plaus",
 	"QA: Kurt Russell De Asis",
@@ -1105,7 +1104,7 @@ function gamestates.draw()
 				love.graphics.print(
 					str,
 					WIDTH_HALF - DEF_FONT:getWidth(str) / 2,
-					DEF_FONT_HEIGHT * (i - 1) - TY/2
+					DEF_FONT_HEIGHT * (i - 1)
 				)
 			end
 			draw_back_gui()
