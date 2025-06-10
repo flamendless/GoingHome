@@ -14,7 +14,7 @@ from zipfile import ZipFile
 
 GAME_NAME: str = "GoingHomeRevisited"
 IDENTITY: str = "GoingHomeRevisited"
-WSL_DRIVE: str = "Z:"
+WSL_DRIVE: str = "X:"
 CMD_PATH: str = "/mnt/c/Windows/System32/cmd.exe"
 GAME_DIR: str = "game/"
 RELEASE_DIR: str = "release/"

@@ -150,6 +150,7 @@ local str_about = {
 	"Artist: Conrad Reyes",
 	"QA: Ian Plaus",
 	"QA: Kurt Russell De Asis",
+	"Version: ",
 }
 
 local function draw_instructions()
@@ -1096,6 +1097,11 @@ function gamestates.draw()
 				else
 					love.graphics.setColor(1, 1, 1, 1)
 				end
+
+				if i == #str_about then
+					str = str .. VERSION
+				end
+
 				love.graphics.print(
 					str,
 					WIDTH_HALF - DEF_FONT:getWidth(str) / 2,
