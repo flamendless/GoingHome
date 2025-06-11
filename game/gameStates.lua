@@ -147,8 +147,7 @@ local str_about = {
 	"About:",
 	"Game By: Brandon Lim-it",
 	"Artist: Conrad Reyes",
-	"QA: Ian Plaus",
-	"QA: Kurt Russell De Asis",
+	"QAs: Ian Plaus & Kurt De Asis",
 	"Version: ",
 }
 

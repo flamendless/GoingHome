@@ -2,9 +2,7 @@
 --@flamendless
 --@flam8studio
 
-VERSION = "v1.1.21d"
-local MOBILE_VERSION = "21d"
-local DESKTOP_VERSION = "8"
+VERSION = "v1.1.22"
 PRO_VERSION = true
 DEBUGGING = false
 local debug_overlay = false
@@ -51,9 +49,9 @@ if ON_MOBILE then
 	end
 
 	if PRO_VERSION then
-		VERSION = VERSION .. "-android-pro-v" .. MOBILE_VERSION
+		VERSION = VERSION .. "-android-pro-v"
 	else
-		VERSION = VERSION .. "-android-v" .. MOBILE_VERSION
+		VERSION = VERSION .. "-android-v"
 	end
 end
 
@@ -145,11 +143,6 @@ end
 
 function love.load()
 	print("VERSION:", VERSION)
-	if ON_MOBILE then
-		print("MOBILE VERSION:", MOBILE_VERSION)
-	else
-		print("DESKTOP VERSION:", DESKTOP_VERSION)
-	end
 	SaveData.load()
 
 	if PRO_VERSION then
